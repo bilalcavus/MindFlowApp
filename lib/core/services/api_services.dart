@@ -7,7 +7,7 @@ import 'package:mind_flow/data/models/emotion_analysis_model.dart';
 class ApiServices {
   final DioHelper dioHelper = DioHelper();
 
-  Future<EmotionAnalysisModel> analyzeEmotion(String userText, {String modelKey = 'mistral-7b'}) async {
+  Future<EmotionAnalysisModel> analyzeEmotion(String userText, {String modelKey = 'mistral-small-3.2'}) async {
     final modelName = ApiConstants.availableModels[modelKey] ?? ApiConstants.availableModels[ApiConstants.defaultModel]!;
     
     final requestData = {
@@ -15,31 +15,7 @@ class ApiServices {
       "messages": [
         {
           "role": "system",
-          "content": """
-Sen bir kişisel gelişim ve zihin haritası uzmanısın. Kullanıcının günlük notunu analiz ederek:
-
-1. Duyguları tespit et
-2. Ana temaları belirle
-3. Kısa bir özet çıkar
-4. Kişisel tavsiyeler ver
-5. Detaylı bir zihin haritası oluştur
-6. Bütün yanıtların Türkçe olsun.
-7. Cevapların kullanıcıyla konuşuyormuş gibi olsun.
-
-Zihin haritası, ana temaları ve alt kategorilerini içermeli. Her tema için ilgili alt başlıkları listele.
-
-Lütfen sadece JSON formatında yanıt ver:
-{
-  "emotions": ["duygu1", "duygu2"],
-  "key_themes": ["tema1", "tema2"],
-  "summary": "Kısa özet",
-  "advice": "Kişisel tavsiye",
-  "mind_map": {
-    "tema1": ["alt_başlık1", "alt_başlık2"],
-    "tema2": ["alt_başlık3", "alt_başlık4"]
-  }
-}
-"""
+          "content": ApiConstants.journalContentPrompt
         },
         {
           "role": "user",
@@ -78,7 +54,7 @@ Lütfen sadece JSON formatında yanıt ver:
   }
 
   // Chat bot için doğal konuşma yanıtı
-  Future<String> getChatResponse(String userMessage, {String modelKey = 'mistral-7b'}) async {
+  Future<String> getChatResponse(String userMessage, {String modelKey = 'mistral-small-3.2'}) async {
     final modelName = ApiConstants.availableModels[modelKey] ?? ApiConstants.availableModels[ApiConstants.defaultModel]!;
     
     final requestData = {
@@ -86,19 +62,7 @@ Lütfen sadece JSON formatında yanıt ver:
       "messages": [
         {
           "role": "system",
-          "content": """
-Sen samimi ve anlayışlı bir kişisel gelişim asistanısın. Kullanıcıyla doğal bir şekilde konuş, 
-duygularını anlamaya çalış ve yardımcı ol. Yanıtların:
-
-1. Samimi ve dostane olsun
-2. Kullanıcının duygularını anladığını göstersin
-3. Pratik tavsiyeler içersin
-4. Cesaretlendirici olsun
-5. Türkçe olsun
-6. Kısa ve öz olsun (maksimum 3-4 cümle)
-
-Kullanıcının mesajına uygun, kişisel ve yardımcı bir yanıt ver.
-"""
+          "content": ApiConstants.chatbotContentPrompt
         },
         {
           "role": "user",
@@ -126,16 +90,20 @@ Kullanıcının mesajına uygun, kişisel ve yardımcı bir yanıt ver.
   // Model adını getir
   String getModelDisplayName(String modelKey) {
     switch (modelKey) {
-      case 'mistral-7b':
-        return 'Mistral 7B';
+      case 'mistral-small-3.2':
+        return 'Mistral Small 3.2';
+      case 'mistral-nemo':
+        return 'Mistral Nemo';
       case 'llama-3.1':
         return 'Llama 3.1 (8B)';
-      case 'mercury':
-        return 'Mercury';
-      case 'phi-3':
-        return 'Phi-3 Mini';
-      case 'qwen-2':
-        return 'Qwen 2 (7B)';
+      case 'minimax-m1':
+        return 'MiniMax M1';
+      case 'deepsek-v3':
+        return 'Deepseek V3';
+      case 'gemini-2.0-flash':
+        return 'Gemini 2.0 Flash Experimental';
+      case 'qwen/qwen3-32b:free':
+        return 'Qwen: Qwen3 32B';
       default:
         return modelKey;
     }

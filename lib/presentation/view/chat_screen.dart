@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/presentation/viewmodel/journal_provider.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
 import 'package:provider/provider.dart';
 
@@ -33,52 +34,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<JournalViewModel>(context);
+    final vm = Provider.of<ChatBotProvider>(context);
+    final chatbotProvider = Provider.of<ChatBotProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Asistan'),
+        title: const Text('Mind Flow Asistan'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              switch (value) {
-                case 'clear':
-                  _showClearDialog(vm);
-                  break;
-                case 'model':
-                  _showModelSelector(vm);
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'model',
-                child: Row(
-                  children: [
-                    Icon(Icons.smart_toy),
-                    SizedBox(width: 8),
-                    Text('Model Değiştir'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'clear',
-                child: Row(
-                  children: [
-                    Icon(Icons.delete),
-                    SizedBox(width: 8),
-                    Text('Sohbeti Temizle'),
-                  ],
-                ),
-              ),
-            ],
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.more_vert),
-            ),
+          IconButton(
+            icon: const Icon(HugeIcons.strokeRoundedAiBrain01),
+            tooltip: 'Model Seç',
+            onPressed: () => _showModelSelector(vm),
           ),
+          IconButton(
+            icon: const Icon(HugeIcons.strokeRoundedDelete02),
+            tooltip: 'Model Seç',
+            onPressed: () => _showClearDialog(vm),
+          ),
+          
         ],
       ),
       body: Column(
@@ -93,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 const Icon(Icons.smart_toy, size: 16, color: Colors.deepPurple),
                 const SizedBox(width: 8),
                 Text(
-                  'Model: ${vm.getModelDisplayName(vm.selectedModel)}',
+                  'Model: ${chatbotProvider.getModelDisplayName(vm.selectedModel)}',
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.grey,
@@ -185,7 +160,7 @@ class _ChatScreenState extends State<ChatScreen> {
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: () {
-              final vm = Provider.of<JournalViewModel>(context, listen: false);
+              final vm = Provider.of<ChatBotProvider>(context, listen: false);
               vm.chatController.text = "Merhaba! Bugün nasılsın?";
               vm.sendChatMessage(vm.chatController.text);
             },
@@ -202,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(JournalViewModel vm) {
+  Widget _buildMessageInput(ChatBotProvider vm) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -259,7 +234,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showClearDialog(JournalViewModel vm) {
+  void _showClearDialog(ChatBotProvider vm) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -282,7 +257,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showModelSelector(JournalViewModel vm) {
+  void _showModelSelector(ChatBotProvider vm) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

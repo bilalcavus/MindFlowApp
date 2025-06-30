@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -22,12 +24,12 @@ class ChatBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
-            CircleAvatar(
-              radius: 16,
+             CircleAvatar(
+              radius: context.dynamicHeight(0.025),
               backgroundColor: Colors.deepPurple,
-              child: const Icon(
-                Icons.psychology,
-                size: 16,
+              child: Icon(
+                HugeIcons.strokeRoundedAiBrain04,
+                size: context.dynamicHeight(0.025),
                 color: Colors.white,
               ),
             ),
@@ -36,7 +38,7 @@ class ChatBubble extends StatelessWidget {
           Flexible(
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.75,
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
@@ -74,7 +76,7 @@ class ChatBubble extends StatelessWidget {
                     message.message,
                     style: TextStyle(
                       color: isUser ? Colors.white : Colors.black87,
-                      fontSize: 14,
+                      fontSize: context.dynamicHeight(0.018),
                       height: 1.4,
                     ),
                   ),
@@ -90,6 +92,7 @@ class ChatBubble extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: context.dynamicHeight(0.01)),
           if (isUser) ...[
             const SizedBox(width: 8),
             CircleAvatar(
@@ -109,7 +112,7 @@ class ChatBubble extends StatelessWidget {
 
   String _getModelDisplayName(String modelKey) {
     switch (modelKey) {
-      case 'mistral-7b':
+      case 'mistral-small-3.2':
         return 'Mistral 7B';
       case 'llama-3.1':
         return 'Llama 3.1';
