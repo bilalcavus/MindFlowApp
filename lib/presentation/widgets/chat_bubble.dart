@@ -33,7 +33,7 @@ class ChatBubble extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: context.dynamicWidth(0.02)),
           ],
           Flexible(
             child: Container(
@@ -42,7 +42,7 @@ class ChatBubble extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: isUser ? Colors.deepPurple : Colors.grey[100],
+                color: isUser ? Colors.deepPurple.shade800 : Colors.grey[900],
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
                   BoxShadow(
@@ -75,7 +75,6 @@ class ChatBubble extends StatelessWidget {
                   Text(
                     message.message,
                     style: TextStyle(
-                      color: isUser ? Colors.white : Colors.black87,
                       fontSize: context.dynamicHeight(0.018),
                       height: 1.4,
                     ),

@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/services/api_services.dart';
-import 'package:mind_flow/data/models/emotion_analysis_model.dart';
-import 'package:mind_flow/domain/usecases/get_analyze_emotion.dart';
+import 'package:mind_flow/core/services/shared_prefs_service.dart';
+import 'package:mind_flow/data/models/dream_analysis_model.dart';
+import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
 
-class JournalViewModel extends ChangeNotifier {
+class DreamAnalysisProvider extends ChangeNotifier {
   final ApiServices _repo = ApiServices();
+  final SharedPrefsService _prefsService = SharedPrefsService();
 
-  final GetAnalyzeEmotion getAnalyzeEmotion;
+  final GetDreamAnalysis getDreamAnalysis;
 
-  JournalViewModel(this.getAnalyzeEmotion);
+  DreamAnalysisProvider(this.getDreamAnalysis) {
+    _loadPrefs();
+  }
 
   bool isLoading = false;
-  EmotionAnalysisModel? analysisResult;
+  DreamAnalysisModel? analysisResult;
   String? error;
   String selectedModel = 'mistral-small-3.2';
-  List<EmotionAnalysisModel> analysisHistory = [];
+  List<DreamAnalysisModel> analysisHistory = [];
 
   final TextEditingController textController = TextEditingController();
+
 
   List<String> get availableModels => _repo.getAvailableModels();
 
@@ -24,12 +29,15 @@ class JournalViewModel extends ChangeNotifier {
 
   void changeModel(String modelKey) {
     selectedModel = modelKey;
+    _prefsService.saveSelectedModel(modelKey);
     notifyListeners();
   }
 
-  Future<void> analyzeText(String text) async {
+  
+
+  Future<void> dreamAnalyzeText(String text) async {
     if (text.trim().isEmpty) {
-      error = "Lütfen analiz edilecek bir metin girin";
+      error = "Lütfen rüya analizi edilecek bir metin girin";
       notifyListeners();
       return;
     }
@@ -39,11 +47,12 @@ class JournalViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      analysisResult = await getAnalyzeEmotion(text, selectedModel);
+      analysisResult = await getDreamAnalysis(text, selectedModel);
       analysisHistory.insert(0, analysisResult!);
       if (analysisHistory.length > 10) {
         analysisHistory = analysisHistory.take(10).toList();
       }
+      // await _prefsService.saveJournalEntries([text]);
     } catch (e) {
       error = e.toString();
     }
@@ -57,7 +66,7 @@ class JournalViewModel extends ChangeNotifier {
   }
 
 
-  void loadAnalysis(EmotionAnalysisModel analysis) {
+  void loadAnalysis(DreamAnalysisModel analysis) {
     analysisResult = analysis;
     notifyListeners();
   }
@@ -67,7 +76,6 @@ class JournalViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Analiz geçmişini JSON olarak kaydet
   Map<String, dynamic> saveHistoryToJson() {
     return {
       'history': analysisHistory.map((e) => e.toJson()).toList(),
@@ -75,13 +83,12 @@ class JournalViewModel extends ChangeNotifier {
     };
   }
 
-  // JSON'dan analiz geçmişini yükle
   void loadHistoryFromJson(Map<String, dynamic> json) {
     try {
       final historyList = json['history'] as List?;
       if (historyList != null) {
         analysisHistory = historyList
-            .map((e) => EmotionAnalysisModel.fromJson(e as Map<String, dynamic>))
+            .map((e) => DreamAnalysisModel.fromJson(e as Map<String, dynamic>))
             .toList();
       }
 
@@ -91,5 +98,13 @@ class JournalViewModel extends ChangeNotifier {
       error = "Geçmiş yüklenirken hata: $e";
       notifyListeners();
     }
+  }
+
+  Future<void> _loadPrefs() async {
+    final model = await _prefsService.getSelectedModel();
+    if (model != null) {
+      selectedModel = model;
+    }
+    notifyListeners();
   }
 }

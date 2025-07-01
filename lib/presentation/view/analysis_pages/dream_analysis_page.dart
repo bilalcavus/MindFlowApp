@@ -4,20 +4,20 @@ import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/chat_screen.dart';
 import 'package:mind_flow/presentation/view/journal_analysis_screen.dart';
-import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/journal_text_field.dart';
 import 'package:provider/provider.dart';
 
-class JournalScreen extends StatelessWidget {
-  const JournalScreen({super.key});
+class DreamAnalysisPage extends StatelessWidget {
+  const DreamAnalysisPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<JournalViewModel>();
+    final vm = context.watch<DreamAnalysisProvider>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Günlük & Zihin Haritası'),
+        title: const Text("Rüya Analizi"),
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -60,7 +60,7 @@ class JournalScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                   
-                    JournalTextField(controller: vm.textController, label: 'Bugün nasıl hissediyorsun?', hint: "Bugün ne hissettiğini, neler yaşadığını, paylaşmak istediklerini istediğin şekilde yaz, sana yardımcı olayım!", maxLines: 10),
+                    JournalTextField(controller: vm.textController, label: 'Rüyanı anlat', hint: "Rüyanda ne gördüğünü anlat, sana yardımcı olayım!", maxLines: 10),
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
@@ -68,7 +68,7 @@ class JournalScreen extends StatelessWidget {
                         onPressed: vm.isLoading
                             ? null
                             : () async {
-                                await vm.analyzeText(vm.textController.text);
+                                await vm.dreamAnalyzeText(vm.textController.text);
                                 vm.clearText();
                                 RouteHelper.push(context, const JournalAnalysisScreen());
                               },

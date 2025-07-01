@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/presentation/view/chat_screen.dart';
 import 'package:mind_flow/presentation/view/history_view.dart';
+import 'package:mind_flow/presentation/view/home_view.dart';
 import 'package:mind_flow/presentation/view/journal_analysis_screen.dart';
 import 'package:mind_flow/presentation/view/journal_screen.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation_provider.dart';
@@ -20,9 +20,9 @@ class AppNavigation extends StatelessWidget {
             body: IndexedStack(
               index: navProvider.currentIndex,
               children: const [
+                HomeView(),
                 JournalScreen(),
                 JournalAnalysisScreen(),
-                ChatScreen(),
                 JournalHistoryScreen()
               ],
             ),

@@ -17,7 +17,7 @@ class CustomBottomNavbar extends StatelessWidget {
     return Container(
       height: context.dynamicHeight(0.08),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.black,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -33,6 +33,14 @@ class CustomBottomNavbar extends StatelessWidget {
             child: _buildNavItem(
               context,
               index: 0,
+              icon: HugeIcons.strokeRoundedHome04,
+              label: 'Anasayfa',
+            ),
+          ),
+          Expanded(
+            child: _buildNavItem(
+              context,
+              index: 1,
               icon: HugeIcons.strokeRoundedEnergy,
               label: 'Analiz Et',
             ),
@@ -40,17 +48,9 @@ class CustomBottomNavbar extends StatelessWidget {
           Expanded(
             child: _buildNavItem(
               context,
-              index: 1,
+              index: 2,
               icon: HugeIcons.strokeRoundedAnalytics01,
               label: 'Analiz Sonucu',
-            ),
-          ),
-          Expanded(
-            child: _buildNavItem(
-              context,
-              index: 2,
-              icon: HugeIcons.strokeRoundedAiChat01,
-              label: 'Chatbot',
             ),
           ),
           Expanded(
@@ -78,7 +78,7 @@ class CustomBottomNavbar extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: context.dynamicWidth(0.04),
-          vertical: context.dynamicHeight(0.022),
+          vertical: context.dynamicHeight(0.01),
         ),
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -96,7 +96,7 @@ class CustomBottomNavbar extends StatelessWidget {
             // Text(
             //   label,
             //   style: TextStyle(
-            //     color: isSelected ? CustomThemeColors.bottomSelectedItemColor(context) : Colors.grey[600],
+            //     color:  Colors.grey[600],
             //     fontSize: context.dynamicHeight(0.014),
             //     fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             //   ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/helper/dio_helper.dart';
+import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
 
 class ApiServices {
@@ -30,11 +31,8 @@ class ApiServices {
 
     if (result is Map && result.containsKey('choices')) {
       final content = result['choices'][0]['message']['content'];
-
-      // AI cevabı bazen JSON dışında yazabiliyor, JSON içeriği ayıkla
       final start = content.indexOf('{');
       final end = content.lastIndexOf('}');
-      
       if (start == -1 || end == -1) {
         throw Exception("AI'dan geçerli JSON yanıtı alınamadı");
       }
@@ -45,6 +43,50 @@ class ApiServices {
         final decoded = json.decode(jsonStr);
         decoded['model_used'] = modelKey; // Hangi modelin kullanıldığını ekle
         return EmotionAnalysisModel.fromJson(decoded);
+      } catch (e) {
+        throw Exception("JSON parse hatası: $e");
+      }
+    } else {
+      throw Exception("OpenRouter yanıtı beklenmedik formatta: $result");
+    }
+  }
+
+
+  Future<DreamAnalysisModel> analyzeDream(String userText, {String modelKey = 'mistral-small-3.2'}) async {
+    final modelName = ApiConstants.availableModels[modelKey] ?? ApiConstants.availableModels[ApiConstants.defaultModel]!;
+    
+    final requestData = {
+      "model": modelName,
+      "messages": [
+        {
+          "role": "system",
+          "content": ApiConstants.dreamAnalysisContentPrompt
+        },
+        {
+          "role": "user",
+          "content": userText
+        }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1000
+    };
+
+    final result = await dioHelper.dioPost('/chat/completions', requestData);
+
+    if (result is Map && result.containsKey('choices')) {
+      final content = result['choices'][0]['message']['content'];
+      final start = content.indexOf('{');
+      final end = content.lastIndexOf('}');
+      if (start == -1 || end == -1) {
+        throw Exception("AI'dan geçerli JSON yanıtı alınamadı");
+      }
+      
+      final jsonStr = content.substring(start, end + 1);
+
+      try {
+        final decoded = json.decode(jsonStr);
+        decoded['model_used'] = modelKey; // Hangi modelin kullanıldığını ekle
+        return DreamAnalysisModel.fromJson(decoded);
       } catch (e) {
         throw Exception("JSON parse hatası: $e");
       }
@@ -96,8 +138,8 @@ class ApiServices {
         return 'Mistral Nemo';
       case 'llama-3.1':
         return 'Llama 3.1 (8B)';
-      case 'minimax-m1':
-        return 'MiniMax M1';
+      case 'gpt-4.1-nano':
+        return 'Chatgpt 4.1 Nano';
       case 'deepsek-v3':
         return 'Deepseek V3';
       case 'gemini-2.0-flash':

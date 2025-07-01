@@ -9,4 +9,6 @@ class GetAnalyzeEmotion {
   Future<EmotionAnalysisModel> call(String userText, String modelKey) {
     return repository.analyzeEmotion(userText, modelKey);
   }
+
+  
 }

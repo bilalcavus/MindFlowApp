@@ -1,5 +1,6 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/presentation/viewmodel/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:provider/provider.dart';
 
 class JournalAnalysisScreen extends StatelessWidget {
@@ -8,7 +9,6 @@ class JournalAnalysisScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<JournalViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('AI Analizi'),
@@ -44,7 +44,7 @@ class JournalAnalysisScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => vm.analyzeText(vm.textController.text ?? ''),
+                    onPressed: () => vm.analyzeText(vm.textController.text),
                     child: const Text('Tekrar Dene'),
                   ),
                 ],
@@ -98,12 +98,18 @@ class JournalAnalysisScreen extends StatelessWidget {
                 if (result.summary.isNotEmpty)
                   _buildSectionCard('📝 Özet', result.summary, Colors.blue),
 
-                // Duygular
-                _buildSectionCard(
-                  '🎭 Duygular',
-                  result.emotions.join(', '),
-                  Colors.red,
-                ),
+                // // Duygular
+                // _buildSectionCard(
+                //   '🎭 Duygular',
+                //   result.emotions.join(', '),
+                //   Colors.red,
+                // ),
+
+                // _buildSectionCard(
+                //   '🎭 Duygu Skoru',
+                //   result.emotions.join(', '),
+                //   Colors.red,
+                // ),
 
                 // Temalar
                 _buildSectionCard(
@@ -121,6 +127,35 @@ class JournalAnalysisScreen extends StatelessWidget {
 
                 // Zihin Haritası
                 _buildMindMapCard(result.mindMap),
+                SizedBox(
+              height: 250,
+              child: RadarChart(
+                RadarChartData(
+                  dataSets: [
+                    RadarDataSet(
+                      dataEntries: result.emotions.values.map((e) => RadarEntry(value: e.toDouble())).toList(),
+                      borderColor: Colors.purple,
+                      fillColor: Colors.purple.withOpacity(0.3),
+                    ),
+                  ],
+                  radarBackgroundColor: Colors.transparent,
+                  titleTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
+                  getTitle: (index, angle) => RadarChartTitle(text: result.emotions.keys.elementAt(index)),
+                  tickCount: 5,
+                  ticksTextStyle: const TextStyle(color: Colors.grey),
+                  tickBorderData: const BorderSide(color: Colors.grey),
+                  gridBorderData: const BorderSide(color: Colors.grey),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ...result.emotions.entries.map((e) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(e.key),
+                Text("%${e.value}"),
+              ],
+            )),
               ],
             ),
           );
@@ -163,8 +198,8 @@ class JournalAnalysisScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Icons.circle, size: 12, color: Colors.purple),
                 SizedBox(width: 8),
                 Text(

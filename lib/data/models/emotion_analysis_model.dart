@@ -1,5 +1,5 @@
 class EmotionAnalysisModel {
-  final List<String> emotions;
+  final Map<String, int> emotions;
   final List<String> themes;
   final String advice;
   final Map<String, List<String>> mindMap;
@@ -19,7 +19,7 @@ class EmotionAnalysisModel {
 
   factory EmotionAnalysisModel.fromJson(Map<String, dynamic> json) {
     return EmotionAnalysisModel(
-      emotions: List<String>.from(json['emotions'] ?? []),
+      emotions: Map<String, int>.from(json['emotions'] ?? []),
       themes: List<String>.from(json['key_themes'] ?? []),
       advice: json['advice'] ?? '',
       mindMap: Map<String, List<String>>.fromEntries(

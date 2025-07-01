@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/error/error_handler.dart';
 import 'package:mind_flow/core/services/api_services.dart';
-import 'package:mind_flow/data/models/emotion_analysis_model.dart';
-import 'package:mind_flow/domain/repositories/journal_repository.dart';
+import 'package:mind_flow/data/models/dream_analysis_model.dart';
+import 'package:mind_flow/domain/repositories/dream_analysis_repository.dart';
 
-class JournalRepositoryImpl implements JournalRepository {
-  final ApiServices _apiServices;
+class DreamAnalysisRepositoryImpl implements DreamAnalysisRepository {
+    final ApiServices _apiServices;
 
-  JournalRepositoryImpl(this._apiServices);
-
-   @override
+    DreamAnalysisRepositoryImpl(this._apiServices);
+@override
 Future<T> handleRepositoryOperation<T>({
   required Future<T> Function() operation,
   String? errorMessage,
@@ -31,10 +30,11 @@ Future<T> handleRepositoryOperation<T>({
     throw appError;
   }
 }
-
   @override
-  Future<EmotionAnalysisModel> analyzeEmotion(String userText, String modelKey) {
-    return handleRepositoryOperation(operation: () => _apiServices.analyzeEmotion(userText, modelKey: modelKey));
+  Future<DreamAnalysisModel> analyzeDream(String userText, String modelKey) {
+    return handleRepositoryOperation(operation:() => _apiServices.analyzeDream(userText));
   }
 
+
+  
 }

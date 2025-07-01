@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/presentation/viewmodel/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:provider/provider.dart';
 
 class JournalHistoryScreen extends StatelessWidget {

@@ -38,14 +38,14 @@ class JournalTextField extends StatelessWidget {
             style: TextStyle(
               fontSize: context.dynamicHeight(0.02),
               fontWeight: FontWeight.w500,
-              color: Color.fromARGB(255, 0, 0, 0),
+              // color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
         ),
         SizedBox(height: context.dynamicHeight(0.01)),
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            // color: Colors.grey[100],
             borderRadius: BorderRadius.circular(context.dynamicWidth(0.025)),
           ),
           child: TextFormField(

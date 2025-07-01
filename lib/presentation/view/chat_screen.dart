@@ -39,9 +39,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mind Flow Asistan'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedAiBrain01),
@@ -62,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: Colors.grey[50],
+            // color: Colors.grey[50],
             child: Row(
               children: [
                 const Icon(Icons.smart_toy, size: 16, color: Colors.deepPurple),
@@ -181,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -261,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('AI Model Seç'),
+        title: const Text('Model Seç'),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
@@ -277,7 +274,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   color: isSelected ? Colors.deepPurple : Colors.grey,
                 ),
                 title: Text(vm.getModelDisplayName(model)),
-                subtitle: Text(_getModelDescription(model)),
+                // subtitle: Text(_getModelDescription(model)),
                 onTap: () {
                   vm.changeModel(model);
                   Navigator.pop(context);
