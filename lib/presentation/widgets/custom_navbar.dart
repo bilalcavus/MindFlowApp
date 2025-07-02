@@ -49,14 +49,6 @@ class CustomBottomNavbar extends StatelessWidget {
             child: _buildNavItem(
               context,
               index: 2,
-              icon: HugeIcons.strokeRoundedAnalytics01,
-              label: 'Analiz Sonucu',
-            ),
-          ),
-          Expanded(
-            child: _buildNavItem(
-              context,
-              index: 3,
               icon: HugeIcons.strokeRoundedTransactionHistory,
               label: 'Geçmiş',
             ),

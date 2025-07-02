@@ -27,6 +27,8 @@ dependencies:
   glassmorphism: ^3.0.0
   fl_chart: ^0.64.0
   dotenv: ^4.2.0
+  iconsax: ^0.0.8
+  easy_localization: ^3.0.7+1
 
 dev_dependencies:
   flutter_test:

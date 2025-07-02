@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
-import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
-import 'package:mind_flow/core/helper/route_helper.dart';
-import 'package:mind_flow/presentation/view/chat_screen.dart';
-import 'package:mind_flow/presentation/view/journal_analysis_screen.dart';
+import 'package:mind_flow/presentation/view/analysis_pages/generic_analysis_page.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/dream_analysis_result_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
-import 'package:mind_flow/presentation/widgets/journal_text_field.dart';
 import 'package:provider/provider.dart';
 
 class DreamAnalysisPage extends StatelessWidget {
@@ -14,93 +10,27 @@ class DreamAnalysisPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<DreamAnalysisProvider>();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Rüya Analizi"),
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                decoration: BoxDecoration(
-                  // color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                child: DropdownButtonFormField<String>(
-                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.03)),
-                  value: vm.selectedModel,
-                  decoration:  InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: context.dynamicWidth(0.02)),
-                    labelText: 'Model',
-                  ),
-                  items: vm.availableModels.map((model) {
-                    return DropdownMenuItem(
-                      value: model,
-                      child: Text(vm.getModelDisplayName(model)),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) vm.changeModel(value);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  
-                    JournalTextField(controller: vm.textController, label: 'Rüyanı anlat', hint: "Rüyanda ne gördüğünü anlat, sana yardımcı olayım!", maxLines: 10),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: vm.isLoading
-                            ? null
-                            : () async {
-                                await vm.dreamAnalyzeText(vm.textController.text);
-                                vm.clearText();
-                                RouteHelper.push(context, const JournalAnalysisScreen());
-                              },
-                        icon: vm.isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.psychology),
-                        label: Text(vm.isLoading ? 'Analiz Ediliyor...' : 'Gönder'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.all(16),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        autofocus: true,
-        backgroundColor: const Color.fromARGB(255, 146, 140, 233),
-        tooltip: "Flow ile konuşmak için üstüme bas!",
-        child: const Icon(HugeIcons.strokeRoundedAiBrain01),
-        onPressed: () => RouteHelper.push(context, const ChatScreen())
-      ),
+    return GenericAnalysisPage(
+      title: 'Rüya Analizi',
+      textFieldLabel: 'Rüyanı anlat',
+      textFieldHint: 'Rüyanda ne gördüğünü anlat, sana yardımcı olayım!',
+      analyzeButtonText: 'Gönder',
+      isLoading: vm.isLoading,
+      onAnalyze: () async {
+        await vm.dreamAnalyzeText(vm.textController.text);
+        vm.clearText();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const DreamAnalysisResultView()),
+        );
+      },
+      textController: vm.textController,
+      availableModels: vm.availableModels,
+      selectedModel: vm.selectedModel,
+      onModelChange: (value) {
+        if (value != null) vm.changeModel(value);
+      },
+      getModelDisplayName: vm.getModelDisplayName,
+      resultPage: const DreamAnalysisResultView(),
     );
   }
 }

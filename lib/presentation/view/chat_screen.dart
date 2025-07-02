@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
 import 'package:provider/provider.dart';
@@ -34,68 +36,43 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<ChatBotProvider>(context);
-    final chatbotProvider = Provider.of<ChatBotProvider>(context);
-
+    final provider = context.watch<ChatBotProvider>();
     return Scaffold(
       appBar: AppBar(
+        title: Text(provider.getModelDisplayName(provider.selectedModel), style: TextStyle(fontSize: context.dynamicHeight(0.02)),),
         actions: [
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedAiBrain01),
             tooltip: 'Model Seç',
-            onPressed: () => _showModelSelector(vm),
+            onPressed: () => _showModelSelector(provider),
           ),
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedDelete02),
             tooltip: 'Model Seç',
-            onPressed: () => _showClearDialog(vm),
+            onPressed: () => _showClearDialog(provider),
           ),
           
         ],
       ),
       body: Column(
         children: [
-          // Model bilgisi
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            // color: Colors.grey[50],
-            child: Row(
-              children: [
-                const Icon(Icons.smart_toy, size: 16, color: Colors.deepPurple),
-                const SizedBox(width: 8),
-                Text(
-                  'Model: ${chatbotProvider.getModelDisplayName(vm.selectedModel)}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // Chat mesajları
           Expanded(
-            child: vm.chatMessages.isEmpty
+            child: provider.chatMessages.isEmpty
                 ? _buildEmptyState()
                 : ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    itemCount: vm.chatMessages.length,
+                    itemCount: provider.chatMessages.length,
                     itemBuilder: (context, index) {
-                      final message = vm.chatMessages[index];
+                      final message = provider.chatMessages[index];
                       return ChatBubble(
                         message: message,
-                        isLastMessage: index == vm.chatMessages.length - 1,
+                        isLastMessage: index == provider.chatMessages.length - 1,
                       );
                     },
                   ),
           ),
-          
-          // Loading indicator
-          if (vm.isLoading)
+          if (provider.isLoading)
             Container(
               padding: const EdgeInsets.all(16),
               child: const Row(
@@ -106,13 +83,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                   SizedBox(width: 12),
-                  Text('AI düşünüyor...'),
+                  Text('Yazıyor...'),
                 ],
               ),
             ),
-          
-          // Mesaj gönderme alanı
-          _buildMessageInput(vm),
+          _buildMessageInput(provider),
         ],
       ),
     );
@@ -130,41 +105,34 @@ class _ChatScreenState extends State<ChatScreen> {
               color: Colors.deepPurple.withOpacity(0.1),
               borderRadius: BorderRadius.circular(40),
             ),
-            child: const Icon(
-              Icons.psychology,
-              size: 40,
-              color: Colors.deepPurple,
+            child: Icon(
+              HugeIcons.strokeRoundedAiGenerative,
+              size: context.dynamicHeight(0.05),
+              color: Colors.deepPurple.shade800,
             ),
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'AI Asistan',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Merhaba! Ben senin kişisel gelişim asistanın.\nDuygularını, düşüncelerini paylaşabilirsin.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
+          SizedBox(height: context.dynamicHeight(0.01)),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Merhaba! Sana nasıl yardımıcı olabilirim?.\nDuygularını, düşüncelerini paylaşabilirsin.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+              ),
             ),
           ),
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: () {
-              final vm = Provider.of<ChatBotProvider>(context, listen: false);
-              vm.chatController.text = "Merhaba! Bugün nasılsın?";
-              vm.sendChatMessage(vm.chatController.text);
+              final provider = Provider.of<ChatBotProvider>(context, listen: false);
+              provider.chatController.text = "Merhaba! Bugün nasılsın?";
+              provider.sendChatMessage(provider.chatController.text);
             },
-            icon: const Icon(Icons.chat),
+            icon: const Icon(HugeIcons.strokeRoundedChatting01),
             label: const Text('Sohbete Başla'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple,
+              backgroundColor: Colors.deepPurple.shade800,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
@@ -174,59 +142,48 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(ChatBotProvider vm) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        // color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: vm.chatController,
-              focusNode: _focusNode,
-              maxLines: null,
-              textInputAction: TextInputAction.send,
-              decoration: const InputDecoration(
-                hintText: 'Mesajını yaz...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(24)),
+  Widget _buildMessageInput(ChatBotProvider provider) {
+    return Padding(
+      padding:  EdgeInsets.all(context.dynamicHeight(0.015)),
+      child: Container(
+        height: context.dynamicHeight(0.08),
+        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade900,
+          borderRadius: BorderRadius.circular(context.dynamicHeight(0.03))
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: provider.chatController,
+                focusNode: _focusNode,
+                maxLines: null,
+                textInputAction: TextInputAction.send,
+                decoration: const InputDecoration(
+                  hintText: 'Mesajını yaz...',
+                  border: InputBorder.none,
+                focusedBorder: InputBorder.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                onSubmitted: (text) {
+                  if (text.trim().isNotEmpty) {
+                    provider.sendChatMessage(text);
+                    _scrollToBottom();
+                  }
+                },
               ),
-              onSubmitted: (text) {
-                if (text.trim().isNotEmpty) {
-                  vm.sendChatMessage(text);
-                  _scrollToBottom();
-                }
+            ),
+            InkWell(
+              onTap: (){
+                if (provider.chatController.text.trim().isNotEmpty) {
+                    provider.sendChatMessage(provider.chatController.text);
+                    _scrollToBottom();
+                  }
               },
+              child: Icon(Iconsax.send_14, size: context.dynamicHeight(0.04)),
             ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.deepPurple,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              onPressed: () {
-                if (vm.chatController.text.trim().isNotEmpty) {
-                  vm.sendChatMessage(vm.chatController.text);
-                  _scrollToBottom();
-                }
-              },
-              icon: const Icon(Icons.send, color: Colors.white),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -254,7 +211,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showModelSelector(ChatBotProvider vm) {
+  void _showModelSelector(ChatBotProvider provider) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -263,20 +220,19 @@ class _ChatScreenState extends State<ChatScreen> {
           width: double.maxFinite,
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: vm.availableModels.length,
+            itemCount: provider.availableModels.length,
             itemBuilder: (context, index) {
-              final model = vm.availableModels[index];
-              final isSelected = model == vm.selectedModel;
-              
+              final model = provider.availableModels[index];
+              final isSelected = model == provider.selectedModel;
               return ListTile(
                 leading: Icon(
                   isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
                   color: isSelected ? Colors.deepPurple : Colors.grey,
                 ),
-                title: Text(vm.getModelDisplayName(model)),
+                title: Text(provider.getModelDisplayName(model)),
                 // subtitle: Text(_getModelDescription(model)),
                 onTap: () {
-                  vm.changeModel(model);
+                  provider.changeModel(model);
                   Navigator.pop(context);
                 },
               );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 
-class JournalTextField extends StatelessWidget {
-  const JournalTextField({
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
     super.key,
     required this.controller,
     required this.label,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ class JournalHistoryScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.history, size: 64, color: Colors.grey),
+              Icon(HugeIcons.strokeRoundedWorkHistory, size: 64, color: Colors.grey),
               SizedBox(height: 16),
               Text(
                 'Henüz analiz geçmişi yok',

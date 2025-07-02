@@ -10,7 +10,7 @@ class ApiConstants {
 Kullanıcının yazdığı günlük notunu analiz et. Aşağıdaki adımları sırayla uygula:
 
 1. Günlükte ifade edilen **duyguları** sezgisel olarak belirle.
-2. Her duygunun yoğunluğunu 0-100 arasında puanla. Bu duyguları `emotions` alanında `{ "duygu": skor }` formatında Map olarak döndür.
+2. Her duygunun yoğunluğunu 0-100 arasında puanla. En az 3 duygu ve skorunu getir. Bu duyguları `emotions` alanında `{ "duygu": skor }` formatında Map olarak döndür.
 3. Duyguların muhtemel nedenlerini `emotion_reasoning` alanında açıkla. `{"duygu": "sebep"}` formatında döndür.
 4. Yazının genelinde öne çıkan **temaları** belirle (List olarak).
 5. Kullanıcının ruh halini sen diliyle özetleyen kısa bir **summary** hazırla.
@@ -106,12 +106,12 @@ Sadece chatbot cevabını ver. Açıklama, JSON, başlık gibi şeyler ekleme.
   
   // Ücretsiz AI Modelleri
   static const Map<String, String> availableModels = {
+    'gpt-4.1-nano': 'openai/gpt-4.1-nano',
+    'gemini-2.0-flash': 'google/gemini-2.0-flash-exp:free',
+    'deepsek-v3': 'deepseek/deepseek-chat-v3-0324:free',
+    'llama-4-maverick': 'meta-llama/llama-4-maverick:free',
     'mistral-small-3.2': 'mistralai/mistral-small-3.2-24b-instruct:free',
     'mistral-nemo': 'mistralai/mistral-nemo:free',
-    'llama-3.1': 'meta-llama/llama-3.1-8b-instruct',
-    'gpt-4.1-nano': 'openai/gpt-4.1-nano',
-    'deepsek-v3': 'deepseek/deepseek-chat-v3-0324:free',
-    'gemini-2.0-flash': 'google/gemini-2.0-flash-exp:free',
     'qwen3-32b': 'qwen/qwen3-32b:free',
   };
   

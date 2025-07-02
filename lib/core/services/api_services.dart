@@ -132,18 +132,18 @@ class ApiServices {
   // Model adını getir
   String getModelDisplayName(String modelKey) {
     switch (modelKey) {
+      case 'gpt-4.1-nano':
+        return 'Chatgpt 4.1 Nano';
+      case 'gemini-2.0-flash':
+        return 'Gemini 2.0 Flash Experimental';
+      case 'deepsek-v3':
+        return 'Deepseek V3';
+      case 'llama-4-maverick':
+        return 'Llama 4 Maverick';
       case 'mistral-small-3.2':
         return 'Mistral Small 3.2';
       case 'mistral-nemo':
         return 'Mistral Nemo';
-      case 'llama-3.1':
-        return 'Llama 3.1 (8B)';
-      case 'gpt-4.1-nano':
-        return 'Chatgpt 4.1 Nano';
-      case 'deepsek-v3':
-        return 'Deepseek V3';
-      case 'gemini-2.0-flash':
-        return 'Gemini 2.0 Flash Experimental';
       case 'qwen/qwen3-32b:free':
         return 'Qwen: Qwen3 32B';
       default:

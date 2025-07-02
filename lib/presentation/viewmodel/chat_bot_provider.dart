@@ -36,6 +36,7 @@ class ChatBotProvider extends ChangeNotifier {
         aiResponse,
         modelUsed: selectedModel,
       ));
+      chatController.clear();
     } catch (e) {
       chatMessages.add(ChatMessage.ai(
         "Üzgünüm, şu anda yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.",

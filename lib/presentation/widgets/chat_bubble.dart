@@ -38,7 +38,7 @@ class ChatBubble extends StatelessWidget {
           Flexible(
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
+                maxWidth: MediaQuery.of(context).size.width * 0.65,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
@@ -76,10 +76,10 @@ class ChatBubble extends StatelessWidget {
                     message.message,
                     style: TextStyle(
                       fontSize: context.dynamicHeight(0.018),
-                      height: 1.4,
+                      height: context.dynamicHeight(0.0016),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: context.dynamicHeight(0.007)),
                   Text(
                     _formatTime(message.timestamp),
                     style: TextStyle(
