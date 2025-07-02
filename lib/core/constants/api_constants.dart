@@ -1,6 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConstants {
   static const openAIBaseURL = "https://openrouter.ai/api/v1";
-  static const openAIKey = "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";
+  static String? openAIKey = dotenv.env["OPENROUTER_API_KEY"];
 
   static const journalContentPrompt = """
         Sen bir yapay zeka destekli kişisel gelişim uzmanı, psikolojik danışman ve zihin haritası koçusun.
