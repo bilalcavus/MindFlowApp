@@ -1,4 +1,4 @@
-# AI Günlük & Zihin Haritası
+# Mind Flow AI Analyzer & Chat
 
 OpenRouter API kullanarak farklı AI modelleri ile günlük analizi yapan ve zihin haritası oluşturan Flutter uygulaması.
 
@@ -82,9 +82,6 @@ Uygulama, yazdığınız metni analiz ederek:
 
 ⚠️ **Önemli**: API anahtarınızı güvenli tutun ve production ortamında environment variable olarak saklayın.
 
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## 🤝 Katkıda Bulunma
 
@@ -94,6 +91,3 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 4. Push yapın (`git push origin feature/AmazingFeature`)
 5. Pull Request oluşturun
 
-## 📞 İletişim
-
-Proje hakkında sorularınız için issue açabilirsiniz.
