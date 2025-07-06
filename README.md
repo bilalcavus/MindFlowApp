@@ -1,93 +1,67 @@
-# Mind Flow AI Analyzer & Chat
+# Mind Flow
 
-OpenRouter API kullanarak farklı AI modelleri ile günlük analizi yapan ve zihin haritası oluşturan Flutter uygulaması.
+AI-powered personal analysis and chat application using multiple AI models through OpenRouter API.
 
-## 🚀 Özellikler
+## Features
 
-### 🤖 AI Model Desteği
-- **Mistral 7B** - Hızlı ve etkili analiz
-- **Llama 3.1 (8B)** - Meta'nın güçlü modeli
-- **Gemma 2B** - Google'ın kompakt modeli
-- **Phi-3 Mini** - Microsoft'un hızlı modeli
-- **Qwen 2 (7B)** - Alibaba'nın çok dilli modeli
+- **Multi-AI Support**: GPT-4.1 Nano, Gemini 2.0 Flash, DeepSeek v3, Llama 4, Mistral models
+- **6 Analysis Types**: Emotion, Mental Health, Dream, Personality, Habit, Stress analysis
+- **AI Chatbot**: Real-time supportive conversations
+- **Mind Maps**: Visual thought organization
+- **Local Storage**: SQLite database for privacy
+- **Cross-Platform**: Android, iOS, Web, Windows, macOS, Linux
 
-### 📝 Günlük Analizi
-- Duygu tespiti ve analizi
-- Ana tema belirleme
-- Kişisel tavsiyeler
-- Detaylı özet çıkarma
 
-### 🧠 Zihin Haritası
-- Ana temaların görselleştirilmesi
-- Alt kategorilerin organize edilmesi
-- Hiyerarşik düşünce yapısı
+## Setup
 
-### 📚 Geçmiş Takibi
-- Analiz geçmişi saklama
-- Önceki analizleri görüntüleme
-- Model karşılaştırması
+### Requirements
+- Flutter SDK 3.4.3+
+- OpenRouter API key
 
-## 🛠️ Teknolojiler
+### Installation
 
-- **Flutter** - Cross-platform UI framework
-- **Provider** - State management
-- **Dio** - HTTP client
-- **OpenRouter API** - AI model erişimi
+1. **Clone the repository**
+   ```bash
+   git clone [repository-url]
+   cd mind_flow
+   ```
 
-## 📱 Ekran Görüntüleri
-
-### Ana Sekmeler
-1. **Günlük** - Metin yazma ve model seçimi
-2. **Analiz** - AI sonuçlarını görüntüleme
-3. **Geçmiş** - Önceki analizleri listeleme
-
-## 🔧 Kurulum
-
-1. Flutter SDK'yı yükleyin
-2. Projeyi klonlayın
-3. Bağımlılıkları yükleyin:
+2. **Install dependencies**
    ```bash
    flutter pub get
    ```
-4. Uygulamayı çalıştırın:
+
+3. **Create environment file**
+   ```bash
+   # Create assets/config/.env
+   echo "OPENROUTER_API_KEY=your_api_key_here" > assets/config/.env
+   ```
+
+4. **Run the app**
    ```bash
    flutter run
    ```
 
-## 🔑 API Yapılandırması
+## API Configuration
 
-OpenRouter API anahtarınızı `lib/core/constants/api_constants.dart` dosyasında güncelleyin:
+1. Sign up at [OpenRouter](https://openrouter.ai)
+2. Get your API key
+3. Add to `assets/config/.env`:
+   ```env
+   OPENROUTER_API_KEY=your_openrouter_api_key_here
+   ```
+## Contributing
 
-```dart
-static const openAIKey = "YOUR_API_KEY_HERE";
-```
+1. Fork the project
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-## 🎯 Kullanım
+## License
 
-1. **Günlük Yazma**: İlk sekmede duygularınızı ve düşüncelerinizi yazın
-2. **Model Seçimi**: İstediğiniz AI modelini seçin
-3. **Analiz**: "AI ile Analiz Et" butonuna tıklayın
-4. **Sonuçları Görüntüleme**: İkinci sekmede detaylı analizi inceleyin
-5. **Geçmiş**: Üçüncü sekmede önceki analizlerinizi görüntüleyin
+MIT License
 
-## 🧠 Zihin Haritası Özelliği
+---
 
-Uygulama, yazdığınız metni analiz ederek:
-- Ana temaları belirler
-- Her tema için alt kategoriler oluşturur
-- Düşünce yapınızı görselleştirir
-- İlişkili konuları gruplar
-
-## 🔒 Güvenlik
-
-⚠️ **Önemli**: API anahtarınızı güvenli tutun ve production ortamında environment variable olarak saklayın.
-
-
-## 🤝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
-3. Commit yapın (`git commit -m 'Add some AmazingFeature'`)
-4. Push yapın (`git push origin feature/AmazingFeature`)
-5. Pull Request oluşturun
-
+**Mind Flow** - Your AI-powered mental wellness companion 🧠✨
