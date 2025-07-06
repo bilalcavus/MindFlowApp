@@ -79,7 +79,6 @@ class DreamAnalysisResultView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Analiz Tarihi
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(
@@ -98,13 +97,9 @@ class DreamAnalysisResultView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Semboller
                   if (result.symbols.isNotEmpty)
                     _buildSectionCard('🔮 Semboller', result.symbols.join(', '), Colors.teal),
 
-                 
-
-                  // Duygu Skorları
                   if (result.emotionScores.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.all(16),
@@ -139,7 +134,6 @@ class DreamAnalysisResultView extends StatelessWidget {
                       child: RadarChartWidget(result: result),
                     ),
 
-                     // Sembol Anlamları
                   if (result.symbolMeanings.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.all(16),
@@ -176,31 +170,23 @@ class DreamAnalysisResultView extends StatelessWidget {
                       ),
                     ),
 
-                  // Temalar
-                  if (result.themes.isNotEmpty)
+                  // if (result.themes.isNotEmpty)
                     _buildSectionCard('🧩 Ana Temalar', result.themes.join(', '), Colors.green),
 
-                  // Bilinçaltı Mesajı
-                  if (result.subconsciousMessage.isNotEmpty)
+                  // if (result.subconsciousMessage.isNotEmpty)
                     _buildSectionCard('🧠 Bilinçaltı Mesajı', result.subconsciousMessage, Colors.purple),
 
-                  // Özet
-                  if (result.summary.isNotEmpty)
+                  // if (result.summary.isNotEmpty)
                     _buildSectionCard('📝 Özet', result.summary, Colors.blue),
 
-                  // Tavsiye
-                  if (result.advice.isNotEmpty)
+                  // if (result.advice.isNotEmpty)
                     _buildSectionCard('💡 Tavsiye', result.advice, Colors.orange),
 
-                  // AI Cevabı
-                  if (result.aiReply.isNotEmpty)
+                  // if (result.aiReply.isNotEmpty)
                     _buildSectionCard('🤖 AI Cevabı', result.aiReply, Colors.indigo),
 
-                  // Zihin Haritası
-                  if (result.mindMap.isNotEmpty)
+                  // if (result.mindMap.isNotEmpty)
                     _buildMindMapCard(result.mindMap),
-
-                  // Radar Chart (duygu skorları için)
                   
                 ],
               ),

@@ -4,11 +4,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/habit_analysis_page.dart';
+import 'package:mind_flow/presentation/view/analysis_pages/journal_screen.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/mental_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/personality_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/stress_burnout_analysis_page.dart';
 import 'package:mind_flow/presentation/view/chat_screen.dart';
-import 'package:mind_flow/presentation/view/analysis_pages/journal_screen.dart';
+import 'package:mind_flow/presentation/view/database_test_view.dart';
 import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/home_analysis_card.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
@@ -134,18 +135,41 @@ class _HomeViewState extends State<HomeView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
-                Text(
-                  "Hoş geldin 👋",
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Hangi analizi yapmak istersin?",
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.grey[300]),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hoş geldin 👋",
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Hangi analizi yapmak istersin?",
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.grey[300]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Debug Database Test Button
+                    IconButton(
+                      onPressed: () {
+                        RouteHelper.push(context, const DatabaseTestView());
+                      },
+                      icon: const Icon(
+                        Icons.bug_report,
+                        color: Colors.white70,
+                        size: 20,
+                      ),
+                      tooltip: 'Veritabanı Test',
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 24),
                 _modernModelAvatars(context, isDark),
