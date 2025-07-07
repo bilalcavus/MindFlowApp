@@ -8,6 +8,8 @@ class DreamAnalysisDataRepository {
 
   Future<int> insertDreamAnalysis({
     required int entryId,
+    required int userId,
+    required String analysisType,
     required DreamAnalysisModel analysis,
   }) async {
     final db = await _dbService.database;
@@ -16,6 +18,8 @@ class DreamAnalysisDataRepository {
       'dream_analyses',
       {
         'entry_id': entryId,
+        'user_id': userId,
+        'analysis_type': analysisType,
         'symbols_json': jsonEncode(analysis.symbols),
         'symbol_meanings_json': jsonEncode(analysis.symbolMeanings),
         'emotion_scores_json': jsonEncode(analysis.emotionScores),
@@ -25,6 +29,7 @@ class DreamAnalysisDataRepository {
         'advice': analysis.advice,
         'ai_reply': analysis.aiReply,
         'mind_map_json': jsonEncode(analysis.mindMap),
+        'model_used': analysis.modelUsed,
         'analysis_date': analysis.analysisDate.toIso8601String(),
         'created_at': DateTime.now().toIso8601String(),
       },
@@ -49,6 +54,7 @@ class DreamAnalysisDataRepository {
         'advice': analysis.advice,
         'ai_reply': analysis.aiReply,
         'mind_map_json': jsonEncode(analysis.mindMap),
+        'model_used': analysis.modelUsed,
         'analysis_date': analysis.analysisDate.toIso8601String(),
       },
       where: 'id = ?',
@@ -82,6 +88,39 @@ class DreamAnalysisDataRepository {
     if (results.isEmpty) return null;
 
     return _mapToDreamAnalysisModel(results.first);
+  }
+
+  Future<List<DreamAnalysisModel>> getDreamAnalysesByType({
+    required int userId,
+    required String analysisType,
+    int? limit,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    final db = await _dbService.database;
+    
+    String whereClause = 'user_id = ? AND analysis_type = ?';
+    List<dynamic> whereArgs = [userId, analysisType];
+
+    if (startDate != null) {
+      whereClause += ' AND analysis_date >= ?';
+      whereArgs.add(startDate.toIso8601String());
+    }
+
+    if (endDate != null) {
+      whereClause += ' AND analysis_date <= ?';
+      whereArgs.add(endDate.toIso8601String());
+    }
+
+    final results = await db.query(
+      'dream_analyses',
+      where: whereClause,
+      whereArgs: whereArgs,
+      orderBy: 'analysis_date DESC',
+      limit: limit,
+    );
+
+    return results.map((row) => _mapToDreamAnalysisModel(row)).toList();
   }
 
   Future<List<DreamAnalysisModel>> getAllDreamAnalyses({
@@ -230,18 +269,18 @@ class DreamAnalysisDataRepository {
     );
   }
 
-  Future<Map<String, dynamic>> getDreamAnalysisStats() async {
+  Future<Map<String, dynamic>> getDreamAnalysisStats(int userId) async {
     final db = await _dbService.database;
-    final totalResult = await db.rawQuery('SELECT COUNT(*) as total FROM dream_analyses');
+    final totalResult = await db.rawQuery('SELECT COUNT(*) as total FROM dream_analyses WHERE user_id = ?', [userId]);
     final total = totalResult.first['total'] as int;
     final monthlyResults = await db.rawQuery('''
       SELECT 
         strftime('%Y-%m', analysis_date) as month,
         COUNT(*) as count
       FROM dream_analyses
+      WHERE user_id = ?
       GROUP BY strftime('%Y-%m', analysis_date)
       ORDER BY month DESC
-      LIMIT 12
     ''');
 
     final monthlyStats = <String, int>{};
@@ -273,6 +312,7 @@ class DreamAnalysisDataRepository {
         ),
       ),
       analysisDate: DateTime.parse(row['analysis_date']),
+      modelUsed: row['model_used'],
     );
   }
 } 

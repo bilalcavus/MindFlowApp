@@ -32,7 +32,7 @@ Future<T> handleRepositoryOperation<T>({
 }
   @override
   Future<DreamAnalysisModel> analyzeDream(String userText, String modelKey) {
-    return handleRepositoryOperation(operation:() => _apiServices.analyzeDream(userText));
+    return handleRepositoryOperation(operation:() => _apiServices.analyzeDream(userText, modelKey: modelKey));
   }
 
 

@@ -9,7 +9,6 @@ import 'package:mind_flow/presentation/view/analysis_pages/mental_analysis_page.
 import 'package:mind_flow/presentation/view/analysis_pages/personality_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/stress_burnout_analysis_page.dart';
 import 'package:mind_flow/presentation/view/chat_screen.dart';
-import 'package:mind_flow/presentation/view/database_test_view.dart';
 import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/home_analysis_card.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
@@ -160,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
                     // Debug Database Test Button
                     IconButton(
                       onPressed: () {
-                        RouteHelper.push(context, const DatabaseTestView());
+                        // RouteHelper.push(context, const DatabaseTestView());
                       },
                       icon: const Icon(
                         Icons.bug_report,

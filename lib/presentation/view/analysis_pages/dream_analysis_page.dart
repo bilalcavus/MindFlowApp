@@ -13,7 +13,7 @@ class DreamAnalysisPage extends StatelessWidget {
     return GenericAnalysisPage(
       title: 'Rüya Analizi',
       textFieldLabel: 'Rüyanı anlat',
-      textFieldHint: 'Rüyanda ne gördüğünü anlat, sana yardımcı olayım!',
+      textFieldHint: 'Rüyanda ne gördüğünü anlat, ona göre rüya analizi yapayımx!',
       analyzeButtonText: 'Gönder',
       isLoading: vm.isLoading,
       onAnalyze: () async {

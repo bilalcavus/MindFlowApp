@@ -3,7 +3,6 @@ import 'package:mind_flow/core/services/database_service.dart';
 class UserEntryRepository {
   final DatabaseService _dbService = DatabaseService();
 
-  // Kullanıcı girdisi kaydetme
   Future<int> insertUserEntry({
     required int userId,
     required String content,

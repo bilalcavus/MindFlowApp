@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
@@ -30,7 +29,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
 
   DreamAnalysisProvider(this.getDreamAnalysis) {
     _loadPrefs();
-    // _loadAnalysisHistory();
+    _loadAnalysisHistory();
   }
 
 
@@ -64,20 +63,44 @@ class DreamAnalysisProvider extends ChangeNotifier {
 
       analysisResult = await getDreamAnalysis(text, selectedModel);
       await _analysisRepo.insertDreamAnalysis(
+        userId: _currentUserId!,
         entryId: entryId,
         analysis:analysisResult!,
-
+        analysisType: "dream",
       );
+      await _entryRepo.updateUserEntry(userId: _currentUserId!, id: entryId,isAnalyzed: true);
       analysisHistory.insert(0, analysisResult!);
       if (analysisHistory.length > 10) {
         analysisHistory = analysisHistory.take(10).toList();
       }
-      // await _prefsService.saveJournalEntries([text]);
     } catch (e) {
       error = e.toString();
     }
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> _loadAnalysisHistory() async {
+    if (!_isUserLoggedIn || _currentUserId == null) {
+      return;
+    }
+
+    try {
+      final history = await _analysisRepo.getDreamAnalysesByType(
+        userId: _currentUserId!,
+        analysisType: "dream",
+        limit: 20,
+      );
+      analysisHistory = history;
+      notifyListeners();
+      debugPrint('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
+    } catch (e) {
+      debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
+    }
+  }
+
+  Future<void> refreshHistory() async {
+    await _loadAnalysisHistory();
   }
 
 
@@ -91,8 +114,63 @@ class DreamAnalysisProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearHistory() {
+  Future<void> clearHistory() async {
+    if (!_isUserLoggedIn || _currentUserId == null) {
+      error = "Geçmişi temizlemek için lütfen giriş yapın";
+      notifyListeners();
+      return;
+    }
+
+    try {
+      analysisHistory.clear();
+      notifyListeners();
+      debugPrint('✅ Analiz geçmişi temizlendi (User ID: $_currentUserId)');
+    } catch (e) {
+      error = "Geçmiş temizlenirken hata: $e";
+      debugPrint('❌ Geçmiş temizleme hatası: $e');
+    }
+  }
+
+  Future<int> getAnalysisCount() async {
+    if (!_isUserLoggedIn || _currentUserId == null) return 0;
+
+    try {
+      final stats = await _analysisRepo.getDreamAnalysisStats(_currentUserId!);
+      return stats['by_type']['emotion'] ?? 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  Future<List<DreamAnalysisModel>> getAnalysesByDateRange({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    if (!_isUserLoggedIn || _currentUserId == null) return [];
+
+    try {
+      return await _analysisRepo.getDreamAnalysesByType(
+        userId: _currentUserId!,
+        analysisType: "dream",
+        startDate: startDate,
+        endDate: endDate,
+      );
+    } catch (e) {
+      debugPrint('❌ Tarih aralığı analiz hatası: $e');
+      return [];
+    }
+  }
+
+  Future<void> onUserAuthChanged() async {
     analysisHistory.clear();
+    analysisResult = null;
+    error = null;
+    
+    if (_isUserLoggedIn) {
+      await _loadPrefs();
+      await _loadAnalysisHistory();
+    }
+    
     notifyListeners();
   }
 
@@ -121,10 +199,18 @@ class DreamAnalysisProvider extends ChangeNotifier {
   }
 
   Future<void> _loadPrefs() async {
-    final model = await _prefsService.getSelectedModel();
-    if (model != null) {
-      selectedModel = model;
+    if (!_isUserLoggedIn || _currentUserId == null) {
+      selectedModel = 'mistral-small-3.2'; // Varsayılan model
+      return;
     }
-    notifyListeners();
+
+    try {
+      selectedModel = await _prefsRepo.getSelectedModel(_currentUserId!);
+      notifyListeners();
+      debugPrint('✅ Kullanıcı tercihleri yüklendi: $selectedModel (User ID: $_currentUserId)');
+    } catch (e) {
+      debugPrint('❌ Tercih yükleme hatası: $e');
+      selectedModel = 'mistral-small-3.2';
+    }
   }
 }

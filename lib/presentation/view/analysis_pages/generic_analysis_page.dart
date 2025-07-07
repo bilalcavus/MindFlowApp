@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
-import 'package:mind_flow/presentation/widgets/journal_text_field.dart';
+import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
 
 class GenericAnalysisPage extends StatelessWidget {
   final String title;
@@ -35,9 +36,11 @@ class GenericAnalysisPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        title: Text(title),
-        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        backgroundColor: Colors.transparent
       ),
       body: Padding(
         padding: EdgeInsets.all(context.dynamicHeight(0.018)),
@@ -45,36 +48,35 @@ class GenericAnalysisPage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(context.dynamicHeight(0.016)),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(context.dynamicHeight(0.01)),
+              child: DropdownButtonFormField<String>(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+                value: selectedModel,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width * 0.02),
+                  labelText: 'Model',
                 ),
-                child: DropdownButtonFormField<String>(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
-                  value: selectedModel,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width * 0.02),
-                    labelText: 'Model',
-                  ),
-                  items: availableModels.map((model) {
-                    return DropdownMenuItem(
-                      value: model,
-                      child: Text(getModelDisplayName(model)),
-                    );
-                  }).toList(),
-                  onChanged: onModelChange,
-                ),
+                items: availableModels.map((model) {
+                  return DropdownMenuItem(
+                    value: model,
+                    child: Text(getModelDisplayName(model)),
+                  );
+                }).toList(),
+                onChanged: onModelChange,
               ),
             ),
             SizedBox(height: context.dynamicHeight(0.02)),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.dynamicHeight(0.016)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomTextField(controller: textController, label: textFieldLabel, hint: textFieldHint, maxLines: 10),
-                  const SizedBox(height: 16),
+                  CustomTextField(
+                    controller: textController,
+                    label: textFieldLabel,
+                    hint: textFieldHint,
+                    maxLines: 10),
+                  SizedBox(height: context.dynamicHeight(0.02)),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -85,7 +87,7 @@ class GenericAnalysisPage extends StatelessWidget {
                               height: 20,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Icon(Icons.psychology),
+                          : const Icon(HugeIcons.strokeRoundedAiBrowser),
                       label: Text(isLoading ? 'Analiz Ediliyor...' : analyzeButtonText),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple,
@@ -103,3 +105,8 @@ class GenericAnalysisPage extends StatelessWidget {
     );
   }
 } 
+
+
+// Color(0xFF1A1A2E), // Koyu mavi
+// Color.fromARGB(255, 25, 18, 51),
+// Color.fromARGB(255, 74, 26, 58),

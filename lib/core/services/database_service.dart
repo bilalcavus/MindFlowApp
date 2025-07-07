@@ -23,7 +23,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -89,6 +89,7 @@ class DatabaseService {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         entry_id INTEGER NOT NULL,
+        analysis_type TEXT NOT NULL DEFAULT 'dream',
         symbols_json TEXT NOT NULL,
         symbol_meanings_json TEXT NOT NULL,
         emotion_scores_json TEXT NOT NULL,
@@ -98,6 +99,7 @@ class DatabaseService {
         advice TEXT NOT NULL,
         ai_reply TEXT NOT NULL,
         mind_map_json TEXT NOT NULL,
+        model_used TEXT NOT NULL,
         analysis_date TEXT NOT NULL,
         created_at TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
@@ -215,6 +217,24 @@ class DatabaseService {
       await _migrateExistingDataToUser(db);
       
       debugPrint('Veritabanı güncelleme tamamlandı');
+    }
+    
+    if (oldVersion < 3) {
+      print('🔄 Veritabanı v3 güncelleniyor: dream_analyses tablosuna analysis_type sütunu ekleniyor...');
+      
+      // Add analysis_type column to dream_analyses table
+      await _addColumnIfNotExists(db, 'dream_analyses', 'analysis_type', 'TEXT DEFAULT "dream"');
+      
+      // Add model_used column to dream_analyses table
+      await _addColumnIfNotExists(db, 'dream_analyses', 'model_used', 'TEXT DEFAULT "mistral-small-3.2"');
+      
+      // Update existing records to have analysis_type = 'dream'
+      await db.execute('UPDATE dream_analyses SET analysis_type = "dream" WHERE analysis_type IS NULL');
+      
+      // Update existing records to have a default model_used value
+      await db.execute('UPDATE dream_analyses SET model_used = "mistral-small-3.2" WHERE model_used IS NULL');
+      
+      debugPrint('✅ dream_analyses tablosuna analysis_type ve model_used sütunları eklendi');
     }
   }
 

@@ -29,10 +29,10 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.01)),
+          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.01), vertical: context.dynamicWidth(0.02)),
           child: Text(
             label,
             style: TextStyle(
@@ -42,7 +42,6 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: context.dynamicHeight(0.01)),
         Container(
           decoration: BoxDecoration(
             // color: Colors.grey[100],
@@ -57,7 +56,7 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(
-                color: Colors.grey[600],
+                color: Colors.grey.shade500,
                 fontSize: context.dynamicHeight(0.015),
               ),
               suffixText: suffix,

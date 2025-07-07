@@ -33,6 +33,7 @@ class _LoginViewTextField extends StatelessWidget {
           vertical: context.dynamicWidth(0.04) // Dikey padding de dinamik
         ),
         filled: true,
+        fillColor: Color.fromARGB(255, 45, 69, 87),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),

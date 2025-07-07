@@ -4,6 +4,7 @@ enum MessageType {
 }
 
 class ChatMessage {
+  final int? userId;
   final String message;
   final MessageType type;
   final DateTime timestamp;
@@ -11,6 +12,7 @@ class ChatMessage {
   final Map<String, dynamic>? analysisData;
 
   ChatMessage({
+    this.userId,
     required this.message,
     required this.type,
     required this.timestamp,
@@ -18,16 +20,18 @@ class ChatMessage {
     this.analysisData,
   });
 
-  factory ChatMessage.user(String message) {
+  factory ChatMessage.user(String message, {int? userId}) {
     return ChatMessage(
+      userId: userId,
       message: message,
       type: MessageType.user,
       timestamp: DateTime.now(),
     );
   }
 
-  factory ChatMessage.ai(String message, {String? modelUsed, Map<String, dynamic>? analysisData}) {
+  factory ChatMessage.ai(String message, {int? userId, String? modelUsed, Map<String, dynamic>? analysisData}) {
     return ChatMessage(
+      userId: userId,
       message: message,
       type: MessageType.ai,
       timestamp: DateTime.now(),
@@ -38,6 +42,7 @@ class ChatMessage {
 
   Map<String, dynamic> toJson() {
     return {
+      'userId': userId,
       'message': message,
       'type': type.name,
       'timestamp': timestamp.toIso8601String(),
@@ -48,6 +53,7 @@ class ChatMessage {
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
+      userId: json['userId'],
       message: json['message'],
       type: MessageType.values.firstWhere((e) => e.name == json['type']),
       timestamp: DateTime.parse(json['timestamp']),

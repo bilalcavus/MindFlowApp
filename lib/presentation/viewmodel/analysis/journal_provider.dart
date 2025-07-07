@@ -81,10 +81,8 @@ class JournalViewModel extends ChangeNotifier {
         analysisHistory = analysisHistory.take(20).toList();
       }
 
-      print('✅ Analiz başarıyla veritabanına kaydedildi (Entry ID: $entryId, User ID: $_currentUserId)');
     } catch (e) {
       error = e.toString();
-      print('❌ Analiz kaydetme hatası: $e');
     }
     
     isLoading = false;
@@ -93,7 +91,6 @@ class JournalViewModel extends ChangeNotifier {
 
   Future<void> _loadAnalysisHistory() async {
     if (!_isUserLoggedIn || _currentUserId == null) {
-      print('⚠️ Kullanıcı giriş yapmamış, analiz geçmişi yüklenemiyor');
       return;
     }
 
@@ -105,9 +102,9 @@ class JournalViewModel extends ChangeNotifier {
       );
       analysisHistory = history;
       notifyListeners();
-      print('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
+      debugPrint('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
     } catch (e) {
-      print('❌ Analiz geçmişi yükleme hatası: $e');
+      debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
     }
   }
 
@@ -134,10 +131,10 @@ class JournalViewModel extends ChangeNotifier {
     try {
       analysisHistory.clear();
       notifyListeners();
-      print('✅ Analiz geçmişi temizlendi (User ID: $_currentUserId)');
+      debugPrint('Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
       error = "Geçmiş temizlenirken hata: $e";
-      print('❌ Geçmiş temizleme hatası: $e');
+      debugPrint('Geçmiş temizleme hatası: $e');
     }
   }
 
@@ -152,24 +149,24 @@ class JournalViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<EmotionAnalysisModel>> getAnalysesByDateRange({
-    required DateTime startDate,
-    required DateTime endDate,
-  }) async {
-    if (!_isUserLoggedIn || _currentUserId == null) return [];
+  // Future<List<EmotionAnalysisModel>> getAnalysesByDateRange({
+  //   required DateTime startDate,
+  //   required DateTime endDate,
+  // }) async {
+  //   if (!_isUserLoggedIn || _currentUserId == null) return [];
 
-    try {
-      return await _analysisRepo.getEmotionAnalysesByType(
-        userId: _currentUserId!,
-        analysisType: "emotion",
-        startDate: startDate,
-        endDate: endDate,
-      );
-    } catch (e) {
-      print('❌ Tarih aralığı analiz hatası: $e');
-      return [];
-    }
-  }
+  //   try {
+  //     return await _analysisRepo.getEmotionAnalysesByType(
+  //       userId: _currentUserId!,
+  //       analysisType: "emotion",
+  //       startDate: startDate,
+  //       endDate: endDate,
+  //     );
+  //   } catch (e) {
+  //     debugPrint('Tarih aralığı analiz hatası: $e');
+  //     return [];
+  //   }
+  // }
 
   Future<void> onUserAuthChanged() async {
     analysisHistory.clear();
@@ -180,7 +177,6 @@ class JournalViewModel extends ChangeNotifier {
       await _loadPrefs();
       await _loadAnalysisHistory();
     }
-    
     notifyListeners();
   }
 

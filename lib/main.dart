@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/injection/injection.dart';
-import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/start/splash_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
@@ -16,11 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
   await setupDependencies();
-  
-  // Veritabanını başlat
   await _initializeDatabase();
-  
-  // Authentication service'i başlat
   await _initializeAuth();
   
   runApp(
@@ -53,24 +48,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Veritabanını başlatma fonksiyonu
 Future<void> _initializeDatabase() async {
   try {
     final dbService = getIt<DatabaseService>();
-    await dbService.database; // Bu veritabanını oluşturacak
-    print('✅ Veritabanı başarıyla başlatıldı');
+    await dbService.database;
   } catch (e) {
-    print('❌ Veritabanı başlatma hatası: $e');
+    debugPrint('Veritabanı başlatma hatası: $e');
   }
 }
 
-// Authentication service'i başlatma
 Future<void> _initializeAuth() async {
   try {
     final authService = AuthService();
     await authService.initialize();
-    print('✅ Authentication service başlatıldı');
   } catch (e) {
-    print('❌ Authentication başlatma hatası: $e');
+    debugPrint('❌ Authentication başlatma hatası: $e');
   }
 }

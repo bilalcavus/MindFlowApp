@@ -23,46 +23,21 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 3, 28, 51),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.asset('assets/pictures/mindflow_logo.png', height: 300, width: 100,),
+          Image.asset('assets/pictures/logo-mff.png', height: 200, ),
           _LoginViewTextField(controller: provider.emailController, hintText: 'Email veya kullanıcı adı', isSecure: false),
           _LoginViewTextField(controller: provider.passwordController, hintText: 'Şifre', isSecure: true),
-          const SizedBox(height: 24),
+          SizedBox(height: context.dynamicHeight(0.01)),
           const _LoginViewButton(),
-          SizedBox(
-            height: 50,
-            child: OutlinedButton(
-              onPressed: provider.isLoading ? null : () => provider.handleDemoLogin(context),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-                side: const BorderSide(color: Colors.white),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'Demo ile Devam Et',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-              
-          const SizedBox(height: 32),
-              
-          // Register Link
+          // demoLogin(context, provider),
+          SizedBox(height: context.dynamicHeight(0.0)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Hesabınız yok mu? ',
-                style: TextStyle(color: Colors.grey[300]),
-              ),
+              Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.grey[300])),
               TextButton(
                 onPressed: () {
                   RouteHelper.push(context, const RegisterView());
@@ -102,5 +77,28 @@ class _LoginViewState extends State<LoginView> {
         ],
       ),
     );
+  }
+
+  SizedBox demoLogin(BuildContext context, AuthenticationProvider provider) {
+    return SizedBox(
+          height: context.dynamicHeight(0.05),
+          child: OutlinedButton(
+            onPressed: provider.isLoading ? null : () => provider.handleDemoLogin(context),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.white,
+              side: const BorderSide(color: Colors.white),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text(
+              'Demo ile Devam Et',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        );
   }
 } 

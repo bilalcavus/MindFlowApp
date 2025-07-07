@@ -8,6 +8,7 @@ class DreamAnalysisModel {
   final String advice;
   final String aiReply;
   final Map<String, List<String>> mindMap;
+  final String modelUsed;
   final DateTime analysisDate;
 
   DreamAnalysisModel({
@@ -20,6 +21,7 @@ class DreamAnalysisModel {
     required this.advice,
     required this.aiReply,
     required this.mindMap,
+    required this.modelUsed,
     required this.analysisDate,
   });
 
@@ -38,6 +40,7 @@ class DreamAnalysisModel {
           (e) => MapEntry(e.key, List<String>.from(e.value ?? [])),
         ),
       ),
+      modelUsed: json['model_used'] ?? 'unknown',
       analysisDate: DateTime.now(),
     );
   }
@@ -53,6 +56,7 @@ class DreamAnalysisModel {
       'advice': advice,
       'ai_reply': aiReply,
       'mind_map': mindMap,
+      'model_used': modelUsed,
       'analysis_date': analysisDate.toIso8601String(),
     };
   }

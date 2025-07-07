@@ -7,6 +7,7 @@ class ChatMessageRepository {
   final DatabaseService _dbService = DatabaseService();
 
   Future<int> insertChatMessage({
+    required int userId,
     required String message,
     required MessageType messageType,
     String? modelUsed,
@@ -19,6 +20,7 @@ class ChatMessageRepository {
     return await db.insert(
       'chat_messages',
       {
+        'user_id': userId,
         'message': message,
         'message_type': messageType.name,
         'timestamp': now.toIso8601String(),
@@ -32,9 +34,16 @@ class ChatMessageRepository {
 
   Future<int> insertChatMessageFromModel({
     required ChatMessage chatMessage,
+    int? userId,
     String? sessionId,
   }) async {
+    final messageUserId = userId ?? chatMessage.userId;
+    if (messageUserId == null) {
+      throw ArgumentError('userId is required but not provided');
+    }
+    
     return await insertChatMessage(
+      userId: messageUserId,
       message: chatMessage.message,
       messageType: chatMessage.type,
       modelUsed: chatMessage.modelUsed,
@@ -55,21 +64,55 @@ class ChatMessageRepository {
     return results.map((row) => _mapToChatMessage(row)).toList();
   }
 
+  Future<List<ChatMessage>> getChatMessagesBySessionAndUser(String sessionId, int userId) async {
+    final db = await _dbService.database;
+    final results = await db.query(
+      'chat_messages',
+      where: 'session_id = ? AND user_id = ?',
+      whereArgs: [sessionId, userId],
+      orderBy: 'timestamp ASC',
+    );
+
+    return results.map((row) => _mapToChatMessage(row)).toList();
+  }
+
   Future<List<Map<String, dynamic>>> getAllSessions({int? limit}) async {
     final db = await _dbService.database;
     final results = await db.rawQuery('''
       SELECT 
         session_id,
+        user_id,
         MIN(timestamp) as first_message_time,
         MAX(timestamp) as last_message_time,
         COUNT(*) as message_count,
         COUNT(CASE WHEN message_type = 'user' THEN 1 END) as user_message_count,
         COUNT(CASE WHEN message_type = 'ai' THEN 1 END) as ai_message_count
       FROM chat_messages
-      GROUP BY session_id
+      GROUP BY session_id, user_id
       ORDER BY last_message_time DESC
       ${limit != null ? 'LIMIT $limit' : ''}
     ''');
+
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> getSessionsForUser(int userId, {int? limit}) async {
+    final db = await _dbService.database;
+    final results = await db.rawQuery('''
+      SELECT 
+        session_id,
+        user_id,
+        MIN(timestamp) as first_message_time,
+        MAX(timestamp) as last_message_time,
+        COUNT(*) as message_count,
+        COUNT(CASE WHEN message_type = 'user' THEN 1 END) as user_message_count,
+        COUNT(CASE WHEN message_type = 'ai' THEN 1 END) as ai_message_count
+      FROM chat_messages
+      WHERE user_id = ?
+      GROUP BY session_id
+      ORDER BY last_message_time DESC
+      ${limit != null ? 'LIMIT $limit' : ''}
+    ''', [userId]);
 
     return results;
   }
@@ -78,6 +121,19 @@ class ChatMessageRepository {
     final db = await _dbService.database;
     final results = await db.query(
       'chat_messages',
+      orderBy: 'timestamp DESC',
+      limit: limit,
+    );
+
+    return results.reversed.map((row) => _mapToChatMessage(row)).toList();
+  }
+
+  Future<List<ChatMessage>> getRecentMessagesForUser(int userId, {int limit = 50}) async {
+    final db = await _dbService.database;
+    final results = await db.query(
+      'chat_messages',
+      where: 'user_id = ?',
+      whereArgs: [userId],
       orderBy: 'timestamp DESC',
       limit: limit,
     );
@@ -223,6 +279,7 @@ class ChatMessageRepository {
 
   ChatMessage _mapToChatMessage(Map<String, dynamic> row) {
     return ChatMessage(
+      userId: row['user_id'],
       message: row['message'],
       type: MessageType.values.firstWhere((e) => e.name == row['message_type']),
       timestamp: DateTime.parse(row['timestamp']),
