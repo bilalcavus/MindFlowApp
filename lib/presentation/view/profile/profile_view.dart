@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/services/auth_service.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -10,6 +11,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final AuthService _authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,13 +19,8 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: const Text('Settings', style: TextStyle(color: Colors.white)),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text('Done', style: TextStyle(color: Colors.blue, fontSize: 16)),
-          ),
-        ],
+        title:  Text('Hesabım', style: TextStyle(color: Colors.white, fontSize: context.dynamicHeight(.025))),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -35,12 +32,12 @@ class _ProfileViewState extends State<ProfileView> {
               CircleAvatar(
                 radius: context.dynamicHeight(0.05),
                 backgroundColor: Colors.orange,
-                child: Text('👦', style: TextStyle(fontSize: 40)),
+                child: const Text('👦', style: TextStyle(fontSize: 40)),
               ),
               const SizedBox(height: 10),
-              const Text('Bilal Çavuş', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
+               Text(_authService.currentUser!.displayName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
               const SizedBox(height: 4),
-              const Text('bilalcavus01@gmail.com', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              Text(_authService.currentUser!.email, style: TextStyle(color: Colors.grey, fontSize: 14)),
               const SizedBox(height: 20),
               Card(
                 color: const Color(0xFF181818),

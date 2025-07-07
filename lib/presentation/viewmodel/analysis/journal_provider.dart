@@ -64,12 +64,31 @@ class JournalViewModel extends ChangeNotifier {
         modelUsed: selectedModel,
       );
       analysisResult = await getAnalyzeEmotion(text, selectedModel);
-      await _analysisRepo.insertEmotionAnalysis(
+      if (analysisResult == null) {
+        error = "API'den analiz sonucu alınamadı";
+        isLoading = false;
+        notifyListeners();
+        return;
+      }
+      final analysisId = await _analysisRepo.insertEmotionAnalysis(
         userId: _currentUserId!,
         entryId: entryId,
         analysisType: "emotion",
         analysis: analysisResult!,
       );
+
+      analysisResult = EmotionAnalysisModel(
+        id: analysisId,
+        emotions: analysisResult!.emotions,
+        themes: analysisResult!.themes,
+        advice: analysisResult!.advice,
+        summary: analysisResult!.summary,
+        mindMap: analysisResult!.mindMap,
+        modelUsed: selectedModel,
+        analysisDate: analysisResult!.analysisDate,
+      );
+
+
       await _entryRepo.updateUserEntry(
         userId: _currentUserId!,
         id: entryId,
@@ -106,6 +125,32 @@ class JournalViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
     }
+  }
+
+  Future<void> loadAnalysisById(int id) async {
+    debugPrint('🔄 Analiz yükleniyor: ID $id');
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final analysis = await _analysisRepo.getEmotionAnalysisById(
+        id,
+      );
+      if (analysis != null) {
+        analysisResult = analysis;
+        debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
+      } else {
+        error = "Analiz bulunamadı (ID: $id)";
+        debugPrint('❌ Analiz bulunamadı: ID $id');
+      }
+    } catch (e) {
+      error = e.toString();
+      debugPrint('❌ Analiz yükleme hatası: $e');
+    }
+    
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> refreshHistory() async {

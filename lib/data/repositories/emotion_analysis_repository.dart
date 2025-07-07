@@ -58,16 +58,24 @@ class EmotionAnalysisRepository {
     );
   }
 
-  Future<EmotionAnalysisModel?> getEmotionAnalysisById(int userId, int id) async {
+  Future<EmotionAnalysisModel?> getEmotionAnalysisById(int id) async {
     final db = await _dbService.database;
+    print('🔍 Veritabanında emotion analizi aranıyor: ID $id');
+    
     final results = await db.query(
       'emotion_analyses',
-      where: 'id = ? AND user_id = ?',
-      whereArgs: [id, userId],
+      where: 'id = ?',
+      whereArgs: [id],
     );
 
-    if (results.isEmpty) return null;
+    print('📊 Emotion sorgu sonucu: ${results.length} kayıt bulundu');
+    
+    if (results.isEmpty) {
+      print('❌ Emotion analizi bulunamadı: ID $id');
+      return null;
+    }
 
+    print('✅ Emotion analizi bulundu: ID $id');
     return _mapToEmotionAnalysisModel(results.first);
   }
 
@@ -243,7 +251,10 @@ class EmotionAnalysisRepository {
   }
 
   EmotionAnalysisModel _mapToEmotionAnalysisModel(Map<String, dynamic> row) {
+    final id = row['id'] as int?;
+    
     return EmotionAnalysisModel(
+      id: id,
       emotions: Map<String, int>.from(jsonDecode(row['emotions_json'])),
       themes: List<String>.from(jsonDecode(row['themes_json'])),
       advice: row['advice'],

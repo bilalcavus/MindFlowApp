@@ -4,16 +4,37 @@ import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
-class JournalAnalysisScreen extends StatelessWidget {
-  const JournalAnalysisScreen({super.key});
+class JournalAnalysisScreen extends StatefulWidget {
+  final int? analysisId;
+  const JournalAnalysisScreen({super.key, this.analysisId});
 
+  @override
+  State<JournalAnalysisScreen> createState() => _JournalAnalysisScreenState();
+}
+
+
+
+class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.analysisId != null) {
+      debugPrint('🚀 JournalAnalysisScreen başlatıldı: ID ${widget.analysisId}');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final provider = context.read<JournalViewModel>();
+        provider.loadAnalysisById(widget.analysisId!);
+      });
+    } else {
+      debugPrint('🚀 JournalAnalysisScreen başlatıldı: ID yok (yeni analiz)');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<JournalViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Analizi'),
-        backgroundColor: Colors.deepPurple,
+        title: Text('Duygu Analizi', style: Theme.of(context).textTheme.bodyLarge),
+        backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
       body: ScreenBackground(
@@ -55,17 +76,23 @@ class JournalAnalysisScreen extends StatelessWidget {
             }
         
             if (vm.analysisResult == null) {
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.psychology, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
+                    const Icon(Icons.psychology, size: 64, color: Colors.grey),
+                    const SizedBox(height: 16),
                     Text(
-                      'Analiz sonucu görüntülemek için günlük yazın',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      widget.analysisId != null 
+                          ? 'Analiz yükleniyor...'
+                          : 'Analiz sonucu görüntülemek için günlük yazın',
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
+                    if (widget.analysisId != null) ...[
+                      const SizedBox(height: 16),
+                      const CircularProgressIndicator(),
+                    ],
                   ],
                 ),
               );

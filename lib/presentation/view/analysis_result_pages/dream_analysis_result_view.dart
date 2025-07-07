@@ -5,16 +5,39 @@ import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
-class DreamAnalysisResultView extends StatelessWidget {
-  const DreamAnalysisResultView({super.key});
+class DreamAnalysisResultView extends StatefulWidget {
+  final int? analysisId;
+  
+  const DreamAnalysisResultView({
+    super.key,
+    this.analysisId,
+  });
+
+  @override
+  State<DreamAnalysisResultView> createState() => _DreamAnalysisResultViewState();
+}
+
+class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.analysisId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final provider = context.read<DreamAnalysisProvider>();
+        provider.loadAnalysisById(widget.analysisId!);
+      });
+    } else {
+      debugPrint('🚀 DreamAnalysisResultView başlatıldı: ID yok (yeni analiz)');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<DreamAnalysisProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rüya Analizi'),
-        backgroundColor: Colors.deepPurple,
+        title:  Text('Rüya Analizi', style: Theme.of(context).textTheme.bodyLarge,),
+        backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
       body: ScreenBackground(
@@ -56,17 +79,23 @@ class DreamAnalysisResultView extends StatelessWidget {
             }
         
             if (provider.analysisResult == null) {
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.psychology, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
+                    const Icon(Icons.psychology, size: 64, color: Colors.grey),
+                    const SizedBox(height: 16),
                     Text(
-                      'Analiz sonucu görüntülemek için günlük yazın',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      widget.analysisId != null 
+                          ? 'Analiz yükleniyor...'
+                          : 'Analiz sonucu görüntülemek için günlük yazın',
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
+                    if (widget.analysisId != null) ...[
+                      const SizedBox(height: 16),
+                      const CircularProgressIndicator(),
+                    ],
                   ],
                 ),
               );

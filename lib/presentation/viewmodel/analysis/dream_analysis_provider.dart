@@ -60,15 +60,37 @@ class DreamAnalysisProvider extends ChangeNotifier {
         content: text.trim(),
         entryType: "dream",
         modelUsed: selectedModel);
-
       analysisResult = await getDreamAnalysis(text, selectedModel);
-      await _analysisRepo.insertDreamAnalysis(
+      if (analysisResult == null) {
+        error = "API'den analiz sonucu alınamadı";
+        isLoading = false;
+        notifyListeners();
+        return;
+      }
+      
+      final analysisId = await _analysisRepo.insertDreamAnalysis(
         userId: _currentUserId!,
         entryId: entryId,
-        analysis:analysisResult!,
+        analysis: analysisResult!,
         analysisType: "dream",
       );
-      await _entryRepo.updateUserEntry(userId: _currentUserId!, id: entryId,isAnalyzed: true);
+      
+      analysisResult = DreamAnalysisModel(
+        id: analysisId,
+        symbols: analysisResult!.symbols,
+        symbolMeanings: analysisResult!.symbolMeanings,
+        emotionScores: analysisResult!.emotionScores,
+        themes: analysisResult!.themes,
+        subconsciousMessage: analysisResult!.subconsciousMessage,
+        summary: analysisResult!.summary,
+        advice: analysisResult!.advice,
+        aiReply: analysisResult!.aiReply,
+        mindMap: analysisResult!.mindMap,
+        modelUsed: analysisResult!.modelUsed,
+        analysisDate: analysisResult!.analysisDate,
+      );
+      
+      await _entryRepo.updateUserEntry(userId: _currentUserId!, id: entryId, isAnalyzed: true);
       analysisHistory.insert(0, analysisResult!);
       if (analysisHistory.length > 10) {
         analysisHistory = analysisHistory.take(10).toList();
@@ -97,6 +119,40 @@ class DreamAnalysisProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
     }
+  }
+
+  Future<DreamAnalysisModel?> getDreamAnalysisById(int id) async {
+    try {
+      final analyse = await _analysisRepo.getDreamAnalysisById(id);
+      return analyse;
+    } catch (e) {
+      debugPrint('$e');
+    }
+    return null;
+  }
+
+  Future<void> loadAnalysisById(int id) async {
+    debugPrint('🔄 Analiz yükleniyor: ID $id');
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final analysis = await _analysisRepo.getDreamAnalysisById(id);
+      if (analysis != null) {
+        analysisResult = analysis;
+        debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
+      } else {
+        error = "Analiz bulunamadı (ID: $id)";
+        debugPrint('❌ Analiz bulunamadı: ID $id');
+      }
+    } catch (e) {
+      error = e.toString();
+      debugPrint('❌ Analiz yükleme hatası: $e');
+    }
+    
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> refreshHistory() async {

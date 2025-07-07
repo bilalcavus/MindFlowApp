@@ -64,14 +64,22 @@ class DreamAnalysisDataRepository {
 
   Future<DreamAnalysisModel?> getDreamAnalysisById(int id) async {
     final db = await _dbService.database;
+    print('🔍 Veritabanında analiz aranıyor: ID $id');
+    
     final results = await db.query(
       'dream_analyses',
       where: 'id = ?',
       whereArgs: [id],
     );
 
-    if (results.isEmpty) return null;
+    print('📊 Sorgu sonucu: ${results.length} kayıt bulundu');
+    
+    if (results.isEmpty) {
+      print('❌ Analiz bulunamadı: ID $id');
+      return null;
+    }
 
+    print('✅ Analiz bulundu: ID $id');
     return _mapToDreamAnalysisModel(results.first);
   }
 
@@ -297,7 +305,11 @@ class DreamAnalysisDataRepository {
   }
 
   DreamAnalysisModel _mapToDreamAnalysisModel(Map<String, dynamic> row) {
+    final id = row['id'] as int?;
+    print('🔄 Model oluşturuluyor: ID $id');
+    
     return DreamAnalysisModel(
+      id: id,
       symbols: List<String>.from(jsonDecode(row['symbols_json'])),
       symbolMeanings: Map<String, String>.from(jsonDecode(row['symbol_meanings_json'])),
       emotionScores: Map<String, int>.from(jsonDecode(row['emotion_scores_json'])),

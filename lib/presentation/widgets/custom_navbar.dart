@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 
 class CustomBottomNavbar extends StatelessWidget {
@@ -41,7 +42,7 @@ class CustomBottomNavbar extends StatelessWidget {
             child: _buildNavItem(
               context,
               index: 1,
-              icon: HugeIcons.strokeRoundedEnergy,
+              icon: Iconsax.calendar,
               label: 'Analiz Et',
             ),
           ),
@@ -49,7 +50,7 @@ class CustomBottomNavbar extends StatelessWidget {
             child: _buildNavItem(
               context,
               index: 2,
-              icon: HugeIcons.strokeRoundedTransactionHistory,
+              icon: HugeIcons.strokeRoundedUserAccount,
               label: 'Geçmiş',
             ),
           ),

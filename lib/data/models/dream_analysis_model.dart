@@ -1,4 +1,5 @@
 class DreamAnalysisModel {
+  final int? id;
   final List<String> symbols;
   final Map<String, String> symbolMeanings;
   final Map<String, int> emotionScores;
@@ -12,6 +13,7 @@ class DreamAnalysisModel {
   final DateTime analysisDate;
 
   DreamAnalysisModel({
+    this.id,
     required this.symbols,
     required this.symbolMeanings,
     required this.emotionScores,
@@ -27,6 +29,7 @@ class DreamAnalysisModel {
 
   factory DreamAnalysisModel.fromJson(Map<String, dynamic> json) {
     return DreamAnalysisModel(
+      id: json['id'],
       symbols: List<String>.from(json['symbols'] ?? []),
       symbolMeanings: Map<String, String>.from(json['symbol_meanings'] ?? {}),
       emotionScores: Map<String, int>.from(json['emotion_scores'] ?? {}),
@@ -47,6 +50,7 @@ class DreamAnalysisModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'symbols': symbols,
       'symbol_meanings': symbolMeanings,
       'emotion_scores': emotionScores,

@@ -19,9 +19,20 @@ class DreamAnalysisPage extends StatelessWidget {
       onAnalyze: () async {
         await vm.dreamAnalyzeText(vm.textController.text);
         vm.clearText();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const DreamAnalysisResultView()),
-        );
+        if (vm.analysisResult?.id != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => DreamAnalysisResultView(analysisId: vm.analysisResult!.id),
+            ),
+          );
+        } else if (vm.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Hata: ${vm.error}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
       textController: vm.textController,
       availableModels: vm.availableModels,

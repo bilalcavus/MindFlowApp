@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/dream_analysis_result_view.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/journal_analysis_result_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,14 +15,16 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _HistoryScreenState extends State<HistoryScreen> {
+  late PageController _pageController;
+  int _currentPage = 0;
+
+  final List<String> _tabs = ['Duygu Analizi', 'Rüya Analizi'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    
+    _pageController = PageController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final journalVm = Provider.of<JournalViewModel>(context, listen: false);
       final dreamVm = Provider.of<DreamAnalysisProvider>(context, listen: false);
@@ -27,10 +33,57 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
     });
   }
 
+  void _onSegmentTapped(int index) {
+    setState(() => _currentPage = index);
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   void dispose() {
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
+  }
+
+  Widget _buildSegmentControl() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Container(
+        height: context.dynamicHeight(.04),
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(context.dynamicHeight(.015)),
+        ),
+        child: Row(
+          children: List.generate(_tabs.length, (index) {
+            final isSelected = _currentPage == index;
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => _onSegmentTapped(index),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.white : Colors.transparent,
+                    borderRadius: BorderRadius.circular(context.dynamicHeight(.01)),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    _tabs[index],
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.black : Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
   }
 
   @override
@@ -38,26 +91,23 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Analiz Geçmişi"),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              icon: Icon(Icons.psychology),
-              text: 'Duygu Analizi',
-            ),
-            Tab(
-              icon: Icon(Icons.bedtime),
-              text: 'Rüya Analizi',
-            ),
-          ],
-        ),
+        title:  Text("Analiz Geçmişi", style: Theme.of(context).textTheme.bodyLarge,),
+        centerTitle: true,
+        backgroundColor: Colors.black,
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          JournalHistoryTab(),
-          DreamHistoryTab(),
+      body: Column(
+        children: [
+          _buildSegmentControl(),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) => setState(() => _currentPage = index),
+              children: const [
+                JournalHistoryTab(),
+                DreamHistoryTab(),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -101,8 +151,11 @@ class JournalHistoryTab extends StatelessWidget {
               date: analysis.analysisDate,
               themes: analysis.themes,
               onTap: () {
-                vm.loadAnalysis(analysis);
-                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => JournalAnalysisScreen(analysisId: analysis.id),
+                  ),
+                );
               },
             );
           },
@@ -151,8 +204,11 @@ class DreamHistoryTab extends StatelessWidget {
               icon: Icons.bedtime,
               iconColor: Colors.indigo,
               onTap: () {
-                vm.loadAnalysis(analysis);
-                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DreamAnalysisResultView(analysisId: analysis.id),
+                  ),
+                );
               },
             );
           },
@@ -205,42 +261,46 @@ Widget _buildHistoryList({
   required VoidCallback onClear,
   required Widget Function(BuildContext, int) itemBuilder,
 }) {
-  return RefreshIndicator(
-    onRefresh: onRefresh,
-    child: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          floating: true,
-          snap: true,
-          title: Text("Toplam: $itemCount analiz"),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () => onRefresh(),
-              tooltip: 'Yenile',
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: onClear,
-              tooltip: 'Geçmişi Temizle',
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Toplam: $itemCount analiz",
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Iconsax.refresh),
+                  onPressed: () => onRefresh(),
+                  tooltip: 'Yenile',
+                ),
+                IconButton(
+                  icon: const Icon(HugeIcons.strokeRoundedDelete01),
+                  onPressed: onClear,
+                  tooltip: 'Geçmişi Temizle',
+                ),
+              ],
             ),
           ],
         ),
-        SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              itemBuilder,
-              childCount: itemCount,
-            ),
+      ),
+      Expanded(
+        child: RefreshIndicator(
+          onRefresh: onRefresh,
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: itemCount,
+            itemBuilder: itemBuilder,
           ),
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
+
 
 Widget _buildAnalysisCard({
   required BuildContext context,
@@ -249,87 +309,84 @@ Widget _buildAnalysisCard({
   required DateTime date,
   required List<String> themes,
   required VoidCallback onTap,
-  IconData icon = Icons.psychology,
-  Color iconColor = Colors.deepPurple,
+  IconData icon = Iconsax.heart,
+  Color iconColor = Colors.red,
 }) {
-  return Card(
-    margin: const EdgeInsets.only(bottom: 12),
-    child: ListTile(
-      contentPadding: const EdgeInsets.all(16),
-      leading: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(
-          icon,
-          color: iconColor,
-        ),
+  return ListTile(
+    contentPadding: const EdgeInsets.all(16),
+    leading: Container(
+      width: context.dynamicWidth(.08),
+      height: context.dynamicHeight(.08),
+      decoration: BoxDecoration(
+        color: iconColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
       ),
-      title: Text(
-        title,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+      child: Icon(
+        icon,
+        color: iconColor,
       ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.smart_toy, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 4),
-              Text(
-                modelUsed,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 4),
-              Text(
-                '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          if (themes.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: themes.take(3).map((theme) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    theme,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
-                    ),
-                  ),
-                );
-              }).toList(),
+    ),
+    title: Text(
+      title,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(fontWeight: FontWeight.w600),
+    ),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: context.dynamicHeight(.01)),
+        Row(
+          children: [
+            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
+            Text(
+              modelUsed,
+              style: TextStyle(color: Colors.grey[600]),
             ),
           ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
+            Text(
+              '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ],
+        ),
+        if (themes.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: themes.take(3).map((theme) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  theme,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.blue,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ],
-      ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap,
+      ],
     ),
+    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    onTap: onTap,
   );
 }
 

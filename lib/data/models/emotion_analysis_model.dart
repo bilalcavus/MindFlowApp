@@ -1,4 +1,5 @@
 class EmotionAnalysisModel {
+  final int? id;
   final Map<String, int> emotions;
   final List<String> themes;
   final String advice;
@@ -8,6 +9,7 @@ class EmotionAnalysisModel {
   final DateTime analysisDate;
 
   EmotionAnalysisModel({
+    this.id,
     required this.emotions,
     required this.themes,
     required this.advice,
@@ -19,6 +21,7 @@ class EmotionAnalysisModel {
 
   factory EmotionAnalysisModel.fromJson(Map<String, dynamic> json) {
     return EmotionAnalysisModel(
+      id: json['id'],
       emotions: Map<String, int>.from(json['emotions'] ?? []),
       themes: List<String>.from(json['key_themes'] ?? []),
       advice: json['advice'] ?? '',
@@ -35,6 +38,7 @@ class EmotionAnalysisModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'emotions': emotions,
       'key_themes': themes,
       'advice': advice,
