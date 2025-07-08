@@ -30,6 +30,17 @@
     "error_clear_failed": "Error while clearing history: {error}",
     "error_load_failed": "Error while loading history: {error}",
     "error_dream_empty_text": "Please enter text for dream analysis",
-    "save_button": "Save"
-    
+    "save_button": "Save",
+    "personal_information": "Personal Information",
+    "account_password": "Account Password",
+    "address": "Address",
+    "manage_subscription": "Manage Subscription",
+    "active": "Active",
+    "language": "Language",
+    "user_preferences": "User Preferences",
+    "privacy_policy": "Privacy Policy",
+    "terms_and_conditions": "Terms and Conditions",
+    "log_out": "Log out",
+    "continue": "Continue",
+    "you_can_change_later": "You can change this later in settings"
 }

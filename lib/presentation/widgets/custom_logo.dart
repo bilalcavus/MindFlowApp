@@ -7,6 +7,6 @@ class CustomLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/pictures/logo-mff.png', height: 200, );
+    return Image.asset('assets/pictures/new-logo.png', height: 200, );
   }
 } 

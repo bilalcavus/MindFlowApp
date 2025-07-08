@@ -76,46 +76,63 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          if (!_authService.isLoggedIn)
-            offlineChatWarning(),
-          Expanded(
-            child: provider.chatMessages.isEmpty
-                ? _buildEmptyState()
-                : RefreshIndicator(
-                    onRefresh: _refreshChatHistory,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      itemCount: provider.chatMessages.length,
-                      itemBuilder: (context, index) {
-                        final message = provider.chatMessages[index];
-                        return ChatBubble(
-                          message: message,
-                          isLastMessage: index == provider.chatMessages.length - 1,
-                        );
-                      },
-                    ),
-                  ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF2E0249),
+              Color(0xFF3A0CA3),
+              Color.fromARGB(255, 22, 5, 63),
+              Color(0xFF000000),
+
+            ],
           ),
-          if (provider.isLoading)
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: const Row(
-                children: [
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  SizedBox(width: 12),
-                  Text('Yazıyor...'),
-                ],
-              ),
+        ),
+        child: Column(
+          children: [
+            if (!_authService.isLoggedIn)
+              offlineChatWarning(),
+            Expanded(
+              child: provider.chatMessages.isEmpty
+                  ? _buildEmptyState()
+                  : RefreshIndicator(
+                      onRefresh: _refreshChatHistory,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        itemCount: provider.chatMessages.length,
+                        itemBuilder: (context, index) {
+                          final message = provider.chatMessages[index];
+                          return ChatBubble(
+                            message: message,
+                            isLastMessage: index == provider.chatMessages.length - 1,
+                          );
+                        },
+                      ),
+                    ),
             ),
-          _buildMessageInput(provider),
-        ],
+            if (provider.isLoading)
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: const Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    SizedBox(width: 12),
+                    Text('Yazıyor...'),
+                  ],
+                ),
+              ),
+            _buildMessageInput(provider),
+          ],
+        ),
       ),
     );
   }

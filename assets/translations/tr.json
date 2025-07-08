@@ -30,5 +30,17 @@
     "error_clear_failed": "Geçmiş temizlenirken hata: {error}",
     "error_load_failed": "Geçmiş yüklenirken hata: {error}",
     "error_dream_empty_text": "Lütfen rüya analizi edilecek bir metin girin",
-    "save_button": "Kaydet"
+    "save_button": "Kaydet",
+    "personal_information": "Kişisel Bilgiler",
+    "account_password": "Hesap Şifresi",
+    "address": "Adres",
+    "manage_subscription": "Aboneliği Yönet",
+    "active": "Aktif",
+    "language": "Dil",
+    "user_preferences": "Kullanıcı Tercihleri",
+    "privacy_policy": "Gizlilik Politikası",
+    "terms_and_conditions": "Kullanım Şartları",
+    "log_out": "Çıkış Yap",
+    "continue": "Devam Et",
+    "you_can_change_later": "Bunu daha sonra ayarlardan değiştirebilirsiniz"
 }

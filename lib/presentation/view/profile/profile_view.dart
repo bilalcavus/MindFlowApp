@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
@@ -5,8 +6,8 @@ import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
-import 'package:mind_flow/presentation/view/start/language_select_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
+import 'package:mind_flow/presentation/widgets/language_select_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -30,32 +31,19 @@ class _ProfileViewState extends State<ProfileView> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF1A0025),
-              Color.fromARGB(255, 3, 0, 3),
+              Color(0xFF2E0249),
+              Color(0xFF3A0CA3),
+              Color.fromARGB(255, 22, 5, 63),
+              Color(0xFF000000),
+
             ],
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              // App Bar
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      'Hesabım',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: context.dynamicHeight(.025),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               // Profile Content
               Expanded(
                 child: SingleChildScrollView(
@@ -115,24 +103,29 @@ class _ProfileViewState extends State<ProfileView> {
     return Column(
       children: [
         _buildSettingsCard([
-          _settingsTile(Iconsax.user, 'Personal Information', null),
-          _settingsTile(Iconsax.lock, 'Account Password', null),
-          _settingsTile(Iconsax.location, 'Address', null),
+          _settingsTile(Iconsax.user, 'personal_information'.tr(), null),
+          _settingsTile(Iconsax.lock, 'account_password'.tr(), null),
+          _settingsTile(Iconsax.location, 'address'.tr(), null),
         ]),
         const SizedBox(height: 16),
         _buildSubscriptionCard(),
         const SizedBox(height: 16),
         _buildSettingsCard([
-          _settingsTile(HugeIcons.strokeRoundedLanguageSkill, 'Language', () {
-            RouteHelper.push(context, const LanguageSelectView());
+          _settingsTile(HugeIcons.strokeRoundedLanguageSkill, 'language'.tr(), () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => const LanguageSelectView(),
+            );
           }),
-          _settingsTile(HugeIcons.strokeRoundedPreferenceHorizontal, 'User Preferences', null),
+          _settingsTile(HugeIcons.strokeRoundedPreferenceHorizontal, 'user_preferences'.tr(), null),
         ]),
         const SizedBox(height: 16),
         _buildSettingsCard([
-          _settingsTile(Iconsax.shield, 'Privacy Policy', null),
-          _settingsTile(Iconsax.document, 'Terms and Conditions', null),
-          _settingsTile(Iconsax.logout, 'Log out', () async {
+          _settingsTile(Iconsax.shield, 'privacy_policy'.tr(), null),
+          _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), null),
+          _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);
             if (mounted) {
               RouteHelper.pushAndCloseOther(context, const LoginView());
@@ -168,16 +161,16 @@ class _ProfileViewState extends State<ProfileView> {
     return ListTile(
       leading: Icon(
         icon,
-        color: title == "Log out" ? Colors.red : const Color(0xFFB983FF),
+        color: title == "log_out".tr() ? Colors.red : Colors.lightBlue,
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: title == "Log out" ? Colors.red : Colors.white,
+          color: title == "log_out".tr() ? Colors.red : Colors.white,
           fontWeight: FontWeight.w500,
         ),
       ),
-      trailing: trailing ?? (title != "Log out" ? const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16) : null),
+      trailing: trailing ?? (title != "log_out".tr() ? const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16) : null),
       onTap: onTap,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -209,9 +202,9 @@ class _ProfileViewState extends State<ProfileView> {
         ),
         child: ListTile(
           leading: const Icon(Iconsax.card, color: Colors.white),
-          title: const Text(
-            'Manage Subscription',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          title: Text(
+            'manage_subscription'.tr(),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
           ),
           trailing: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -219,9 +212,9 @@ class _ProfileViewState extends State<ProfileView> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text(
-              'Active',
-              style: TextStyle(
+            child: Text(
+              'active'.tr(),
+              style: const TextStyle(
                 color: Color(0xFF10B981),
                 fontWeight: FontWeight.bold,
                 fontSize: 12,

@@ -33,8 +33,9 @@ class _LoginViewState extends State<LoginView> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-             Color(0xFF1A0025),
-              Color.fromARGB(255, 3, 0, 3),
+             Color(0xFF2E0249),
+              Color(0xFF3A0CA3),
+              Color(0xFF000000),
             ],
           ),
         ),
@@ -66,7 +67,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: provider.emailController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFB983FF)),
+                          prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
                           hintText: 'Email veya kullanıcı adı',
                           hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                           filled: true,
@@ -88,7 +89,7 @@ class _LoginViewState extends State<LoginView> {
                         obscureText: _obscurePassword,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFB983FF)),
+                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -121,15 +122,18 @@ class _LoginViewState extends State<LoginView> {
                         height: 52,
                         child: ElevatedButton(
                           onPressed: provider.isLoading ? null : () async {
-                            provider.handleLogin(context);
-                            await Future.delayed(const Duration(seconds: 2));
-                            if (mounted) {
-                              RouteHelper.pushAndCloseOther(context, const AppNavigation());
-
+                            try {
+                              await provider.handleLogin(context);
+                              if (mounted && provider.authService.isLoggedIn) {
+                                RouteHelper.pushAndCloseOther(context, const AppNavigation());
+                              }
+                            } catch (e) {
+                              // Hata zaten provider'da snackbar ile gösterildi
+                              // Burada ek işlem yapmaya gerek yok
                             }
                           } ,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB983FF),
+                            backgroundColor: Colors.black12,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),

@@ -41,10 +41,13 @@ class _RegisterViewState extends State<RegisterView> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF1A0025),
-              Color.fromARGB(255, 3, 0, 3),
+              Color(0xFF2E0249),
+              Color(0xFF3A0CA3),
+              Color.fromARGB(255, 22, 5, 63),
+              Color(0xFF000000),
+
             ],
           ),
         ),
@@ -73,27 +76,11 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     child: Column(
                       children: [
-                        Text(
-                          'Hesap Oluştur',
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Mind Flow\'a katılın',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: Colors.grey[300],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        // Username
                         TextFormField(
                           controller: _usernameController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.alternate_email, color: Color(0xFFB983FF)),
+                            prefixIcon: const Icon(Icons.alternate_email, color: Colors.white),
                             hintText: 'Kullanıcı Adı',
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
@@ -125,7 +112,7 @@ class _RegisterViewState extends State<RegisterView> {
                           controller: _displayNameController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.person, color: Color(0xFFB983FF)),
+                            prefixIcon: const Icon(Icons.person, color: Colors.white),
                             hintText: 'Ad Soyad',
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
@@ -156,7 +143,7 @@ class _RegisterViewState extends State<RegisterView> {
                           controller: _emailController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFB983FF)),
+                            prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
                             hintText: 'Email',
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
@@ -187,7 +174,7 @@ class _RegisterViewState extends State<RegisterView> {
                           obscureText: _obscurePassword,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFB983FF)),
+                            prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -230,7 +217,7 @@ class _RegisterViewState extends State<RegisterView> {
                           obscureText: _obscureConfirmPassword,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFB983FF)),
+                            prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -274,17 +261,21 @@ class _RegisterViewState extends State<RegisterView> {
                           child: ElevatedButton(
                             onPressed: provider.isLoading ? null : () async {
                               if (_formKey.currentState!.validate()) {
-                                await provider.handleRegister(
-                                  context,
-                                  username: _usernameController.text.trim(),
-                                  email: _emailController.text.trim(),
-                                  password: _passwordController.text,
-                                  displayName: _displayNameController.text.trim(),
-                                );
+                                try {
+                                  await provider.handleRegister(
+                                    context,
+                                    username: _usernameController.text.trim(),
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text,
+                                    displayName: _displayNameController.text.trim(),
+                                  );
+                                } catch (e) {
+                                  debugPrint(e.toString());
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFB983FF),
+                              backgroundColor: Colors.black12,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),

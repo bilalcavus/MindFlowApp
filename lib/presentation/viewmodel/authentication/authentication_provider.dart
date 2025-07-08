@@ -31,14 +31,16 @@ class AuthenticationProvider extends ChangeNotifier {
         emailOrUsername: emailController.text.trim(),
         password: passwordController.text,
       );
-      await Future.delayed(const Duration(seconds: 2));
+      // Login başarılı olduğunda kullanıcı zaten authService'de oturum açmış olur
     } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('❌ Giriş hatası: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ Giriş hatası: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      // Hata durumunda exception'ı yeniden fırlat ki login view'da yakalanabilsin
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -76,20 +78,27 @@ class AuthenticationProvider extends ChangeNotifier {
         emailOrUsername: 'demo_user',
         password: 'demo_password',
       );
+      
+      if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),
           (route) => false,
         );
+      }
       
     } catch (e) {
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Demo girişi başarısız: ${e.toString()}'),
             backgroundColor: Colors.orange,
           ),
         );
+      }
+      rethrow;
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -103,7 +112,6 @@ class AuthenticationProvider extends ChangeNotifier {
         password: password,
         displayName: displayName,
       );
-      await Future.delayed(const Duration(seconds: 2));
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),
@@ -119,6 +127,8 @@ class AuthenticationProvider extends ChangeNotifier {
           ),
         );
       }
+      // Hata durumunda exception'ı yeniden fırlat
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

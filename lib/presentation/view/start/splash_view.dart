@@ -5,7 +5,7 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/presentation/view/app_navigation.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
-import 'package:mind_flow/presentation/view/start/language_select_view.dart';
+import 'package:mind_flow/presentation/view/start/initial_language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 
 class SplashView extends StatefulWidget {
@@ -25,7 +25,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void _initializeAndNavigate() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
     try {
       final langRepo = LanguageRepository();
       final savedLang = await langRepo.getSavedLanguagePreference(_authService.currentUserId ?? 1);
@@ -35,7 +35,7 @@ class _SplashViewState extends State<SplashView> {
       }
       if (_authService.isLoggedIn) {
         debugPrint('✅ Kullanıcı zaten giriş yapmış: ${_authService.currentUser?.displayName}');
-        RouteHelper.pushAndCloseOther(context, const LanguageSelectView());
+        RouteHelper.pushAndCloseOther(context, const InitialLanguageSelectView());
       } else {
         debugPrint('❌ Kullanıcı giriş yapmamış, login sayfasına yönlendiriliyor');
         RouteHelper.pushAndCloseOther(context, const LoginView());
@@ -49,14 +49,31 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Lottie.asset("assets/lotties/mind-flow-loading2.json", height: 150)
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF2E0249),
+              Color(0xFF3A0CA3),
+              Color.fromARGB(255, 22, 5, 63),
+              Color(0xFF000000),
+
+            ],
           ),
-          const CustomLogo()
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Lottie.asset("assets/lotties/mind-flow-loading2.json", height: 150)
+            ),
+            const CustomLogo()
+          ],
+        ),
       ),
     );
   }
