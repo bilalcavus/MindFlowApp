@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
@@ -45,7 +46,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
 
   Future<void> dreamAnalyzeText(String text) async {
     if (text.trim().isEmpty) {
-      error = "Lütfen rüya analizi edilecek bir metin girin";
+      error = "error_dream_empty_text".tr();
       notifyListeners();
       return;
     }
@@ -62,7 +63,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
         modelUsed: selectedModel);
       analysisResult = await getDreamAnalysis(text, selectedModel);
       if (analysisResult == null) {
-        error = "API'den analiz sonucu alınamadı";
+        error = "error_api".tr();
         isLoading = false;
         notifyListeners();
         return;
@@ -96,7 +97,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
         analysisHistory = analysisHistory.take(10).toList();
       }
     } catch (e) {
-      error = e.toString();
+      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
     }
     isLoading = false;
     notifyListeners();
@@ -126,6 +127,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
       final analyse = await _analysisRepo.getDreamAnalysisById(id);
       return analyse;
     } catch (e) {
+      error = "error_not_found".tr(namedArgs: {'id': id.toString()});
       debugPrint('$e');
     }
     return null;
@@ -143,11 +145,11 @@ class DreamAnalysisProvider extends ChangeNotifier {
         analysisResult = analysis;
         debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
       } else {
-        error = "Analiz bulunamadı (ID: $id)";
+        error = "error_not_found".tr(namedArgs: {'id': id.toString()});
         debugPrint('❌ Analiz bulunamadı: ID $id');
       }
     } catch (e) {
-      error = e.toString();
+      error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
       debugPrint('❌ Analiz yükleme hatası: $e');
     }
     
@@ -172,7 +174,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
 
   Future<void> clearHistory() async {
     if (!_isUserLoggedIn || _currentUserId == null) {
-      error = "Geçmişi temizlemek için lütfen giriş yapın";
+      error = "error_clear_login".tr();
       notifyListeners();
       return;
     }
@@ -182,7 +184,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
       notifyListeners();
       debugPrint('✅ Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
-      error = "Geçmiş temizlenirken hata: $e";
+      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
       debugPrint('❌ Geçmiş temizleme hatası: $e');
     }
   }

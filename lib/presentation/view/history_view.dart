@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
@@ -19,7 +20,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   late PageController _pageController;
   int _currentPage = 0;
 
-  final List<String> _tabs = ['Duygu Analizi', 'Rüya Analizi'];
+  final List<String> _tabs = ["analysis_emotion_title".tr(), "analysis_dream_title".tr()];
 
   @override
   void initState() {
@@ -54,7 +55,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Container(
         height: context.dynamicHeight(.04),
         decoration: BoxDecoration(
-          color: Colors.grey[900],
+          color: Color.fromARGB(255, 3, 0, 3),
           borderRadius: BorderRadius.circular(context.dynamicHeight(.015)),
         ),
         child: Row(
@@ -91,24 +92,38 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title:  Text("Analiz Geçmişi", style: Theme.of(context).textTheme.bodyLarge,),
+        title:  Text("analysis_history".tr(), style: Theme.of(context).textTheme.bodyLarge,),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF1A0025),
       ),
-      body: Column(
-        children: [
-          _buildSegmentControl(),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              children: const [
-                JournalHistoryTab(),
-                DreamHistoryTab(),
-              ],
-            ),
+      body: Container(
+         width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF1A0025),
+              Color.fromARGB(255, 3, 0, 3),
+            ],
           ),
-        ],
+        ),
+        child: Column(
+          children: [
+            _buildSegmentControl(),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) => setState(() => _currentPage = index),
+                children: const [
+                  JournalHistoryTab(),
+                  DreamHistoryTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -129,8 +144,8 @@ class JournalHistoryTab extends StatelessWidget {
           return _buildEmptyState(
             context: context,
             icon: HugeIcons.strokeRoundedWorkHistory,
-            title: 'Henüz duygu analizi geçmişi yok',
-            subtitle: 'İlk analizi yapmak için bir günlük yazın!',
+            title: 'no_emotion_history'.tr(),
+            subtitle: 'write_journal_first'.tr(),
             onRefresh: () => vm.refreshHistory(),
           );
         }
@@ -180,8 +195,8 @@ class DreamHistoryTab extends StatelessWidget {
           return _buildEmptyState(
             context: context,
             icon: Icons.bedtime,
-            title: 'Henüz rüya analizi geçmişi yok',
-            subtitle: 'İlk analizi yapmak için bir rüya yazın!',
+            title: 'no_dream_history'.tr(),
+            subtitle: 'write_dream_first'.tr(),
             onRefresh: () => vm.refreshHistory(),
           );
         }
@@ -268,19 +283,19 @@ Widget _buildHistoryList({
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Toplam: $itemCount analiz",
+            Text("total_analysis".tr(namedArgs: {'count': itemCount.toString()}),
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             Row(
               children: [
                 IconButton(
                   icon: const Icon(Iconsax.refresh),
                   onPressed: () => onRefresh(),
-                  tooltip: 'Yenile',
+                  tooltip: 'refresh'.tr(),
                 ),
                 IconButton(
                   icon: const Icon(HugeIcons.strokeRoundedDelete01),
                   onPressed: onClear,
-                  tooltip: 'Geçmişi Temizle',
+                  tooltip: 'clear_history'.tr(),
                 ),
               ],
             ),
@@ -312,81 +327,83 @@ Widget _buildAnalysisCard({
   IconData icon = Iconsax.heart,
   Color iconColor = Colors.red,
 }) {
-  return ListTile(
-    contentPadding: const EdgeInsets.all(16),
-    leading: Container(
-      width: context.dynamicWidth(.08),
-      height: context.dynamicHeight(.08),
-      decoration: BoxDecoration(
-        color: iconColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Icon(
-        icon,
-        color: iconColor,
-      ),
-    ),
-    title: Text(
-      title,
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontWeight: FontWeight.w600),
-    ),
-    subtitle: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: context.dynamicHeight(.01)),
-        Row(
-          children: [
-            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
-            const SizedBox(width: 4),
-            Text(
-              modelUsed,
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-          ],
+  return Card(
+    color: const Color.fromARGB(255, 29, 24, 43),
+    child: ListTile(
+      leading: Container(
+        width: context.dynamicWidth(.08),
+        height: context.dynamicHeight(.08),
+        decoration: BoxDecoration(
+          color: iconColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(context.dynamicHeight(0.3)),
         ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-            const SizedBox(width: 4),
-            Text(
-              '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-          ],
+        child: Icon(
+          icon,
+          color: iconColor,
         ),
-        if (themes.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: themes.take(3).map((theme) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  theme,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.blue,
-                  ),
-                ),
-              );
-            }).toList(),
+      ),
+      title: Text(
+        title,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: context.dynamicHeight(.01)),
+          Row(
+            children: [
+              Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
+              const SizedBox(width: 4),
+              Text(
+                modelUsed,
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ],
           ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+              const SizedBox(width: 4),
+              Text(
+                '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ],
+          ),
+          if (themes.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              children: themes.take(3).map((theme) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    theme,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
         ],
-      ],
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: onTap,
     ),
-    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-    onTap: onTap,
   );
 }
 

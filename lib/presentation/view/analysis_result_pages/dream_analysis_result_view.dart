@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class DreamAnalysisResultView extends StatefulWidget {
@@ -37,10 +36,22 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
     return Scaffold(
       appBar: AppBar(
         title:  Text('Rüya Analizi', style: Theme.of(context).textTheme.bodyLarge,),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1A0025),
         foregroundColor: Colors.white,
       ),
-      body: ScreenBackground(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF1A0025),
+              Color.fromARGB(255, 3, 0, 3),
+            ],
+          ),
+        ),
         child: Builder(
           builder: (_) {
             if (provider.isLoading) {
@@ -125,10 +136,10 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                     ),
                   ),
                   const SizedBox(height: 16),
-
+        
                   if (result.symbols.isNotEmpty)
                     _buildSectionCard('🔮 Semboller', result.symbols.join(', '), Colors.teal),
-
+        
                   if (result.emotionScores.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.all(16),
@@ -156,13 +167,13 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                         ],
                       ),
                     ),
-
+        
                     if (result.emotionScores.isNotEmpty)
                     SizedBox(
                       height: 250,
                       child: RadarChartWidget(result: result),
                     ),
-
+        
                   if (result.symbolMeanings.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.all(16),
@@ -198,22 +209,22 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                         ],
                       ),
                     ),
-
+        
                   // if (result.themes.isNotEmpty)
                     _buildSectionCard('🧩 Ana Temalar', result.themes.join(', '), Colors.green),
-
+        
                   // if (result.subconsciousMessage.isNotEmpty)
                     _buildSectionCard('🧠 Bilinçaltı Mesajı', result.subconsciousMessage, Colors.purple),
-
+        
                   // if (result.summary.isNotEmpty)
                     _buildSectionCard('📝 Özet', result.summary, Colors.blue),
-
+        
                   // if (result.advice.isNotEmpty)
                     _buildSectionCard('💡 Tavsiye', result.advice, Colors.orange),
-
+        
                   // if (result.aiReply.isNotEmpty)
                     _buildSectionCard('🤖 AI Cevabı', result.aiReply, Colors.indigo),
-
+        
                   // if (result.mindMap.isNotEmpty)
                     _buildMindMapCard(result.mindMap),
                   

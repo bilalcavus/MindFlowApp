@@ -1,33 +1,50 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
+import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/start/splash_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/navigation_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
+  await EasyLocalization.ensureInitialized();
   await setupDependencies();
   await _initializeDatabase();
   await _initializeAuth();
+  final userId = getIt<AuthService>().currentUserId;
+  final savedLocale = userId != null
+      ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
+      : null;
+  final locale = savedLocale != null ? Locale(savedLocale) : const Locale('en');
+  
   
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => getIt<JournalViewModel>()),
-        ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
-        ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
-        ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
-        ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
-      ],
-      child: const MyApp(),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('tr')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      startLocale: locale,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => getIt<JournalViewModel>()),
+          ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
+          ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
+          ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
+          ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
+          ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -38,11 +55,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Günlük & Zihin Haritası',
+      title: 'Mind Flow',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(
         useMaterial3: true,
       ),
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       home: const SplashView(),
     );
   }

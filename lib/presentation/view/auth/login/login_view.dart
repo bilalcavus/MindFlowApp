@@ -5,6 +5,7 @@ import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/app_navigation.dart';
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
+import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:provider/provider.dart';
 
 part 'login_button.dart';
@@ -18,63 +19,186 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  
+  bool _obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 3, 28, 51),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/pictures/logo-mff.png', height: 200, ),
-          _LoginViewTextField(controller: provider.emailController, hintText: 'Email veya kullanıcı adı', isSecure: false),
-          _LoginViewTextField(controller: provider.passwordController, hintText: 'Şifre', isSecure: true),
-          SizedBox(height: context.dynamicHeight(0.01)),
-          const _LoginViewButton(),
-          // demoLogin(context, provider),
-          SizedBox(height: context.dynamicHeight(0.0)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.grey[300])),
-              TextButton(
-                onPressed: () {
-                  RouteHelper.push(context, const RegisterView());
-                },
-                child: const Text(
-                  'Kayıt Olun',
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+             Color(0xFF1A0025),
+              Color.fromARGB(255, 3, 0, 3),
             ],
           ),
-              
-          const SizedBox(height: 16),
-              
-          // Guest Mode Link
-          Center(
-            child: TextButton(
-              onPressed: () {
-                // Misafir modunda devam et
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const AppNavigation()),
-                  (route) => false,
-                );
-              },
-              child: Text(
-                'Misafir olarak devam et',
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  decoration: TextDecoration.underline,
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CustomLogo(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.07),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.18),
+                        blurRadius: 24,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.white.withOpacity(0.08)),
+                  ),
+                  child: Column(
+                    children: [
+                      // Email
+                      TextField(
+                        controller: provider.emailController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFB983FF)),
+                          hintText: 'Email veya kullanıcı adı',
+                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.04),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      // Password
+                      TextField(
+                        controller: provider.passwordController,
+                        obscureText: _obscurePassword,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFB983FF)),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.white.withOpacity(0.7),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                          hintText: 'Şifre',
+                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.04),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+                      // Login Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: provider.isLoading ? null : () async {
+                            provider.handleLogin(context);
+                            await Future.delayed(const Duration(seconds: 2));
+                            if (mounted) {
+                              RouteHelper.pushAndCloseOther(context, const AppNavigation());
+
+                            }
+                          } ,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFB983FF),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                          ),
+                          child: provider.isLoading
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : const Text(
+                                  'Giriş Yap',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      // Demo Button (isteğe bağlı)
+                      // demoLogin(context, provider),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withOpacity(0.7))),
+                          TextButton(
+                            onPressed: () {
+                              RouteHelper.push(context, const RegisterView());
+                            },
+                            child: const Text(
+                              'Kayıt Olun',
+                              style: TextStyle(
+                                color: Color(0xFFB983FF),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 24),
+                // // Misafir olarak devam et
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.of(context).pushAndRemoveUntil(
+                //       MaterialPageRoute(builder: (_) => const AppNavigation()),
+                //       (route) => false,
+                //     );
+                //   },
+                //   child: Text(
+                //     'Misafir olarak devam et',
+                //     style: TextStyle(
+                //       color: Colors.white.withOpacity(0.8),
+                //       decoration: TextDecoration.underline,
+                //       fontWeight: FontWeight.w500,
+                //       fontSize: 15,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(height: 16),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -101,4 +225,5 @@ class _LoginViewState extends State<LoginView> {
           ),
         );
   }
-} 
+}
+

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class JournalAnalysisScreen extends StatefulWidget {
@@ -34,10 +33,22 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Duygu Analizi', style: Theme.of(context).textTheme.bodyLarge),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1A0025),
         foregroundColor: Colors.white,
       ),
-      body: ScreenBackground(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF1A0025),
+              Color.fromARGB(255, 3, 0, 3),
+            ],
+          ),
+        ),
         child: Builder(
           builder: (_) {
             if (vm.isLoading) {

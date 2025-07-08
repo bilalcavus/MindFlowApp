@@ -163,6 +163,13 @@ class DatabaseService {
       )
     ''');
 
+    await db.execute(''' 
+      CREATE TABLE languages(
+        id INTEGER PRIMARY KEY,
+        code TEXT
+      )
+    ''');
+
     await db.execute('''
       CREATE INDEX idx_users_email ON users (email)
     ''');
@@ -205,6 +212,33 @@ class DatabaseService {
 
     await _insertDefaultUser(db);
   }
+
+  Future<void> saveUserPreference(int userId, String key, String value, String updatedAt) async {
+  final db = await database;
+  await db.insert(
+    'user_preferences',
+    {
+      'user_id': userId,
+      'preference_key': key,
+      'preference_value': value,
+      'updated_at': updatedAt,
+    },
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<String?> getUserPreference(int userId, String key) async {
+  final db = await database;
+  final result = await db.query(
+    'user_preferences',
+    where: 'user_id = ? AND preference_key = ?',
+    whereArgs: [userId, key],
+    limit: 1,
+  );
+  return result.isNotEmpty ? result.first['preference_value'] as String : null;
+}
+
+
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
@@ -390,7 +424,7 @@ class DatabaseService {
   Future<Map<String, int>> getDatabaseInfo() async {
     final db = await database;
     
-    final tables = ['users', 'user_entries', 'emotion_analyses', 'dream_analyses', 'chat_messages'];
+    final tables = ['users', 'user_entries', 'emotion_analyses', 'dream_analyses', 'chat_messages', 'languages'];
     final info = <String, int>{};
     
     for (final table in tables) {

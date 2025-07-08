@@ -100,7 +100,6 @@ class AuthService {
       if (_sessionToken != null) {
         await _authRepo.logout(_sessionToken!);
       }
-      
       await _clearCurrentSession();
       print('Kullanıcı çıkış yaptı');
     } catch (e) {

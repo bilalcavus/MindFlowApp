@@ -3,7 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/presentation/viewmodel/chat_bot_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
 import 'package:provider/provider.dart';
 

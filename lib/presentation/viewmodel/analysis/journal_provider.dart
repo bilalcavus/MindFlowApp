@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
@@ -44,12 +45,12 @@ class JournalViewModel extends ChangeNotifier {
 
   Future<void> analyzeText(String text) async {
     if (text.trim().isEmpty) {
-      error = "Lütfen analiz edilecek bir metin girin";
+      error = "error_empty_text".tr();
       notifyListeners();
       return;
     }
     if (!_isUserLoggedIn || _currentUserId == null) {
-      error = "Analiz yapabilmek için lütfen giriş yapın";
+      error = "error_login_required".tr();
       notifyListeners();
       return;
     }
@@ -65,7 +66,7 @@ class JournalViewModel extends ChangeNotifier {
       );
       analysisResult = await getAnalyzeEmotion(text, selectedModel);
       if (analysisResult == null) {
-        error = "API'den analiz sonucu alınamadı";
+        error = "error_api".tr();
         isLoading = false;
         notifyListeners();
         return;
@@ -101,7 +102,7 @@ class JournalViewModel extends ChangeNotifier {
       }
 
     } catch (e) {
-      error = e.toString();
+      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
     }
     
     isLoading = false;
@@ -123,6 +124,7 @@ class JournalViewModel extends ChangeNotifier {
       notifyListeners();
       debugPrint('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
     } catch (e) {
+      error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
       debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
     }
   }
@@ -141,11 +143,11 @@ class JournalViewModel extends ChangeNotifier {
         analysisResult = analysis;
         debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
       } else {
-        error = "Analiz bulunamadı (ID: $id)";
+        error = "error_not_found".tr(namedArgs: {'id': id.toString()});
         debugPrint('❌ Analiz bulunamadı: ID $id');
       }
     } catch (e) {
-      error = e.toString();
+      error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
       debugPrint('❌ Analiz yükleme hatası: $e');
     }
     
@@ -168,7 +170,7 @@ class JournalViewModel extends ChangeNotifier {
 
   Future<void> clearHistory() async {
     if (!_isUserLoggedIn || _currentUserId == null) {
-      error = "Geçmişi temizlemek için lütfen giriş yapın";
+      error = "error_clear_login".tr();
       notifyListeners();
       return;
     }
@@ -178,7 +180,7 @@ class JournalViewModel extends ChangeNotifier {
       notifyListeners();
       debugPrint('Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
-      error = "Geçmiş temizlenirken hata: $e";
+      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
       debugPrint('Geçmiş temizleme hatası: $e');
     }
   }

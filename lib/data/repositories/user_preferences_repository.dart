@@ -9,11 +9,9 @@ class UserPreferencesRepository {
     final db = await _dbService.database;
     final now = DateTime.now().toIso8601String();
 
-    // Önce var mı kontrol et
     final existing = await getPreference(userId, key);
     
     if (existing != null) {
-      // Güncelle
       return await db.update(
         'user_preferences',
         {
@@ -24,7 +22,6 @@ class UserPreferencesRepository {
         whereArgs: [userId, key],
       );
     } else {
-      // Yeni ekle
       return await db.insert(
         'user_preferences',
         {

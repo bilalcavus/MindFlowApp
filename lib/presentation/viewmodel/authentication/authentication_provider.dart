@@ -12,6 +12,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   bool obsecurePassword = true;
 
+  bool _isLogout = false;
+  bool get isLogout => _isLogout;
+
   @override
   void dispose() {
     emailController.dispose();
@@ -28,6 +31,7 @@ class AuthenticationProvider extends ChangeNotifier {
         emailOrUsername: emailController.text.trim(),
         password: passwordController.text,
       );
+      await Future.delayed(const Duration(seconds: 2));
     } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -37,6 +41,26 @@ class AuthenticationProvider extends ChangeNotifier {
         );
     } finally {
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> handleLogout(BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await authService.logout();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ Çıkış hatası: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+    }
+    finally{
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -66,6 +90,38 @@ class AuthenticationProvider extends ChangeNotifier {
         );
     } finally {
       _isLoading = false;
+    }
+  }
+
+  Future<void> handleRegister(BuildContext context, {required String username, required String email, required String password, required String displayName}) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await authService.register(
+        username: username,
+        email: email,
+        password: password,
+        displayName: displayName,
+      );
+      await Future.delayed(const Duration(seconds: 2));
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const AppNavigation()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ Kayıt hatası: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
