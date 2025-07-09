@@ -5,7 +5,7 @@ class LanguageRepository {
   final DatabaseService _dbService = DatabaseService();
   
 
-  Future<void> saveLanguagePreference(String languageCode, int userId) async {
+  Future<void> saveLanguagePreference(String languageCode, String userId) async {
   final dbClient = await _dbService.database;
   final now = DateTime.now().toIso8601String();
 
@@ -21,7 +21,7 @@ class LanguageRepository {
   );
 }
 
-Future<String?> getSavedLanguagePreference(int userId) async {
+Future<String?> getSavedLanguagePreference(String userId) async {
   final dbClient = await _dbService.database;
 
   final result = await dbClient.query(

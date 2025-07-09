@@ -33,8 +33,8 @@ class _LoginViewState extends State<LoginView> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-             Color(0xFF2E0249),
-              Color(0xFF3A0CA3),
+             Color(0xFF3A0CA3),
+              Color.fromARGB(255, 22, 5, 63),
               Color(0xFF000000),
             ],
           ),
@@ -68,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
-                          hintText: 'Email veya kullanıcı adı',
+                          hintText: 'Email', // Sadece email ile giriş
                           hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.04),

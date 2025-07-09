@@ -23,7 +23,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4, // Firebase UID migration için version 4
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -32,10 +32,8 @@ class DatabaseService {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
+        id TEXT PRIMARY KEY,
         email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
         display_name TEXT NOT NULL,
         avatar_url TEXT,
         created_at TEXT NOT NULL,
@@ -48,7 +46,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE user_entries (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         content TEXT NOT NULL,
         entry_type TEXT NOT NULL CHECK (entry_type IN (
           'emotion', 'dream', 'personality', 'habit', 'mental', 'stress'
@@ -64,7 +62,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE emotion_analyses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         entry_id INTEGER NOT NULL,
         analysis_type TEXT NOT NULL CHECK (analysis_type IN (
           'emotion', 'personality', 'habit', 'mental', 'stress'
@@ -87,7 +85,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE dream_analyses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         entry_id INTEGER NOT NULL,
         analysis_type TEXT NOT NULL DEFAULT 'dream',
         symbols_json TEXT NOT NULL,
@@ -110,7 +108,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE chat_messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         message TEXT NOT NULL,
         message_type TEXT NOT NULL CHECK (message_type IN ('user', 'ai')),
         timestamp TEXT NOT NULL,
@@ -125,7 +123,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE user_preferences (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         preference_key TEXT NOT NULL,
         preference_value TEXT NOT NULL,
         updated_at TEXT NOT NULL,
@@ -137,7 +135,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE analysis_stats (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         date TEXT NOT NULL,
         analysis_type TEXT NOT NULL,
         model_used TEXT NOT NULL,
@@ -152,7 +150,7 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE user_sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
         session_token TEXT UNIQUE NOT NULL,
         device_info TEXT,
         ip_address TEXT,
@@ -172,10 +170,6 @@ class DatabaseService {
 
     await db.execute('''
       CREATE INDEX idx_users_email ON users (email)
-    ''');
-
-    await db.execute('''
-      CREATE INDEX idx_users_username ON users (username)
     ''');
 
     await db.execute('''
@@ -203,17 +197,15 @@ class DatabaseService {
     ''');
 
     await db.execute('''
-      CREATE INDEX idx_user_sessions_token ON user_sessions (session_token)
+      CREATE INDEX idx_analysis_stats_user_date ON analysis_stats (user_id, date DESC)
     ''');
 
     await db.execute('''
-      CREATE INDEX idx_user_sessions_expires ON user_sessions (expires_at)
+      CREATE INDEX idx_user_sessions_user_token ON user_sessions (user_id, session_token)
     ''');
-
-    await _insertDefaultUser(db);
   }
 
-  Future<void> saveUserPreference(int userId, String key, String value, String updatedAt) async {
+  Future<void> saveUserPreference(String userId, String key, String value, String updatedAt) async {
   final db = await database;
   await db.insert(
     'user_preferences',
@@ -227,7 +219,7 @@ class DatabaseService {
   );
 }
 
-Future<String?> getUserPreference(int userId, String key) async {
+Future<String?> getUserPreference(String userId, String key) async {
   final db = await database;
   final result = await db.query(
     'user_preferences',
@@ -270,6 +262,202 @@ Future<String?> getUserPreference(int userId, String key) async {
       
       debugPrint('✅ dream_analyses tablosuna analysis_type ve model_used sütunları eklendi');
     }
+
+    if (oldVersion < 4) {
+      print('🔄 Veritabanı v4 güncelleniyor: Firebase UID migration...');
+      
+      // Firebase UID migration - tüm user_id alanlarını TEXT'e çevir
+      await _migrateToFirebaseUID(db);
+      
+      debugPrint('✅ Firebase UID migration tamamlandı');
+    }
+  }
+
+  Future<void> _migrateToFirebaseUID(Database db) async {
+    // Geçici tablolar oluştur
+    await db.execute('''
+      CREATE TABLE users_new (
+        id TEXT PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        display_name TEXT NOT NULL,
+        avatar_url TEXT,
+        created_at TEXT NOT NULL,
+        last_login_at TEXT,
+        is_active INTEGER DEFAULT 1 CHECK (is_active IN (0, 1)),
+        user_preferences_json TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE user_entries_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        content TEXT NOT NULL,
+        entry_type TEXT NOT NULL CHECK (entry_type IN (
+          'emotion', 'dream', 'personality', 'habit', 'mental', 'stress'
+        )),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        model_used TEXT,
+        is_analyzed INTEGER DEFAULT 0 CHECK (is_analyzed IN (0, 1))
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE emotion_analyses_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        entry_id INTEGER NOT NULL,
+        analysis_type TEXT NOT NULL CHECK (analysis_type IN (
+          'emotion', 'personality', 'habit', 'mental', 'stress'
+        )),
+        emotions_json TEXT NOT NULL,
+        emotion_reasoning_json TEXT,
+        themes_json TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        advice TEXT NOT NULL,
+        ai_reply TEXT,
+        mind_map_json TEXT NOT NULL,
+        model_used TEXT NOT NULL,
+        analysis_date TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE dream_analyses_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        entry_id INTEGER NOT NULL,
+        analysis_type TEXT NOT NULL DEFAULT 'dream',
+        symbols_json TEXT NOT NULL,
+        symbol_meanings_json TEXT NOT NULL,
+        emotion_scores_json TEXT NOT NULL,
+        themes_json TEXT NOT NULL,
+        subconscious_message TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        advice TEXT NOT NULL,
+        ai_reply TEXT NOT NULL,
+        mind_map_json TEXT NOT NULL,
+        model_used TEXT NOT NULL,
+        analysis_date TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE chat_messages_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        message TEXT NOT NULL,
+        message_type TEXT NOT NULL CHECK (message_type IN ('user', 'ai')),
+        timestamp TEXT NOT NULL,
+        model_used TEXT,
+        analysis_data_json TEXT,
+        session_id TEXT,
+        created_at TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE user_preferences_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        preference_key TEXT NOT NULL,
+        preference_value TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        UNIQUE(user_id, preference_key)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE analysis_stats_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        date TEXT NOT NULL,
+        analysis_type TEXT NOT NULL,
+        model_used TEXT NOT NULL,
+        success_count INTEGER DEFAULT 0,
+        error_count INTEGER DEFAULT 0,
+        created_at TEXT NOT NULL,
+        UNIQUE(user_id, date, analysis_type, model_used)
+      )
+    ''');
+
+    // Demo kullanıcısı için Firebase UID oluştur
+    const demoUID = 'demo_user_firebase_uid';
+    
+    // Verileri yeni tablolara kopyala
+    await db.execute('''
+      INSERT INTO users_new (id, email, display_name, avatar_url, created_at, last_login_at, is_active, user_preferences_json)
+      SELECT ?, email, display_name, avatar_url, created_at, last_login_at, is_active, user_preferences_json
+      FROM users WHERE id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO user_entries_new (user_id, content, entry_type, created_at, updated_at, model_used, is_analyzed)
+      SELECT ?, content, entry_type, created_at, updated_at, model_used, is_analyzed
+      FROM user_entries WHERE user_id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO emotion_analyses_new (user_id, entry_id, analysis_type, emotions_json, emotion_reasoning_json, themes_json, summary, advice, ai_reply, mind_map_json, model_used, analysis_date, created_at)
+      SELECT ?, entry_id, analysis_type, emotions_json, emotion_reasoning_json, themes_json, summary, advice, ai_reply, mind_map_json, model_used, analysis_date, created_at
+      FROM emotion_analyses WHERE user_id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO dream_analyses_new (user_id, entry_id, analysis_type, symbols_json, symbol_meanings_json, emotion_scores_json, themes_json, subconscious_message, summary, advice, ai_reply, mind_map_json, model_used, analysis_date, created_at)
+      SELECT ?, entry_id, analysis_type, symbols_json, symbol_meanings_json, emotion_scores_json, themes_json, subconscious_message, summary, advice, ai_reply, mind_map_json, model_used, analysis_date, created_at
+      FROM dream_analyses WHERE user_id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO chat_messages_new (user_id, message, message_type, timestamp, model_used, analysis_data_json, session_id, created_at)
+      SELECT ?, message, message_type, timestamp, model_used, analysis_data_json, session_id, created_at
+      FROM chat_messages WHERE user_id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO user_preferences_new (user_id, preference_key, preference_value, updated_at)
+      SELECT ?, preference_key, preference_value, updated_at
+      FROM user_preferences WHERE user_id = 1
+    ''', [demoUID]);
+
+    await db.execute('''
+      INSERT INTO analysis_stats_new (user_id, date, analysis_type, model_used, success_count, error_count, created_at)
+      SELECT ?, date, analysis_type, model_used, success_count, error_count, created_at
+      FROM analysis_stats WHERE user_id = 1
+    ''', [demoUID]);
+
+    // Eski tabloları sil
+    await db.execute('DROP TABLE IF EXISTS users');
+    await db.execute('DROP TABLE IF EXISTS user_entries');
+    await db.execute('DROP TABLE IF EXISTS emotion_analyses');
+    await db.execute('DROP TABLE IF EXISTS dream_analyses');
+    await db.execute('DROP TABLE IF EXISTS chat_messages');
+    await db.execute('DROP TABLE IF EXISTS user_preferences');
+    await db.execute('DROP TABLE IF EXISTS analysis_stats');
+    await db.execute('DROP TABLE IF EXISTS user_sessions');
+
+    // Yeni tabloları yeniden adlandır
+    await db.execute('ALTER TABLE users_new RENAME TO users');
+    await db.execute('ALTER TABLE user_entries_new RENAME TO user_entries');
+    await db.execute('ALTER TABLE emotion_analyses_new RENAME TO emotion_analyses');
+    await db.execute('ALTER TABLE dream_analyses_new RENAME TO dream_analyses');
+    await db.execute('ALTER TABLE chat_messages_new RENAME TO chat_messages');
+    await db.execute('ALTER TABLE user_preferences_new RENAME TO user_preferences');
+    await db.execute('ALTER TABLE analysis_stats_new RENAME TO analysis_stats');
+
+    // Index'leri yeniden oluştur
+    await db.execute('CREATE INDEX idx_users_email ON users (email)');
+    await db.execute('CREATE INDEX idx_user_entries_user_type_date ON user_entries (user_id, entry_type, created_at DESC)');
+    await db.execute('CREATE INDEX idx_emotion_analyses_user_id ON emotion_analyses (user_id, entry_id)');
+    await db.execute('CREATE INDEX idx_dream_analyses_user_id ON dream_analyses (user_id, entry_id)');
+    await db.execute('CREATE INDEX idx_chat_messages_user_timestamp ON chat_messages (user_id, timestamp DESC)');
+    await db.execute('CREATE INDEX idx_chat_messages_session ON chat_messages (session_id, timestamp)');
+    await db.execute('CREATE INDEX idx_user_preferences_user_key ON user_preferences (user_id, preference_key)');
+    await db.execute('CREATE INDEX idx_analysis_stats_user_date ON analysis_stats (user_id, date DESC)');
   }
 
   Future<void> _addUserTables(Database db) async {

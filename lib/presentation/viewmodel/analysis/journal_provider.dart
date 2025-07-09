@@ -32,7 +32,7 @@ class JournalViewModel extends ChangeNotifier {
   List<String> get availableModels => _repo.getAvailableModels();
 
   String getModelDisplayName(String modelKey) => _repo.getModelDisplayName(modelKey);
-  int? get _currentUserId => _authService.currentUserId;
+  String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
   void changeModel(String modelKey) {
@@ -76,6 +76,7 @@ class JournalViewModel extends ChangeNotifier {
         entryId: entryId,
         analysisType: "emotion",
         analysis: analysisResult!,
+        modelUsed: selectedModel,
       );
 
       analysisResult = EmotionAnalysisModel(
@@ -176,12 +177,13 @@ class JournalViewModel extends ChangeNotifier {
     }
 
     try {
+      await _analysisRepo.deleteAllUserAnalyses(_currentUserId!);
       analysisHistory.clear();
       notifyListeners();
       debugPrint('Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
-      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
-      debugPrint('Geçmiş temizleme hatası: $e');
+      error = "error_clear_history".tr();
+      notifyListeners();
     }
   }
 
@@ -196,24 +198,23 @@ class JournalViewModel extends ChangeNotifier {
     }
   }
 
-  // Future<List<EmotionAnalysisModel>> getAnalysesByDateRange({
-  //   required DateTime startDate,
-  //   required DateTime endDate,
-  // }) async {
-  //   if (!_isUserLoggedIn || _currentUserId == null) return [];
+  Future<List<EmotionAnalysisModel>> getAnalysesByDateRange({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    if (!_isUserLoggedIn || _currentUserId == null) return [];
 
-  //   try {
-  //     return await _analysisRepo.getEmotionAnalysesByType(
-  //       userId: _currentUserId!,
-  //       analysisType: "emotion",
-  //       startDate: startDate,
-  //       endDate: endDate,
-  //     );
-  //   } catch (e) {
-  //     debugPrint('Tarih aralığı analiz hatası: $e');
-  //     return [];
-  //   }
-  // }
+    try {
+      return await _analysisRepo.getEmotionAnalysesByType(
+        userId: _currentUserId!,
+        analysisType: "emotion",
+        startDate: startDate,
+        endDate: endDate,
+      );
+    } catch (e) {
+      return [];
+    }
+  }
 
   Future<void> onUserAuthChanged() async {
     analysisHistory.clear();
@@ -262,8 +263,8 @@ class JournalViewModel extends ChangeNotifier {
       notifyListeners();
       print('✅ Kullanıcı tercihleri yüklendi: $selectedModel (User ID: $_currentUserId)');
     } catch (e) {
-      print('❌ Tercih yükleme hatası: $e');
       selectedModel = 'mistral-small-3.2';
+      notifyListeners();
     }
   }
 }

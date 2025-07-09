@@ -3,7 +3,6 @@ import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
-import 'package:mind_flow/data/repositories/auth_repository.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
 import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/emotion_analysis_repository.dart';
@@ -40,7 +39,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<AuthService>(() => AuthService());
   
   // Data Repositories
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository());
   getIt.registerLazySingleton<UserEntryRepository>(() => UserEntryRepository());
   getIt.registerLazySingleton<EmotionAnalysisRepository>(() => EmotionAnalysisRepository());
   getIt.registerLazySingleton<DreamAnalysisDataRepository>(() => DreamAnalysisDataRepository());

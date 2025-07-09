@@ -25,7 +25,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
   List<DreamAnalysisModel> analysisHistory = [];
   final TextEditingController textController = TextEditingController();
   List<String> get availableModels => _repo.getAvailableModels();
-  int? get _currentUserId => _authService.currentUserId;
+  String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
   DreamAnalysisProvider(this.getDreamAnalysis) {
@@ -180,12 +180,13 @@ class DreamAnalysisProvider extends ChangeNotifier {
     }
 
     try {
+      await _analysisRepo.clearDreamAnalysisHistory(_currentUserId!);
       analysisHistory.clear();
       notifyListeners();
       debugPrint('✅ Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
-      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
-      debugPrint('❌ Geçmiş temizleme hatası: $e');
+      error = "error_clear_history".tr();
+      notifyListeners();
     }
   }
 

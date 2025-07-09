@@ -7,10 +7,11 @@ class EmotionAnalysisRepository {
   final DatabaseService _dbService = DatabaseService();
 
   Future<int> insertEmotionAnalysis({
-    required int userId,
+    required String userId,
     required int entryId,
     required String analysisType,
     required EmotionAnalysisModel analysis,
+    String? modelUsed,
   }) async {
     final db = await _dbService.database;
 
@@ -35,7 +36,7 @@ class EmotionAnalysisRepository {
   }
 
   Future<int> updateEmotionAnalysis({
-    required int userId,
+    required String userId,
     required int id,
     EmotionAnalysisModel? analysis,
   }) async {
@@ -79,7 +80,7 @@ class EmotionAnalysisRepository {
     return _mapToEmotionAnalysisModel(results.first);
   }
 
-  Future<EmotionAnalysisModel?> getEmotionAnalysisByEntryId(int userId, int entryId) async {
+  Future<EmotionAnalysisModel?> getEmotionAnalysisByEntryId(String userId, int entryId) async {
     final db = await _dbService.database;
     final results = await db.query(
       'emotion_analyses',
@@ -95,7 +96,7 @@ class EmotionAnalysisRepository {
   }
 
   Future<List<EmotionAnalysisModel>> getEmotionAnalysesByType({
-    required int userId,
+    required String userId,
     required String analysisType,
     int? limit,
     DateTime? startDate,
@@ -128,7 +129,7 @@ class EmotionAnalysisRepository {
   }
 
   Future<List<EmotionAnalysisModel>> getAllEmotionAnalyses({
-    required int userId,
+    required String userId,
     int? limit,
     String? analysisType,
   }) async {
@@ -154,7 +155,7 @@ class EmotionAnalysisRepository {
   }
 
   Future<List<Map<String, dynamic>>> getAnalysesWithEntries({
-    required int userId,
+    required String userId,
     String? analysisType,
     int? limit,
   }) async {
@@ -183,7 +184,7 @@ class EmotionAnalysisRepository {
     return results;
   }
 
-  Future<int> deleteEmotionAnalysis(int userId, int id) async {
+  Future<int> deleteEmotionAnalysis(String userId, int id) async {
     final db = await _dbService.database;
     return await db.delete(
       'emotion_analyses',
@@ -192,7 +193,7 @@ class EmotionAnalysisRepository {
     );
   }
 
-  Future<int> deleteEmotionAnalysesByEntryId(int userId, int entryId) async {
+  Future<int> deleteEmotionAnalysesByEntryId(String userId, int entryId) async {
     final db = await _dbService.database;
     return await db.delete(
       'emotion_analyses',
@@ -201,7 +202,7 @@ class EmotionAnalysisRepository {
     );
   }
 
-  Future<int> deleteAllUserAnalyses(int userId) async {
+  Future<int> deleteAllUserAnalyses(String userId) async {
     final db = await _dbService.database;
     return await db.delete(
       'emotion_analyses',
@@ -210,7 +211,7 @@ class EmotionAnalysisRepository {
     );
   }
 
-  Future<Map<String, dynamic>> getEmotionAnalysisStats(int userId) async {
+  Future<Map<String, dynamic>> getEmotionAnalysisStats(String userId) async {
     final db = await _dbService.database;
     
     final totalResult = await db.rawQuery(

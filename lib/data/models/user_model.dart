@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 class User {
-  final int id;
-  final String username;
+  final String id; // Firebase UID - String
   final String email;
   final String displayName;
   final String? avatarUrl;
@@ -13,7 +12,6 @@ class User {
 
   User({
     required this.id,
-    required this.username,
     required this.email,
     required this.displayName,
     this.avatarUrl,
@@ -26,7 +24,6 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      username: json['username'],
       email: json['email'],
       displayName: json['display_name'],
       avatarUrl: json['avatar_url'],
@@ -44,7 +41,6 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'username': username,
       'email': email,
       'display_name': displayName,
       'avatar_url': avatarUrl,
@@ -56,8 +52,7 @@ class User {
   }
 
   User copyWith({
-    int? id,
-    String? username,
+    String? id,
     String? email,
     String? displayName,
     String? avatarUrl,
@@ -68,7 +63,6 @@ class User {
   }) {
     return User(
       id: id ?? this.id,
-      username: username ?? this.username,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,
       avatarUrl: avatarUrl ?? this.avatarUrl,
@@ -81,7 +75,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, email: $email, displayName: $displayName)';
+    return 'User(id: $id, email: $email, displayName: $displayName)';
   }
 
   @override
@@ -96,7 +90,7 @@ class User {
 
 class UserSession {
   final int id;
-  final int userId;
+  final String userId; // Firebase UID - String
   final String sessionToken;
   final String? deviceInfo;
   final String? ipAddress;

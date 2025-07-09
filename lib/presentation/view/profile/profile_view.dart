@@ -33,7 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
             begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF2E0249),
+              
               Color(0xFF3A0CA3),
               Color.fromARGB(255, 22, 5, 63),
               Color(0xFF000000),
@@ -70,7 +70,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         SizedBox(height: screenHeight * 0.02),
                         Text(
-                          _authService.currentUser!.displayName,
+                          _authService.firebaseUser?.displayName ?? '',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         SizedBox(height: screenHeight * 0.01),
                         Text(
-                          _authService.currentUser!.email,
+                          _authService.firebaseUser?.email ?? '',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.7),
                             fontSize: 16,

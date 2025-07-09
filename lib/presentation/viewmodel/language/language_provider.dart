@@ -9,7 +9,7 @@ class LanguageProvider extends ChangeNotifier {
   LanguageProvider(this._repository);
 
   final AuthService _authService = AuthService();
-  int? get _currentUserId => _authService.currentUserId;
+  String? get _currentUserId => _authService.currentUserId;
   Locale _currentLocale = const Locale('en');
   Locale get currentLocale => _currentLocale;
 

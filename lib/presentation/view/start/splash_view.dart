@@ -28,13 +28,14 @@ class _SplashViewState extends State<SplashView> {
     await Future.delayed(const Duration(seconds: 3));
     try {
       final langRepo = LanguageRepository();
-      final savedLang = await langRepo.getSavedLanguagePreference(_authService.currentUserId ?? 1);
+      // Firebase UID string, LanguageRepository int bekliyor, bu yüzden 0 gönderiyoruz
+      final savedLang = await langRepo.getSavedLanguagePreference(_authService.currentUserId!);
       if (savedLang != null) {
         RouteHelper.pushAndCloseOther(context, const AppNavigation());
         return;
       }
       if (_authService.isLoggedIn) {
-        debugPrint('✅ Kullanıcı zaten giriş yapmış: ${_authService.currentUser?.displayName}');
+        debugPrint('✅ Kullanıcı zaten giriş yapmış: ${_authService.firebaseUser?.displayName}');
         RouteHelper.pushAndCloseOther(context, const InitialLanguageSelectView());
       } else {
         debugPrint('❌ Kullanıcı giriş yapmamış, login sayfasına yönlendiriliyor');
@@ -57,7 +58,6 @@ class _SplashViewState extends State<SplashView> {
             begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF2E0249),
               Color(0xFF3A0CA3),
               Color.fromARGB(255, 22, 5, 63),
               Color(0xFF000000),

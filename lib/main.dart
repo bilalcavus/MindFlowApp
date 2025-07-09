@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
+import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/start/splash_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
@@ -18,9 +20,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setupDependencies();
   await _initializeDatabase();
-  await _initializeAuth();
   final userId = getIt<AuthService>().currentUserId;
   final savedLocale = userId != null
       ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
@@ -77,11 +81,4 @@ Future<void> _initializeDatabase() async {
   }
 }
 
-Future<void> _initializeAuth() async {
-  try {
-    final authService = AuthService();
-    await authService.initialize();
-  } catch (e) {
-    debugPrint('❌ Authentication başlatma hatası: $e');
-  }
-}
+

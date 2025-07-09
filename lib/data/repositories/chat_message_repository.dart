@@ -7,9 +7,9 @@ class ChatMessageRepository {
   final DatabaseService _dbService = DatabaseService();
 
   Future<int> insertChatMessage({
-    required int userId,
+    required String userId,
     required String message,
-    required MessageType messageType,
+    required String messageType,
     String? modelUsed,
     Map<String, dynamic>? analysisData,
     String? sessionId,
@@ -22,7 +22,7 @@ class ChatMessageRepository {
       {
         'user_id': userId,
         'message': message,
-        'message_type': messageType.name,
+        'message_type': messageType,
         'timestamp': now.toIso8601String(),
         'model_used': modelUsed,
         'analysis_data_json': analysisData != null ? jsonEncode(analysisData) : null,
@@ -34,7 +34,7 @@ class ChatMessageRepository {
 
   Future<int> insertChatMessageFromModel({
     required ChatMessage chatMessage,
-    int? userId,
+    String? userId,
     String? sessionId,
   }) async {
     final messageUserId = userId ?? chatMessage.userId;
@@ -45,7 +45,7 @@ class ChatMessageRepository {
     return await insertChatMessage(
       userId: messageUserId,
       message: chatMessage.message,
-      messageType: chatMessage.type,
+      messageType: chatMessage.type.name,
       modelUsed: chatMessage.modelUsed,
       analysisData: chatMessage.analysisData,
       sessionId: sessionId,
@@ -64,7 +64,7 @@ class ChatMessageRepository {
     return results.map((row) => _mapToChatMessage(row)).toList();
   }
 
-  Future<List<ChatMessage>> getChatMessagesBySessionAndUser(String sessionId, int userId) async {
+  Future<List<ChatMessage>> getChatMessagesBySessionAndUser(String sessionId, String userId) async {
     final db = await _dbService.database;
     final results = await db.query(
       'chat_messages',
@@ -96,7 +96,7 @@ class ChatMessageRepository {
     return results;
   }
 
-  Future<List<Map<String, dynamic>>> getSessionsForUser(int userId, {int? limit}) async {
+  Future<List<Map<String, dynamic>>> getSessionsForUser(String userId, {int? limit}) async {
     final db = await _dbService.database;
     final results = await db.rawQuery('''
       SELECT 
@@ -128,7 +128,7 @@ class ChatMessageRepository {
     return results.reversed.map((row) => _mapToChatMessage(row)).toList();
   }
 
-  Future<List<ChatMessage>> getRecentMessagesForUser(int userId, {int limit = 50}) async {
+  Future<List<ChatMessage>> getRecentMessagesForUser(String userId, {int limit = 50}) async {
     final db = await _dbService.database;
     final results = await db.query(
       'chat_messages',

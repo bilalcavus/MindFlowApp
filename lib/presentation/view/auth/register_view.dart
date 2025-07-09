@@ -11,7 +11,6 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _displayNameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -22,7 +21,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
     _emailController.dispose();
     _displayNameController.dispose();
     _passwordController.dispose();
@@ -33,7 +31,6 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
-    final theme = Theme.of(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -76,37 +73,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     child: Column(
                       children: [
-                        TextFormField(
-                          controller: _usernameController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.alternate_email, color: Colors.white),
-                            hintText: 'Kullanıcı Adı',
-                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.04),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Kullanıcı adı gerekli';
-                            }
-                            if (value.trim().length < 3) {
-                              return 'Kullanıcı adı en az 3 karakter olmalı';
-                            }
-                            
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
+                        // Username alanı kaldırıldı
                         // Display Name
                         TextFormField(
                           controller: _displayNameController,
@@ -163,7 +130,6 @@ class _RegisterViewState extends State<RegisterView> {
                             if (value == null || value.trim().isEmpty) {
                               return 'Email gerekli';
                             }
-                          
                             return null;
                           },
                         ),
@@ -259,21 +225,31 @@ class _RegisterViewState extends State<RegisterView> {
                           width: double.infinity,
                           height: 52,
                           child: ElevatedButton(
-                            onPressed: provider.isLoading ? null : () async {
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  await provider.handleRegister(
-                                    context,
-                                    username: _usernameController.text.trim(),
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text,
-                                    displayName: _displayNameController.text.trim(),
-                                  );
-                                } catch (e) {
-                                  debugPrint(e.toString());
-                                }
-                              }
-                            },
+                            onPressed: provider.isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      if (_passwordController.text != _confirmPasswordController.text) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Şifreler eşleşmiyor'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                      try {
+                                        await provider.handleRegister(
+                                          context,
+                                          email: _emailController.text.trim(),
+                                          password: _passwordController.text,
+                                          displayName: _displayNameController.text.trim(),
+                                        );
+                                      } catch (e) {
+                                        // Hata zaten provider'da gösteriliyor
+                                      }
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black12,
                               foregroundColor: Colors.white,
@@ -292,7 +268,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     ),
                                   )
                                 : const Text(
-                                    'Hesap Oluştur',
+                                    'Kayıt Ol',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                           ),

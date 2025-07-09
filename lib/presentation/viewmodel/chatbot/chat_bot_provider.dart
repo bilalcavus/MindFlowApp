@@ -26,7 +26,7 @@ class ChatBotProvider extends ChangeNotifier {
   }
 
   List<String> get availableModels => _repo.getAvailableModels();
-  int? get _currentUserId => _authService.currentUserId;
+  String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
   String getModelDisplayName(String modelKey) => _repo.getModelDisplayName(modelKey);

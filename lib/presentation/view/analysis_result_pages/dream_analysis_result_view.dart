@@ -47,7 +47,6 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF2E0249),
               Color(0xFF3A0CA3),
               Color.fromARGB(255, 22, 5, 63),
               Color(0xFF000000),

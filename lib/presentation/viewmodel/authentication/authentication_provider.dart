@@ -28,18 +28,17 @@ class AuthenticationProvider extends ChangeNotifier {
 
     try {
       await authService.login(
-        emailOrUsername: emailController.text.trim(),
+        email: emailController.text.trim(),
         password: passwordController.text,
       );
       // Login başarılı olduğunda kullanıcı zaten authService'de oturum açmış olur
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ Giriş hatası: ${e.toString()}'),
+          content: Text('❌ Giriş hatası:  e.toString()}'),
           backgroundColor: Colors.red,
         ),
       );
-      // Hata durumunda exception'ı yeniden fırlat ki login view'da yakalanabilsin
       rethrow;
     } finally {
       _isLoading = false;
@@ -55,7 +54,7 @@ class AuthenticationProvider extends ChangeNotifier {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ Çıkış hatası: ${e.toString()}'),
+            content: Text('❌ Çıkış hatası:  e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -73,24 +72,21 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       emailController.text = 'demo@mindflow.app';
       passwordController.text = 'demo_password';
-      
       await authService.login(
-        emailOrUsername: 'demo_user',
+        email: 'demo@mindflow.app',
         password: 'demo_password',
       );
-      
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),
           (route) => false,
         );
       }
-      
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Demo girişi başarısız: ${e.toString()}'),
+            content: Text('Demo girişi başarısız:  e.toString()}'),
             backgroundColor: Colors.orange,
           ),
         );
@@ -102,12 +98,11 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> handleRegister(BuildContext context, {required String username, required String email, required String password, required String displayName}) async {
+  Future<void> handleRegister(BuildContext context, {required String email, required String password, required String displayName}) async {
     _isLoading = true;
     notifyListeners();
     try {
       await authService.register(
-        username: username,
         email: email,
         password: password,
         displayName: displayName,
@@ -122,12 +117,11 @@ class AuthenticationProvider extends ChangeNotifier {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ Kayıt hatası: ${e.toString()}'),
+            content: Text('❌ Kayıt hatası:  e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
       }
-      // Hata durumunda exception'ı yeniden fırlat
       rethrow;
     } finally {
       _isLoading = false;
