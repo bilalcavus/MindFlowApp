@@ -7,6 +7,7 @@ import 'package:mind_flow/presentation/view/analysis_result_pages/dream_analysis
 import 'package:mind_flow/presentation/view/analysis_result_pages/journal_analysis_result_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -158,7 +159,8 @@ class JournalHistoryTab extends StatelessWidget {
           onClear: () => _showClearDialog(context, () => vm.clearHistory()),
           itemBuilder: (context, index) {
             final analysis = vm.analysisHistory[index];
-            return _buildAnalysisCard(
+            return LiquidGlassCard(children: [
+              _buildAnalysisCard(
               context: context,
               title: analysis.summary.isNotEmpty
                   ? analysis.summary
@@ -173,7 +175,9 @@ class JournalHistoryTab extends StatelessWidget {
                   ),
                 );
               },
-            );
+            ),
+            ]);
+            
           },
         );
       },
@@ -209,7 +213,8 @@ class DreamHistoryTab extends StatelessWidget {
           onClear: () => _showClearDialog(context, () => vm.clearHistory()),
           itemBuilder: (context, index) {
             final analysis = vm.analysisHistory[index];
-            return _buildAnalysisCard(
+            return LiquidGlassCard(children: [
+               _buildAnalysisCard(
               context: context,
               title: analysis.summary.isNotEmpty
                   ? analysis.summary
@@ -226,13 +231,17 @@ class DreamHistoryTab extends StatelessWidget {
                   ),
                 );
               },
-            );
+            ),
+            ]);
+           
           },
         );
       },
     );
   }
 }
+
+
 
 Widget _buildEmptyState({
   required BuildContext context,
@@ -328,83 +337,80 @@ Widget _buildAnalysisCard({
   IconData icon = Iconsax.heart,
   Color iconColor = Colors.red,
 }) {
-  return Card(
-    color: const Color.fromARGB(255, 29, 24, 43),
-    child: ListTile(
-      leading: Container(
-        width: context.dynamicWidth(.08),
-        height: context.dynamicHeight(.08),
-        decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(context.dynamicHeight(0.3)),
-        ),
-        child: Icon(
-          icon,
-          color: iconColor,
-        ),
+  return ListTile(
+    leading: Container(
+      width: context.dynamicWidth(.08),
+      height: context.dynamicHeight(.08),
+      decoration: BoxDecoration(
+        color: iconColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(context.dynamicHeight(0.3)),
       ),
-      title: Text(
-        title,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+      child: Icon(
+        icon,
+        color: iconColor,
       ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: context.dynamicHeight(.01)),
-          Row(
-            children: [
-              Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 4),
-              Text(
-                modelUsed,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 4),
-              Text(
-                '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          if (themes.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: themes.take(3).map((theme) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    theme,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
-                    ),
-                  ),
-                );
-              }).toList(),
+    ),
+    title: Text(
+      title,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(fontWeight: FontWeight.w600),
+    ),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: context.dynamicHeight(.01)),
+        Row(
+          children: [
+            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
+            Text(
+              modelUsed,
+              style: TextStyle(color: Colors.grey[600]),
             ),
           ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Icon(HugeIcons.strokeRoundedTime04, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
+            Text(
+              '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ],
+        ),
+        if (themes.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: themes.take(3).map((theme) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  theme,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.blue,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ],
-      ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap,
+      ],
     ),
+    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    onTap: onTap,
   );
 }
 
@@ -412,6 +418,7 @@ void _showClearDialog(BuildContext context, Future<void> Function() onClear) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
+      backgroundColor: Color.fromARGB(255, 25, 14, 45),
       title: const Text('Geçmişi Temizle'),
       content: const Text(
         'Bu kategorideki tüm analiz geçmişini silmek istediğinizden emin misiniz?\n\n'

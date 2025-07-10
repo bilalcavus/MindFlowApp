@@ -21,6 +21,7 @@
     "no_dream_history": "Henüz rüya analizi geçmişi yok",
     "write_dream_first": "İlk analizi yapmak için bir rüya yazın!",
     "refresh": "Yenile",
+    "analysis_date": "Analiz Tarihi: ",
     "clear_history": "Geçmişi Temizle",
     "error_empty_text": "Lütfen analiz edilecek bir metin girin",
     "error_login_required": "Analiz yapabilmek için lütfen giriş yapın",
@@ -44,5 +45,18 @@
     "continue": "Devam Et",
     "you_can_change_later": "Bunu daha sonra ayarlardan değiştirebilirsiniz",
     "login-with-google": "Google ile giriş yap",
-    "google_signin_failed": "Google girişi iptal edildi ya da başarısız oldu."
+    "google_signin_failed": "Google girişi iptal edildi ya da başarısız oldu.",
+    "analyzing": "Analiz Ediliyor...",
+    "error_with_message": "Hata: {error}",
+    "try_again": "Tekrar Dene",
+    "loading_analysis": "Analiz yükleniyor...",
+    "summary_title": "📝 Özet",
+    "main_themes_title": "🧩 Ana Temalar",
+    "advice_title": "💡 Tavsiye",
+    "mind_map_title": "🧠 Zihin Haritası",
+    "symbols_title": "🔮 Semboller",
+    "emotion_scores_title": "🎭 Duygu Skorları",
+    "symbol_meanings_title": "📖 Sembol Anlamları",
+    "subconscious_message_title": "🧠 Bilinçaltı Mesajı",
+    "ai_reply_title": "🤖 AI Cevabı"
 }

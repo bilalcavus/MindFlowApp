@@ -116,20 +116,27 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               children: [
                 Container(
-                  width: context.dynamicHeight(.056),
-                  height: context.dynamicHeight(.056),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 43, 30, 87),
-                    shape: BoxShape.circle,
-                    
+                  height: context.dynamicHeight(0.06),
+                  width: context.dynamicWidth(0.15),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.07),
+                    borderRadius: BorderRadius.circular(context.dynamicHeight(.02)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.white.withOpacity(0.08)),
                   ),
                   child: Center(
-                    child: Icon(getModelIcon(modelKey), color: Colors.white, size: context.dynamicHeight(0.032)),
+                    child: Icon(getModelIcon(modelKey), color: Colors.white, size: context.dynamicHeight(0.045)),
                   ),
                 ),
                 SizedBox(height: context.dynamicHeight(.005)),
                 SizedBox(
-                  width:context.dynamicWidth(.16),
+                  width:context.dynamicWidth(.18),
                   child: Text(
                     modelName,
                     style: TextStyle(

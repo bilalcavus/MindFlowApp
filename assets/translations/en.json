@@ -21,6 +21,7 @@
     "no_dream_history": "No dream analysis history yet",
     "write_dream_first": "Write a dream to make your first analysis!",
     "refresh": "Refresh",
+    "analysis_date": "Analysis Date: ",
     "clear_history": "Clear History",
     "error_empty_text": "Please enter text to analyze",
     "error_login_required": "Please log in to perform analysis",
@@ -44,5 +45,18 @@
     "continue": "Continue",
     "you_can_change_later": "You can change this later in settings",
     "login-with-google": "Login with Google",
-    "google_signin_failed": "Google login was canceled or failed."
+    "google_signin_failed": "Google login was canceled or failed.",
+    "analyzing": "Analyzing...",
+    "error_with_message": "Error: {error}",
+    "try_again": "Try Again",
+    "loading_analysis": "Loading analysis...",
+    "summary_title": "📝 Summary",
+    "main_themes_title": "🧩 Main Themes",
+    "advice_title": "💡 Advice",
+    "mind_map_title": "🧠 Mind Map",
+    "symbols_title": "🔮 Symbols",
+    "emotion_scores_title": "🎭 Emotion Scores",
+    "symbol_meanings_title": "📖 Symbol Meanings",
+    "subconscious_message_title": "🧠 Subconscious Message",
+    "ai_reply_title": "🤖 AI Reply"
 }

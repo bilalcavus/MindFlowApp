@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +21,6 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
   void initState() {
     super.initState();
     if (widget.analysisId != null) {
-      debugPrint('🚀 JournalAnalysisScreen başlatıldı: ID ${widget.analysisId}');
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final provider = context.read<JournalViewModel>();
         provider.loadAnalysisById(widget.analysisId!);
@@ -32,7 +34,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
     final vm = Provider.of<JournalViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Duygu Analizi', style: Theme.of(context).textTheme.bodyLarge),
+        title: Text('analysis_emotion_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
         backgroundColor: const Color(0xFF1A0025),
         foregroundColor: Colors.white,
       ),
@@ -53,13 +55,13 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
         child: Builder(
           builder: (_) {
             if (vm.isLoading) {
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Analiz Ediliyor...'),
+                    const CircularProgressIndicator(),
+                    SizedBox(height: context.dynamicHeight(0.02)),
+                    Text('analyzing'.tr()),
                   ],
                 ),
               );
@@ -71,16 +73,16 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.error, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
-                      "Hata: ${vm.error}",
-                      style: const TextStyle(fontSize: 16),
+                      "error_with_message".tr(namedArgs: {"error": vm.error ?? ""}),
+                      style: TextStyle(fontSize: context.dynamicWidth(0.04)),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     ElevatedButton(
                       onPressed: () => vm.analyzeText(vm.textController.text),
-                      child: const Text('Tekrar Dene'),
+                      child: Text('try_again'.tr()),
                     ),
                   ],
                 ),
@@ -93,16 +95,16 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.psychology, size: 64, color: Colors.grey),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
                       widget.analysisId != null 
-                          ? 'Analiz yükleniyor...'
-                          : 'Analiz sonucu görüntülemek için günlük yazın',
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                          ? 'loading_analysis'.tr()
+                          : 'write_journal_first'.tr(),
+                      style: TextStyle(fontSize: context.dynamicWidth(0.04), color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                     if (widget.analysisId != null) ...[
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.dynamicHeight(0.02)),
                       const CircularProgressIndicator(),
                     ],
                   ],
@@ -113,73 +115,45 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
             final result = vm.analysisResult!;
         
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.dynamicWidth(0.04)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Model
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.smart_toy, color: Colors.deepPurple),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Model: ${vm.getModelDisplayName(result.modelUsed)}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-        
-                  // Özet
                   if (result.summary.isNotEmpty)
-                    _buildSectionCard('📝 Özet', result.summary, Colors.blue),
-        
-                  // // Duygular
-                  // _buildSectionCard(
-                  //   '🎭 Duygular',
-                  //   result.emotions.join(', '),
-                  //   Colors.red,
-                  // ),
-        
-                  // _buildSectionCard(
-                  //   '🎭 Duygu Skoru',
-                  //   result.emotions.join(', '),
-                  //   Colors.red,
-                  // ),
-        
-                  // Temalar
+                    _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
+                    
+                  SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard(
-                    '🧩 Ana Temalar',
+                    'main_themes_title'.tr(),
                     result.themes.join(', '),
                     Colors.green,
                   ),
-        
-                  // Tavsiye
+                  SizedBox(height: context.dynamicHeight(0.05)),
+                  SizedBox(
+                  height: context.dynamicHeight(0.3),
+                  child: RadarChartWidget(result: result)),
+              SizedBox(height: context.dynamicHeight(0.02)),
+              LiquidGlassCard(children: [
+                ...result.emotions.entries.map((e) => Padding(
+                  padding: EdgeInsets.all(context.dynamicWidth(0.02)),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(e.key),
+                    Text("%${e.value}"),
+                      ],
+                    ),
+                )
+                  ),
+              ]),
+                  SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard(
-                    '💡 Tavsiye',
+                    'advice_title'.tr(),
                     result.advice,
                     Colors.orange,
                   ),
-        
-                  // Zihin Haritası
+                  SizedBox(height: context.dynamicHeight(0.015)),
                   _buildMindMapCard(result.mindMap),
-                  SizedBox(
-                height: 250,
-                child: RadarChartWidget(result: result),
-              ),
-              const SizedBox(height: 16),
-              ...result.emotions.entries.map((e) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(e.key),
-                  Text("%${e.value}"),
-                ],
-              )),
                 ],
               ),
             );
@@ -190,72 +164,73 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
   }
 
   Widget _buildSectionCard(String title, String content, Color color) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return LiquidGlassCard(
+      children: [
+         Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.circle, size: 12, color: color),
-                const SizedBox(width: 8),
+                Icon(Icons.circle, size: context.dynamicWidth(0.03)),
+                SizedBox(width: context.dynamicWidth(0.02)),
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: context.dynamicHeight(0.01)),
             Text(content),
           ],
         ),
       ),
-    );
-  }
+    ],
+  );
+}
 
   Widget _buildMindMapCard(Map<String, List<String>> mindMap) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return LiquidGlassCard(
+      children: [
+        Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.circle, size: 12, color: Colors.purple),
-                SizedBox(width: 8),
+                Icon(Icons.circle, size: context.dynamicWidth(0.03)),
+                SizedBox(width: context.dynamicWidth(0.02)),
                 Text(
-                  '🧠 Zihin Haritası',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'mind_map_title'.tr(),
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.dynamicHeight(0.02)),
             ...mindMap.entries.map((entry) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       '📌 ${entry.key}',
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: context.dynamicWidth(0.035),
                         fontWeight: FontWeight.bold,
                         color: Colors.purple,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: context.dynamicHeight(0.005)),
                     ...entry.value.map(
                       (subItem) => Padding(
-                        padding: const EdgeInsets.only(left: 16, top: 2),
+                        padding: EdgeInsets.only(left: context.dynamicWidth(0.04), top: context.dynamicHeight(0.002)),
                         child: Row(
                           children: [
                             const Text('• ', style: TextStyle(color: Colors.grey)),
-                            Expanded(child: Text(subItem)),
+                             Expanded(child: Text(subItem)),
                           ],
                         ),
                       ),
@@ -267,6 +242,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
           ],
         ),
       ),
+      ],
     );
   }
 }

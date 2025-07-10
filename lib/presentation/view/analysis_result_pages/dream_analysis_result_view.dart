@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
+import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +38,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
     final provider = context.watch<DreamAnalysisProvider>();
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Rüya Analizi', style: Theme.of(context).textTheme.bodyLarge,),
+        title:  Text('analysis_dream_title'.tr(), style: Theme.of(context).textTheme.bodyLarge,),
         backgroundColor: const Color(0xFF1A0025),
         foregroundColor: Colors.white,
       ),
@@ -56,13 +59,13 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
         child: Builder(
           builder: (_) {
             if (provider.isLoading) {
-              return const Center(
+              return  Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Analiz Ediliyor...'),
+                    const CircularProgressIndicator(),
+                    SizedBox(height: context.dynamicHeight(0.02)),
+                    Text('analyzing'.tr()),
                   ],
                 ),
               );
@@ -73,17 +76,17 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
+                    Icon(Icons.error, size: context.dynamicWidth(0.06), color: Colors.red),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
-                      "Hata: ${provider.error}",
-                      style: const TextStyle(fontSize: 16),
+                      "error_with_message".tr(namedArgs: {"error": provider.error ?? ""}),
+                      style: TextStyle(fontSize: context.dynamicWidth(0.04)),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     ElevatedButton(
                       onPressed: () => provider.dreamAnalyzeText(provider.textController.text),
-                      child: const Text('Tekrar Dene'),
+                      child: Text('try_again'.tr()),
                     ),
                   ],
                 ),
@@ -95,17 +98,17 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.psychology, size: 64, color: Colors.grey),
-                    const SizedBox(height: 16),
+                    Icon(Icons.psychology, size: context.dynamicWidth(0.06), color: Colors.grey),
+                    SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
                       widget.analysisId != null 
-                          ? 'Analiz yükleniyor...'
-                          : 'Analiz sonucu görüntülemek için günlük yazın',
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                          ? 'loading_analysis'.tr()
+                          : 'write_dream_first'.tr(),
+                      style: TextStyle(fontSize: context.dynamicWidth(0.04), color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                     if (widget.analysisId != null) ...[
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.dynamicHeight(0.02)),
                       const CircularProgressIndicator(),
                     ],
                   ],
@@ -116,117 +119,117 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
             final result = provider.analysisResult!;
         
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(context.dynamicWidth(0.04)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(context.dynamicWidth(0.04)),
                     child: Row(
                       children: [
                         const Icon(Iconsax.calendar, color: Colors.deepPurple),
-                        const SizedBox(width: 8),
+                        SizedBox(width: context.dynamicWidth(0.02)),
                         Text(
-                          'Analiz Tarihi: '
-                          '${result.analysisDate.day.toString().padLeft(2, '0')}/'
-                          '${result.analysisDate.month.toString().padLeft(2, '0')}/'
-                          '${result.analysisDate.year}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: context.dynamicHeight(0.02)),
         
                   if (result.symbols.isNotEmpty)
-                    _buildSectionCard('🔮 Semboller', result.symbols.join(', '), Colors.teal),
-        
+                    _buildSectionCard('symbols_title'.tr(), result.symbols.join(', '), Colors.teal),
+                  SizedBox(height: context.dynamicHeight(0.015)),
                   if (result.emotionScores.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(Icons.emoji_emotions, size: 12, color: Colors.red),
-                              SizedBox(width: 8),
-                              Text(
-                                '🎭 Duygu Skorları',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                    LiquidGlassCard(
+                      children: [
+                        Padding(
+                        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.emoji_emotions, size: context.dynamicWidth(0.03), color: Colors.red),
+                                SizedBox(width: context.dynamicWidth(0.02)),
+                                Text(
+                                  'emotion_scores_title'.tr(),
+                                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: context.dynamicHeight(0.01)),
+                            ...result.emotionScores.entries.map((e) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(e.key),
+                                    Text('%${e.value}'),
+                                  ],
+                                )),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 8),
-                          ...result.emotionScores.entries.map((e) => Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(e.key),
-                                  Text('%${e.value}'),
-                                ],
-                              )),
                         ],
                       ),
-                    ),
-        
+                      SizedBox(height: context.dynamicHeight(0.03)),
                     if (result.emotionScores.isNotEmpty)
                     SizedBox(
-                      height: 250,
+                      height: context.dynamicHeight(0.3),
                       child: RadarChartWidget(result: result),
                     ),
         
                   if (result.symbolMeanings.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(Icons.menu_book, size: 12, color: Colors.brown),
-                              SizedBox(width: 8),
-                              Text(
-                                '📖 Sembol Anlamları',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          ...result.symbolMeanings.entries.map((e) => Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('• ', style: TextStyle(color: Colors.grey[700])),
-                                    Expanded(
-                                      child: Text(
-                                        '${e.key}: ${e.value}',
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                    ),
-                                  ],
+                    LiquidGlassCard(
+                      children: [
+                        Padding(
+                        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.menu_book, size: context.dynamicWidth(0.03), color: Colors.brown),
+                                SizedBox(width: context.dynamicWidth(0.02)),
+                                Text(
+                                  'symbol_meanings_title'.tr(),
+                                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
                                 ),
-                              )),
-                        ],
+                              ],
+                            ),
+                            SizedBox(height: context.dynamicHeight(0.01)),
+                            ...result.symbolMeanings.entries.map((e) => Padding(
+                                  padding: EdgeInsets.only(bottom: context.dynamicHeight(0.005)),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('• ', style: TextStyle(color: Colors.grey[700])),
+                                      Expanded(
+                                        child: Text(
+                                          '${e.key}: ${e.value}',
+                                          style: TextStyle(fontSize: context.dynamicWidth(0.035)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
                       ),
+                      ],
                     ),
-        
-                  // if (result.themes.isNotEmpty)
-                    _buildSectionCard('🧩 Ana Temalar', result.themes.join(', '), Colors.green),
-        
-                  // if (result.subconsciousMessage.isNotEmpty)
-                    _buildSectionCard('🧠 Bilinçaltı Mesajı', result.subconsciousMessage, Colors.purple),
-        
-                  // if (result.summary.isNotEmpty)
-                    _buildSectionCard('📝 Özet', result.summary, Colors.blue),
-        
-                  // if (result.advice.isNotEmpty)
-                    _buildSectionCard('💡 Tavsiye', result.advice, Colors.orange),
-        
-                  // if (result.aiReply.isNotEmpty)
-                    _buildSectionCard('🤖 AI Cevabı', result.aiReply, Colors.indigo),
-        
-                  // if (result.mindMap.isNotEmpty)
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    _buildSectionCard('main_themes_title'.tr(), result.themes.join(', '), Colors.green),
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    _buildSectionCard('subconscious_message_title'.tr(), result.subconsciousMessage, Colors.purple),
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    _buildSectionCard('advice_title'.tr(), result.advice, Colors.orange),
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    _buildSectionCard('ai_reply_title'.tr(), result.aiReply, Colors.indigo),
+                    SizedBox(height: context.dynamicHeight(0.015)),
+                    
                     _buildMindMapCard(result.mindMap),
                   
                 ],
@@ -239,65 +242,69 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
   }
 
   Widget _buildSectionCard(String title, String content, Color color) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.circle, size: 12, color: color),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(content),
-        ],
+    return LiquidGlassCard(
+      children: [
+        Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.circle, size: context.dynamicWidth(0.03), color: color),
+                SizedBox(width: context.dynamicWidth(0.02)),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: context.dynamicHeight(0.01)),
+            Text(content),
+          ],
+        ),
       ),
+      ],
     );
   }
 
   Widget _buildMindMapCard(Map<String, List<String>> mindMap) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return LiquidGlassCard(
+      children: [
+        Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.circle, size: 12, color: Colors.purple),
-                SizedBox(width: 8),
+                Icon(Icons.circle, size: context.dynamicWidth(0.03), color: Colors.purple),
+                SizedBox(width: context.dynamicWidth(0.02)),
                 Text(
-                  '🧠 Zihin Haritası',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'mind_map_title'.tr(),
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: context.dynamicHeight(0.02)),
             ...mindMap.entries.map((entry) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       '📌 ${entry.key}',
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: context.dynamicWidth(0.035),
                         fontWeight: FontWeight.bold,
                         color: Colors.purple,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: context.dynamicHeight(0.005)),
                     ...entry.value.map(
                       (subItem) => Padding(
-                        padding: const EdgeInsets.only(left: 16, top: 2),
+                        padding: EdgeInsets.only(left: context.dynamicWidth(0.04), top: context.dynamicHeight(0.002)),
                         child: Row(
                           children: [
                             const Text('• ', style: TextStyle(color: Colors.grey)),
@@ -313,6 +320,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
           ],
         ),
       ),
+      ],
     );
   }
 }

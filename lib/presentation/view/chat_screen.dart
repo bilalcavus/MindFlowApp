@@ -47,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Color(0xFF2E0249),
         title: Text(
           provider.getModelDisplayName(provider.selectedModel), 
           style: TextStyle(fontSize: context.dynamicHeight(0.02))
@@ -84,7 +85,6 @@ class _ChatScreenState extends State<ChatScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF2E0249),
               Color(0xFF3A0CA3),
               Color.fromARGB(255, 22, 5, 63),
               Color(0xFF000000),

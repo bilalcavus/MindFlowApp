@@ -8,6 +8,7 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -25,22 +26,7 @@ class _ProfileViewState extends State<ProfileView> {
     final screenSize = MediaQuery.of(context).size;
     final screenHeight = screenSize.height;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: [
-              
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-
-            ],
-          ),
-        ),
+      body: ScreenBackground(
         child: SafeArea(
           child: Column(
             children: [
