@@ -42,5 +42,7 @@
     "terms_and_conditions": "Kullanım Şartları",
     "log_out": "Çıkış Yap",
     "continue": "Devam Et",
-    "you_can_change_later": "Bunu daha sonra ayarlardan değiştirebilirsiniz"
+    "you_can_change_later": "Bunu daha sonra ayarlardan değiştirebilirsiniz",
+    "login-with-google": "Google ile giriş yap",
+    "google_signin_failed": "Google girişi iptal edildi ya da başarısız oldu."
 }

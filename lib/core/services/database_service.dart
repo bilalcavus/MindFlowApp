@@ -234,7 +234,6 @@ Future<String?> getUserPreference(String userId, String key) async {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      print('🔄 Veritabanı güncelleniyor: v$oldVersion -> v$newVersion');
       
       await _backupExistingData(db);
       
@@ -246,7 +245,6 @@ Future<String?> getUserPreference(String userId, String key) async {
     }
     
     if (oldVersion < 3) {
-      print('🔄 Veritabanı v3 güncelleniyor: dream_analyses tablosuna analysis_type sütunu ekleniyor...');
       
       // Add analysis_type column to dream_analyses table
       await _addColumnIfNotExists(db, 'dream_analyses', 'analysis_type', 'TEXT DEFAULT "dream"');
@@ -264,11 +262,7 @@ Future<String?> getUserPreference(String userId, String key) async {
     }
 
     if (oldVersion < 4) {
-      print('🔄 Veritabanı v4 güncelleniyor: Firebase UID migration...');
-      
-      // Firebase UID migration - tüm user_id alanlarını TEXT'e çevir
       await _migrateToFirebaseUID(db);
-      
       debugPrint('✅ Firebase UID migration tamamlandı');
     }
   }
@@ -524,13 +518,12 @@ Future<String?> getUserPreference(String userId, String key) async {
       final columnExists = tableInfo.any((column) => column['name'] == columnName);
       
       if (!columnExists) {
-        print('📝 $tableName tablosuna $columnName sütunu ekleniyor...');
         await db.execute('ALTER TABLE $tableName ADD COLUMN $columnName $columnDefinition');
       } else {
-        print('✅ $tableName.$columnName sütunu zaten mevcut');
+        debugPrint('✅ $tableName.$columnName sütunu zaten mevcut');
       }
     } catch (e) {
-      print('⚠️ $tableName.$columnName sütunu eklenirken hata: $e');
+      debugPrint('⚠️ $tableName.$columnName sütunu eklenirken hata: $e');
     }
   }
 
@@ -560,7 +553,7 @@ Future<String?> getUserPreference(String userId, String key) async {
         'id': 1,
         'username': 'demo_user',
         'email': 'demo@mindflow.app',
-        'password_hash': 'demo_hash', // Demo için basit hash
+        'password_hash': 'demo_hash',
         'display_name': 'Demo Kullanıcı',
         'created_at': now,
         'last_login_at': now,

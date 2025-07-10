@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class User {
-  final String id; // Firebase UID - String
+  final String id;
   final String email;
   final String displayName;
   final String? avatarUrl;
@@ -90,7 +90,7 @@ class User {
 
 class UserSession {
   final int id;
-  final String userId; // Firebase UID - String
+  final String userId;
   final String sessionToken;
   final String? deviceInfo;
   final String? ipAddress;

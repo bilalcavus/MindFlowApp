@@ -241,9 +241,7 @@ class UserPreferencesRepository {
     return await setBoolPreference(userId, prefAnalyticsEnabled, enabled);
   }
 
-  // Varsayılan tercihleri oluştur
   Future<void> createDefaultPreferences(String userId) async {
-    final now = DateTime.now().toIso8601String();
 
     final defaultPrefs = [
       {'key': prefSelectedModel, 'value': 'mistral-small-3.2'},

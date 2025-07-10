@@ -64,23 +64,15 @@ class DreamAnalysisDataRepository {
   }
 
   Future<DreamAnalysisModel?> getDreamAnalysisById(int id) async {
-    final db = await _dbService.database;
-    print('🔍 Veritabanında analiz aranıyor: ID $id');
-    
+    final db = await _dbService.database;    
     final results = await db.query(
       'dream_analyses',
       where: 'id = ?',
       whereArgs: [id],
     );
-
-    print('📊 Sorgu sonucu: ${results.length} kayıt bulundu');
-    
     if (results.isEmpty) {
-      print('❌ Analiz bulunamadı: ID $id');
       return null;
     }
-
-    print('✅ Analiz bulundu: ID $id');
     return _mapToDreamAnalysisModel(results.first);
   }
 

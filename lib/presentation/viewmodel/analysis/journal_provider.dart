@@ -261,7 +261,6 @@ class JournalViewModel extends ChangeNotifier {
     try {
       selectedModel = await _prefsRepo.getSelectedModel(_currentUserId!);
       notifyListeners();
-      print('✅ Kullanıcı tercihleri yüklendi: $selectedModel (User ID: $_currentUserId)');
     } catch (e) {
       selectedModel = 'mistral-small-3.2';
       notifyListeners();

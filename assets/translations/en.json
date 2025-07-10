@@ -42,5 +42,7 @@
     "terms_and_conditions": "Terms and Conditions",
     "log_out": "Log out",
     "continue": "Continue",
-    "you_can_change_later": "You can change this later in settings"
+    "you_can_change_later": "You can change this later in settings",
+    "login-with-google": "Login with Google",
+    "google_signin_failed": "Google login was canceled or failed."
 }

@@ -12,7 +12,20 @@
           "package_name": "com.example.mind_flow"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "579921522050-8su6bbvj3ue8ji4urtou4bqrigl4dab2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mind_flow",
+            "certificate_hash": "e2d99068264d401fafb32edd8834d3b606c840e5"
+          }
+        },
+        {
+          "client_id": "579921522050-mk91e9c4escdmbl9f6jg1a5tj6fhk7l5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAXTwJaphhv3amBy9Hun8qFw27BEe8s9Yg"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579921522050-mk91e9c4escdmbl9f6jg1a5tj6fhk7l5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "579921522050-all2s191kk6cf2oj77ege1im368u1q5o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mindFlow"
+              }
+            }
+          ]
         }
       }
     }

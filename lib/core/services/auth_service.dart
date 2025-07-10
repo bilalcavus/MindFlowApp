@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mind_flow/data/models/user_model.dart';
 
 class AuthService {
@@ -7,12 +8,12 @@ class AuthService {
   AuthService._internal();
 
   final fb.FirebaseAuth _firebaseAuth = fb.FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   fb.User? get firebaseUser => _firebaseAuth.currentUser;
   String? get currentUserId => firebaseUser?.uid;
   bool get isLoggedIn => firebaseUser != null;
 
-  // Kayıt
   Future<User> register({
     required String email,
     required String password,
@@ -26,7 +27,7 @@ class AuthService {
     await cred.user?.reload();
     final user = _firebaseAuth.currentUser;
     return User(
-      id: user!.uid, // Firebase UID'yi doğrudan kullan
+      id: user!.uid,
       email: user.email ?? '',
       displayName: user.displayName ?? '',
       avatarUrl: user.photoURL,
@@ -37,7 +38,6 @@ class AuthService {
     );
   }
 
-  // Giriş
   Future<User> login({
     required String email,
     required String password,
@@ -48,7 +48,7 @@ class AuthService {
     );
     final user = cred.user;
     return User(
-      id: user!.uid, // Firebase UID'yi doğrudan kullan
+      id: user!.uid,
       email: user.email ?? '',
       displayName: user.displayName ?? '',
       avatarUrl: user.photoURL,
@@ -59,12 +59,10 @@ class AuthService {
     );
   }
 
-  // Çıkış
   Future<void> logout() async {
     await _firebaseAuth.signOut();
   }
 
-  // Profil güncelleme
   Future<void> updateProfile({
     String? displayName,
     String? photoUrl,
@@ -78,8 +76,52 @@ class AuthService {
     await firebaseUser?.reload();
   }
 
-  // Şifre değiştirme
   Future<void> changePassword(String newPassword) async {
     await firebaseUser?.updatePassword(newPassword);
+  }
+
+  Future<User> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      
+      if (googleUser == null) {
+        throw Exception('Google Sign-In iptal edildi');
+      }
+
+      // Google Sign-In kimlik bilgilerini al
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Firebase kimlik bilgilerini oluştur
+      final credential = fb.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Firebase ile giriş yap
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final user = userCredential.user;
+
+      if (user == null) {
+        throw Exception('Google Sign-In başarısız');
+      }
+
+      return User(
+        id: user.uid,
+        email: user.email ?? '',
+        displayName: user.displayName ?? '',
+        avatarUrl: user.photoURL,
+        createdAt: DateTime.now(),
+        lastLoginAt: null,
+        isActive: true,
+        userPreferences: null,
+      );
+    } catch (e) {
+      throw Exception('Google Sign-In hatası: $e');
+    }
+  }
+
+  Future<void> signOutGoogle() async {
+    await _googleSignIn.signOut();
+    await _firebaseAuth.signOut();
   }
 } 

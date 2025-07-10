@@ -225,7 +225,7 @@ class _RegisterViewState extends State<RegisterView> {
                           width: double.infinity,
                           height: 52,
                           child: ElevatedButton(
-                            onPressed: provider.isLoading
+                            onPressed: provider.isEmailLoading
                                 ? null
                                 : () async {
                                     if (_formKey.currentState!.validate()) {
@@ -258,7 +258,7 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                               elevation: 4,
                             ),
-                            child: provider.isLoading
+                            child: provider.isEmailLoading
                                 ? const SizedBox(
                                     width: 24,
                                     height: 24,

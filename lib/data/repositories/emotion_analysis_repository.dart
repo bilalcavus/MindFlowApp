@@ -60,23 +60,15 @@ class EmotionAnalysisRepository {
   }
 
   Future<EmotionAnalysisModel?> getEmotionAnalysisById(int id) async {
-    final db = await _dbService.database;
-    print('🔍 Veritabanında emotion analizi aranıyor: ID $id');
-    
+    final db = await _dbService.database;    
     final results = await db.query(
       'emotion_analyses',
       where: 'id = ?',
       whereArgs: [id],
     );
-
-    print('📊 Emotion sorgu sonucu: ${results.length} kayıt bulundu');
-    
     if (results.isEmpty) {
-      print('❌ Emotion analizi bulunamadı: ID $id');
       return null;
     }
-
-    print('✅ Emotion analizi bulundu: ID $id');
     return _mapToEmotionAnalysisModel(results.first);
   }
 

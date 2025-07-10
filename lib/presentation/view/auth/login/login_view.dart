@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/app_navigation.dart';
@@ -8,7 +8,6 @@ import 'package:mind_flow/presentation/viewmodel/authentication/authentication_p
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:provider/provider.dart';
 
-part 'login_button.dart';
 part 'login_text_field.dart';
 
 class LoginView extends StatefulWidget {
@@ -46,16 +45,16 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 const CustomLogo(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.07), vertical: context.dynamicHeight(0.04)),
+                  margin: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.07),
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(context.dynamicWidth(0.06)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.18),
-                        blurRadius: 24,
-                        offset: const Offset(0, 8),
+                        blurRadius: context.dynamicWidth(0.06),
+                        offset: Offset(0, context.dynamicHeight(0.01)),
                       ),
                     ],
                     border: Border.all(color: Colors.white.withOpacity(0.08)),
@@ -73,16 +72,16 @@ class _LoginViewState extends State<LoginView> {
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.04),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
                             borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
+                            borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 18),
+                      SizedBox(height: context.dynamicHeight(0.022)),
                       // Password
                       TextField(
                         controller: provider.passwordController,
@@ -106,22 +105,22 @@ class _LoginViewState extends State<LoginView> {
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.04),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
                             borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
+                            borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 28),
+                      SizedBox(height: context.dynamicHeight(0.035)),
                       // Login Button
                       SizedBox(
                         width: double.infinity,
-                        height: 52,
+                        height: context.dynamicHeight(0.07),
                         child: ElevatedButton(
-                          onPressed: provider.isLoading ? null : () async {
+                          onPressed: provider.isEmailLoading ? null : () async {
                             try {
                               await provider.handleLogin(context);
                               if (mounted && provider.authService.isLoggedIn) {
@@ -136,15 +135,15 @@ class _LoginViewState extends State<LoginView> {
                             backgroundColor: Colors.black12,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
                             ),
-                            elevation: 4,
+                            elevation: context.dynamicWidth(0.01),
                           ),
-                          child: provider.isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
+                          child: provider.isEmailLoading
+                              ? SizedBox(
+                                  width: context.dynamicWidth(0.06),
+                                  height: context.dynamicWidth(0.06),
+                                  child: const CircularProgressIndicator(
                                     color: Colors.white,
                                     strokeWidth: 2.5,
                                   ),
@@ -155,22 +154,100 @@ class _LoginViewState extends State<LoginView> {
                                 ),
                         ),
                       ),
-                      const SizedBox(height: 18),
-                      // Demo Button (isteğe bağlı)
-                      // demoLogin(context, provider),
+                      SizedBox(height: context.dynamicHeight(0.022)),
+                      // Divider
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.04)),
+                            child: Text(
+                              'veya',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: context.dynamicWidth(0.035),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.022)),
+                      SizedBox(
+                        width: double.infinity,
+                        height: context.dynamicHeight(0.07),
+                        child: OutlinedButton.icon(
+                          onPressed: provider.isGoogleLoading ? null : () async {
+                            try {
+                              await provider.handleGoogleSignIn(context);
+                            // ignore: empty_catches
+                            } catch (e) {
+                              
+                            }
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
+                            ),
+                            backgroundColor: Colors.white.withOpacity(0.05),
+                          ),
+                          icon: Image.asset(
+                            'assets/pictures/google-icon.png',
+                            height: context.dynamicWidth(0.06),
+                            width: context.dynamicWidth(0.06),
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.g_mobiledata,
+                                color: Colors.white,
+                                size: 24,
+                              );
+                            },
+                          ),
+                          label: provider.isGoogleLoading
+                              ? SizedBox(
+                                  width: context.dynamicWidth(0.06),
+                                  height: context.dynamicWidth(0.06),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              :  Text(
+                                  "login-with-google".tr(),
+                                  style: TextStyle(
+                                    fontSize: context.dynamicWidth(0.04),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.022)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withOpacity(0.7))),
+                          Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: context.dynamicWidth(0.035))),
                           TextButton(
                             onPressed: () {
                               RouteHelper.push(context, const RegisterView());
                             },
-                            child: const Text(
+                            child: Text(
                               'Kayıt Olun',
                               style: TextStyle(
-                                color: Color(0xFFB983FF),
+                                color: const Color(0xFFB983FF),
                                 fontWeight: FontWeight.w700,
+                                fontSize: context.dynamicWidth(0.037),
                               ),
                             ),
                           ),
@@ -179,55 +256,13 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                // // Misafir olarak devam et
-                // TextButton(
-                //   onPressed: () {
-                //     Navigator.of(context).pushAndRemoveUntil(
-                //       MaterialPageRoute(builder: (_) => const AppNavigation()),
-                //       (route) => false,
-                //     );
-                //   },
-                //   child: Text(
-                //     'Misafir olarak devam et',
-                //     style: TextStyle(
-                //       color: Colors.white.withOpacity(0.8),
-                //       decoration: TextDecoration.underline,
-                //       fontWeight: FontWeight.w500,
-                //       fontSize: 15,
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(height: 16),
+                SizedBox(height: context.dynamicHeight(0.03)),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  SizedBox demoLogin(BuildContext context, AuthenticationProvider provider) {
-    return SizedBox(
-          height: context.dynamicHeight(0.05),
-          child: OutlinedButton(
-            onPressed: provider.isLoading ? null : () => provider.handleDemoLogin(context),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              side: const BorderSide(color: Colors.white),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'Demo ile Devam Et',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        );
   }
 }
 

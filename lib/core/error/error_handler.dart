@@ -118,10 +118,10 @@ class ErrorHandler {
   }
 
   static void _logError(AppError error) {
-    print('Error: ${error.message}');
-    print('Type: ${error.type}');
+    debugPrint('Error: ${error.message}');
+    debugPrint('Type: ${error.type}');
     if (error.stackTrace != null) {
-      print('Stack trace: ${error.stackTrace}');
+      debugPrint('Stack trace: ${error.stackTrace}');
     }
   }
 
