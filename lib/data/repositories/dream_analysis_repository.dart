@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 
@@ -30,7 +31,7 @@ class DreamAnalysisDataRepository {
         'advice': analysis.advice,
         'ai_reply': analysis.aiReply,
         'mind_map_json': jsonEncode(analysis.mindMap),
-        'model_used': modelUsed ?? 'mistral-small-3.2',
+        'model_used': modelUsed ?? ApiConstants.defaultModel,
         'analysis_date': analysis.analysisDate.toIso8601String(),
         'created_at': DateTime.now().toIso8601String(),
       },
@@ -344,7 +345,7 @@ class DreamAnalysisDataRepository {
           (e) => MapEntry(e.key, List<String>.from(e.value ?? [])),
         ),
       ),
-      modelUsed: row['model_used'] as String? ?? 'mistral-small-3.2',
+      modelUsed: row['model_used'] as String? ?? ApiConstants.defaultModel,
       analysisDate: DateTime.parse(row['analysis_date'] as String),
     );
   }

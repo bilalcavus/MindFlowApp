@@ -8,7 +8,7 @@ class ChatMessage {
   final DateTime timestamp;
   final String? modelUsed;
   final Map<String, dynamic>? analysisData;
-  final String? userId; // Firebase UID - String
+  final String? userId;
 
   ChatMessage({
     required this.message,

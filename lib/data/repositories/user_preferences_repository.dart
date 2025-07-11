@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UserPreferencesRepository {
   final DatabaseService _dbService = DatabaseService();
 
-  // Temel tercih işlemleri
   Future<int> setPreference(String userId, String key, String value) async {
     final db = await _dbService.database;
     final now = DateTime.now().toIso8601String();
@@ -38,7 +38,6 @@ class UserPreferencesRepository {
     return null;
   }
 
-  // Boolean tercihler
   Future<int> setBoolPreference(String userId, String key, bool value) async {
     return await setPreference(userId, key, value.toString());
   }
@@ -48,7 +47,6 @@ class UserPreferencesRepository {
     return value != null ? value.toLowerCase() == 'true' : defaultValue;
   }
 
-  // Integer tercihler
   Future<int> setIntPreference(String userId, String key, int value) async {
     return await setPreference(userId, key, value.toString());
   }
@@ -58,7 +56,6 @@ class UserPreferencesRepository {
     return value != null ? int.tryParse(value) ?? defaultValue : defaultValue;
   }
 
-  // Double tercihler
   Future<int> setDoublePreference(String userId, String key, double value) async {
     return await setPreference(userId, key, value.toString());
   }
@@ -68,7 +65,6 @@ class UserPreferencesRepository {
     return value != null ? double.tryParse(value) ?? defaultValue : defaultValue;
   }
 
-  // Tüm tercihleri getir
   Future<Map<String, String>> getAllPreferences(String userId) async {
     final db = await _dbService.database;
     final result = await db.query(
@@ -85,7 +81,6 @@ class UserPreferencesRepository {
     return preferences;
   }
 
-  // Tercih silme
   Future<int> removePreference(String userId, String key) async {
     final db = await _dbService.database;
     return await db.delete(
@@ -95,7 +90,6 @@ class UserPreferencesRepository {
     );
   }
 
-  // Tüm tercihleri temizle
   Future<int> clearAllPreferences(String userId) async {
     final db = await _dbService.database;
     return await db.delete(
@@ -105,7 +99,6 @@ class UserPreferencesRepository {
     );
   }
 
-  // Prefix ile tercihleri getir
   Future<Map<String, String>> getPreferencesByPrefix(String userId, String prefix) async {
     final db = await _dbService.database;
     final result = await db.query(
@@ -124,7 +117,6 @@ class UserPreferencesRepository {
     return preferences;
   }
 
-  // Prefix ile tercihleri sil
   Future<int> removePreferencesByPrefix(String userId, String prefix) async {
     final db = await _dbService.database;
     return await db.delete(
@@ -134,7 +126,6 @@ class UserPreferencesRepository {
     );
   }
 
-  // Tercih geçmişi
   Future<List<Map<String, dynamic>>> getPreferenceHistory({required String userId, int? limit}) async {
     final db = await _dbService.database;
     final result = await db.query(
@@ -148,7 +139,6 @@ class UserPreferencesRepository {
     return result;
   }
 
-  // Özel tercih metodları
   static const String prefSelectedModel = 'selected_model';
   static const String prefThemeMode = 'theme_mode';
   static const String prefAutoSaveEnabled = 'auto_save_enabled';
@@ -161,7 +151,7 @@ class UserPreferencesRepository {
   static const String prefAnalyticsEnabled = 'analytics_enabled';
 
   Future<String> getSelectedModel(String userId) async {
-    return await getPreference(userId, prefSelectedModel) ?? 'mistral-small-3.2';
+    return await getPreference(userId, prefSelectedModel) ?? ApiConstants.defaultModel;
   }
 
   Future<int> setSelectedModel(String userId, String model) async {
@@ -244,7 +234,7 @@ class UserPreferencesRepository {
   Future<void> createDefaultPreferences(String userId) async {
 
     final defaultPrefs = [
-      {'key': prefSelectedModel, 'value': 'mistral-small-3.2'},
+      {'key': prefSelectedModel, 'value': ApiConstants.defaultModel},
       {'key': prefThemeMode, 'value': 'dark'},
       {'key': prefAutoSaveEnabled, 'value': 'true'},
       {'key': prefAnalysisHistoryLimit, 'value': '50'},
@@ -262,7 +252,6 @@ class UserPreferencesRepository {
     debugPrint('✅ Varsayılan tercihler oluşturuldu (User ID: $userId)');
   }
 
-  // Tercihleri varsayılana sıfırla
   Future<void> resetToDefaults(String userId) async {
     await clearAllPreferences(userId);
     await createDefaultPreferences(userId);

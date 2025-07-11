@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
@@ -21,7 +22,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
   bool isLoading = false;
   DreamAnalysisModel? analysisResult;
   String? error;
-  String selectedModel = 'mistral-small-3.2';
+  String selectedModel = ApiConstants.defaultModel;
   List<DreamAnalysisModel> analysisHistory = [];
   final TextEditingController textController = TextEditingController();
   List<String> get availableModels => _repo.getAvailableModels();
@@ -249,7 +250,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
             .toList();
       }
 
-      selectedModel = json['selected_model'] ?? 'mistral-small-3.2';
+      selectedModel = json['selected_model'] ?? ApiConstants.defaultModel;
       notifyListeners();
     } catch (e) {
       error = "Geçmiş yüklenirken hata: $e";
@@ -259,7 +260,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
 
   Future<void> _loadPrefs() async {
     if (!_isUserLoggedIn || _currentUserId == null) {
-      selectedModel = 'mistral-small-3.2'; // Varsayılan model
+      selectedModel = ApiConstants.defaultModel; // Varsayılan model
       return;
     }
 
@@ -269,7 +270,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
       debugPrint('✅ Kullanıcı tercihleri yüklendi: $selectedModel (User ID: $_currentUserId)');
     } catch (e) {
       debugPrint('❌ Tercih yükleme hatası: $e');
-      selectedModel = 'mistral-small-3.2';
+      selectedModel = ApiConstants.defaultModel;
     }
   }
 }

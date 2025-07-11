@@ -19,7 +19,10 @@ class ChatBubble extends StatelessWidget {
     final isUser = message.type == MessageType.user;
     
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: EdgeInsets.symmetric(
+        vertical: context.dynamicHeight(0.005), 
+        horizontal: context.dynamicWidth(0.02)
+      ),
       child: Row(
         mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,19 +55,19 @@ class ChatBubble extends StatelessWidget {
                       if (!isUser && message.modelUsed != null) ...[
                         Row(
                           children: [
-                            const Icon(Icons.smart_toy, size: 12, color: Colors.grey),
-                            const SizedBox(width: 4),
+                            Icon(Icons.smart_toy, size: context.dynamicHeight(0.015), color: Colors.grey),
+                            SizedBox(width: context.dynamicWidth(0.01)),
                             Text(
                               _getModelDisplayName(message.modelUsed!),
-                              style: const TextStyle(
-                                fontSize: 10,
+                              style: TextStyle(
+                                fontSize: context.dynamicHeight(0.0125),
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: context.dynamicHeight(0.005)),
                       ],
                       Text(
                         message.message,
@@ -77,7 +80,7 @@ class ChatBubble extends StatelessWidget {
                       Text(
                         _formatTime(message.timestamp),
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: context.dynamicHeight(0.0125),
                           color: isUser ? Colors.white70 : Colors.grey,
                         ),
                       ),
@@ -90,13 +93,13 @@ class ChatBubble extends StatelessWidget {
           ),
           SizedBox(height: context.dynamicHeight(0.01)),
           if (isUser) ...[
-            const SizedBox(width: 8),
+            SizedBox(width: context.dynamicWidth(0.02)),
             CircleAvatar(
-              radius: 16,
+              radius: context.dynamicHeight(0.02),
               backgroundColor: Colors.grey[300],
-              child: const Icon(
+              child: Icon(
                 Icons.person,
-                size: 16,
+                size: context.dynamicHeight(0.02),
                 color: Colors.grey,
               ),
             ),
@@ -108,16 +111,24 @@ class ChatBubble extends StatelessWidget {
 
   String _getModelDisplayName(String modelKey) {
     switch (modelKey) {
-      case 'mistral-small-3.2':
-        return 'Mistral 7B';
-      case 'llama-3.1':
-        return 'Llama 3.1';
-      case 'mercury':
-        return 'Mercury';
-      case 'phi-3':
-        return 'Phi-3 Mini';
-      case 'qwen-2':
-        return 'Qwen 2';
+      case 'gpt-4.1-nano':
+        return 'ChatGPT 4.1 Nano';
+      case 'gemini-2.0-flash':
+        return 'Gemini 2.0 Flash';
+      case 'deepseek-v3':
+        return 'Deepseek V3';
+      case 'gemma-3n-4b':
+        return 'Gemma';
+      case 'llama-4-maverick':
+        return 'Llama 4 Maverick';
+      case 'claude-instant-anthropic':
+        return 'Claude Anthropic';
+      case 'deephermes-3-llama-3':
+        return 'Deephermes 3';
+      case 'mistral-nemo':
+        return 'Mistral Nemo';
+      case 'qwen3-32b':
+        return 'Qwen 3';
       default:
         return modelKey;
     }

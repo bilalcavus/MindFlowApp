@@ -36,11 +36,14 @@ class _HomeViewState extends State<HomeView> {
         child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: context.dynamicWidth(0.05), 
+              vertical: context.dynamicHeight(0.01)
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
+                SizedBox(height: context.dynamicHeight(0.01)),
                 Row(
                   children: [
                     Expanded(
@@ -72,11 +75,11 @@ class _HomeViewState extends State<HomeView> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: analysisList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.95,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
+                    crossAxisSpacing: context.dynamicWidth(0.04),
+                    mainAxisSpacing: context.dynamicHeight(0.02),
                   ),
                   itemBuilder: (context, index) {
                     final item = analysisList[index];
@@ -100,7 +103,7 @@ class _HomeViewState extends State<HomeView> {
     final models = journalProvider.availableModels;
     final chatbotProvider = context.watch<ChatBotProvider>();
     return SizedBox(
-      height: 80,
+      height: context.dynamicHeight(0.1),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: models.length,
@@ -124,8 +127,8 @@ class _HomeViewState extends State<HomeView> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        blurRadius: context.dynamicHeight(0.0125),
+                        offset: Offset(0, context.dynamicHeight(0.005)),
                       ),
                     ],
                     border: Border.all(color: Colors.white.withOpacity(0.08)),
@@ -165,12 +168,16 @@ IconData getModelIcon(String modelKey) {
         return HugeIcons.strokeRoundedChatGpt;
       case 'gemini-2.0-flash':
         return HugeIcons.strokeRoundedGoogleGemini;
-      case 'deepsek-v3':
+      case 'deepseek-v3':
         return HugeIcons.strokeRoundedDeepseek;
+      case 'gemma-3n-4b':
+        return HugeIcons.strokeRoundedGoogle;
       case 'llama-4-maverick':
         return HugeIcons.strokeRoundedMeta;
-      case 'mistral-small-3.2':
-        return HugeIcons.strokeRoundedMistral;
+      case 'claude-instant-anthropic':
+        return HugeIcons.strokeRoundedClaude;
+      case 'deephermes-3-llama-3':
+        return HugeIcons.strokeRoundedAiChat01;
       case 'mistral-nemo':
         return HugeIcons.strokeRoundedMistral;
       case 'qwen3-32b':

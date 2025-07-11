@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -250,13 +251,13 @@ Future<String?> getUserPreference(String userId, String key) async {
       await _addColumnIfNotExists(db, 'dream_analyses', 'analysis_type', 'TEXT DEFAULT "dream"');
       
       // Add model_used column to dream_analyses table
-      await _addColumnIfNotExists(db, 'dream_analyses', 'model_used', 'TEXT DEFAULT "mistral-small-3.2"');
+      await _addColumnIfNotExists(db, 'dream_analyses', 'model_used', 'TEXT DEFAULT ${ApiConstants.defaultModel}');
       
       // Update existing records to have analysis_type = 'dream'
       await db.execute('UPDATE dream_analyses SET analysis_type = "dream" WHERE analysis_type IS NULL');
       
       // Update existing records to have a default model_used value
-      await db.execute('UPDATE dream_analyses SET model_used = "mistral-small-3.2" WHERE model_used IS NULL');
+      await db.execute('UPDATE dream_analyses SET model_used = ${ApiConstants.defaultModel} WHERE model_used IS NULL');
       
       debugPrint('✅ dream_analyses tablosuna analysis_type ve model_used sütunları eklendi');
     }
@@ -559,7 +560,7 @@ Future<String?> getUserPreference(String userId, String key) async {
         'last_login_at': now,
         'is_active': 1,
         'user_preferences_json': jsonEncode({
-          'selected_model': 'mistral-small-3.2',
+          'selected_model': ApiConstants.defaultModel,
           'theme_mode': 'dark',
           'auto_save_enabled': true,
         }),
@@ -568,7 +569,7 @@ Future<String?> getUserPreference(String userId, String key) async {
     );
 
     final defaultPrefs = [
-      {'user_id': 1, 'preference_key': 'selected_model', 'preference_value': 'mistral-small-3.2'},
+      {'user_id': 1, 'preference_key': 'selected_model', 'preference_value': ApiConstants.defaultModel},
       {'user_id': 1, 'preference_key': 'theme_mode', 'preference_value': 'dark'},
       {'user_id': 1, 'preference_key': 'auto_save_enabled', 'preference_value': 'true'},
       {'user_id': 1, 'preference_key': 'analysis_history_limit', 'preference_value': '50'},

@@ -52,7 +52,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildSegmentControl() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: context.dynamicWidth(0.04), 
+        vertical: context.dynamicHeight(0.015)
+      ),
       child: Container(
         height: context.dynamicHeight(.04),
         decoration: BoxDecoration(
@@ -76,6 +79,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     _tabs[index],
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
+                      fontSize: context.dynamicHeight(0.016),
                       color: isSelected ? Colors.black : Colors.grey[600],
                     ),
                   ),
@@ -214,7 +218,7 @@ class DreamHistoryTab extends StatelessWidget {
           itemBuilder: (context, index) {
             final analysis = vm.analysisHistory[index];
             return LiquidGlassCard(children: [
-               _buildAnalysisCard(
+              _buildAnalysisCard(
               context: context,
               title: analysis.summary.isNotEmpty
                   ? analysis.summary
@@ -233,7 +237,6 @@ class DreamHistoryTab extends StatelessWidget {
               },
             ),
             ]);
-           
           },
         );
       },
@@ -260,13 +263,16 @@ Widget _buildEmptyState({
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
-              Text(title),
-              const SizedBox(height: 8),
+              Icon(icon, size: context.dynamicHeight(0.08), color: Colors.grey),
+              SizedBox(height: context.dynamicHeight(0.02)),
+              Text(title, style: TextStyle(fontSize: context.dynamicHeight(0.018))),
+              SizedBox(height: context.dynamicHeight(0.01)),
               Text(
                 subtitle,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: context.dynamicHeight(0.0175), 
+                  color: Colors.grey
+                ),
               ),
             ],
           ),
@@ -286,21 +292,29 @@ Widget _buildHistoryList({
   return Column(
     children: [
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: context.dynamicWidth(0.04), 
+          vertical: context.dynamicHeight(0.01)
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("total_analysis".tr(namedArgs: {'count': itemCount.toString()}),
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              "total_analysis".tr(namedArgs: {'count': itemCount.toString()}),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: context.dynamicHeight(0.018),
+              )
+            ),
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Iconsax.refresh),
+                  icon: Icon(Iconsax.refresh, size: context.dynamicHeight(0.025)),
                   onPressed: () => onRefresh(),
                   tooltip: 'refresh'.tr(),
                 ),
                 IconButton(
-                  icon: const Icon(HugeIcons.strokeRoundedDelete01),
+                  icon: Icon(HugeIcons.strokeRoundedDelete01, size: context.dynamicHeight(0.025)),
                   onPressed: onClear,
                   tooltip: 'clear_history'.tr(),
                 ),
@@ -313,7 +327,7 @@ Widget _buildHistoryList({
         child: RefreshIndicator(
           onRefresh: onRefresh,
           child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.04)),
             itemCount: itemCount,
             itemBuilder: itemBuilder,
           ),
@@ -339,7 +353,10 @@ Widget _buildAnalysisCard({
       title,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontWeight: FontWeight.w600)
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: context.dynamicHeight(0.018),
+      )
     ),
     subtitle: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,44 +364,50 @@ Widget _buildAnalysisCard({
         SizedBox(height: context.dynamicHeight(.01)),
         Row(
           children: [
-            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[400]),
-            const SizedBox(width: 4),
+            Icon(HugeIcons.strokeRoundedAiBrain01, size: context.dynamicHeight(0.02), color: Colors.grey[400]),
+            SizedBox(width: context.dynamicWidth(0.01)),
             Text(
               modelUsed,
-              style: TextStyle(color: Colors.grey[400]),
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: context.dynamicHeight(0.016),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: context.dynamicHeight(0.005)),
         Row(
           children: [
-            Icon(HugeIcons.strokeRoundedTime04, size: 16, color: Colors.grey[400]),
-            const SizedBox(width: 4),
+            Icon(HugeIcons.strokeRoundedTime04, size: context.dynamicHeight(0.02), color: Colors.grey[400]),
+            SizedBox(width: context.dynamicWidth(0.01)),
             Text(
               '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-              style: TextStyle(color: Colors.grey[400]),
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: context.dynamicHeight(0.016),
+              ),
             ),
           ],
         ),
         if (themes.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: context.dynamicHeight(0.01)),
           Wrap(
-            spacing: 4,
-            runSpacing: 4,
+            spacing: context.dynamicWidth(0.01),
+            runSpacing: context.dynamicHeight(0.005),
             children: themes.take(3).map((theme) {
               return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.dynamicWidth(0.02),
+                  vertical: context.dynamicHeight(0.005),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(context.dynamicHeight(0.01)),
                 ),
                 child: Text(
                   theme,
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: context.dynamicHeight(0.015),
                     color: Colors.blue,
                   ),
                 ),
@@ -394,7 +417,7 @@ Widget _buildAnalysisCard({
         ],
       ],
     ),
-    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    trailing: Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)),
     onTap: onTap,
   );
 }

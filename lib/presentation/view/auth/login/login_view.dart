@@ -137,9 +137,12 @@ class _LoginViewState extends State<LoginView> {
                                     strokeWidth: 2.5,
                                   ),
                                 )
-                              : const Text(
+                              : Text(
                                   'Giriş Yap',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontSize: context.dynamicHeight(0.0225), 
+                                    fontWeight: FontWeight.bold
+                                  ),
                                 ),
                         ),
                       ),
@@ -197,10 +200,10 @@ class _LoginViewState extends State<LoginView> {
                             height: context.dynamicWidth(0.06),
                             width: context.dynamicWidth(0.06),
                             errorBuilder: (context, error, stackTrace) {
-                              return const Icon(
+                              return Icon(
                                 Icons.g_mobiledata,
                                 color: Colors.white,
-                                size: 24,
+                                size: context.dynamicHeight(0.03),
                               );
                             },
                           ),

@@ -87,17 +87,11 @@ class AuthService {
       if (googleUser == null) {
         throw Exception('Google Sign-In iptal edildi');
       }
-
-      // Google Sign-In kimlik bilgilerini al
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      // Firebase kimlik bilgilerini oluştur
       final credential = fb.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
-      // Firebase ile giriş yap
       final userCredential = await _firebaseAuth.signInWithCredential(credential);
       final user = userCredential.user;
 

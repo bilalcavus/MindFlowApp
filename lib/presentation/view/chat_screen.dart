@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
@@ -55,23 +56,23 @@ class _ChatScreenState extends State<ChatScreen> {
           if (_authService.isLoggedIn) ...[
             IconButton(
               icon: const Icon(HugeIcons.strokeRoundedBubbleChatIncome),
-              tooltip: 'Sohbet Geçmişi',
+              tooltip: 'chat_history'.tr(),
               onPressed: () => _showChatHistory(provider),
             ),
             IconButton(
               icon: const Icon(HugeIcons.strokeRoundedAdd01),
-              tooltip: 'Yeni Sohbet',
+              tooltip: 'new_chat'.tr(),
               onPressed: () => _showNewSessionDialog(provider),
             ),
           ],
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedAiBrain01),
-            tooltip: 'Model Seç',
+            tooltip: 'select_model'.tr(),
             onPressed: () => _showModelSelector(provider),
           ),
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedDelete02),
-            tooltip: 'Sohbeti Temizle',
+            tooltip: 'clear_chat'.tr(),
             onPressed: () => _showClearDialog(provider),
           ),
         ],
@@ -102,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onRefresh: _refreshChatHistory,
                       child: ListView.builder(
                         controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.01)),
                         itemCount: provider.chatMessages.length,
                         itemBuilder: (context, index) {
                           final message = provider.chatMessages[index];
@@ -115,15 +116,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
             ),
             if (provider.isLoading)
-              const Row(
+              Row(
                 children: [
                   SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    width: context.dynamicWidth(0.05),
+                    height: context.dynamicHeight(0.025),
+                    child: CircularProgressIndicator(strokeWidth: context.dynamicWidth(0.005)),
                   ),
-                  SizedBox(width: 12),
-                  Text('Yazıyor...'),
+                  SizedBox(width: context.dynamicWidth(0.03)),
+                  Text('writing'.tr()),
                 ],
               ),
             _buildMessageInput(provider),
@@ -136,18 +137,18 @@ class _ChatScreenState extends State<ChatScreen> {
   Container offlineChatWarning() {
     return Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(context.dynamicHeight(0.015)),
             color: Colors.orange.withOpacity(0.1),
             child: Row(
               children: [
-                const Icon(Icons.info_outline, color: Colors.orange, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.info_outline, color: Colors.orange, size: context.dynamicHeight(0.025)),
+                SizedBox(width: context.dynamicWidth(0.02)),
                 Expanded(
                   child: Text(
-                    'Sohbet geçmişi kaydedilmiyor. Kalıcı sohbet için giriş yapın.',
+                    'offline_chat_warning'.tr(),
                     style: TextStyle(
                       color: Colors.orange.shade800,
-                      fontSize: 12,
+                      fontSize: context.dynamicHeight(0.015),
                     ),
                   ),
                 ),
@@ -181,29 +182,32 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 SizedBox(height: context.dynamicHeight(0.01)),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
+                Padding(
+                  padding: EdgeInsets.all(context.dynamicHeight(0.01)),
                   child: Text(
-                    'Merhaba! Sana nasıl yardımcı olabilirim?\nDuygularını, düşüncelerini paylaşabilirsin.',
+                    'hello_message'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: context.dynamicHeight(0.02),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: context.dynamicHeight(0.03)),
                 ElevatedButton.icon(
                   onPressed: () {
                     final provider = Provider.of<ChatBotProvider>(context, listen: false);
-                    provider.chatController.text = "Merhaba! Bugün nasılsın?";
+                    provider.chatController.text = 'sample_message'.tr();
                     provider.sendChatMessage(provider.chatController.text, context);
                   },
                   icon: const Icon(HugeIcons.strokeRoundedChatting01),
-                  label: const Text('Sohbete Başla'),
+                  label: Text('start_conversation'.tr()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple.shade800,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.dynamicWidth(0.06), 
+                      vertical: context.dynamicHeight(0.015)
+                    ),
                   ),
                 ),
               ],
@@ -232,8 +236,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 focusNode: _focusNode,
                 maxLines: 3,
                 textInputAction: TextInputAction.send,
-                decoration: const InputDecoration(
+                style: TextStyle(fontSize: context.dynamicHeight(0.018)),
+                decoration: InputDecoration(
                   hintText: 'Mesajını yaz...',
+                  hintStyle: TextStyle(fontSize: context.dynamicHeight(0.016)),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -270,22 +276,22 @@ class _ChatScreenState extends State<ChatScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Yeni Sohbet'),
-        content: const Text('Yeni bir sohbet oturumu başlatmak istediğinizden emin misiniz? Mevcut sohbet kaydedilecek.'),
+        title: Text('new_chat_title'.tr()),
+        content: Text('new_chat_content'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('İptal'),
+            child: Text('cancel'.tr()),
           ),
           TextButton(
             onPressed: () async {
               await provider.startNewSession();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Yeni sohbet başlatıldı')),
+                SnackBar(content: Text('new_chat_started'.tr())),
               );
             },
-            child: const Text('Yeni Sohbet'),
+            child: Text('new_chat'.tr()),
           ),
         ],
       ),
@@ -295,17 +301,19 @@ class _ChatScreenState extends State<ChatScreen> {
   void _showChatHistory(ChatBotProvider provider) async {
     if (!_authService.isLoggedIn || _authService.currentUserId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sohbet geçmişini görüntülemek için giriş yapın')),
+        SnackBar(content: Text('login_required_chat_history'.tr())),
       );
       return;
     }
 
     try {
       final sessions = await provider.getChatSessions();
-      
+
+      if (!mounted) return;
+
       if (sessions.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Henüz kaydedilmiş sohbet geçmişi bulunmuyor')),
+          SnackBar(content: Text('no_chat_history'.tr())),
         );
         return;
       }
@@ -313,8 +321,8 @@ class _ChatScreenState extends State<ChatScreen> {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(context.dynamicHeight(0.025))),
         ),
         builder: (context) => DraggableScrollableSheet(
           initialChildSize: 0.7,
@@ -324,21 +332,21 @@ class _ChatScreenState extends State<ChatScreen> {
           builder: (context, scrollController) => Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                 child: Row(
                   children: [
-                    const SizedBox(width: 8),
-                    const Text(
-                      'Sohbet Geçmişi',
+                    SizedBox(width: context.dynamicWidth(0.02)),
+                    Text(
+                      'chat_history'.tr(),
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: context.dynamicHeight(0.022),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const Spacer(),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close),
+                      icon: Icon(Icons.close, size: context.dynamicHeight(0.03)),
                     ),
                   ],
                 ),
@@ -347,46 +355,52 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                   itemCount: sessions.length,
                   itemBuilder: (context, index) {
                     final session = sessions[index];
                     final sessionId = session['session_id'] as String;
                     final messageCount = session['message_count'] as int;
                     final lastMessageTime = DateTime.parse(session['last_message_time'] as String);
-                    // final firstMessageTime = DateTime.parse(session['first_message_time'] as String);
                     
                     return ListTile(
                       leading: Container(
-                        width: 40,
-                        height: 40,
+                        width: context.dynamicWidth(0.1),
+                        height: context.dynamicHeight(0.05),
                         decoration: BoxDecoration(
                           color: Colors.deepPurple.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           HugeIcons.strokeRoundedChatting01,
                           color: Colors.deepPurple,
+                          size: context.dynamicHeight(0.025),
                         ),
                       ),
                       title: Text(
                         'Sohbet ${index + 1}',
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: context.dynamicHeight(0.018),
+                        ),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('$messageCount mesaj'),
+                          Text(
+                            '$messageCount mesaj',
+                            style: TextStyle(fontSize: context.dynamicHeight(0.016)),
+                          ),
                           Text(
                             'Son: ${_formatDate(lastMessageTime)}',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: context.dynamicHeight(0.015),
                               color: Colors.grey.shade600,
                             ),
                           ),
                         ],
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      trailing: Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)),
                       onTap: () async {
                         Navigator.pop(context);
                         await _loadChatSession(provider, sessionId);
@@ -401,7 +415,7 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sohbet geçmişi yüklenirken hata: $e')),
+        SnackBar(content: Text('chat_history_load_error'.tr(namedArgs: {'error': e.toString()}))),
       );
     }
   }
@@ -410,9 +424,9 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       await provider.loadChatSession(sessionId);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sohbet geçmişi yüklendi'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text('chat_session_loaded'.tr()),
+          duration: const Duration(seconds: 2),
         ),
       );
       
@@ -421,7 +435,7 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sohbet yüklenirken hata: $e')),
+        SnackBar(content: Text('chat_session_load_error'.tr(namedArgs: {'error': e.toString()}))),
       );
     }
   }
@@ -431,11 +445,11 @@ class _ChatScreenState extends State<ChatScreen> {
     final diff = now.difference(date);
     
     if (diff.inDays == 0) {
-      return 'Bugün ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${'today'.tr()} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (diff.inDays == 1) {
-      return 'Dün ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${'yesterday'.tr()} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (diff.inDays < 7) {
-      final days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+      final days = ['monday'.tr(), 'tuesday'.tr(), 'wednesday'.tr(), 'thursday'.tr(), 'friday'.tr(), 'saturday'.tr(), 'sunday'.tr()];
       return '${days[date.weekday - 1]} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else {
       return '${date.day}/${date.month}/${date.year}';
@@ -447,16 +461,16 @@ class _ChatScreenState extends State<ChatScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sohbeti Temizle'),
+        title: Text('clear_chat'.tr()),
         content: Text(
           isLoggedIn 
-            ? 'Tüm sohbet geçmişini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz ve mesajlar veritabanından silinecek.'
-            : 'Tüm sohbet geçmişini silmek istediğinizden emin misiniz?'
+            ? 'clear_chat_content_logged_in'.tr()
+            : 'clear_chat_content_offline'.tr()
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('İptal'),
+            child: Text('cancel'.tr()),
           ),
           TextButton(
             onPressed: () async {
@@ -466,13 +480,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 SnackBar(
                   content: Text(
                     isLoggedIn 
-                      ? 'Sohbet geçmişi veritabanından silindi'
-                      : 'Sohbet geçmişi temizlendi'
+                      ? 'chat_cleared_logged_in'.tr()
+                      : 'chat_cleared_offline'.tr()
                   ),
                 ),
               );
             },
-            child: const Text('Temizle'),
+            child: Text('clear'.tr()),
           ),
         ],
       ),
@@ -480,65 +494,121 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _showModelSelector(ChatBotProvider provider) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Model Seç'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: provider.availableModels.length,
-            itemBuilder: (context, index) {
-              final model = provider.availableModels[index];
-              final isSelected = model == provider.selectedModel;
-              return ListTile(
-                leading: Icon(
-                  isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                  color: isSelected ? Colors.deepPurple : Colors.grey,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(context.dynamicHeight(0.025))),
+      ),
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.black
+        ),
+        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: context.dynamicWidth(0.1),
+                height: context.dynamicHeight(0.005),
+                margin: EdgeInsets.only(bottom: context.dynamicHeight(0.025)),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(context.dynamicHeight(0.0025)),
                 ),
-                title: Text(provider.getModelDisplayName(model)),
-                subtitle: Text(_getModelDescription(model)),
-                onTap: () {
-                  provider.changeModel(model);
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Model değiştirildi: ${provider.getModelDisplayName(model)}'),
-                      duration: const Duration(seconds: 2),
+              ),
+            ),
+            Text(
+              'select_model'.tr(),
+              style: TextStyle(
+                fontSize: context.dynamicHeight(0.025),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: context.dynamicHeight(0.02)),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: provider.availableModels.length,
+                itemBuilder: (context, index) {
+                  final model = provider.availableModels[index];
+                  final isSelected = model == provider.selectedModel;
+                  return ListTile(
+                    leading: Icon(
+                      isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                      color: isSelected ? Colors.deepPurple : Colors.grey,
+                      size: context.dynamicHeight(0.03),
                     ),
+                    title: Text(
+                      provider.getModelDisplayName(model),
+                      style: TextStyle(fontSize: context.dynamicHeight(0.018)),
+                    ),
+                    subtitle: Text(
+                      _getModelDescription(model),
+                      style: TextStyle(fontSize: context.dynamicHeight(0.015)),
+                    ),
+                    onTap: () {
+                      provider.changeModel(model);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('model_changed'.tr(namedArgs: {'model': provider.getModelDisplayName(model)})),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ),
+              ),
+            ),
+            SizedBox(height: context.dynamicHeight(0.02)),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.015)),
+                ),
+                child: Text(
+                  'cancel'.tr(),
+                  style: TextStyle(fontSize: context.dynamicHeight(0.018)),
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).padding.bottom),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('İptal'),
-          ),
-        ],
       ),
     );
   }
 
   String _getModelDescription(String modelKey) {
     switch (modelKey) {
-      case 'mistral-small-3.2':
-        return 'Hızlı ve etkili analiz';
-      case 'mistral-7b':
-        return 'Hızlı ve etkili analiz';
-      case 'llama-3.1':
-        return 'Meta\'nın güçlü modeli';
-      case 'mercury':
-        return 'Hızlı ve kompakt';
-      case 'phi-3':
-        return 'Microsoft\'un hızlı modeli';
-      case 'qwen-2':
-        return 'Alibaba\'nın çok dilli modeli';
+      case 'gpt-4.1-nano':
+        return 'model_gpt_4_1_nano_desc'.tr();
+      case 'gemini-2.0-flash':
+        return 'model_gemini_2_0_flash_desc'.tr();
+      case 'deepseek-v3':
+        return 'model_deepseek_v3_desc'.tr();
+      case 'gemma-3n-4b':
+        return 'model_gemma_3n_4b_desc'.tr();
+      case 'llama-4-maverick':
+        return 'model_llama_4_maverick_desc'.tr();
+      case 'claude-instant-anthropic':
+        return 'model_claude_instant_anthropic_desc'.tr();
+      case 'deephermes-3-llama-3':
+        return 'model_deephermes_3_llama_3_desc'.tr();
+      case 'mistral-nemo':
+        return 'model_mistral_nemo_desc'.tr();
+      case 'qwen3-32b':
+        return 'model_qwen3_32b_desc'.tr();
       default:
-        return 'AI sohbet modeli';
+        return 'model_default_desc'.tr();
     }
   }
 } 

@@ -65,11 +65,11 @@ class GenericAnalysisPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(context.dynamicHeight(0.016)),
                 child: DropdownButtonFormField<String>(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.03)),
                   value: selectedModel,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width * 0.02),
+                    contentPadding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.02)),
                     labelText: 'Model',
                   ),
                   items: availableModels.map((model) {
@@ -98,17 +98,17 @@ class GenericAnalysisPage extends StatelessWidget {
                       child: ElevatedButton.icon(
                         onPressed: isLoading ? null : onAnalyze,
                         icon: isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                            ? SizedBox(
+                                width: context.dynamicWidth(0.05),
+                                height: context.dynamicHeight(0.025),
+                                child: CircularProgressIndicator(strokeWidth: context.dynamicWidth(0.005)),
                               )
                             : const Icon(HugeIcons.strokeRoundedAiBrowser),
                         label: Text(isLoading ? 'Analiz Ediliyor...' : analyzeButtonText),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                         ),
                       ),
                     ),

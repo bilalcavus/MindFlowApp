@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/app_navigation.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
@@ -54,11 +56,11 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 7, 7, 7),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 7, 7, 7),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
+          topLeft: Radius.circular(context.dynamicHeight(0.03)),
+          topRight: Radius.circular(context.dynamicHeight(0.03)),
         ),
       ),
       child: Column(
@@ -66,39 +68,45 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
         children: [
           // Handle bar
           Container(
-            margin: const EdgeInsets.only(top: 12, bottom: 8),
-            width: 40,
-            height: 4,
+            margin: EdgeInsets.only(
+              top: context.dynamicHeight(0.015), 
+              bottom: context.dynamicHeight(0.01)
+            ),
+            width: context.dynamicWidth(0.1),
+            height: context.dynamicHeight(0.005),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(context.dynamicHeight(0.0025)),
             ),
           ),
           
           // Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: EdgeInsets.symmetric(
+              horizontal: context.dynamicWidth(0.06), 
+              vertical: context.dynamicHeight(0.02)
+            ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(context.dynamicHeight(0.015)),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(context.dynamicHeight(0.015)),
                   ),
-                  child: const Icon(
-                    Icons.language,
+                  child: Icon(
+                    HugeIcons.strokeRoundedLanguageSkill,
                     color: Colors.white,
-                    size: 24,
+                    size: context.dynamicHeight(0.03),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: context.dynamicWidth(0.04)),
                 Expanded(
                   child: Text(
                     'choose_language'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: context.dynamicHeight(0.025),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -109,7 +117,7 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
 
           // Language options
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
             child: Column(
               children: _languages.asMap().entries.map((entry) {
                 final index = entry.key;
@@ -117,7 +125,7 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                 final isSelected = index == _selectedIndex;
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
+                  margin: EdgeInsets.only(bottom: context.dynamicHeight(0.015)),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -126,39 +134,31 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                           _selectedIndex = index;
                         });
                       },
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                       child: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                         decoration: BoxDecoration(
                           color: isSelected 
-                            ? Colors.white.withOpacity(0.15)
+                            ? Colors.white.withOpacity(0)
                             : Colors.white.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                           border: Border.all(
                             color: isSelected 
                               ? const Color(0xFFB983FF)
                               : Colors.white.withOpacity(0.1),
-                            width: isSelected ? 2 : 1,
+                            width: isSelected ? context.dynamicWidth(0.005) : context.dynamicWidth(0.0025),
                           ),
                         ),
                         child: Row(
                           children: [
                             // Flag
-                            Container(
-                              width: 48,
-                              height: 48,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  language['flag'],
-                                  style: const TextStyle(fontSize: 24),
-                                ),
+                            Center(
+                              child: Text(
+                                language['flag'],
+                                style: TextStyle(fontSize: context.dynamicHeight(0.03)),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: context.dynamicWidth(0.04)),
                             
                             // Language info
                             Expanded(
@@ -169,18 +169,18 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                                     language['label'],
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: context.dynamicHeight(0.02),
                                       fontWeight: isSelected 
                                         ? FontWeight.bold 
                                         : FontWeight.w500,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: context.dynamicHeight(0.005)),
                                   Text(
                                     language['description'],
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.6),
-                                      fontSize: 14,
+                                      fontSize: context.dynamicHeight(0.0175),
                                     ),
                                   ),
                                 ],
@@ -190,16 +190,16 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                             // Selection indicator
                             if (isSelected)
                               Container(
-                                width: 24,
-                                height: 24,
+                                width: context.dynamicWidth(0.06),
+                                height: context.dynamicHeight(0.03),
                                 decoration: const BoxDecoration(
                                   color: Color(0xFFB983FF),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
                                   color: Colors.white,
-                                  size: 16,
+                                  size: context.dynamicHeight(0.02),
                                 ),
                               ),
                           ],
@@ -214,10 +214,10 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
 
           // Save button
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(context.dynamicHeight(0.03)),
             child: SizedBox(
               width: double.infinity,
-              height: 56,
+              height: context.dynamicHeight(0.07),
               child: ElevatedButton(
                 onPressed: _saveLanguage,
                 style: ElevatedButton.styleFrom(
@@ -225,18 +225,18 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.check, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(Icons.check, size: context.dynamicHeight(0.025)),
+                    SizedBox(width: context.dynamicWidth(0.02)),
                     Text(
                       'save_button'.tr(),
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: context.dynamicHeight(0.02),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -247,7 +247,7 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
           ),
           
           // Bottom padding for safe area
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+          SizedBox(height: MediaQuery.of(context).padding.bottom + context.dynamicHeight(0.02)),
         ],
       ),
     );

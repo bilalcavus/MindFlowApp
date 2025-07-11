@@ -247,7 +247,7 @@ class _InitialLanguageSelectViewState extends State<InitialLanguageSelectView> {
                                 ),
                               ),
                               SizedBox(width: context.dynamicWidth(0.02)),
-                              const Icon(Icons.arrow_forward, size: 20),
+                              Icon(Icons.arrow_forward, size: context.dynamicHeight(0.025)),
                             ],
                           ),
                         ),

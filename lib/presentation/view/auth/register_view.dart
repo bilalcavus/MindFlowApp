@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -55,26 +56,27 @@ class _RegisterViewState extends State<RegisterView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.dynamicHeight(0.035)),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.dynamicWidth(0.07), 
+                      vertical: context.dynamicHeight(0.04)
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.07),
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(context.dynamicHeight(0.03)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.18),
-                          blurRadius: 24,
-                          offset: const Offset(0, 8),
+                          blurRadius: context.dynamicHeight(0.03),
+                          offset: Offset(0, context.dynamicHeight(0.01)),
                         ),
                       ],
                       border: Border.all(color: Colors.white.withOpacity(0.08)),
                     ),
                     child: Column(
                       children: [
-                        // Username alanı kaldırıldı
-                        // Display Name
                         TextFormField(
                           controller: _displayNameController,
                           style: const TextStyle(color: Colors.white),
@@ -85,12 +87,12 @@ class _RegisterViewState extends State<RegisterView> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                               borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                              borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                             ),
                           ),
                           textInputAction: TextInputAction.next,
@@ -104,8 +106,7 @@ class _RegisterViewState extends State<RegisterView> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
-                        // Email
+                        SizedBox(height: context.dynamicHeight(0.016)),
                         TextFormField(
                           controller: _emailController,
                           style: const TextStyle(color: Colors.white),
@@ -116,12 +117,12 @@ class _RegisterViewState extends State<RegisterView> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                               borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                              borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -133,8 +134,7 @@ class _RegisterViewState extends State<RegisterView> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
-                        // Password
+                        SizedBox(height: context.dynamicHeight(0.016)),
                         TextFormField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
@@ -157,12 +157,12 @@ class _RegisterViewState extends State<RegisterView> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                               borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                              borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                             ),
                           ),
                           textInputAction: TextInputAction.next,
@@ -176,8 +176,7 @@ class _RegisterViewState extends State<RegisterView> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
-                        // Confirm Password
+                        SizedBox(height: context.dynamicHeight(0.016)),
                         TextFormField(
                           controller: _confirmPasswordController,
                           obscureText: _obscureConfirmPassword,
@@ -200,12 +199,12 @@ class _RegisterViewState extends State<RegisterView> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                               borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color(0xFFB983FF), width: 2),
+                              borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                              borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
                             ),
                           ),
                           textInputAction: TextInputAction.done,
@@ -219,11 +218,10 @@ class _RegisterViewState extends State<RegisterView> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 28),
-                        // Register Button
+                        SizedBox(height: context.dynamicHeight(0.028)),
                         SizedBox(
                           width: double.infinity,
-                          height: 52,
+                          height: context.dynamicHeight(0.065),
                           child: ElevatedButton(
                             onPressed: provider.isEmailLoading
                                 ? null
@@ -254,26 +252,29 @@ class _RegisterViewState extends State<RegisterView> {
                               backgroundColor: Colors.black12,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                               ),
                               elevation: 4,
                             ),
                             child: provider.isEmailLoading
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
+                                ? SizedBox(
+                                    width: context.dynamicWidth(0.06),
+                                    height: context.dynamicHeight(0.03),
                                     child: CircularProgressIndicator(
                                       color: Colors.white,
-                                      strokeWidth: 2.5,
+                                      strokeWidth: context.dynamicWidth(0.00625),
                                     ),
                                   )
-                                : const Text(
+                                : Text(
                                     'Kayıt Ol',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      fontSize: context.dynamicHeight(0.0225), 
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
                           ),
                         ),
-                        const SizedBox(height: 18),
+                        SizedBox(height: context.dynamicHeight(0.0225)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -295,7 +296,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: context.dynamicHeight(0.03)),
                 ],
               ),
             ),

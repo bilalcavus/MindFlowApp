@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
@@ -15,7 +16,7 @@ class ChatBotProvider extends ChangeNotifier {
   final GetChatResponse getChatResponse;
 
   bool isLoading = false;
-  String selectedModel = 'mistral-small-3.2';
+  String selectedModel = ApiConstants.defaultModel;
   List<ChatMessage> chatMessages = [];
   final TextEditingController chatController = TextEditingController();
   String? _currentSessionId;
@@ -215,12 +216,12 @@ class ChatBotProvider extends ChangeNotifier {
 
   Future<void> _loadPrefs() async {
     try {
-      selectedModel = await _prefsService.getSelectedModel() ?? 'mistral-small-3.2';
+      selectedModel = await _prefsService.getSelectedModel() ?? ApiConstants.defaultModel;
       notifyListeners();
       debugPrint('✅ Kullanıcı tercihleri yüklendi: $selectedModel');
     } catch (e) {
       debugPrint('❌ Tercih yükleme hatası: $e');
-      selectedModel = 'mistral-small-3.2';
+      selectedModel = ApiConstants.defaultModel;
     }
   }
 } 

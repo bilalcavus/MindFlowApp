@@ -23,8 +23,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final screenHeight = screenSize.height;
     return Scaffold(
       body: ScreenBackground(
         child: SafeArea(
@@ -34,14 +32,17 @@ class _ProfileViewState extends State<ProfileView> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.dynamicWidth(0.05), 
+                      vertical: context.dynamicHeight(0.0125)
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: context.dynamicHeight(0.025)),
                         // Profile Avatar
                         Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: EdgeInsets.all(context.dynamicWidth(0.01)),
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
@@ -51,27 +52,27 @@ class _ProfileViewState extends State<ProfileView> {
                           child: CircleAvatar(
                             radius: context.dynamicHeight(0.05),
                             backgroundColor: Colors.white,
-                            child: const Text('👦', style: TextStyle(fontSize: 40)),
+                            child: Text('👦', style: TextStyle(fontSize: context.dynamicHeight(0.05))),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.02),
+                        SizedBox(height: context.dynamicHeight(0.02)),
                         Text(
                           _authService.firebaseUser?.displayName ?? '',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                            fontSize: context.dynamicHeight(0.03),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.01),
+                        SizedBox(height: context.dynamicHeight(0.01)),
                         Text(
                           _authService.firebaseUser?.email ?? '',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.7),
-                            fontSize: 16,
+                            fontSize: context.dynamicHeight(0.02),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: context.dynamicHeight(0.03)),
                         _buildSettingsList(),
                       ],
                     ),
@@ -93,9 +94,9 @@ class _ProfileViewState extends State<ProfileView> {
           _settingsTile(Iconsax.lock, 'account_password'.tr(), null),
           _settingsTile(Iconsax.location, 'address'.tr(), null),
         ]),
-        const SizedBox(height: 16),
+        SizedBox(height: context.dynamicHeight(0.02)),
         _buildSubscriptionCard(),
-        const SizedBox(height: 16),
+        SizedBox(height: context.dynamicHeight(0.02)),
         _buildSettingsCard([
           _settingsTile(HugeIcons.strokeRoundedLanguageSkill, 'language'.tr(), () {
             showModalBottomSheet(
@@ -107,7 +108,7 @@ class _ProfileViewState extends State<ProfileView> {
           }),
           _settingsTile(HugeIcons.strokeRoundedPreferenceHorizontal, 'user_preferences'.tr(), null),
         ]),
-        const SizedBox(height: 16),
+        SizedBox(height: context.dynamicHeight(0.02)),
         _buildSettingsCard([
           _settingsTile(Iconsax.shield, 'privacy_policy'.tr(), null),
           _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), null),
@@ -118,7 +119,7 @@ class _ProfileViewState extends State<ProfileView> {
             }
           }),
         ]),
-        const SizedBox(height: 20),
+        SizedBox(height: context.dynamicHeight(0.025)),
       ],
     );
   }
@@ -127,12 +128,12 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.07),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: context.dynamicHeight(0.0125),
+            offset: Offset(0, context.dynamicHeight(0.005)),
           ),
         ],
         border: Border.all(color: Colors.white.withOpacity(0.08)),
@@ -148,18 +149,20 @@ class _ProfileViewState extends State<ProfileView> {
       leading: Icon(
         icon,
         color: title == "log_out".tr() ? Colors.red : Colors.lightBlue,
+        size: context.dynamicHeight(0.025),
       ),
       title: Text(
         title,
         style: TextStyle(
           color: title == "log_out".tr() ? Colors.red : Colors.white,
           fontWeight: FontWeight.w500,
+          fontSize: context.dynamicHeight(0.018),
         ),
       ),
-      trailing: trailing ?? (title != "log_out".tr() ? const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16) : null),
+      trailing: trailing ?? (title != "log_out".tr() ? Icon(Icons.arrow_forward_ios, color: Colors.white, size: context.dynamicHeight(0.02)) : null),
       onTap: onTap,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
       ),
     );
   }
@@ -168,42 +171,49 @@ class _ProfileViewState extends State<ProfileView> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.07),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: context.dynamicHeight(0.0125),
+            offset: Offset(0, context.dynamicHeight(0.005)),
           ),
         ],
         border: Border.all(color: Colors.white.withOpacity(0.08)),
       ),
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: EdgeInsets.all(context.dynamicWidth(0.01)),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
           gradient: const LinearGradient(
             colors: [const Color(0xFF1A0025), Color(0xFF059669)],
           ),
         ),
         child: ListTile(
-          leading: const Icon(Iconsax.card, color: Colors.white),
+          leading: Icon(Iconsax.card, color: Colors.white, size: context.dynamicHeight(0.025)),
           title: Text(
             'manage_subscription'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: Colors.white, 
+              fontWeight: FontWeight.w600,
+              fontSize: context.dynamicHeight(0.018),
+            ),
           ),
           trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: EdgeInsets.symmetric(
+              horizontal: context.dynamicWidth(0.03), 
+              vertical: context.dynamicHeight(0.0075)
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
             ),
             child: Text(
               'active'.tr(),
-              style: const TextStyle(
-                color: Color(0xFF10B981),
+              style: TextStyle(
+                color: const Color(0xFF10B981),
                 fontWeight: FontWeight.bold,
-                fontSize: 12,
+                fontSize: context.dynamicHeight(0.015),
               ),
             ),
           ),
