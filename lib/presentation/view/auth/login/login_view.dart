@@ -6,6 +6,7 @@ import 'package:mind_flow/presentation/view/app_navigation.dart';
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 part 'login_text_field.dart';
@@ -24,20 +25,8 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-             Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-            ],
-          ),
-        ),
+      body: ScreenBackground(
+        
         child: Center(
           child: SingleChildScrollView(
             child: Column(

@@ -56,7 +56,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Container(
         height: context.dynamicHeight(.04),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 3, 0, 3),
+          color: const Color.fromARGB(255, 3, 0, 3),
           borderRadius: BorderRadius.circular(context.dynamicHeight(.015)),
         ),
         child: Row(
@@ -93,7 +93,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title:  Text("analysis_history".tr(), style: Theme.of(context).textTheme.bodyLarge,),
+        title:  Text("analysis_history".tr(), style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 22, 5, 63),
       ),
@@ -103,10 +103,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            end: Alignment.bottomCenter,
             colors: [
               Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
+              Color.fromARGB(255, 12, 68, 131),
               Color(0xFF000000),
             ],
           ),
@@ -262,10 +262,7 @@ Widget _buildEmptyState({
             children: [
               Icon(icon, size: 64, color: Colors.grey),
               const SizedBox(height: 16),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
+              Text(title),
               const SizedBox(height: 8),
               Text(
                 subtitle,
@@ -338,23 +335,11 @@ Widget _buildAnalysisCard({
   Color iconColor = Colors.red,
 }) {
   return ListTile(
-    leading: Container(
-      width: context.dynamicWidth(.08),
-      height: context.dynamicHeight(.08),
-      decoration: BoxDecoration(
-        color: iconColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(context.dynamicHeight(0.3)),
-      ),
-      child: Icon(
-        icon,
-        color: iconColor,
-      ),
-    ),
     title: Text(
       title,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontWeight: FontWeight.w600),
+      style: const TextStyle(fontWeight: FontWeight.w600)
     ),
     subtitle: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,22 +347,22 @@ Widget _buildAnalysisCard({
         SizedBox(height: context.dynamicHeight(.01)),
         Row(
           children: [
-            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[600]),
+            Icon(HugeIcons.strokeRoundedAiBrain01, size: 16, color: Colors.grey[400]),
             const SizedBox(width: 4),
             Text(
               modelUsed,
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(color: Colors.grey[400]),
             ),
           ],
         ),
         const SizedBox(height: 4),
         Row(
           children: [
-            Icon(HugeIcons.strokeRoundedTime04, size: 16, color: Colors.grey[600]),
+            Icon(HugeIcons.strokeRoundedTime04, size: 16, color: Colors.grey[400]),
             const SizedBox(width: 4),
             Text(
               '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(color: Colors.grey[400]),
             ),
           ],
         ),
@@ -418,7 +403,7 @@ void _showClearDialog(BuildContext context, Future<void> Function() onClear) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: Color.fromARGB(255, 25, 14, 45),
+      backgroundColor: const Color.fromARGB(255, 25, 14, 45),
       title: const Text('Geçmişi Temizle'),
       content: const Text(
         'Bu kategorideki tüm analiz geçmişini silmek istediğinizden emin misiniz?\n\n'

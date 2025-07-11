@@ -37,7 +37,7 @@ class ChatBotProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendChatMessage(String message) async {
+  Future<void> sendChatMessage(String message, BuildContext context) async {
     if (message.trim().isEmpty) return;
 
     if (!_isUserLoggedIn || _currentUserId == null) {
@@ -59,7 +59,8 @@ class ChatBotProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('❌ Kullanıcı mesajı kaydedilemedi: $e');
     }
-
+    chatController.clear();
+    FocusScope.of(context).unfocus();
     isLoading = true;
     notifyListeners();
 
@@ -70,6 +71,7 @@ class ChatBotProvider extends ChangeNotifier {
         userId: _currentUserId,
         modelUsed: selectedModel,
       );
+      
       
       chatMessages.add(aiMessage);
       

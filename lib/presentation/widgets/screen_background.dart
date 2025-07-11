@@ -13,11 +13,9 @@ class ScreenBackground extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-              
               Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
+              Color.fromARGB(255, 12, 68, 131),
               Color(0xFF000000),
-
           ],
         ),
       ),

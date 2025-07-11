@@ -47,7 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Color(0xFF2E0249),
         title: Text(
           provider.getModelDisplayName(provider.selectedModel), 
           style: TextStyle(fontSize: context.dynamicHeight(0.02))
@@ -83,12 +82,12 @@ class _ChatScreenState extends State<ChatScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
+            end: Alignment.bottomRight,
             colors: [
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
+              Color.fromARGB(255, 53, 4, 31),
               Color(0xFF000000),
-
+              Color.fromARGB(255, 8, 44, 110),
+              
             ],
           ),
         ),
@@ -116,19 +115,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
             ),
             if (provider.isLoading)
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: const Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                    SizedBox(width: 12),
-                    Text('Yazıyor...'),
-                  ],
-                ),
+              const Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  SizedBox(width: 12),
+                  Text('Yazıyor...'),
+                ],
               ),
             _buildMessageInput(provider),
           ],
@@ -200,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: () {
                     final provider = Provider.of<ChatBotProvider>(context, listen: false);
                     provider.chatController.text = "Merhaba! Bugün nasılsın?";
-                    provider.sendChatMessage(provider.chatController.text);
+                    provider.sendChatMessage(provider.chatController.text, context);
                   },
                   icon: const Icon(HugeIcons.strokeRoundedChatting01),
                   label: const Text('Sohbete Başla'),
@@ -210,25 +206,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   ),
                 ),
-                if (_authService.isLoggedIn) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    'Mesajlarınız otomatik olarak kaydedilecek',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.green.shade700,
-                    ),
-                  ),
-                ] else ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    'Mesajları kaydetmek için giriş yapın',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.orange.shade700,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -241,7 +218,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Padding(
       padding: EdgeInsets.all(context.dynamicHeight(0.015)),
       child: Container(
-        height: context.dynamicHeight(0.08),
+        height: context.dynamicHeight(0.1),
         padding: EdgeInsets.all(context.dynamicHeight(0.02)),
         decoration: BoxDecoration(
           color: Colors.grey.shade900,
@@ -253,7 +230,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: TextField(
                 controller: provider.chatController,
                 focusNode: _focusNode,
-                maxLines: null,
+                maxLines: 3,
                 textInputAction: TextInputAction.send,
                 decoration: const InputDecoration(
                   hintText: 'Mesajını yaz...',
@@ -262,9 +239,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onSubmitted: (text) {
                   if (text.trim().isNotEmpty) {
-                    provider.sendChatMessage(text);
+                    provider.sendChatMessage(text, context);
+                    FocusScope.of(context).unfocus();
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _scrollToBottom();
+                      
                     });
                   }
                 },
@@ -273,7 +252,7 @@ class _ChatScreenState extends State<ChatScreen> {
             InkWell(
               onTap: () {
                 if (provider.chatController.text.trim().isNotEmpty) {
-                  provider.sendChatMessage(provider.chatController.text);
+                  provider.sendChatMessage(provider.chatController.text, context);
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _scrollToBottom();
                   });

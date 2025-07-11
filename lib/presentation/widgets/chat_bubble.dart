@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
+import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 
 class ChatBubble extends StatelessWidget {
   final ChatMessage message;
@@ -38,54 +39,50 @@ class ChatBubble extends StatelessWidget {
           Flexible(
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.65,
+                maxWidth: MediaQuery.of(context).size.width * 0.68,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: isUser ? Colors.deepPurple.shade800 : Colors.grey[900],
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding:  EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.02), vertical: context.dynamicHeight(0.01)),
+              child: LiquidGlassCard(
                 children: [
-                  if (!isUser && message.modelUsed != null) ...[
-                    Row(
-                      children: [
-                        const Icon(Icons.smart_toy, size: 12, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Text(
-                          _getModelDisplayName(message.modelUsed!),
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.01)),
+                    child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!isUser && message.modelUsed != null) ...[
+                        Row(
+                          children: [
+                            const Icon(Icons.smart_toy, size: 12, color: Colors.grey),
+                            const SizedBox(width: 4),
+                            Text(
+                              _getModelDisplayName(message.modelUsed!),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 4),
                       ],
-                    ),
-                    const SizedBox(height: 4),
-                  ],
-                  Text(
-                    message.message,
-                    style: TextStyle(
-                      fontSize: context.dynamicHeight(0.018),
-                      height: context.dynamicHeight(0.0016),
-                    ),
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.007)),
-                  Text(
-                    _formatTime(message.timestamp),
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: isUser ? Colors.white70 : Colors.grey,
-                    ),
+                      Text(
+                        message.message,
+                        style: TextStyle(
+                          fontSize: context.dynamicHeight(0.018),
+                          height: context.dynamicHeight(0.0016),
+                        ),
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.007)),
+                      Text(
+                        _formatTime(message.timestamp),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: isUser ? Colors.white70 : Colors.grey,
+                        ),
+                      ),
+                    ],
+                                    ),
                   ),
                 ],
               ),

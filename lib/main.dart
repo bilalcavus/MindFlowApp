@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
+import 'package:mind_flow/core/theme/app_theme.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
@@ -61,9 +62,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mind Flow',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(
-        useMaterial3: true,
-      ),
+      theme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,

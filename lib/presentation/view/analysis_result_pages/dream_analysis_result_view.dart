@@ -5,6 +5,7 @@ import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class DreamAnalysisResultView extends StatefulWidget {
@@ -42,20 +43,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
         backgroundColor: const Color(0xFF1A0025),
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-            ],
-          ),
-        ),
+      body: ScreenBackground(
         child: Builder(
           builder: (_) {
             if (provider.isLoading) {
