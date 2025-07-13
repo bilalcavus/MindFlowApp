@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/presentation/view/history_view.dart';
+import 'package:mind_flow/presentation/view/history/history_view.dart';
 import 'package:mind_flow/presentation/view/home/home_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_view.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';

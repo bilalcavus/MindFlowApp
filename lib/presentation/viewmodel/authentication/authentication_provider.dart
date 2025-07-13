@@ -3,7 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/presentation/view/app_navigation.dart';
+import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final emailController = TextEditingController();

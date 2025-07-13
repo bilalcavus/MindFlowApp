@@ -6,6 +6,7 @@ import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
@@ -217,7 +218,9 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            RouteHelper.push(context, const SubscriptionManagementPage());
+          },
         ),
       ),
     );

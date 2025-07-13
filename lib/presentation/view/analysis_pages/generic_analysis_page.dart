@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
+import 'package:mind_flow/presentation/widgets/subscription_widgets.dart';
+import 'package:provider/provider.dart';
 
 class GenericAnalysisPage extends StatelessWidget {
   final String title;
@@ -96,7 +100,7 @@ class GenericAnalysisPage extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        onPressed: isLoading ? null : onAnalyze,
+                        onPressed: isLoading ? null : () => _analyzeWithCreditCheck(context),
                         icon: isLoading
                             ? SizedBox(
                                 width: context.dynamicWidth(0.05),
@@ -118,6 +122,64 @@ class GenericAnalysisPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> _analyzeWithCreditCheck(BuildContext context) async {
+    final authService = AuthService();
+    
+    if (!authService.isLoggedIn) {
+      onAnalyze();
+      return;
+    }
+
+    final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+    final userId = authService.currentUserId;
+    
+    if (userId == null) {
+      onAnalyze();
+      return;
+    }
+    final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
+    if (!hasEnoughCredits) {
+      _showInsufficientCreditsDialog(context, subscriptionProvider, userId);
+      return;
+    }
+    onAnalyze();
+    await subscriptionProvider.consumeCredits(userId, 1, 'Analiz işlemi');
+  }
+
+  void _showInsufficientCreditsDialog(BuildContext context, SubscriptionProvider subscriptionProvider, String userId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Yetersiz Kredi'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Bu analiz için 1 kredi gereklidir. Krediniz yetersiz.'),
+            SizedBox(height: 16),
+            CreditIndicatorWidget(
+              showProgressBar: true,
+              showDetails: true,
+              padding: EdgeInsets.all(8),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('İptal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/subscription_management');
+            },
+            child: const Text('Kredi Satın Al'),
+          ),
+        ],
       ),
     );
   }

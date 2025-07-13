@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
-import 'package:mind_flow/presentation/view/app_navigation.dart';
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
+import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
@@ -147,7 +147,6 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       SizedBox(height: context.dynamicHeight(0.022)),
-                      // Divider
                       Row(
                         children: [
                           Expanded(

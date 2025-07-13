@@ -3,10 +3,12 @@ import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
+import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
 import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/emotion_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
+import 'package:mind_flow/data/repositories/subscription_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
 // DataSources
@@ -30,6 +32,7 @@ import 'package:mind_flow/presentation/viewmodel/authentication/authentication_p
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 
 final getIt = GetIt.instance;
 
@@ -37,6 +40,7 @@ Future<void> setupDependencies() async {
   // Database Services
   getIt.registerLazySingleton<DatabaseService>(() => DatabaseService());
   getIt.registerLazySingleton<AuthService>(() => AuthService());
+  getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
   
   // Data Repositories
   getIt.registerLazySingleton<UserEntryRepository>(() => UserEntryRepository());
@@ -45,6 +49,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<ChatMessageRepository>(() => ChatMessageRepository());
   getIt.registerLazySingleton<UserPreferencesRepository>(() => UserPreferencesRepository());
   getIt.registerLazySingleton<LanguageRepository>(() => LanguageRepository());
+  getIt.registerLazySingleton<SubscriptionRepository>(() => SubscriptionRepository(getIt()));
 
   // Core
   getIt.registerLazySingleton<DioHelper>(() => DioHelper());
@@ -71,5 +76,6 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => NavigationProvider());
   getIt.registerFactory(() => AuthenticationProvider());
   getIt.registerFactory(() => LanguageProvider(getIt()));
+  getIt.registerLazySingleton(() => SubscriptionProvider(getIt()));
 
 }

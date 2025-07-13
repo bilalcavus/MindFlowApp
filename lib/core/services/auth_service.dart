@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mind_flow/data/models/user_model.dart';
@@ -14,6 +15,10 @@ class AuthService {
   String? get currentUserId => firebaseUser?.uid;
   bool get isLoggedIn => firebaseUser != null;
 
+  Future<void> createUserInFirestore(User user) async {
+    await FirebaseFirestore.instance.collection('users').doc(user.id).set(user.toFirestore(), SetOptions(merge: true));
+  }
+
   Future<User> register({
     required String email,
     required String password,
@@ -26,7 +31,7 @@ class AuthService {
     await cred.user?.updateDisplayName(displayName);
     await cred.user?.reload();
     final user = _firebaseAuth.currentUser;
-    return User(
+    final userModel = User(
       id: user!.uid,
       email: user.email ?? '',
       displayName: user.displayName ?? '',
@@ -36,6 +41,8 @@ class AuthService {
       isActive: true,
       userPreferences: null,
     );
+    await createUserInFirestore(userModel);
+    return userModel;
   }
 
   Future<User> login({
@@ -47,7 +54,7 @@ class AuthService {
       password: password,
     );
     final user = cred.user;
-    return User(
+    final userModel = User(
       id: user!.uid,
       email: user.email ?? '',
       displayName: user.displayName ?? '',
@@ -57,6 +64,8 @@ class AuthService {
       isActive: true,
       userPreferences: null,
     );
+    await createUserInFirestore(userModel);
+    return userModel;
   }
 
   Future<void> logout() async {
@@ -99,7 +108,7 @@ class AuthService {
         throw Exception('Google Sign-In başarısız');
       }
 
-      return User(
+      final userModel = User(
         id: user.uid,
         email: user.email ?? '',
         displayName: user.displayName ?? '',
@@ -109,6 +118,8 @@ class AuthService {
         isActive: true,
         userPreferences: null,
       );
+      await createUserInFirestore(userModel);
+      return userModel;
     } catch (e) {
       throw Exception('Google Sign-In hatası: $e');
     }

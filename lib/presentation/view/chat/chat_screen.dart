@@ -5,7 +5,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
+import 'package:mind_flow/presentation/widgets/subscription_widgets.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -21,10 +23,26 @@ class _ChatScreenState extends State<ChatScreen> {
   final AuthService _authService = AuthService();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshChatHistory();
+      _initializeSubscriptionListener();
+    });
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _initializeSubscriptionListener() {
+    if (_authService.isLoggedIn && _authService.currentUserId != null) {
+      final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+      subscriptionProvider.startListening(_authService.currentUserId!);
+    }
   }
 
   Future<void> _refreshChatHistory() async {
@@ -245,7 +263,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onSubmitted: (text) {
                   if (text.trim().isNotEmpty) {
-                    provider.sendChatMessage(text, context);
+                    _sendMessageWithCreditCheck(provider, text);
                     FocusScope.of(context).unfocus();
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _scrollToBottom();
@@ -258,7 +276,7 @@ class _ChatScreenState extends State<ChatScreen> {
             InkWell(
               onTap: () {
                 if (provider.chatController.text.trim().isNotEmpty) {
-                  provider.sendChatMessage(provider.chatController.text, context);
+                  _sendMessageWithCreditCheck(provider, provider.chatController.text);
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _scrollToBottom();
                   });
@@ -583,6 +601,65 @@ class _ChatScreenState extends State<ChatScreen> {
             SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _sendMessageWithCreditCheck(ChatBotProvider provider, String message) async {
+    if (!_authService.isLoggedIn) {
+      provider.sendChatMessage(message, context);
+      return;
+    }
+
+    final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+    final userId = _authService.currentUserId;
+    
+    if (userId == null) {
+      provider.sendChatMessage(message, context);
+      return;
+    }
+
+    final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
+    
+    if (!hasEnoughCredits) {
+      _showInsufficientCreditsDialog(subscriptionProvider, userId);
+      return;
+    }
+
+    provider.sendChatMessage(message, context);
+    await subscriptionProvider.consumeCredits(userId, 1, 'Chat mesajı');
+  }
+
+  void _showInsufficientCreditsDialog(SubscriptionProvider subscriptionProvider, String userId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Yetersiz Kredi'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Bu işlem için 1 kredi gereklidir. Krediniz yetersiz.'),
+            SizedBox(height: 16),
+            CreditIndicatorWidget(
+              showProgressBar: true,
+              showDetails: true,
+              padding: EdgeInsets.all(8),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('İptal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/subscription_management');
+            },
+            child: const Text('Kredi Satın Al'),
+          ),
+        ],
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
-import 'package:mind_flow/presentation/view/chat_screen.dart';
+import 'package:mind_flow/presentation/view/chat/chat_screen.dart';
 import 'package:mind_flow/presentation/view/home/widgets/home_analysis_card.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';

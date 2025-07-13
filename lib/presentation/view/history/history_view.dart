@@ -163,24 +163,29 @@ class JournalHistoryTab extends StatelessWidget {
           onClear: () => _showClearDialog(context, () => vm.clearHistory()),
           itemBuilder: (context, index) {
             final analysis = vm.analysisHistory[index];
-            return LiquidGlassCard(children: [
-              _buildAnalysisCard(
-              context: context,
-              title: analysis.summary.isNotEmpty
-                  ? analysis.summary
-                  : 'Duygu Analizi ${index + 1}',
-              modelUsed: vm.getModelDisplayName(analysis.modelUsed),
-              date: analysis.analysisDate,
-              themes: analysis.themes,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => JournalAnalysisScreen(analysisId: analysis.id),
-                  ),
-                );
-              },
-            ),
-            ]);
+            return Column(
+              children: [
+                LiquidGlassCard(children: [
+                  _buildAnalysisCard(
+                  context: context,
+                  title: analysis.summary.isNotEmpty
+                      ? analysis.summary
+                      : 'Duygu Analizi ${index + 1}',
+                  modelUsed: vm.getModelDisplayName(analysis.modelUsed),
+                  date: analysis.analysisDate,
+                  themes: analysis.themes,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => JournalAnalysisScreen(analysisId: analysis.id),
+                      ),
+                    );
+                  },
+                ),
+                ]),
+                SizedBox(height: context.dynamicHeight(0.015)),
+              ],
+            );
             
           },
         );
@@ -217,26 +222,31 @@ class DreamHistoryTab extends StatelessWidget {
           onClear: () => _showClearDialog(context, () => vm.clearHistory()),
           itemBuilder: (context, index) {
             final analysis = vm.analysisHistory[index];
-            return LiquidGlassCard(children: [
-              _buildAnalysisCard(
-              context: context,
-              title: analysis.summary.isNotEmpty
-                  ? analysis.summary
-                  : 'Rüya Analizi ${index + 1}',
-              modelUsed: vm.getModelDisplayName(analysis.modelUsed),
-              date: analysis.analysisDate,
-              themes: analysis.themes,
-              icon: Icons.bedtime,
-              iconColor: Colors.indigo,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => DreamAnalysisResultView(analysisId: analysis.id),
-                  ),
-                );
-              },
-            ),
-            ]);
+            return Column(
+              children: [
+                LiquidGlassCard(children: [
+                  _buildAnalysisCard(
+                  context: context,
+                  title: analysis.summary.isNotEmpty
+                      ? analysis.summary
+                      : 'Rüya Analizi ${index + 1}',
+                  modelUsed: vm.getModelDisplayName(analysis.modelUsed),
+                  date: analysis.analysisDate,
+                  themes: analysis.themes,
+                  icon: Icons.bedtime,
+                  iconColor: Colors.indigo,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => DreamAnalysisResultView(analysisId: analysis.id),
+                      ),
+                    );
+                  },
+                ),
+                ]),
+                SizedBox(height: context.dynamicHeight(0.015)),
+              ],
+            );
           },
         );
       },

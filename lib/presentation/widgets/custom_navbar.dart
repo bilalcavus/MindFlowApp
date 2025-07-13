@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +36,7 @@ class CustomBottomNavbar extends StatelessWidget {
               context,
               index: 0,
               icon: HugeIcons.strokeRoundedHome04,
-              label: 'Anasayfa',
+              label: 'home'.tr(),
             ),
           ),
           Expanded(
@@ -43,7 +44,7 @@ class CustomBottomNavbar extends StatelessWidget {
               context,
               index: 1,
               icon: Iconsax.calendar,
-              label: 'Analiz Et',
+              label: 'history'.tr(),
             ),
           ),
           Expanded(
@@ -51,7 +52,7 @@ class CustomBottomNavbar extends StatelessWidget {
               context,
               index: 2,
               icon: HugeIcons.strokeRoundedUserAccount,
-              label: 'Geçmiş',
+              label: 'profile'.tr(),
             ),
           ),
         ],
@@ -82,18 +83,18 @@ class CustomBottomNavbar extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.grey[600],
+              color: isSelected ? Colors.grey[200] : Colors.grey[600],
               size: context.dynamicWidth(0.06),
             ),
             SizedBox(height: context.dynamicHeight(0.005)),
-            // Text(
-            //   label,
-            //   style: TextStyle(
-            //     color:  Colors.grey[600],
-            //     fontSize: context.dynamicHeight(0.014),
-            //     fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-            //   ),
-            // ),
+            Text(
+              label,
+              style: TextStyle(
+                color:  isSelected ? Colors.grey[200] : Colors.grey[600],
+                fontSize: context.dynamicHeight(0.014),
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
           ],
         )
       ),

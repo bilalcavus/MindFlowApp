@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
-import 'package:mind_flow/presentation/view/app_navigation.dart';
+import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/start/initial_language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String id;
   final String email;
@@ -38,6 +40,22 @@ class User {
     );
   }
 
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return User(
+      id: doc.id,
+      email: data['email'] ?? '',
+      displayName: data['displayName'] ?? '',
+      avatarUrl: data['avatarUrl'],
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      lastLoginAt: data['lastLoginAt'] != null 
+          ? (data['lastLoginAt'] as Timestamp).toDate() 
+          : null,
+      isActive: data['isActive'] ?? true,
+      userPreferences: data['userPreferences'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -48,6 +66,18 @@ class User {
       'last_login_at': lastLoginAt?.toIso8601String(),
       'is_active': isActive ? 1 : 0,
       'user_preferences_json': userPreferences != null ? jsonEncode(userPreferences) : null,
+    };
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'email': email,
+      'displayName': displayName,
+      'avatarUrl': avatarUrl,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'lastLoginAt': lastLoginAt != null ? Timestamp.fromDate(lastLoginAt!) : null,
+      'isActive': isActive,
+      'userPreferences': userPreferences,
     };
   }
 
