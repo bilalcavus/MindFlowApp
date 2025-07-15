@@ -6,9 +6,10 @@ import 'package:mind_flow/data/repositories/langauge_repository.dart';
 
 class LanguageProvider extends ChangeNotifier {
   final LanguageRepository _repository;
-  LanguageProvider(this._repository);
+  final AuthService _authService;
+  
+  LanguageProvider(this._repository, this._authService);
 
-  final AuthService _authService = AuthService();
   String? get _currentUserId => _authService.currentUserId;
   Locale _currentLocale = const Locale('en');
   Locale get currentLocale => _currentLocale;

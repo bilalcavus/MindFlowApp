@@ -14,6 +14,8 @@ class CustomTextField extends StatelessWidget {
     this.suffix,
     this.inputFormatters, 
     this.enabled,
+    this.obscureText = false,
+    this.suffixIcon,
   });
 
   final TextEditingController controller;
@@ -25,6 +27,8 @@ class CustomTextField extends StatelessWidget {
   final String? suffix;
   final List<TextInputFormatter>? inputFormatters;
   final bool? enabled;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,7 @@ class CustomTextField extends StatelessWidget {
             maxLines: maxLines,
             keyboardType: keyboardType,
             inputFormatters: inputFormatters,
+            obscureText: obscureText,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(
@@ -60,6 +65,7 @@ class CustomTextField extends StatelessWidget {
                 fontSize: context.dynamicHeight(0.015),
               ),
               suffixText: suffix,
+              suffixIcon: suffixIcon,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: context.dynamicWidth(0.025),
                 vertical: context.dynamicWidth(0.02),

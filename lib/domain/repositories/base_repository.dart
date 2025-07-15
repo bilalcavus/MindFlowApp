@@ -1,26 +1,8 @@
 
 
-import 'package:mind_flow/core/error/error_handler.dart';
+import 'package:mind_flow/core/mixins/repository_error_handling.dart';
 
-abstract class BaseRepository {
-  Future<T> handleRepositoryOperation<T>({
-    required Future<T> Function() operation,
-    String? errorMessage,
-  }) async {
-    try {
-      return await operation();
-    } catch (e) {
-      if (e is AppError) {
-        rethrow;
-      }
-      throw AppError(
-        message: errorMessage ?? 'Repository operation failed',
-        type: ErrorType.unknown,
-        originalError: e,
-      );
-    }
-  }
-
+abstract class BaseRepository with RepositoryErrorHandling {
   // Future<T?> getCachedData<T>({
   //   required String cacheKey,
   //   required Future<T?> Function() fetchFromSource,
@@ -28,4 +10,4 @@ abstract class BaseRepository {
   // });
 
   // Future<void> clearCache(String key);
-} 
+}

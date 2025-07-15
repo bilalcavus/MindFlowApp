@@ -1,27 +1,40 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
-import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
 import 'package:mind_flow/data/repositories/emotion_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
 import 'package:mind_flow/domain/usecases/get_analyze_emotion.dart';
-import 'package:mind_flow/injection/injection.dart';
 
 class JournalViewModel extends ChangeNotifier {
-  final ApiServices _repo = ApiServices();
-  final UserEntryRepository _entryRepo = getIt<UserEntryRepository>();
-  final EmotionAnalysisRepository _analysisRepo = getIt<EmotionAnalysisRepository>();
-  final UserPreferencesRepository _prefsRepo = getIt<UserPreferencesRepository>();
-  final AuthService _authService = AuthService();
-
+  final ApiRemoteDataSource _repo;
+  final UserEntryRepository _entryRepo;
+  final EmotionAnalysisRepository _analysisRepo;
+  final UserPreferencesRepository _prefsRepo;
+  final AuthService _authService;
   final GetAnalyzeEmotion getAnalyzeEmotion;
 
-  JournalViewModel(this.getAnalyzeEmotion) {
-    _loadPrefs();
-    _loadAnalysisHistory();
+  JournalViewModel(
+    this.getAnalyzeEmotion,
+    this._repo,
+    this._entryRepo,
+    this._analysisRepo,
+    this._prefsRepo,
+    this._authService,
+  );
+
+  Future<void> initialize() async {
+    await _loadPrefs();
+    await _loadAnalysisHistory();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 
   bool isLoading = false;
@@ -124,10 +137,8 @@ class JournalViewModel extends ChangeNotifier {
       );
       analysisHistory = history;
       notifyListeners();
-      debugPrint('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
     } catch (e) {
       error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
-      debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
     }
   }
 
@@ -143,14 +154,11 @@ class JournalViewModel extends ChangeNotifier {
       );
       if (analysis != null) {
         analysisResult = analysis;
-        debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
       } else {
         error = "error_not_found".tr(namedArgs: {'id': id.toString()});
-        debugPrint('❌ Analiz bulunamadı: ID $id');
       }
     } catch (e) {
       error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
-      debugPrint('❌ Analiz yükleme hatası: $e');
     }
     
     isLoading = false;
@@ -181,7 +189,6 @@ class JournalViewModel extends ChangeNotifier {
       await _analysisRepo.deleteAllUserAnalyses(_currentUserId!);
       analysisHistory.clear();
       notifyListeners();
-      debugPrint('Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
       error = "error_clear_history".tr();
       notifyListeners();

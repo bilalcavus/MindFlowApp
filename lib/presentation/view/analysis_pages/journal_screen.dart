@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/generic_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/journal_analysis_result_view.dart';
@@ -11,10 +12,10 @@ class JournalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<JournalViewModel>();
     return GenericAnalysisPage(
-      title: 'AI Günlük & Zihin Haritası',
-      textFieldLabel: 'Bugün nasıl hissediyorsun?',
-      textFieldHint: 'Bugün ne hissettiğini, neler yaşadığını, paylaşmak istediklerini istediğin şekilde yaz, sana yardımcı olayım!',
-      analyzeButtonText: 'Gönder',
+      title: 'analysis_emotion_title'.tr(),
+      textFieldLabel: 'analysis_emotion_feel_text'.tr(),
+      textFieldHint: 'analysis_emotion_feel_hint_text'.tr(),
+      analyzeButtonText: 'send'.tr(),
       isLoading: vm.isLoading,
       onAnalyze: () async {
         await vm.analyzeText(vm.textController.text);

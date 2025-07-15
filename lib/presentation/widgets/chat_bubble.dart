@@ -119,8 +119,8 @@ class ChatBubble extends StatelessWidget {
         return 'Deepseek V3';
       case 'gemma-3n-4b':
         return 'Gemma';
-      case 'llama-4-maverick':
-        return 'Llama 4 Maverick';
+      case 'meta-llama-3.3':
+        return 'Meta Llama';
       case 'claude-instant-anthropic':
         return 'Claude Anthropic';
       case 'deephermes-3-llama-3':

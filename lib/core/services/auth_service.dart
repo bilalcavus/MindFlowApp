@@ -85,9 +85,60 @@ class AuthService {
     await firebaseUser?.reload();
   }
 
-  Future<void> changePassword(String newPassword) async {
-    await firebaseUser?.updatePassword(newPassword);
+  Future<void> changePassword({
+  required String newPassword,
+  required String email,
+  required String currentPassword,
+}) async {
+  if (firebaseUser == null) {
+    throw fb.FirebaseAuthException(
+      code: 'user-not-found',
+      message: 'No authenticated user found',
+    );
   }
+
+  try {
+    final credential = fb.EmailAuthProvider.credential(
+      email: email,
+      password: currentPassword,
+    );
+    await firebaseUser!.reauthenticateWithCredential(credential);
+    await firebaseUser!.updatePassword(newPassword);
+    
+  } on fb.FirebaseAuthException catch (e) {
+    if (e.code == 'wrong-password') {
+      throw fb.FirebaseAuthException(
+        code: 'wrong-password',
+        message: 'Mevcut şifre yanlış',
+      );
+    } else if (e.code == 'weak-password') {
+      throw fb.FirebaseAuthException(
+        code: 'weak-password', 
+        message: 'Yeni şifre çok zayıf',
+      );
+    } else if (e.code == 'user-disabled') {
+      throw fb.FirebaseAuthException(
+        code: 'user-disabled',
+        message: 'Kullanıcı hesabı devre dışı bırakıldı',
+      );
+    } else if (e.code == 'user-not-found') {
+      throw fb.FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'Kullanıcı bulunamadı',
+      );
+    } else if (e.code == 'invalid-email') {
+      throw fb.FirebaseAuthException(
+        code: 'invalid-email',
+        message: 'Geçersiz email adresi',
+      );
+    } else {
+      rethrow;
+    }
+  } catch (e) {
+    throw Exception('Şifre değiştirme hatası: $e');
+  }
+}
+
 
   Future<User> signInWithGoogle() async {
     try {

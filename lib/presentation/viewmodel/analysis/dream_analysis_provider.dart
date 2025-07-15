@@ -1,37 +1,54 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
-import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
+import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
 import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
-import 'package:mind_flow/injection/injection.dart';
 
 class DreamAnalysisProvider extends ChangeNotifier {
-  final ApiServices _repo = ApiServices();
-  final SharedPrefsService _prefsService = SharedPrefsService();
-  final AuthService _authService = AuthService();
-  final UserEntryRepository _entryRepo = getIt<UserEntryRepository>();
-  final UserPreferencesRepository _prefsRepo = getIt<UserPreferencesRepository>();
-  final DreamAnalysisDataRepository _analysisRepo = getIt<DreamAnalysisDataRepository>();
+  final ApiRemoteDataSource _repo;
+  final SharedPrefsService _prefsService;
+  final AuthService _authService;
+  final UserEntryRepository _entryRepo;
+  final UserPreferencesRepository _prefsRepo;
+  final DreamAnalysisDataRepository _analysisRepo;
   final GetDreamAnalysis getDreamAnalysis;
+  
   bool isLoading = false;
   DreamAnalysisModel? analysisResult;
   String? error;
   String selectedModel = ApiConstants.defaultModel;
   List<DreamAnalysisModel> analysisHistory = [];
   final TextEditingController textController = TextEditingController();
+  
   List<String> get availableModels => _repo.getAvailableModels();
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
-  DreamAnalysisProvider(this.getDreamAnalysis) {
-    _loadPrefs();
-    _loadAnalysisHistory();
+  DreamAnalysisProvider(
+    this.getDreamAnalysis,
+    this._repo,
+    this._prefsService,
+    this._authService,
+    this._entryRepo,
+    this._prefsRepo,
+    this._analysisRepo,
+  );
+
+  Future<void> initialize() async {
+    await _loadPrefs();
+    await _loadAnalysisHistory();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 
 
@@ -108,7 +125,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
     if (!_isUserLoggedIn || _currentUserId == null) {
       return;
     }
-
     try {
       final history = await _analysisRepo.getDreamAnalysesByType(
         userId: _currentUserId!,
@@ -117,9 +133,8 @@ class DreamAnalysisProvider extends ChangeNotifier {
       );
       analysisHistory = history;
       notifyListeners();
-      debugPrint('✅ Analiz geçmişi veritabanından yüklendi: ${history.length} kayıt (User ID: $_currentUserId)');
     } catch (e) {
-      debugPrint('❌ Analiz geçmişi yükleme hatası: $e');
+      debugPrint('Analiz geçmişi yükleme hatası: $e');
     }
   }
 
@@ -135,7 +150,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
   }
 
   Future<void> loadAnalysisById(int id) async {
-    debugPrint('🔄 Analiz yükleniyor: ID $id');
     isLoading = true;
     error = null;
     notifyListeners();
@@ -144,14 +158,11 @@ class DreamAnalysisProvider extends ChangeNotifier {
       final analysis = await _analysisRepo.getDreamAnalysisById(id);
       if (analysis != null) {
         analysisResult = analysis;
-        debugPrint('✅ Analiz başarıyla yüklendi: ID $id');
       } else {
         error = "error_not_found".tr(namedArgs: {'id': id.toString()});
-        debugPrint('❌ Analiz bulunamadı: ID $id');
       }
     } catch (e) {
       error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
-      debugPrint('❌ Analiz yükleme hatası: $e');
     }
     
     isLoading = false;
@@ -184,7 +195,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
       await _analysisRepo.clearDreamAnalysisHistory(_currentUserId!);
       analysisHistory.clear();
       notifyListeners();
-      debugPrint('✅ Analiz geçmişi temizlendi (User ID: $_currentUserId)');
     } catch (e) {
       error = "error_clear_history".tr();
       notifyListeners();
@@ -216,7 +226,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
         endDate: endDate,
       );
     } catch (e) {
-      debugPrint('❌ Tarih aralığı analiz hatası: $e');
       return [];
     }
   }
@@ -267,9 +276,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
     try {
       selectedModel = await _prefsRepo.getSelectedModel(_currentUserId!);
       notifyListeners();
-      debugPrint('✅ Kullanıcı tercihleri yüklendi: $selectedModel (User ID: $_currentUserId)');
     } catch (e) {
-      debugPrint('❌ Tercih yükleme hatası: $e');
       selectedModel = ApiConstants.defaultModel;
     }
   }

@@ -5,7 +5,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/view/profile/account_password_view.dart';
+import 'package:mind_flow/presentation/view/profile/personal_information_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
@@ -20,7 +23,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final AuthService _authService = AuthService();
-  final AuthenticationProvider _provider = AuthenticationProvider();
+  final AuthenticationProvider _provider = AuthenticationProvider(getIt());
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +94,13 @@ class _ProfileViewState extends State<ProfileView> {
     return Column(
       children: [
         _buildSettingsCard([
-          _settingsTile(Iconsax.user, 'personal_information'.tr(), null),
-          _settingsTile(Iconsax.lock, 'account_password'.tr(), null),
-          _settingsTile(Iconsax.location, 'address'.tr(), null),
+          _settingsTile(Iconsax.user, 'personal_information'.tr(), () {
+            RouteHelper.push(context, const PersonalInformationView());
+          }),
+          _settingsTile(Iconsax.lock, 'account_password'.tr(), () {
+            RouteHelper.push(context, const AccountPasswordView());
+          }),
+          // _settingsTile(Iconsax.location, 'address'.tr(), null),
         ]),
         SizedBox(height: context.dynamicHeight(0.02)),
         _buildSubscriptionCard(),

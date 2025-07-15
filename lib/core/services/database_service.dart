@@ -587,8 +587,8 @@ Future<String?> getUserPreference(String userId, String key) async {
     }
   }
 
-  String _encodeJson(dynamic data) => jsonEncode(data);
-  T _decodeJson<T>(String jsonString) => jsonDecode(jsonString) as T;
+  // String _encodeJson(dynamic data) => jsonEncode(data);
+  // T _decodeJson<T>(String jsonString) => jsonDecode(jsonString) as T;
 
   Future<void> close() async {
     final db = await database;

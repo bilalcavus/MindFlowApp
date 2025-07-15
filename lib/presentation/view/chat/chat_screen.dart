@@ -674,8 +674,8 @@ class _ChatScreenState extends State<ChatScreen> {
         return 'model_deepseek_v3_desc'.tr();
       case 'gemma-3n-4b':
         return 'model_gemma_3n_4b_desc'.tr();
-      case 'llama-4-maverick':
-        return 'model_llama_4_maverick_desc'.tr();
+      case 'meta-llama-3.3':
+        return 'model_meta-llama-3.3_desc'.tr();
       case 'claude-instant-anthropic':
         return 'model_claude_instant_anthropic_desc'.tr();
       case 'deephermes-3-llama-3':

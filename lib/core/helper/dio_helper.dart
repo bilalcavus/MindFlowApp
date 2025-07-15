@@ -2,19 +2,38 @@ import 'package:dio/dio.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
 
 class DioHelper {
-  //DIO INTERCEPTER
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: ApiConstants.openAIBaseURL,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Authorization': 'Bearer ${ApiConstants.openAIKey}',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    ),
-  );
+  late Dio _dio;
+  String _currentProvider = ApiConstants.defaultProvider;
+
+  DioHelper({String? provider}) {
+    _currentProvider = provider ?? ApiConstants.defaultProvider;
+    _initializeDio();
+  }
+
+  void _initializeDio() {
+    final baseUrl = ApiConstants.getBaseUrl(_currentProvider);
+    final apiKey = ApiConstants.getApiKey(_currentProvider);
+
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'Authorization': 'Bearer $apiKey',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+  }
+
+  void switchProvider(String provider) {
+    _currentProvider = provider;
+    _initializeDio();
+  }
+
+  String get currentProvider => _currentProvider;
 
   void setToken(String token) {
     _dio.options.headers['Authorization'] = 'Bearer $token';
@@ -37,7 +56,20 @@ class DioHelper {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;
       } else {
-        return {'error': 'API yanıt kodu: ${response.statusCode}', 'message': response.data.toString(), 'statusCode': response.statusCode};
+        final errorData = {
+          'error': 'API yanıt kodu: ${response.statusCode}', 
+          'message': response.data.toString(), 
+          'statusCode': response.statusCode,
+          'provider': _currentProvider,
+        };
+        
+        // Check for rate limit errors
+        if (response.statusCode == 429 || 
+            ApiConstants.isRateLimitError(response.data.toString())) {
+          errorData['isRateLimit'] = true;
+        }
+        
+        return errorData;
       }
     } catch (e) {
       if (e is DioException) {
@@ -56,7 +88,20 @@ class DioHelper {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data;
       } else {
-        return {'error': 'API yanıt kodu: ${response.statusCode}', 'message': response.data.toString(), 'statusCode': response.statusCode};
+        final errorData = {
+          'error': 'API yanıt kodu: ${response.statusCode}', 
+          'message': response.data.toString(), 
+          'statusCode': response.statusCode,
+          'provider': _currentProvider,
+        };
+        
+        // Check for rate limit errors
+        if (response.statusCode == 429 || 
+            ApiConstants.isRateLimitError(response.data.toString())) {
+          errorData['isRateLimit'] = true;
+        }
+        
+        return errorData;
       }
     } catch (e) {
       if (e is DioException) {
@@ -77,30 +122,68 @@ class DioHelper {
   }
 
   dynamic _handleError(dynamic error) {
+    Map<String, dynamic> errorData = {'provider': _currentProvider};
+    
     if (error is DioException) {
       switch (error.type) {
         case DioExceptionType.connectionTimeout:
-          return {'error': 'Bağlantı zaman aşımına uğradı'};
+          errorData.addAll({'error': 'Bağlantı zaman aşımına uğradı'});
+          break;
         case DioExceptionType.receiveTimeout:
-          return {'error': 'Yanıt zaman aşımına uğradı'};
+          errorData.addAll({'error': 'Yanıt zaman aşımına uğradı'});
+          break;
         case DioExceptionType.badResponse:
           if (error.response != null) {
-            return {'error': 'Hatalı yanıt: ${error.response?.statusCode}', 'message': error.response?.data.toString() ?? 'Bilinmeyen hata', 'statusCode': error.response?.statusCode};
+            final statusCode = error.response?.statusCode;
+            final responseData = error.response?.data?.toString() ?? 'Bilinmeyen hata';
+            
+            errorData.addAll({
+              'error': 'Hatalı yanıt: $statusCode', 
+              'message': responseData, 
+              'statusCode': statusCode
+            });
+            
+            // Check for rate limit errors
+            if (statusCode == 429 || ApiConstants.isRateLimitError(responseData)) {
+              errorData['isRateLimit'] = true;
+            }
+          } else {
+            errorData.addAll({'error': 'Hatalı yanıt: ${error.response?.statusCode}'});
           }
-          return {'error': 'Hatalı yanıt: ${error.response?.statusCode}'};
+          break;
         case DioExceptionType.cancel:
-          return {'error': 'İstek iptal edildi'};
+          errorData.addAll({'error': 'İstek iptal edildi'});
+          break;
         case DioExceptionType.connectionError:
-          return {'error': 'Bağlantı hatası'};
+          errorData.addAll({'error': 'Bağlantı hatası'});
+          break;
         case DioExceptionType.unknown:
           if (error.error != null) {
-            return {'error': 'Hata: ${error.error.toString()}'};
+            final errorMessage = error.error.toString();
+            errorData.addAll({'error': 'Hata: $errorMessage'});
+            
+            // Check for rate limit errors in unknown errors too
+            if (ApiConstants.isRateLimitError(errorMessage)) {
+              errorData['isRateLimit'] = true;
+            }
+          } else {
+            errorData.addAll({'error': 'Bilinmeyen bir hata oluştu'});
           }
-          return {'error': 'Bilinmeyen bir hata oluştu'};
+          break;
         default:
-          return {'error': 'Bilinmeyen bir hata oluştu'};
+          errorData.addAll({'error': 'Bilinmeyen bir hata oluştu'});
+          break;
+      }
+    } else {
+      final errorMessage = error.toString();
+      errorData.addAll({'error': 'Bilinmeyen bir hata oluştu: $errorMessage'});
+      
+      // Check for rate limit errors
+      if (ApiConstants.isRateLimitError(errorMessage)) {
+        errorData['isRateLimit'] = true;
       }
     }
-    return {'error': 'Bilinmeyen bir hata oluştu: ${error.toString()}'};
+    
+    return errorData;
   }
 }

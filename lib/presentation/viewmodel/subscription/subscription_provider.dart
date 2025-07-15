@@ -25,6 +25,7 @@ class SubscriptionProvider extends ChangeNotifier {
       (_userSubscription?.planId == 'premium' || _userSubscription?.planId == 'enterprise');
   
   bool get hasActiveSubscription => _userSubscription?.isActive == true;
+
   
   String get currentPlanName {
     if (_userSubscription == null) return 'Bilinmeyen';
@@ -77,6 +78,17 @@ class SubscriptionProvider extends ChangeNotifier {
   void _setError(String? error) {
     _errorMessage = error;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscriptionPlans.clear();
+    _userSubscription = null;
+    _userCredits = null;
+    _creditTransactions.clear();
+    _isLoading = false;
+    _errorMessage = null;
   }
 
   Future<void> loadSubscriptionPlans() async {

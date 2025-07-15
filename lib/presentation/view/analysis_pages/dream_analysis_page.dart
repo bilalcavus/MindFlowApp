@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/generic_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/dream_analysis_result_view.dart';
@@ -11,10 +12,10 @@ class DreamAnalysisPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<DreamAnalysisProvider>();
     return GenericAnalysisPage(
-      title: 'Rüya Analizi',
-      textFieldLabel: 'Rüyanı anlat',
-      textFieldHint: 'Rüyanda ne gördüğünü anlat, ona göre rüya analizi yapayımx!',
-      analyzeButtonText: 'Gönder',
+      title: 'analysis_dream_title'.tr(),
+      textFieldLabel: 'analysis_dream_center_title'.tr(),
+      textFieldHint: 'analysis_dream_text'.tr(),
+      analyzeButtonText: 'send'.tr(),
       isLoading: vm.isLoading,
       onAnalyze: () async {
         await vm.dreamAnalyzeText(vm.textController.text);
@@ -28,7 +29,7 @@ class DreamAnalysisPage extends StatelessWidget {
         } else if (vm.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Hata: ${vm.error}'),
+              content: Text('error_with_message: ${vm.error}'.tr()),
               backgroundColor: Colors.red,
             ),
           );

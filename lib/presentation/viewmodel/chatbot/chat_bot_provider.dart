@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
-import 'package:mind_flow/core/services/api_services.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
+import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
 import 'package:mind_flow/domain/usecases/get_chat_response.dart';
-import 'package:mind_flow/injection/injection.dart';
 
 class ChatBotProvider extends ChangeNotifier {
-  final ApiServices _repo = ApiServices();
-  final SharedPrefsService _prefsService = SharedPrefsService();
-  final AuthService _authService = AuthService();
-  final ChatMessageRepository _chatRepo = getIt<ChatMessageRepository>();
+  final ApiRemoteDataSource _repo;
+  final SharedPrefsService _prefsService;
+  final AuthService _authService;
+  final ChatMessageRepository _chatRepo;
   final GetChatResponse getChatResponse;
 
   bool isLoading = false;
@@ -21,9 +20,23 @@ class ChatBotProvider extends ChangeNotifier {
   final TextEditingController chatController = TextEditingController();
   String? _currentSessionId;
 
-  ChatBotProvider(this.getChatResponse) {
-    _loadPrefs();
-    _loadChatHistory();
+  ChatBotProvider(
+    this.getChatResponse,
+    this._repo,
+    this._prefsService,
+    this._authService,
+    this._chatRepo,
+  );
+
+  Future<void> initialize() async {
+    await _loadPrefs();
+    await _loadChatHistory();
+  }
+
+  @override
+  void dispose() {
+    chatController.dispose();
+    super.dispose();
   }
 
   List<String> get availableModels => _repo.getAvailableModels();
@@ -58,7 +71,7 @@ class ChatBotProvider extends ChangeNotifier {
         sessionId: _currentSessionId,
       );
     } catch (e) {
-      debugPrint('❌ Kullanıcı mesajı kaydedilemedi: $e');
+      debugPrint('Kullanıcı mesajı kaydedilemedi: $e');
     }
     chatController.clear();
     FocusScope.of(context).unfocus();
@@ -72,15 +85,11 @@ class ChatBotProvider extends ChangeNotifier {
         userId: _currentUserId,
         modelUsed: selectedModel,
       );
-      
-      
       chatMessages.add(aiMessage);
-      
       await _chatRepo.insertChatMessageFromModel(
         chatMessage: aiMessage,
         sessionId: _currentSessionId,
       );
-      
       chatController.clear();
     } catch (e) {
       final errorMessage = ChatMessage.ai(
@@ -95,10 +104,9 @@ class ChatBotProvider extends ChangeNotifier {
           sessionId: _currentSessionId,
         );
       } catch (dbError) {
-        debugPrint('❌ Hata mesajı kaydedilemedi: $dbError');
+        debugPrint('Hata mesajı kaydedilemedi: $dbError');
       }
     }
-    
     isLoading = false;
     chatController.clear();
     notifyListeners();
@@ -136,15 +144,12 @@ class ChatBotProvider extends ChangeNotifier {
     try {
       final recentMessages = await _chatRepo.getRecentMessagesForUser(_currentUserId!, limit: 50);
       chatMessages = recentMessages;
-      
       if (chatMessages.isNotEmpty) {
         _currentSessionId = await _chatRepo.getLastActiveSessionId();
       }
-      
       notifyListeners();
-      debugPrint('✅ Sohbet geçmişi yüklendi: ${chatMessages.length} mesaj (User ID: $_currentUserId)');
     } catch (e) {
-      debugPrint('❌ Sohbet geçmişi yükleme hatası: $e');
+      debugPrint('Sohbet geçmişi yükleme hatası: $e');
     }
   }
 
@@ -152,12 +157,10 @@ class ChatBotProvider extends ChangeNotifier {
     if (_isUserLoggedIn && _currentUserId != null && _currentSessionId != null) {
       try {
         await _chatRepo.deleteChatSession(_currentSessionId!);
-        debugPrint('✅ Sohbet veritabanından temizlendi');
       } catch (e) {
-        debugPrint('❌ Sohbet temizleme hatası: $e');
+        debugPrint('Sohbet temizleme hatası: $e');
       }
     }
-    
     chatMessages.clear();
     _currentSessionId = null;
     notifyListeners();
@@ -180,7 +183,7 @@ class ChatBotProvider extends ChangeNotifier {
       final sessions = await _chatRepo.getSessionsForUser(_currentUserId!, limit: 20);
       return sessions;
     } catch (e) {
-      debugPrint('❌ Sohbet oturumları yükleme hatası: $e');
+      debugPrint('Sohbet oturumları yükleme hatası: $e');
       return [];
     }
   }
@@ -195,9 +198,8 @@ class ChatBotProvider extends ChangeNotifier {
       chatMessages = messages;
       _currentSessionId = sessionId;
       notifyListeners();
-      debugPrint('✅ Sohbet oturumu yüklendi: $sessionId (${messages.length} mesaj)');
     } catch (e) {
-      debugPrint('❌ Sohbet oturumu yükleme hatası: $e');
+      debugPrint('Sohbet oturumu yükleme hatası: $e');
       throw Exception('Sohbet oturumu yüklenirken hata: $e');
     }
   }
@@ -218,9 +220,8 @@ class ChatBotProvider extends ChangeNotifier {
     try {
       selectedModel = await _prefsService.getSelectedModel() ?? ApiConstants.defaultModel;
       notifyListeners();
-      debugPrint('✅ Kullanıcı tercihleri yüklendi: $selectedModel');
     } catch (e) {
-      debugPrint('❌ Tercih yükleme hatası: $e');
+      debugPrint('Tercih yükleme hatası: $e');
       selectedModel = ApiConstants.defaultModel;
     }
   }

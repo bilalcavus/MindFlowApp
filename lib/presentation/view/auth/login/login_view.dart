@@ -110,15 +110,11 @@ class _LoginViewState extends State<LoginView> {
                         height: context.dynamicHeight(0.07),
                         child: ElevatedButton(
                           onPressed: provider.isEmailLoading ? null : () async {
-                            try {
                               await provider.handleLogin(context);
+                              FocusScope.of(context).unfocus();
                               if (mounted && provider.authService.isLoggedIn) {
                                 RouteHelper.pushAndCloseOther(context, const AppNavigation());
                               }
-                            } catch (e) {
-                              // Hata zaten provider'da snackbar ile gösterildi
-                              // Burada ek işlem yapmaya gerek yok
-                            }
                           } ,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black12,
@@ -225,25 +221,8 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       SizedBox(height: context.dynamicHeight(0.022)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: context.dynamicWidth(0.035))),
-                          TextButton(
-                            onPressed: () {
-                              RouteHelper.push(context, const RegisterView());
-                            },
-                            child: Text(
-                              'Kayıt Olun',
-                              style: TextStyle(
-                                color: const Color(0xFFB983FF),
-                                fontWeight: FontWeight.w700,
-                                fontSize: context.dynamicWidth(0.037),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      forgetPasswordSection(context),
+                      registerNowSection(context),
                     ],
                   ),
                 ),
@@ -253,6 +232,49 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
+    );
+  }
+
+  Row registerNowSection(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('dont_have_account'.tr(), style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: context.dynamicWidth(0.035))),
+        TextButton(
+          onPressed: () {
+            RouteHelper.push(context, const RegisterView());
+          },
+          child: Text(
+            'register_now'.tr(),
+            style: TextStyle(
+              color: const Color(0xFFB983FF),
+              fontWeight: FontWeight.w700,
+              fontSize: context.dynamicWidth(0.037),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row forgetPasswordSection(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          onPressed: () {
+            RouteHelper.push(context, const RegisterView());
+          },
+          child: Text(
+            'reset_password_now'.tr(),
+            style: TextStyle(
+              color: const Color(0xFFB983FF),
+              fontWeight: FontWeight.w700,
+              fontSize: context.dynamicWidth(0.037),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

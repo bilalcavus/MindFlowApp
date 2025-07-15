@@ -171,7 +171,6 @@ class JournalHistoryTab extends StatelessWidget {
                   title: analysis.summary.isNotEmpty
                       ? analysis.summary
                       : 'Duygu Analizi ${index + 1}',
-                  modelUsed: vm.getModelDisplayName(analysis.modelUsed),
                   date: analysis.analysisDate,
                   themes: analysis.themes,
                   onTap: () {
@@ -230,7 +229,6 @@ class DreamHistoryTab extends StatelessWidget {
                   title: analysis.summary.isNotEmpty
                       ? analysis.summary
                       : 'Rüya Analizi ${index + 1}',
-                  modelUsed: vm.getModelDisplayName(analysis.modelUsed),
                   date: analysis.analysisDate,
                   themes: analysis.themes,
                   icon: Icons.bedtime,
@@ -351,7 +349,6 @@ Widget _buildHistoryList({
 Widget _buildAnalysisCard({
   required BuildContext context,
   required String title,
-  required String modelUsed,
   required DateTime date,
   required List<String> themes,
   required VoidCallback onTap,
@@ -371,20 +368,6 @@ Widget _buildAnalysisCard({
     subtitle: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: context.dynamicHeight(.01)),
-        Row(
-          children: [
-            Icon(HugeIcons.strokeRoundedAiBrain01, size: context.dynamicHeight(0.02), color: Colors.grey[400]),
-            SizedBox(width: context.dynamicWidth(0.01)),
-            Text(
-              modelUsed,
-              style: TextStyle(
-                color: Colors.grey[400],
-                fontSize: context.dynamicHeight(0.016),
-              ),
-            ),
-          ],
-        ),
         SizedBox(height: context.dynamicHeight(0.005)),
         Row(
           children: [

@@ -172,7 +172,7 @@ IconData getModelIcon(String modelKey) {
         return HugeIcons.strokeRoundedDeepseek;
       case 'gemma-3n-4b':
         return HugeIcons.strokeRoundedGoogle;
-      case 'llama-4-maverick':
+      case 'meta-llama-3.3':
         return HugeIcons.strokeRoundedMeta;
       case 'claude-instant-anthropic':
         return HugeIcons.strokeRoundedClaude;

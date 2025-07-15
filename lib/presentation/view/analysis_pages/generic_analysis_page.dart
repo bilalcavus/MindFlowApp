@@ -68,26 +68,6 @@ class GenericAnalysisPage extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(context.dynamicHeight(0.016)),
-                child: DropdownButtonFormField<String>(
-                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.03)),
-                  value: selectedModel,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.02)),
-                    labelText: 'Model',
-                  ),
-                  items: availableModels.map((model) {
-                    return DropdownMenuItem(
-                      value: model,
-                      child: Text(getModelDisplayName(model)),
-                    );
-                  }).toList(),
-                  onChanged: onModelChange,
-                ),
-              ),
-              SizedBox(height: context.dynamicHeight(0.02)),
-              Padding(
-                padding: EdgeInsets.all(context.dynamicHeight(0.016)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -26,30 +26,20 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   
   try {
-    // Firebase'i initialize et
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    debugPrint('✅ Firebase initialize edildi');
-    
-    // Dependency injection'ı kur
     await setupDependencies();
-    debugPrint('✅ Dependencies kuruldu');
-    
-    // Firestore'u initialize et (hata durumunda devam et)
     try {
       final firestoreSetup = FirestoreSetupService();
       await firestoreSetup.initializeFirestore();
-      debugPrint('✅ Firestore initialize edildi');
     } catch (firestoreError) {
       debugPrint('⚠️ Firestore hatası (uygulama devam ediyor): $firestoreError');
       debugPrint('💡 Firestore Console\'da database\'i aktifleştirin');
     }
-    
-    // Local database'i initialize et
     await _initializeDatabase();
+    await _initializeProviders();
     
-    // Kullanıcı dil tercihini al
     final userId = getIt<AuthService>().currentUserId;
     final savedLocale = userId != null
         ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
@@ -61,6 +51,7 @@ void main() async {
         supportedLocales: const [Locale('en'), Locale('tr')],
         path: 'assets/translations',
         fallbackLocale: const Locale('en'),
+        saveLocale: true,
         startLocale: locale,
         child: MultiProvider(
           providers: [
@@ -70,7 +61,6 @@ void main() async {
             ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
-            // 🔧 Subscription provider'ı ekle
             ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
           ],
           child: const MyApp(),
@@ -79,8 +69,6 @@ void main() async {
     );
   } catch (e) {
     debugPrint('❌ Uygulama başlatma hatası: $e');
-    // Hata durumunda basit bir hata ekranı göster
-    runApp(ErrorApp(error: e.toString()));
   }
 }
 
@@ -105,59 +93,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Hata durumunda gösterilecek basit uygulama
-class ErrorApp extends StatelessWidget {
-  final String error;
-
-  const ErrorApp({Key? key, required this.error}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Mind Flow - Hata'),
-          backgroundColor: Colors.red,
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  size: 64,
-                  color: Colors.red,
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Uygulama başlatılırken hata oluştu:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  error,
-                  style: const TextStyle(color: Colors.red),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Uygulamayı yeniden başlat
-                    main();
-                  },
-                  child: const Text('Yeniden Dene'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 Future<void> _initializeDatabase() async {
   try {
     final dbService = getIt<DatabaseService>();
@@ -165,6 +100,24 @@ Future<void> _initializeDatabase() async {
     debugPrint('✅ Local database initialize edildi');
   } catch (e) {
     debugPrint('❌ Veritabanı başlatma hatası: $e');
+  }
+}
+
+Future<void> _initializeProviders() async {
+  try {
+    final journalViewModel = getIt<JournalViewModel>();
+    final dreamAnalysisProvider = getIt<DreamAnalysisProvider>();
+    final chatBotProvider = getIt<ChatBotProvider>();
+    
+    await Future.wait([
+      journalViewModel.initialize(),
+      dreamAnalysisProvider.initialize(),
+      chatBotProvider.initialize(),
+    ]);
+    
+    debugPrint('✅ Providers initialized');
+  } catch (e) {
+    debugPrint('❌ Provider initialization error: $e');
   }
 }
 

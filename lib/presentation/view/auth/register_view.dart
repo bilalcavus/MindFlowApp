@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
@@ -82,7 +83,7 @@ class _RegisterViewState extends State<RegisterView> {
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.person, color: Colors.white),
-                            hintText: 'Ad Soyad',
+                            hintText: 'full_name'.tr(),
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
@@ -98,10 +99,10 @@ class _RegisterViewState extends State<RegisterView> {
                           textInputAction: TextInputAction.next,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Ad soyad gerekli';
+                              return 'full_name_required'.tr();
                             }
                             if (value.trim().length < 2) {
-                              return 'Ad soyad en az 2 karakter olmalı';
+                              return 'full_name_min_length'.tr();
                             }
                             return null;
                           },
@@ -112,7 +113,7 @@ class _RegisterViewState extends State<RegisterView> {
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
-                            hintText: 'Email',
+                            hintText: 'email'.tr(),
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
@@ -129,7 +130,7 @@ class _RegisterViewState extends State<RegisterView> {
                           textInputAction: TextInputAction.next,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Email gerekli';
+                              return 'email_required'.tr();
                             }
                             return null;
                           },
@@ -152,7 +153,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 });
                               },
                             ),
-                            hintText: 'Şifre',
+                            hintText: 'password'.tr(),
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
@@ -168,10 +169,10 @@ class _RegisterViewState extends State<RegisterView> {
                           textInputAction: TextInputAction.next,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Şifre gerekli';
+                              return 'password_required'.tr();
                             }
                             if (value.length < 6) {
-                              return 'Şifre en az 6 karakter olmalı';
+                              return 'password_min_length'.tr();
                             }
                             return null;
                           },
@@ -194,7 +195,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 });
                               },
                             ),
-                            hintText: 'Şifre Tekrar',
+                            hintText: 'confirm_password'.tr(),
                             hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.04),
@@ -210,10 +211,10 @@ class _RegisterViewState extends State<RegisterView> {
                           textInputAction: TextInputAction.done,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Şifre tekrarı gerekli';
+                              return 'confirm_password_required'.tr();
                             }
                             if (value != _passwordController.text) {
-                              return 'Şifreler eşleşmiyor';
+                              return 'passwords_not_match'.tr();
                             }
                             return null;
                           },
@@ -229,8 +230,8 @@ class _RegisterViewState extends State<RegisterView> {
                                     if (_formKey.currentState!.validate()) {
                                       if (_passwordController.text != _confirmPasswordController.text) {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Şifreler eşleşmiyor'),
+                                          SnackBar(
+                                            content: Text('passwords_not_match'.tr()),
                                             backgroundColor: Colors.red,
                                           ),
                                         );
@@ -266,7 +267,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     ),
                                   )
                                 : Text(
-                                    'Kayıt Ol',
+                                    'register'.tr(),
                                     style: TextStyle(
                                       fontSize: context.dynamicHeight(0.0225), 
                                       fontWeight: FontWeight.bold
@@ -278,14 +279,15 @@ class _RegisterViewState extends State<RegisterView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Zaten hesabınız var mı? ', style: TextStyle(color: Colors.white.withOpacity(0.7))),
+                            Text('already_have_account'.tr(), style: TextStyle(color: Colors.white.withOpacity(0.7))),
+                            const Text(' '),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text(
-                                'Giriş Yapın',
-                                style: TextStyle(
+                              child: Text(
+                                'login'.tr(),
+                                style: const TextStyle(
                                   color: Color(0xFFB983FF),
                                   fontWeight: FontWeight.w700,
                                 ),

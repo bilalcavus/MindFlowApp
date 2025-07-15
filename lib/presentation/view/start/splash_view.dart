@@ -3,8 +3,9 @@ import 'package:lottie/lottie.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
-import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
+import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/view/start/initial_language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 
@@ -27,8 +28,7 @@ class _SplashViewState extends State<SplashView> {
   void _initializeAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
     try {
-      final langRepo = LanguageRepository();
-      // Firebase UID string, LanguageRepository int bekliyor, bu yüzden 0 gönderiyoruz
+      final langRepo = getIt<LanguageRepository>();
       final savedLang = await langRepo.getSavedLanguagePreference(_authService.currentUserId!);
       if (savedLang != null) {
         RouteHelper.pushAndCloseOther(context, const AppNavigation());
