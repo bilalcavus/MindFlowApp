@@ -194,7 +194,7 @@ class _ProfileViewState extends State<ProfileView> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
           gradient: const LinearGradient(
-            colors: [const Color(0xFF1A0025), Color(0xFF059669)],
+            colors: [Color(0xFF1A0025), Color(0xFF059669)],
           ),
         ),
         child: ListTile(

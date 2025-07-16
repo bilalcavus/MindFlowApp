@@ -120,10 +120,10 @@ class PremiumBadgeWidget extends StatelessWidget {
   final double size;
 
   const PremiumBadgeWidget({
-    Key? key,
+    super.key,
     this.showLabel = true,
     this.size = 24.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -357,14 +357,13 @@ class SubscriptionStatusWidget extends StatelessWidget {
   }
 }
 
-/// Widget to display subscription plans for upgrade
 class SubscriptionPlansWidget extends StatelessWidget {
   final Function(String planId)? onSelectPlan;
 
   const SubscriptionPlansWidget({
-    Key? key,
+    super.key,
     this.onSelectPlan,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

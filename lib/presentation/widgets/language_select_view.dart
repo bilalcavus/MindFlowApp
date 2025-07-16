@@ -80,7 +80,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
             ),
           ),
           
-          // Header
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: context.dynamicWidth(0.06), 
@@ -212,7 +211,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
             ),
           ),
 
-          // Save button
           Padding(
             padding: EdgeInsets.all(context.dynamicHeight(0.03)),
             child: SizedBox(
@@ -221,32 +219,23 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
               child: ElevatedButton(
                 onPressed: _saveLanguage,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.shade900,
+                  backgroundColor: Colors.green.shade700,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.check, size: context.dynamicHeight(0.025)),
-                    SizedBox(width: context.dynamicWidth(0.02)),
-                    Text(
-                      'save_button'.tr(),
-                      style: TextStyle(
-                        fontSize: context.dynamicHeight(0.02),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  'save_button'.tr(),
+                  style: TextStyle(
+                    fontSize: context.dynamicHeight(0.02),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
           ),
-          
-          // Bottom padding for safe area
           SizedBox(height: MediaQuery.of(context).padding.bottom + context.dynamicHeight(0.02)),
         ],
       ),

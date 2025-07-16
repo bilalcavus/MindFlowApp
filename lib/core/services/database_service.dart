@@ -24,7 +24,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 4, // Firebase UID migration için version 4
+      version: 5, // Chat type history için version 5
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -116,6 +116,7 @@ class DatabaseService {
         model_used TEXT,
         analysis_data_json TEXT,
         session_id TEXT,
+        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation_inspiration')),
         created_at TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
       )
@@ -194,6 +195,10 @@ class DatabaseService {
     ''');
 
     await db.execute('''
+      CREATE INDEX idx_chat_messages_chat_type ON chat_messages (user_id, chat_type, timestamp DESC)
+    ''');
+
+    await db.execute('''
       CREATE INDEX idx_user_preferences_user_key ON user_preferences (user_id, preference_key)
     ''');
 
@@ -265,6 +270,25 @@ Future<String?> getUserPreference(String userId, String key) async {
     if (oldVersion < 4) {
       await _migrateToFirebaseUID(db);
       debugPrint('✅ Firebase UID migration tamamlandı');
+    }
+
+    if (oldVersion < 5) {
+      await _addChatTypeColumn(db);
+      debugPrint('✅ Chat type history migration tamamlandı');
+    }
+  }
+
+  Future<void> _addChatTypeColumn(Database db) async {
+    try {
+      // Add chat_type column to chat_messages table
+      await _addColumnIfNotExists(db, 'chat_messages', 'chat_type', 'TEXT DEFAULT "general_chat"');
+      
+      // Update existing chat messages to have general_chat type
+      await db.execute('UPDATE chat_messages SET chat_type = "general_chat" WHERE chat_type IS NULL');
+      
+      debugPrint('✅ chat_messages tablosuna chat_type sütunu eklendi');
+    } catch (e) {
+      debugPrint('⚠️ chat_type sütunu eklenirken hata: $e');
     }
   }
 
@@ -350,6 +374,7 @@ Future<String?> getUserPreference(String userId, String key) async {
         model_used TEXT,
         analysis_data_json TEXT,
         session_id TEXT,
+        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation_inspiration')),
         created_at TEXT NOT NULL
       )
     ''');
@@ -408,8 +433,8 @@ Future<String?> getUserPreference(String userId, String key) async {
     ''', [demoUID]);
 
     await db.execute('''
-      INSERT INTO chat_messages_new (user_id, message, message_type, timestamp, model_used, analysis_data_json, session_id, created_at)
-      SELECT ?, message, message_type, timestamp, model_used, analysis_data_json, session_id, created_at
+      INSERT INTO chat_messages_new (user_id, message, message_type, timestamp, model_used, analysis_data_json, session_id, chat_type, created_at)
+      SELECT ?, message, message_type, timestamp, model_used, analysis_data_json, session_id, "general_chat", created_at
       FROM chat_messages WHERE user_id = 1
     ''', [demoUID]);
 
@@ -451,6 +476,7 @@ Future<String?> getUserPreference(String userId, String key) async {
     await db.execute('CREATE INDEX idx_dream_analyses_user_id ON dream_analyses (user_id, entry_id)');
     await db.execute('CREATE INDEX idx_chat_messages_user_timestamp ON chat_messages (user_id, timestamp DESC)');
     await db.execute('CREATE INDEX idx_chat_messages_session ON chat_messages (session_id, timestamp)');
+    await db.execute('CREATE INDEX idx_chat_messages_chat_type ON chat_messages (user_id, chat_type, timestamp DESC)');
     await db.execute('CREATE INDEX idx_user_preferences_user_key ON user_preferences (user_id, preference_key)');
     await db.execute('CREATE INDEX idx_analysis_stats_user_date ON analysis_stats (user_id, date DESC)');
   }

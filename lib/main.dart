@@ -34,8 +34,8 @@ void main() async {
       final firestoreSetup = FirestoreSetupService();
       await firestoreSetup.initializeFirestore();
     } catch (firestoreError) {
-      debugPrint('⚠️ Firestore hatası (uygulama devam ediyor): $firestoreError');
-      debugPrint('💡 Firestore Console\'da database\'i aktifleştirin');
+      debugPrint('Firestore hatası (uygulama devam ediyor): $firestoreError');
+      debugPrint('Firestore Console\'da database\'i aktifleştirin');
     }
     await _initializeDatabase();
     await _initializeProviders();

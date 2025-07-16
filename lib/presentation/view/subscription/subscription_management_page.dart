@@ -449,31 +449,31 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
   //   );
   // }
 
-  Widget _buildUsageItem(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.01)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: context.dynamicHeight(0.016),
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: context.dynamicHeight(0.016),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildUsageItem(String label, String value) {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.01)),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           label,
+  //           style: TextStyle(
+  //             color: Colors.white.withOpacity(0.8),
+  //             fontSize: context.dynamicHeight(0.016),
+  //           ),
+  //         ),
+  //         Text(
+  //           value,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             fontSize: context.dynamicHeight(0.016),
+  //             fontWeight: FontWeight.w600,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _showPlanDetails(String planId) {
     showDialog(

@@ -13,6 +13,7 @@ class ChatMessageRepository {
     String? modelUsed,
     Map<String, dynamic>? analysisData,
     String? sessionId,
+    String? chatType,
   }) async {
     final db = await _dbService.database;
     final now = DateTime.now();
@@ -27,6 +28,7 @@ class ChatMessageRepository {
         'model_used': modelUsed,
         'analysis_data_json': analysisData != null ? jsonEncode(analysisData) : null,
         'session_id': sessionId ?? _generateSessionId(now),
+        'chat_type': chatType ?? 'general_chat',
         'created_at': now.toIso8601String(),
       },
     );
@@ -36,6 +38,7 @@ class ChatMessageRepository {
     required ChatMessage chatMessage,
     String? userId,
     String? sessionId,
+    String? chatType,
   }) async {
     final messageUserId = userId ?? chatMessage.userId;
     if (messageUserId == null) {
@@ -49,6 +52,7 @@ class ChatMessageRepository {
       modelUsed: chatMessage.modelUsed,
       analysisData: chatMessage.analysisData,
       sessionId: sessionId,
+      chatType: chatType,
     );
   }
 
@@ -287,6 +291,7 @@ class ChatMessageRepository {
       analysisData: row['analysis_data_json'] != null 
           ? jsonDecode(row['analysis_data_json']) 
           : null,
+      chatType: row['chat_type'],
     );
   }
 
@@ -305,5 +310,122 @@ class ChatMessageRepository {
   Future<String> startNewSession() async {
     final now = DateTime.now();
     return _generateSessionId(now);
+  }
+
+
+  Future<List<ChatMessage>> getChatMessagesByChatType(String userId, String chatType, {int? limit}) async {
+    final db = await _dbService.database;
+    final results = await db.query(
+      'chat_messages',
+      where: 'user_id = ? AND chat_type = ?',
+      whereArgs: [userId, chatType],
+      orderBy: 'timestamp DESC',
+      limit: limit,
+    );
+
+    return results.reversed.map((row) => _mapToChatMessage(row)).toList();
+  }
+
+  Future<List<ChatMessage>> getChatMessagesBySessionAndChatType(String sessionId, String userId, String chatType) async {
+    final db = await _dbService.database;
+    final results = await db.query(
+      'chat_messages',
+      where: 'session_id = ? AND user_id = ? AND chat_type = ?',
+      whereArgs: [sessionId, userId, chatType],
+      orderBy: 'timestamp ASC',
+    );
+
+    return results.map((row) => _mapToChatMessage(row)).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getSessionsForUserByChatType(String userId, String chatType, {int? limit}) async {
+    final db = await _dbService.database;
+    final results = await db.rawQuery('''
+      SELECT 
+        session_id,
+        user_id,
+        chat_type,
+        MIN(timestamp) as first_message_time,
+        MAX(timestamp) as last_message_time,
+        COUNT(*) as message_count,
+        COUNT(CASE WHEN message_type = 'user' THEN 1 END) as user_message_count,
+        COUNT(CASE WHEN message_type = 'ai' THEN 1 END) as ai_message_count
+      FROM chat_messages
+      WHERE user_id = ? AND chat_type = ?
+      GROUP BY session_id
+      ORDER BY last_message_time DESC
+      ${limit != null ? 'LIMIT $limit' : ''}
+    ''', [userId, chatType]);
+
+    return results;
+  }
+
+  Future<String?> getLastActiveSessionForChatType(String userId, String chatType) async {
+    final db = await _dbService.database;
+    final results = await db.query(
+      'chat_messages',
+      columns: ['session_id'],
+      where: 'user_id = ? AND chat_type = ?',
+      whereArgs: [userId, chatType],
+      orderBy: 'timestamp DESC',
+      limit: 1,
+    );
+
+    return results.isNotEmpty ? results.first['session_id'] as String : null;
+  }
+
+  Future<String> startNewSessionForChatType(String chatType) async {
+    final now = DateTime.now();
+    return _generateSessionIdForChatType(chatType, now);
+  }
+
+  String _generateSessionIdForChatType(String chatType, DateTime timestamp) {
+    return 'session_${chatType}_${timestamp.millisecondsSinceEpoch}';
+  }
+
+  Future<int> deleteChatSessionByChatType(String sessionId, String chatType) async {
+    final db = await _dbService.database;
+    return await db.delete(
+      'chat_messages',
+      where: 'session_id = ? AND chat_type = ?',
+      whereArgs: [sessionId, chatType],
+    );
+  }
+
+  Future<Map<String, dynamic>> getChatStatsByChatType() async {
+    final db = await _dbService.database;
+    
+    final chatTypeResults = await db.rawQuery('''
+      SELECT chat_type, COUNT(*) as count
+      FROM chat_messages
+      GROUP BY chat_type
+    ''');
+
+    final chatTypeStats = <String, int>{};
+    for (final row in chatTypeResults) {
+      chatTypeStats[row['chat_type'] as String] = row['count'] as int;
+    }
+
+    final modelByChatTypeResults = await db.rawQuery('''
+      SELECT chat_type, model_used, COUNT(*) as count
+      FROM chat_messages
+      WHERE message_type = 'ai' AND model_used IS NOT NULL AND chat_type IS NOT NULL
+      GROUP BY chat_type, model_used
+    ''');
+
+    final modelByChatType = <String, Map<String, int>>{};
+    for (final row in modelByChatTypeResults) {
+      final chatType = row['chat_type'] as String;
+      final model = row['model_used'] as String;
+      final count = row['count'] as int;
+      
+      modelByChatType[chatType] ??= <String, int>{};
+      modelByChatType[chatType]![model] = count;
+    }
+
+    return {
+      'by_chat_type': chatTypeStats,
+      'models_by_chat_type': modelByChatType,
+    };
   }
 } 

@@ -272,11 +272,12 @@ class FirestoreSetupService {
         'credit_transactions': await _getCollectionCount('credit_transactions'),
       };
       
-      stats.forEach((collection, count) {
+    // ignore: avoid_types_as_parameter_names
+    stats.forEach((collection, count) {
         debugPrint('  $collection: $count documents');
       });
     } catch (e) {
-      debugPrint('❌ Stats alma hatası: $e');
+      debugPrint('Stats alma hatası: $e');
     }
   }
 

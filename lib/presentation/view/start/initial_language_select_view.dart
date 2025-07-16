@@ -207,7 +207,7 @@ class _InitialLanguageSelectViewState extends State<InitialLanguageSelectView> {
                             ),
                           ),
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),

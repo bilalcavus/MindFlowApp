@@ -9,8 +9,6 @@ import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
-part 'login_text_field.dart';
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 

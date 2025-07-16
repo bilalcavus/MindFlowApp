@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
@@ -20,7 +21,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
-  final AuthService _authService = AuthService();
+  final AuthService _authService = getIt<AuthService>();
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> _refreshChatHistory() async {
     final provider = Provider.of<ChatBotProvider>(context, listen: false);
-    await provider.onUserAuthChanged();
+    await provider.initialize();
   }
 
   void _scrollToBottom() {
@@ -67,27 +68,54 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          provider.getModelDisplayName(provider.selectedModel), 
-          style: TextStyle(fontSize: context.dynamicHeight(0.02))
+          provider.currentChatTypeTitle.tr(),
+          style: TextStyle(
+            fontSize: context.dynamicHeight(0.02),
+            fontWeight: FontWeight.w600,
+          ),
         ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           if (_authService.isLoggedIn) ...[
             IconButton(
               icon: const Icon(HugeIcons.strokeRoundedBubbleChatIncome),
               tooltip: 'chat_history'.tr(),
-              onPressed: () => _showChatHistory(provider),
+              onPressed: () => _showChatSessions(),
             ),
             IconButton(
               icon: const Icon(HugeIcons.strokeRoundedAdd01),
-              tooltip: 'new_chat'.tr(),
-              onPressed: () => _showNewSessionDialog(provider),
+              onPressed: () async {
+                final provider = Provider.of<ChatBotProvider>(context, listen: false);
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('new_chat_title'.tr()),
+                    content: Text('new_chat_content'.tr()),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: Text('cancel'.tr()),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: Text('new_chat'.tr()),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirmed == true) {
+                  await provider.startNewSession();
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('new_chat_started'.tr())),
+                    );
+                  }
+                }
+              },
             ),
           ],
-          IconButton(
-            icon: const Icon(HugeIcons.strokeRoundedAiBrain01),
-            tooltip: 'select_model'.tr(),
-            onPressed: () => _showModelSelector(provider),
-          ),
           IconButton(
             icon: const Icon(HugeIcons.strokeRoundedDelete02),
             tooltip: 'clear_chat'.tr(),
@@ -103,9 +131,9 @@ class _ChatScreenState extends State<ChatScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color.fromARGB(255, 53, 4, 31),
+              Color.fromARGB(255, 31, 4, 53),
               Color(0xFF000000),
-              Color.fromARGB(255, 8, 44, 110),
+              Color.fromARGB(255, 69, 8, 110),
               
             ],
           ),
@@ -243,7 +271,7 @@ class _ChatScreenState extends State<ChatScreen> {
         height: context.dynamicHeight(0.1),
         padding: EdgeInsets.all(context.dynamicHeight(0.02)),
         decoration: BoxDecoration(
-          color: Colors.grey.shade900,
+          color: Colors.black,
           borderRadius: BorderRadius.circular(context.dynamicHeight(0.03))
         ),
         child: Row(
@@ -252,12 +280,12 @@ class _ChatScreenState extends State<ChatScreen> {
               child: TextField(
                 controller: provider.chatController,
                 focusNode: _focusNode,
-                maxLines: 3,
+                maxLines: 2,
                 textInputAction: TextInputAction.send,
                 style: TextStyle(fontSize: context.dynamicHeight(0.018)),
                 decoration: InputDecoration(
                   hintText: 'Mesajını yaz...',
-                  hintStyle: TextStyle(fontSize: context.dynamicHeight(0.016)),
+                  hintStyle: TextStyle(fontSize: context.dynamicHeight(0.018)),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -290,172 +318,151 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showNewSessionDialog(ChatBotProvider provider) {
-    showDialog(
+
+  Future<void> _showChatSessions() async {
+    final provider = Provider.of<ChatBotProvider>(context, listen: false);
+    final sessions = await provider.getChatSessions();
+    
+    if (!mounted) return;
+    
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('new_chat_title'.tr()),
-        content: Text('new_chat_content'.tr()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('cancel'.tr()),
-          ),
-          TextButton(
-            onPressed: () async {
-              await provider.startNewSession();
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('new_chat_started'.tr())),
-              );
-            },
-            child: Text('new_chat'.tr()),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showChatHistory(ChatBotProvider provider) async {
-    if (!_authService.isLoggedIn || _authService.currentUserId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('login_required_chat_history'.tr())),
-      );
-      return;
-    }
-
-    try {
-      final sessions = await provider.getChatSessions();
-
-      if (!mounted) return;
-
-      if (sessions.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('no_chat_history'.tr())),
-        );
-        return;
-      }
-
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(context.dynamicHeight(0.025))),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.7,
+        decoration: const BoxDecoration(
+          color: Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        builder: (context) => DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          maxChildSize: 0.9,
-          minChildSize: 0.5,
-          expand: false,
-          builder: (context, scrollController) => Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                child: Row(
-                  children: [
-                    SizedBox(width: context.dynamicWidth(0.02)),
-                    Text(
-                      'chat_history'.tr(),
-                      style: TextStyle(
-                        fontSize: context.dynamicHeight(0.022),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.close, size: context.dynamicHeight(0.03)),
-                    ),
-                  ],
-                ),
+        child: Column(
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(top: 12, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.grey[600],
+                borderRadius: BorderRadius.circular(2),
               ),
-              const Divider(),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                  itemCount: sessions.length,
-                  itemBuilder: (context, index) {
-                    final session = sessions[index];
-                    final sessionId = session['session_id'] as String;
-                    final messageCount = session['message_count'] as int;
-                    final lastMessageTime = DateTime.parse(session['last_message_time'] as String);
-                    
-                    return ListTile(
-                      leading: Container(
-                        width: context.dynamicWidth(0.1),
-                        height: context.dynamicHeight(0.05),
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
-                        ),
-                        child: Icon(
-                          HugeIcons.strokeRoundedChatting01,
-                          color: Colors.deepPurple,
-                          size: context.dynamicHeight(0.025),
-                        ),
-                      ),
-                      title: Text(
-                        'Sohbet ${index + 1}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: context.dynamicHeight(0.018),
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'chat_history'.tr(),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: sessions.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            '$messageCount mesaj',
-                            style: TextStyle(fontSize: context.dynamicHeight(0.016)),
+                          Icon(
+                            HugeIcons.strokeRoundedChatBot,
+                            size: 64,
+                            color: Colors.grey[600],
                           ),
+                          const SizedBox(height: 16),
                           Text(
-                            'Son: ${_formatDate(lastMessageTime)}',
-                            style: TextStyle(
-                              fontSize: context.dynamicHeight(0.015),
-                              color: Colors.grey.shade600,
-                            ),
+                            'no_chat_history'.tr(),
+                            style: TextStyle(color: Colors.grey[400]),
                           ),
                         ],
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _loadChatSession(provider, sessionId);
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: sessions.length,
+                      itemBuilder: (context, index) {
+                        final session = sessions[index];
+                        final sessionId = session['session_id'] as String;
+                        final messageCount = session['message_count'] as int;
+                        final lastTime = DateTime.parse(session['last_message_time'] as String);
+                        final isCurrentSession = provider.currentSessionId == sessionId;
+                        
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: isCurrentSession ? Colors.blue.withOpacity(0.2) : Colors.grey[900],
+                            borderRadius: BorderRadius.circular(12),
+                            border: isCurrentSession
+                                ? Border.all(color: Colors.blue, width: 1)
+                                : null,
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: isCurrentSession ? Colors.blue : Colors.grey[700],
+                              child: const Icon(
+                                HugeIcons.strokeRoundedMessage01,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            title: Text(
+                              'Session ${sessionId.substring(8, 16)}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: isCurrentSession ? FontWeight.bold : FontWeight.normal,
+                              ),
+                            ),
+                            subtitle: Text(
+                              '$messageCount ${'messages'.tr()} • ${_formatDate(lastTime)}',
+                              style: TextStyle(color: Colors.grey[400]),
+                            ),
+                            trailing: isCurrentSession
+                                ? const Icon(Icons.radio_button_checked, color: Colors.blue)
+                                : PopupMenuButton<String>(
+                                    icon: const Icon(Icons.more_vert, color: Colors.grey),
+                                    onSelected: (value) async {
+                                      if (value == 'delete') {
+                                        await provider.deleteChatSession(sessionId);
+                                        Navigator.pop(context);
+                                        _showChatSessions(); // Refresh the list
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: 'delete',
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.delete, color: Colors.red),
+                                            const SizedBox(width: 8),
+                                            Text('Delete'.tr()),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                            onTap: isCurrentSession
+                                ? null
+                                : () async {
+                                    Navigator.pop(context);
+                                    await provider.loadChatSession(sessionId);
+                                    _scrollToBottom();
+                                  },
+                          ),
+                        );
                       },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+                    ),
+            ),
+          ],
         ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('chat_history_load_error'.tr(namedArgs: {'error': e.toString()}))),
-      );
-    }
-  }
-
-  Future<void> _loadChatSession(ChatBotProvider provider, String sessionId) async {
-    try {
-      await provider.loadChatSession(sessionId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('chat_session_loaded'.tr()),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scrollToBottom();
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('chat_session_load_error'.tr(namedArgs: {'error': e.toString()}))),
-      );
-    }
+      ),
+    );
   }
 
   String _formatDate(DateTime date) {
@@ -463,14 +470,13 @@ class _ChatScreenState extends State<ChatScreen> {
     final diff = now.difference(date);
     
     if (diff.inDays == 0) {
-      return '${'today'.tr()} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return DateFormat.Hm().format(date);
     } else if (diff.inDays == 1) {
-      return '${'yesterday'.tr()} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return 'yesterday'.tr();
     } else if (diff.inDays < 7) {
-      final days = ['monday'.tr(), 'tuesday'.tr(), 'wednesday'.tr(), 'thursday'.tr(), 'friday'.tr(), 'saturday'.tr(), 'sunday'.tr()];
-      return '${days[date.weekday - 1]} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return DateFormat.E().format(date);
     } else {
-      return '${date.day}/${date.month}/${date.year}';
+      return DateFormat.MMMd().format(date);
     }
   }
 
@@ -511,99 +517,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showModelSelector(ChatBotProvider provider) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(context.dynamicHeight(0.025))),
-      ),
-      builder: (context) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.black
-        ),
-        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: context.dynamicWidth(0.1),
-                height: context.dynamicHeight(0.005),
-                margin: EdgeInsets.only(bottom: context.dynamicHeight(0.025)),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(context.dynamicHeight(0.0025)),
-                ),
-              ),
-            ),
-            Text(
-              'select_model'.tr(),
-              style: TextStyle(
-                fontSize: context.dynamicHeight(0.025),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: context.dynamicHeight(0.02)),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.6,
-              ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: provider.availableModels.length,
-                itemBuilder: (context, index) {
-                  final model = provider.availableModels[index];
-                  final isSelected = model == provider.selectedModel;
-                  return ListTile(
-                    leading: Icon(
-                      isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                      color: isSelected ? Colors.deepPurple : Colors.grey,
-                      size: context.dynamicHeight(0.03),
-                    ),
-                    title: Text(
-                      provider.getModelDisplayName(model),
-                      style: TextStyle(fontSize: context.dynamicHeight(0.018)),
-                    ),
-                    subtitle: Text(
-                      _getModelDescription(model),
-                      style: TextStyle(fontSize: context.dynamicHeight(0.015)),
-                    ),
-                    onTap: () {
-                      provider.changeModel(model);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('model_changed'.tr(namedArgs: {'model': provider.getModelDisplayName(model)})),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: context.dynamicHeight(0.02)),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.015)),
-                ),
-                child: Text(
-                  'cancel'.tr(),
-                  style: TextStyle(fontSize: context.dynamicHeight(0.018)),
-                ),
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).padding.bottom),
-          ],
-        ),
-      ),
-    );
-  }
 
   Future<void> _sendMessageWithCreditCheck(ChatBotProvider provider, String message) async {
     if (!_authService.isLoggedIn) {
@@ -663,29 +576,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
-  String _getModelDescription(String modelKey) {
-    switch (modelKey) {
-      case 'gpt-4.1-nano':
-        return 'model_gpt_4_1_nano_desc'.tr();
-      case 'gemini-2.0-flash':
-        return 'model_gemini_2_0_flash_desc'.tr();
-      case 'deepseek-v3':
-        return 'model_deepseek_v3_desc'.tr();
-      case 'gemma-3n-4b':
-        return 'model_gemma_3n_4b_desc'.tr();
-      case 'meta-llama-3.3':
-        return 'model_meta-llama-3.3_desc'.tr();
-      case 'claude-instant-anthropic':
-        return 'model_claude_instant_anthropic_desc'.tr();
-      case 'deephermes-3-llama-3':
-        return 'model_deephermes_3_llama_3_desc'.tr();
-      case 'mistral-nemo':
-        return 'model_mistral_nemo_desc'.tr();
-      case 'qwen3-32b':
-        return 'model_qwen3_32b_desc'.tr();
-      default:
-        return 'model_default_desc'.tr();
-    }
-  }
-} 
+}

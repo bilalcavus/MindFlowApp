@@ -125,11 +125,25 @@ class ApiRemoteDataSource implements RemoteDataSource {
 
   @override
   Future<String> getChatResponse(String userMessage, {String? modelKey}) async {
-    if (modelKey != null) {
-      return await _getChatResponseWithSpecificModel(userMessage, modelKey);
+    return await getChatResponseWithContext([
+      {'role': 'user', 'content': userMessage}
+    ], modelKey: modelKey);
+  }
+  
+  @override
+  Future<String> getChatResponseWithContext(List<Map<String, String>> messages, {String? modelKey, String? chatType}) async {
+    // If we have a chat type, always use fallback system for better reliability
+    // If no chat type but specific model requested, use specific model method
+    if (modelKey != null && chatType == null) {
+      return await _getChatResponseWithSpecificModelAndContext(messages, modelKey, chatType: chatType);
     }
     
-    final fallbackConfig = ApiConstants.fallbackModels['chat'] ?? [];
+    final fallbackConfig = chatType != null 
+        ? ApiConstants.getChatTypeFallbackModels(chatType)
+        : ApiConstants.fallbackModels['chat'] ?? [];
+    
+    debugPrint('🎯 Chat Type: $chatType');
+    debugPrint('📋 Fallback Config: ${fallbackConfig.map((e) => e['model']).join(', ')}');
     
     for (int i = 0; i < fallbackConfig.length; i++) {
       final config = fallbackConfig[i];
@@ -144,19 +158,88 @@ class ApiRemoteDataSource implements RemoteDataSource {
           continue;
         }
         
-        debugPrint('Trying chat on $provider with model $modelKeyToUse ($modelName)...');
+        debugPrint('🔄 Attempting fallback ${i+1}/${fallbackConfig.length}: $provider with model $modelKeyToUse ($modelName)...');
+        
+        // Get system prompt based on chat type
+        final systemPrompt = chatType != null 
+            ? ApiConstants.getChatTypeSystemPrompt(chatType)
+            : ApiConstants.chatbotContentPrompt;
         
         final requestData = {
           "model": modelName,
           "messages": [
             {
               "role": "system",
-              "content": ApiConstants.chatbotContentPrompt
+              "content": systemPrompt
             },
+            ...messages
+          ],
+          "temperature": 0.8,
+          "max_tokens": 300
+        };
+
+        final result = await dioHelper.dioPost('/chat/completions', requestData);
+
+        if (result is Map && result.containsKey('choices')) {
+          debugPrint('✅ Success with $provider/$modelKeyToUse');
+          return result['choices'][0]['message']['content'].trim();
+        } 
+        else {
+          debugPrint('❌ Unexpected chat response format from $provider: $result');
+          if (i < fallbackConfig.length - 1) {
+            debugPrint('⏭️ Trying next fallback...');
+            continue;
+          } else {
+            throw Exception('All chat providers failed');
+          }
+        }
+      } catch (e) {
+        final isRateLimit = ApiConstants.isRateLimitError(e.toString());
+        final errorEmoji = isRateLimit ? '⏱️' : '❌';
+        
+        debugPrint('$errorEmoji Error with $provider/$modelKeyToUse: $e');
+        
+        if (isRateLimit) {
+          debugPrint('🔄 Rate limit detected, switching to next fallback...');
+        }
+        
+        if (i < fallbackConfig.length - 1) {
+          debugPrint('⏭️ Trying next fallback (${i+2}/${fallbackConfig.length})...');
+          continue;
+        } else {
+          debugPrint('💥 All fallback providers exhausted for chat type: $chatType');
+          throw Exception('Unable to get chat response: $e');
+        }
+      }
+    }
+    
+    throw Exception('All chat providers exhausted');
+  }
+
+  Future<String> _getChatResponseWithSpecificModelAndContext(List<Map<String, String>> messages, String modelKey, {String? chatType}) async {
+    final providers = ['openrouter', 'groq', 'together'];
+    
+    for (final provider in providers) {
+      final modelName = ApiConstants.getProviderModel(provider, modelKey);
+      if (modelName == null) continue;
+      
+      try {
+        dioHelper.switchProvider(provider);
+        debugPrint('Using specific model: $provider/$modelKey ($modelName)');
+        
+        // Get system prompt based on chat type
+        final systemPrompt = chatType != null 
+            ? ApiConstants.getChatTypeSystemPrompt(chatType)
+            : ApiConstants.chatbotContentPrompt;
+        
+        final requestData = {
+          "model": modelName,
+          "messages": [
             {
-              "role": "user",
-              "content": userMessage
-            }
+              "role": "system",
+              "content": systemPrompt
+            },
+            ...messages
           ],
           "temperature": 0.8,
           "max_tokens": 300
@@ -166,86 +249,14 @@ class ApiRemoteDataSource implements RemoteDataSource {
 
         if (result is Map && result.containsKey('choices')) {
           return result['choices'][0]['message']['content'].trim();
-        } 
-        else if (result is Map && result.containsKey('error')) {
-          final isRateLimit = result['isRateLimit'] == true;
-          
-          if (isRateLimit) {
-            debugPrint('Rate limit hit on $provider for chat, trying next provider...');
-            if (i == fallbackConfig.length - 1) {
-              return "Üzgünüm, tüm AI sağlayıcılarında rate limit'e takıldık. Lütfen daha sonra tekrar deneyin.";
-            }
-            continue;
-          } else {
-            return "Üzgünüm, şu anda yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.";
-          }
         }
       } catch (e) {
-        debugPrint('Chat error with $provider: $e');
-        if (i == fallbackConfig.length - 1) {
-          return "Üzgünüm, şu anda yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.";
-        }
+        debugPrint('Error with $provider/$modelKey: $e');
         continue;
       }
     }
     
-    return "Üzgünüm, hiçbir AI sağlayıcısından yanıt alınamadı.";
-  }
-
-  Future<String> _getChatResponseWithSpecificModel(String userMessage, String modelKey) async {
-    String? targetProvider;
-    for (final entry in ApiConstants.providerModels.entries) {
-      if (entry.value.containsKey(modelKey)) {
-        targetProvider = entry.key;
-        break;
-      }
-    }
-    
-    if (targetProvider == null) {
-      return "Seçilen model bulunamadı. Lütfen geçerli bir model seçin.";
-    }
-    
-    try {
-      dioHelper.switchProvider(targetProvider);
-      final modelName = ApiConstants.getProviderModel(targetProvider, modelKey);
-      if (modelName == null) {
-        return "Model konfigürasyonu bulunamadı.";
-      }
-      
-      debugPrint('Using specific model: $modelKey ($modelName) on $targetProvider');
-      
-      final requestData = {
-        "model": modelName,
-        "messages": [
-          {
-            "role": "system",
-            "content": ApiConstants.chatbotContentPrompt
-          },
-          {
-            "role": "user",
-            "content": userMessage
-          }
-        ],
-        "temperature": 0.8,
-        "max_tokens": 300
-      };
-
-      final result = await dioHelper.dioPost('/chat/completions', requestData);
-
-      if (result is Map && result.containsKey('choices')) {
-        return result['choices'][0]['message']['content'].trim();
-      } 
-      else if (result is Map && result.containsKey('error')) {
-        final errorMessage = result['error'].toString();
-        return "Seçilen model ile yanıt alınamadı: $errorMessage";
-      } else {
-        return "Beklenmedik yanıt formatı alındı.";
-      }
-      
-    } catch (e) {
-      debugPrint('Error with specific model $modelKey: $e');
-      return "Seçilen model ile hata oluştu: $e";
-    }
+    throw Exception('Model $modelKey not available on any provider');
   }
 
   @override
@@ -270,9 +281,9 @@ class ApiRemoteDataSource implements RemoteDataSource {
         return 'Gemma 3';
       case 'meta-llama-3.3':
         return 'Meta LLama';
-      case 'claude-instant':
+      case 'claude-instant-anthropic':
         return 'Claude Instant';
-      case 'deephermes-3':
+      case 'deephermes-3-llama-3':
         return 'DeepHermes 3 Llama';
       case 'mistral-nemo':
         return 'Mistral Nemo';

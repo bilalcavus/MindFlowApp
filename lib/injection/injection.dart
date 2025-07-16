@@ -75,7 +75,7 @@ Future<void> setupDependencies() async {
 
   // UseCases
   getIt.registerLazySingleton<GetAnalyzeEmotion>(() => GetAnalyzeEmotion(getIt()));
-  getIt.registerLazySingleton<GetChatResponse>(() => GetChatResponse(getIt()));
+  getIt.registerLazySingleton<GetChatResponse>(() => GetChatResponse(getIt<RemoteDataSource>()));
   getIt.registerLazySingleton<GetDreamAnalysis>(() => GetDreamAnalysis(getIt()));
   getIt.registerLazySingleton<GetAvailableModels>(() => GetAvailableModels(getIt()));
   getIt.registerLazySingleton<GetAvailableProviders>(() => GetAvailableProviders(getIt()));

@@ -1,11 +1,15 @@
-import 'package:mind_flow/domain/repositories/chat_bot_repository.dart';
+import 'package:mind_flow/data/datasources/remote_datasource.dart';
 
 class GetChatResponse {
-  final ChatBotRepository repository;
+  final RemoteDataSource _dataSource;
 
-  GetChatResponse(this.repository);
+  GetChatResponse(this._dataSource);
 
-  Future<String> call(String userText, String modelKey) {
-    return repository.chatResponse(userText, modelKey);
+  Future<String> call(String message, String selectedModel) async {
+    return await _dataSource.getChatResponse(message, modelKey: selectedModel);
+  }
+
+  Future<String> callWithContext(List<Map<String, String>> messages, String selectedModel, {String? chatType}) async {
+    return await _dataSource.getChatResponseWithContext(messages, modelKey: selectedModel, chatType: chatType);
   }
 }

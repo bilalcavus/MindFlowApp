@@ -9,6 +9,7 @@ class ChatMessage {
   final String? modelUsed;
   final Map<String, dynamic>? analysisData;
   final String? userId;
+  final String? chatType;
 
   ChatMessage({
     required this.message,
@@ -17,18 +18,20 @@ class ChatMessage {
     this.modelUsed,
     this.analysisData,
     this.userId,
+    this.chatType,
   });
 
-  factory ChatMessage.user(String message, {String? userId}) {
+  factory ChatMessage.user(String message, {String? userId, String? chatType}) {
     return ChatMessage(
       message: message,
       type: MessageType.user,
       timestamp: DateTime.now(),
       userId: userId,
+      chatType: chatType,
     );
   }
 
-  factory ChatMessage.ai(String message, {String? userId, String? modelUsed, Map<String, dynamic>? analysisData}) {
+  factory ChatMessage.ai(String message, {String? userId, String? modelUsed, Map<String, dynamic>? analysisData, String? chatType}) {
     return ChatMessage(
       message: message,
       type: MessageType.ai,
@@ -36,6 +39,7 @@ class ChatMessage {
       modelUsed: modelUsed,
       analysisData: analysisData,
       userId: userId,
+      chatType: chatType,
     );
   }
 
@@ -49,6 +53,7 @@ class ChatMessage {
           ? Map<String, dynamic>.from(jsonDecode(json['analysis_data_json']))
           : null,
       userId: json['user_id'],
+      chatType: json['chat_type'],
     );
   }
 
@@ -60,6 +65,7 @@ class ChatMessage {
       'model_used': modelUsed,
       'analysis_data_json': analysisData != null ? jsonEncode(analysisData) : null,
       'user_id': userId,
+      'chat_type': chatType,
     };
   }
 

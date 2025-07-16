@@ -52,23 +52,6 @@ class ChatBubble extends StatelessWidget {
                     child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (!isUser && message.modelUsed != null) ...[
-                        Row(
-                          children: [
-                            Icon(Icons.smart_toy, size: context.dynamicHeight(0.015), color: Colors.grey),
-                            SizedBox(width: context.dynamicWidth(0.01)),
-                            Text(
-                              _getModelDisplayName(message.modelUsed!),
-                              style: TextStyle(
-                                fontSize: context.dynamicHeight(0.0125),
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.005)),
-                      ],
                       Text(
                         message.message,
                         style: TextStyle(
@@ -108,32 +91,7 @@ class ChatBubble extends StatelessWidget {
       ),
     );
   }
-
-  String _getModelDisplayName(String modelKey) {
-    switch (modelKey) {
-      case 'gpt-4.1-nano':
-        return 'ChatGPT 4.1 Nano';
-      case 'gemini-2.0-flash':
-        return 'Gemini 2.0 Flash';
-      case 'deepseek-v3':
-        return 'Deepseek V3';
-      case 'gemma-3n-4b':
-        return 'Gemma';
-      case 'meta-llama-3.3':
-        return 'Meta Llama';
-      case 'claude-instant-anthropic':
-        return 'Claude Anthropic';
-      case 'deephermes-3-llama-3':
-        return 'Deephermes 3';
-      case 'mistral-nemo':
-        return 'Mistral Nemo';
-      case 'qwen3-32b':
-        return 'Qwen 3';
-      default:
-        return modelKey;
-    }
-  }
-
+  
   String _formatTime(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
