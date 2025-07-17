@@ -17,8 +17,9 @@ class ChatBotProvider extends ChangeNotifier {
   final TextEditingController chatController = TextEditingController();
   String? _currentSessionId;
 
-  static const int maxContextMessages = 20;
-  static const int maxTokensPerMessage = 100;
+  static const int maxContextMessages = 5;
+  static const int maxTokensPerMessage = 30;
+  
 
   ChatBotProvider(this.getChatResponse, this._authService, this._chatRepo);
 

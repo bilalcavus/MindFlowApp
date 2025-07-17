@@ -39,10 +39,21 @@ void main() async {
         ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
         : null;
     final locale = savedLocale != null ? Locale(savedLocale) : const Locale('en');
-    debugPrintRebuildDirtyWidgets = true;
     runApp(
       EasyLocalization(
-        supportedLocales: const [Locale('en'), Locale('tr')],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('tr'),
+          Locale('de'),
+          Locale('fr'),
+          Locale('ar'),
+          Locale('id'),
+          Locale('ms'),
+          Locale('ja'),
+          Locale('ko'),
+          Locale('th'),
+          Locale('vi'),
+        ],
         path: 'assets/translations',
         fallbackLocale: const Locale('en'),
         saveLocale: true,

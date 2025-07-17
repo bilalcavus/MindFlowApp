@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
+// import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioHelper {
   late Dio _dio;
+  
   String _currentProvider = ApiConstants.defaultProvider;
 
   DioHelper({String? provider}) {
@@ -26,7 +28,20 @@ class DioHelper {
         },
       ),
     );
+    // _dio.interceptors.add(
+    //   PrettyDioLogger(
+    //     requestHeader: true,
+    //     requestBody: true,
+    //     responseHeader: true,
+    //     responseBody: true,
+    //     error: true,
+    //     compact: true,
+    //     maxWidth: 120,
+    //   ),
+    // );
   }
+
+  
 
   void switchProvider(String provider) {
     _currentProvider = provider;

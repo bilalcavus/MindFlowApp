@@ -32,7 +32,6 @@ class _ProfileViewState extends State<ProfileView> {
         child: SafeArea(
           child: Column(
             children: [
-              // Profile Content
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(

@@ -12,4 +12,5 @@ class GetChatResponse {
   Future<String> callWithContext(List<Map<String, String>> messages, String selectedModel, {String? chatType}) async {
     return await _dataSource.getChatResponseWithContext(messages, modelKey: selectedModel, chatType: chatType);
   }
+
 }

@@ -30,6 +30,61 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
       'flag': '🇹🇷',
       'description': 'Turkish language'
     },
+    {
+      'code': 'de',
+      'label': 'Deutsch',
+      'flag': '🇩🇪',
+      'description': 'Deutsch language'
+    },
+    {
+      "code": "fr",
+      "label": "Français",
+      "flag": "🇫🇷",
+      "description": "Langue française",
+      "nativeName": "Français"
+    },
+    {
+      "code": "ar",
+      "label": "العربية",
+      "flag": "🇸🇦",
+      "description": "Arabic language"
+    },
+    {
+      "code": "id",
+      "label": "Bahasa Indonesia",
+      "flag": "🇮🇩",
+      "description": "Indonesian language"
+    },
+    {
+      "code": "ms",
+      "label": "Bahasa Melayu",
+      "flag": "🇲🇾",
+      "description": "Bahasa Melayu"
+    },
+    {
+      "code": "ja",
+      "label": "日本語",
+      "flag": "🇯🇵",
+      "description": "Japanese language"
+    },
+    {
+      "code": "ko",
+      "label": "한국어",
+      "flag": "🇰🇷",
+      "description": "Korean language"
+    },
+    {
+      "code": "th",
+      "label": "ไทย",
+      "flag": "🇹🇭",
+      "description": "ภาษาไทย"
+    },
+    {
+      "code": "vi",
+      "label": "Tiếng Việt",
+      "flag": "🇻🇳",
+      "description": "Ngôn ngữ tiếng Việt"
+    },
   ];
 
   @override
@@ -113,103 +168,103 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
               ],
             ),
           ),
-
-          // Language options
           Padding(
             padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
-            child: Column(
-              children: _languages.asMap().entries.map((entry) {
-                final index = entry.key;
-                final language = entry.value;
-                final isSelected = index == _selectedIndex;
+            child: SizedBox(
+              height: context.dynamicHeight(0.45),
+              child: ListView.builder(
+                itemCount: _languages.length,
+                itemBuilder: (context, index) {
+                  final language = _languages[index];
+                  final isSelected = index == _selectedIndex;
 
-                return Container(
-                  margin: EdgeInsets.only(bottom: context.dynamicHeight(0.015)),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = index;
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
-                      child: Container(
-                        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                        decoration: BoxDecoration(
-                          color: isSelected 
-                            ? Colors.white.withOpacity(0)
-                            : Colors.white.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
-                          border: Border.all(
-                            color: isSelected 
-                              ? const Color(0xFFB983FF)
-                              : Colors.white.withOpacity(0.1),
-                            width: isSelected ? context.dynamicWidth(0.005) : context.dynamicWidth(0.0025),
+                  return Container(
+                    margin: EdgeInsets.only(bottom: context.dynamicHeight(0.015)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedIndex = index;
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                        child: Container(
+                          padding: EdgeInsets.all(context.dynamicHeight(0.01)),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Colors.white.withOpacity(0)
+                                : Colors.white.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+                            border: Border.all(
+                              color: isSelected
+                                  ? const Color(0xFFB983FF)
+                                  : Colors.white.withOpacity(0.1),
+                              width:
+                                  isSelected ? context.dynamicWidth(0.005) : context.dynamicWidth(0.0025),
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            // Flag
-                            Center(
-                              child: Text(
-                                language['flag'],
-                                style: TextStyle(fontSize: context.dynamicHeight(0.03)),
-                              ),
-                            ),
-                            SizedBox(width: context.dynamicWidth(0.04)),
-                            
-                            // Language info
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    language['label'],
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: context.dynamicHeight(0.02),
-                                      fontWeight: isSelected 
-                                        ? FontWeight.bold 
-                                        : FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: context.dynamicHeight(0.005)),
-                                  Text(
-                                    language['description'],
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.6),
-                                      fontSize: context.dynamicHeight(0.0175),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            
-                            // Selection indicator
-                            if (isSelected)
-                              Container(
-                                width: context.dynamicWidth(0.06),
-                                height: context.dynamicHeight(0.03),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFB983FF),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: context.dynamicHeight(0.02),
+                          child: Row(
+                            children: [
+                              // Flag
+                              Center(
+                                child: Text(
+                                  language['flag'],
+                                  style: TextStyle(fontSize: context.dynamicHeight(0.03)),
                                 ),
                               ),
-                          ],
-                        ),
+                    SizedBox(width: context.dynamicWidth(0.04)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            language['label'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: context.dynamicHeight(0.02),
+                              fontWeight:
+                                  isSelected ? FontWeight.bold : FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: context.dynamicHeight(0.005)),
+                          Text(
+                            language['description'],
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.6),
+                              fontSize: context.dynamicHeight(0.0175),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
+
+                    // Selection indicator
+                    if (isSelected)
+                      Container(
+                        width: context.dynamicWidth(0.06),
+                        height: context.dynamicHeight(0.03),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFB983FF),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: context.dynamicHeight(0.02),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
+        );
+      },
+    ),
+  ),
+),
+
 
           Padding(
             padding: EdgeInsets.all(context.dynamicHeight(0.03)),

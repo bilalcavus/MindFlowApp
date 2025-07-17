@@ -31,6 +31,62 @@ class _InitialLanguageSelectViewState extends State<InitialLanguageSelectView> {
       'description': 'Turkish language',
       'nativeName': 'Türkçe'
     },
+    {
+      'code': 'de',
+      'label': 'Deutsch',
+      'flag': '🇩🇪',
+      'description': 'Deutsch language'
+    },
+    {
+      "code": "fr",
+      "label": "Français",
+      "flag": "🇫🇷",
+      "description": "Langue française",
+      "nativeName": "Français"
+    },
+    {
+      "code": "ar",
+      "label": "العربية",
+      "flag": "🇸🇦",
+      "description": "Arabic language"
+    },
+    {
+      "code": "id",
+      "label": "Bahasa Indonesia",
+      "flag": "🇮🇩",
+      "description": "Indonesian language"
+    },
+    {
+      "code": "ms",
+      "label": "Bahasa Melayu",
+      "flag": "🇲🇾",
+      "description": "Bahasa Melayu"
+    },
+    {
+      "code": "ja",
+      "label": "日本語",
+      "flag": "🇯🇵",
+      "description": "Japanese language"
+    },
+    {
+      "code": "ko",
+      "label": "한국어",
+      "flag": "🇰🇷",
+      "description": "Korean language"
+    },
+    {
+      "code": "th",
+      "label": "ไทย",
+      "flag": "🇹🇭",
+      "description": "ภาษาไทย"
+    },
+    {
+      "code": "vi",
+      "label": "Tiếng Việt",
+      "flag": "🇻🇳",
+      "description": "Ngôn ngữ tiếng Việt"
+    },
+    
   ];
 
   @override
