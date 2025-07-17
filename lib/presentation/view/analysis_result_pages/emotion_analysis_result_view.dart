@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
-import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
     super.initState();
     if (widget.analysisId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final provider = context.read<JournalViewModel>();
+        final provider = context.read<EmotionAnalysisProvider>();
         provider.loadAnalysisById(widget.analysisId!);
       });
     } else {
@@ -31,7 +31,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<JournalViewModel>(context);
+    final vm = Provider.of<EmotionAnalysisProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('analysis_emotion_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
@@ -81,7 +81,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
                     ),
                     SizedBox(height: context.dynamicHeight(0.02)),
                     ElevatedButton(
-                      onPressed: () => vm.analyzeText(vm.textController.text),
+                      onPressed: () => vm.analyzeEmotion(vm.textController.text),
                       child: Text('try_again'.tr()),
                     ),
                   ],

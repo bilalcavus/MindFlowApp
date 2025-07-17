@@ -2,20 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/core/services/shared_prefs_service.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
-import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
 import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
 
 class DreamAnalysisProvider extends ChangeNotifier {
   final ApiRemoteDataSource _repo;
-  final SharedPrefsService _prefsService;
   final AuthService _authService;
   final UserEntryRepository _entryRepo;
-  final UserPreferencesRepository _prefsRepo;
   final DreamAnalysisDataRepository _analysisRepo;
   final GetDreamAnalysis getDreamAnalysis;
   
@@ -33,15 +29,12 @@ class DreamAnalysisProvider extends ChangeNotifier {
   DreamAnalysisProvider(
     this.getDreamAnalysis,
     this._repo,
-    this._prefsService,
     this._authService,
     this._entryRepo,
-    this._prefsRepo,
     this._analysisRepo,
   );
 
   Future<void> initialize() async {
-    await _loadPrefs();
     await _loadAnalysisHistory();
   }
 
@@ -50,16 +43,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
     textController.dispose();
     super.dispose();
   }
-
-
-  String getModelDisplayName(String modelKey) => _repo.getModelDisplayName(modelKey);
-
-  void changeModel(String modelKey) {
-    selectedModel = modelKey;
-    _prefsService.saveSelectedModel(modelKey);
-    notifyListeners();
-  }
-
   
 
   Future<void> dreamAnalyzeText(String text) async {
@@ -122,9 +105,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
   }
 
   Future<void> _loadAnalysisHistory() async {
-    if (!_isUserLoggedIn || _currentUserId == null) {
-      return;
-    }
     try {
       final history = await _analysisRepo.getDreamAnalysesByType(
         userId: _currentUserId!,
@@ -136,17 +116,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('Analiz geçmişi yükleme hatası: $e');
     }
-  }
-
-  Future<DreamAnalysisModel?> getDreamAnalysisById(int id) async {
-    try {
-      final analyse = await _analysisRepo.getDreamAnalysisById(id);
-      return analyse;
-    } catch (e) {
-      error = "error_not_found".tr(namedArgs: {'id': id.toString()});
-      debugPrint('$e');
-    }
-    return null;
   }
 
   Future<void> loadAnalysisById(int id) async {
@@ -190,7 +159,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-
     try {
       await _analysisRepo.clearDreamAnalysisHistory(_currentUserId!);
       analysisHistory.clear();
@@ -230,18 +198,6 @@ class DreamAnalysisProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> onUserAuthChanged() async {
-    analysisHistory.clear();
-    analysisResult = null;
-    error = null;
-    
-    if (_isUserLoggedIn) {
-      await _loadPrefs();
-      await _loadAnalysisHistory();
-    }
-    
-    notifyListeners();
-  }
 
   Map<String, dynamic> saveHistoryToJson() {
     return {
@@ -267,17 +223,4 @@ class DreamAnalysisProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _loadPrefs() async {
-    if (!_isUserLoggedIn || _currentUserId == null) {
-      selectedModel = ApiConstants.defaultModel; // Varsayılan model
-      return;
-    }
-
-    try {
-      selectedModel = await _prefsRepo.getSelectedModel(_currentUserId!);
-      notifyListeners();
-    } catch (e) {
-      selectedModel = ApiConstants.defaultModel;
-    }
-  }
 }

@@ -37,19 +37,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2E0249),
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-
-            ],
-          ),
-        ),
+        decoration: screenBackgroundColor(),
         child: Center(
           child: SingleChildScrollView(
             child: Form(
@@ -304,6 +292,21 @@ class _RegisterViewState extends State<RegisterView> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  BoxDecoration screenBackgroundColor() {
+    return const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFF2E0249),
+          Color(0xFF3A0CA3),
+          Color.fromARGB(255, 22, 5, 63),
+          Color(0xFF000000),
+        ],
       ),
     );
   }

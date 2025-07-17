@@ -6,28 +6,24 @@ import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
 import 'package:mind_flow/data/repositories/emotion_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
-import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
 import 'package:mind_flow/domain/usecases/get_analyze_emotion.dart';
 
-class JournalViewModel extends ChangeNotifier {
+class EmotionAnalysisProvider extends ChangeNotifier {
   final ApiRemoteDataSource _repo;
   final UserEntryRepository _entryRepo;
   final EmotionAnalysisRepository _analysisRepo;
-  final UserPreferencesRepository _prefsRepo;
   final AuthService _authService;
   final GetAnalyzeEmotion getAnalyzeEmotion;
 
-  JournalViewModel(
+  EmotionAnalysisProvider(
     this.getAnalyzeEmotion,
     this._repo,
     this._entryRepo,
     this._analysisRepo,
-    this._prefsRepo,
     this._authService,
   );
 
   Future<void> initialize() async {
-    await _loadPrefs();
     await _loadAnalysisHistory();
   }
 
@@ -45,19 +41,10 @@ class JournalViewModel extends ChangeNotifier {
   final TextEditingController textController = TextEditingController();
   List<String> get availableModels => _repo.getAvailableModels();
 
-  String getModelDisplayName(String modelKey) => _repo.getModelDisplayName(modelKey);
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
-  void changeModel(String modelKey) {
-    selectedModel = modelKey;
-    if (_isUserLoggedIn && _currentUserId != null) {
-      _prefsRepo.setSelectedModel(_currentUserId!, modelKey);
-    }
-    notifyListeners();
-  }
-
-  Future<void> analyzeText(String text) async {
+  Future<void> analyzeEmotion(String text) async {
     if (text.trim().isEmpty) {
       error = "error_empty_text".tr();
       notifyListeners();
@@ -125,10 +112,6 @@ class JournalViewModel extends ChangeNotifier {
   }
 
   Future<void> _loadAnalysisHistory() async {
-    if (!_isUserLoggedIn || _currentUserId == null) {
-      return;
-    }
-
     try {
       final history = await _analysisRepo.getEmotionAnalysesByType(
         userId: _currentUserId!,
@@ -173,18 +156,7 @@ class JournalViewModel extends ChangeNotifier {
     textController.clear();
   }
 
-  void loadAnalysis(EmotionAnalysisModel analysis) {
-    analysisResult = analysis;
-    notifyListeners();
-  }
-
   Future<void> clearHistory() async {
-    if (!_isUserLoggedIn || _currentUserId == null) {
-      error = "error_clear_login".tr();
-      notifyListeners();
-      return;
-    }
-
     try {
       await _analysisRepo.deleteAllUserAnalyses(_currentUserId!);
       analysisHistory.clear();
@@ -196,8 +168,6 @@ class JournalViewModel extends ChangeNotifier {
   }
 
   Future<int> getAnalysisCount() async {
-    if (!_isUserLoggedIn || _currentUserId == null) return 0;
-
     try {
       final stats = await _analysisRepo.getEmotionAnalysisStats(_currentUserId!);
       return stats['by_type']['emotion'] ?? 0;
@@ -223,19 +193,6 @@ class JournalViewModel extends ChangeNotifier {
       return [];
     }
   }
-
-  Future<void> onUserAuthChanged() async {
-    analysisHistory.clear();
-    analysisResult = null;
-    error = null;
-    
-    if (_isUserLoggedIn) {
-      await _loadPrefs();
-      await _loadAnalysisHistory();
-    }
-    notifyListeners();
-  }
-
   Map<String, dynamic> saveHistoryToJson() {
     return {
       'history': analysisHistory.map((e) => e.toJson()).toList(),
@@ -256,21 +213,6 @@ class JournalViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       error = "Geçmiş yüklenirken hata: $e";
-      notifyListeners();
-    }
-  }
-
-  Future<void> _loadPrefs() async {
-    if (!_isUserLoggedIn || _currentUserId == null) {
-      selectedModel = ApiConstants.defaultModel; // Varsayılan model
-      return;
-    }
-
-    try {
-      selectedModel = await _prefsRepo.getSelectedModel(_currentUserId!);
-      notifyListeners();
-    } catch (e) {
-      selectedModel = ApiConstants.defaultModel;
       notifyListeners();
     }
   }

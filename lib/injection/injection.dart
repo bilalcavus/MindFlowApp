@@ -32,7 +32,7 @@ import 'package:mind_flow/domain/usecases/get_current_provider.dart';
 import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
 import 'package:mind_flow/domain/usecases/get_model_display_name.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 // ViewModels
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
@@ -84,9 +84,9 @@ Future<void> setupDependencies() async {
 
 
   // ViewModels
-  getIt.registerLazySingleton(() => ChatBotProvider(getIt(), getIt(), getIt(), getIt(), getIt()));
-  getIt.registerLazySingleton(() => JournalViewModel(getIt(), getIt(), getIt(), getIt(), getIt(), getIt()));
-  getIt.registerLazySingleton(() => DreamAnalysisProvider(getIt(), getIt(), getIt(), getIt(), getIt(), getIt(), getIt()));
+  getIt.registerLazySingleton(() => ChatBotProvider(getIt(), getIt(), getIt()));
+  getIt.registerLazySingleton(() => EmotionAnalysisProvider(getIt(), getIt(), getIt(), getIt(), getIt()));
+  getIt.registerLazySingleton(() => DreamAnalysisProvider(getIt(), getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton(() => NavigationProvider());
   getIt.registerLazySingleton(() => AuthenticationProvider(getIt()));
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));

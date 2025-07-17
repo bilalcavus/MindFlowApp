@@ -4,7 +4,7 @@ import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
-import 'package:mind_flow/presentation/widgets/subscription_widgets.dart';
+import 'package:mind_flow/presentation/widgets/subscription/subscription_widgets.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionManagementPage extends StatefulWidget {
@@ -415,65 +415,6 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     );
   }
 
-  // Widget _buildUsageHistory(SubscriptionProvider provider) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Kullanım Geçmişi',
-  //         style: TextStyle(
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //           fontSize: context.dynamicHeight(0.022),
-  //         ),
-  //       ),
-  //       SizedBox(height: context.dynamicHeight(0.015)),
-  //       Container(
-  //         padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-  //         decoration: BoxDecoration(
-  //           color: Colors.white.withOpacity(0.1),
-  //           borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
-  //           border: Border.all(color: Colors.white.withOpacity(0.2)),
-  //         ),
-  //         child: Column(
-  //           children: [
-  //             _buildUsageItem('Bu ay kullanılan kredi', '7/10'),
-  //             Divider(color: Colors.white.withOpacity(0.2)),
-  //             _buildUsageItem('Toplam analiz', '23'),
-  //             Divider(color: Colors.white.withOpacity(0.2)),
-  //             _buildUsageItem('Son kullanım', '2 saat önce'),
-  //           ],
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildUsageItem(String label, String value) {
-  //   return Padding(
-  //     padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.01)),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(
-  //           label,
-  //           style: TextStyle(
-  //             color: Colors.white.withOpacity(0.8),
-  //             fontSize: context.dynamicHeight(0.016),
-  //           ),
-  //         ),
-  //         Text(
-  //           value,
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //             fontSize: context.dynamicHeight(0.016),
-  //             fontWeight: FontWeight.w600,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   void _showPlanDetails(String planId) {
     showDialog(

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/generic_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/dream_analysis_result_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
@@ -21,11 +22,7 @@ class DreamAnalysisPage extends StatelessWidget {
         await vm.dreamAnalyzeText(vm.textController.text);
         vm.clearText();
         if (vm.analysisResult?.id != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => DreamAnalysisResultView(analysisId: vm.analysisResult!.id),
-            ),
-          );
+          RouteHelper.push(context, DreamAnalysisResultView(analysisId: vm.analysisResult!.id,));
         } else if (vm.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -37,11 +34,6 @@ class DreamAnalysisPage extends StatelessWidget {
       },
       textController: vm.textController,
       availableModels: vm.availableModels,
-      selectedModel: vm.selectedModel,
-      onModelChange: (value) {
-        if (value != null) vm.changeModel(value);
-      },
-      getModelDisplayName: vm.getModelDisplayName,
       resultPage: const DreamAnalysisResultView(),
     );
   }

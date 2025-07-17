@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
@@ -103,9 +104,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                 ),
               );
             }
-        
             final result = provider.analysisResult!;
-        
             return SingleChildScrollView(
               padding: EdgeInsets.all(context.dynamicWidth(0.04)),
               child: Column(
@@ -117,15 +116,11 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                       children: [
                         const Icon(Iconsax.calendar, color: Colors.deepPurple),
                         SizedBox(width: context.dynamicWidth(0.02)),
-                        Text(
-                          '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)),
-                        ),
+                        analysisDateText(result, context),
                       ],
                     ),
                   ),
                   SizedBox(height: context.dynamicHeight(0.02)),
-        
                   if (result.symbols.isNotEmpty)
                     _buildSectionCard('symbols_title'.tr(), result.symbols.join(', '), Colors.teal),
                   SizedBox(height: context.dynamicHeight(0.015)),
@@ -166,7 +161,6 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                       height: context.dynamicHeight(0.3),
                       child: RadarChartWidget(result: result),
                     ),
-        
                   if (result.symbolMeanings.isNotEmpty)
                     LiquidGlassCard(
                       children: [
@@ -226,6 +220,13 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
           },
         ),
       ),
+    );
+  }
+
+  Text analysisDateText(DreamAnalysisModel result, BuildContext context) {
+    return Text(
+      '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)),
     );
   }
 

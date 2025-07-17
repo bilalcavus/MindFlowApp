@@ -10,9 +10,8 @@ import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/start/splash_view.dart';
-import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/analysis/journal_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
@@ -30,13 +29,8 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     await setupDependencies();
-    try {
-      final firestoreSetup = FirestoreSetupService();
-      await firestoreSetup.initializeFirestore();
-    } catch (firestoreError) {
-      debugPrint('Firestore hatası (uygulama devam ediyor): $firestoreError');
-      debugPrint('Firestore Console\'da database\'i aktifleştirin');
-    }
+    final firestoreSetup = FirestoreSetupService();
+    await firestoreSetup.initializeFirestore();
     await _initializeDatabase();
     await _initializeProviders();
     
@@ -45,7 +39,7 @@ void main() async {
         ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
         : null;
     final locale = savedLocale != null ? Locale(savedLocale) : const Locale('en');
-    
+    debugPrintRebuildDirtyWidgets = true;
     runApp(
       EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('tr')],
@@ -55,7 +49,7 @@ void main() async {
         startLocale: locale,
         child: MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => getIt<JournalViewModel>()),
+            ChangeNotifierProvider(create: (_) => getIt<EmotionAnalysisProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
@@ -68,7 +62,7 @@ void main() async {
       ),
     );
   } catch (e) {
-    debugPrint('❌ Uygulama başlatma hatası: $e');
+    debugPrint('Uygulama başlatma hatası: $e');
   }
 }
 
@@ -86,9 +80,6 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       home: const SplashView(),
-      routes: {
-        '/subscription_management': (context) => const SubscriptionManagementPage(),
-      },
     );
   }
 }
@@ -105,7 +96,7 @@ Future<void> _initializeDatabase() async {
 
 Future<void> _initializeProviders() async {
   try {
-    final journalViewModel = getIt<JournalViewModel>();
+    final journalViewModel = getIt<EmotionAnalysisProvider>();
     final dreamAnalysisProvider = getIt<DreamAnalysisProvider>();
     final chatBotProvider = getIt<ChatBotProvider>();
     

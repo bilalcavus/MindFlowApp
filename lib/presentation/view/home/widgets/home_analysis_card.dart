@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/habit_analysis_page.dart';
-import 'package:mind_flow/presentation/view/analysis_pages/journal_screen.dart';
+import 'package:mind_flow/presentation/view/analysis_pages/emotion_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/mental_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/personality_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/stress_burnout_analysis_page.dart';
@@ -87,7 +87,7 @@ class GetAnalysisList {
         subTitle: "analysis_emotion_subtitle".tr(),
         icon: Iconsax.heart,
         color: isDark ? Colors.pink.shade200 : Colors.pink,
-        page: const JournalScreen(),
+        page: const EmotionAnalysisPage(),
         gradient: LinearGradient(colors: isDark
             ? [const Color(0xFFAD1457), const Color(0xFFD81B60)]
             : [const Color(0xFFFF5858), const Color(0xFFFFA857)]),

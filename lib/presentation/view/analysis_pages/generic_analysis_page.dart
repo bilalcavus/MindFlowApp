@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
-import 'package:mind_flow/presentation/widgets/subscription_widgets.dart';
+import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
 class GenericAnalysisPage extends StatelessWidget {
@@ -16,9 +17,6 @@ class GenericAnalysisPage extends StatelessWidget {
   final VoidCallback onAnalyze;
   final TextEditingController textController;
   final List<String> availableModels;
-  final String selectedModel;
-  final void Function(String?) onModelChange;
-  final String Function(String) getModelDisplayName;
   final Widget resultPage;
 
   const GenericAnalysisPage({
@@ -31,9 +29,6 @@ class GenericAnalysisPage extends StatelessWidget {
     required this.onAnalyze,
     required this.textController,
     required this.availableModels,
-    required this.selectedModel,
-    required this.onModelChange,
-    required this.getModelDisplayName,
     required this.resultPage,
   });
 
@@ -49,19 +44,7 @@ class GenericAnalysisPage extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2E0249),
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-
-            ],
-          ),
-        ),
+        decoration: backgroundColor(),
         child: Padding(
           padding: EdgeInsets.all(context.dynamicHeight(0.018)),
           child: Column(
@@ -82,13 +65,9 @@ class GenericAnalysisPage extends StatelessWidget {
                       child: ElevatedButton.icon(
                         onPressed: isLoading ? null : () => _analyzeWithCreditCheck(context),
                         icon: isLoading
-                            ? SizedBox(
-                                width: context.dynamicWidth(0.05),
-                                height: context.dynamicHeight(0.025),
-                                child: CircularProgressIndicator(strokeWidth: context.dynamicWidth(0.005)),
-                              )
+                            ? _loadingIcon(context)
                             : const Icon(HugeIcons.strokeRoundedAiBrowser),
-                        label: Text(isLoading ? 'Analiz Ediliyor...' : analyzeButtonText),
+                        label: Text(isLoading ? 'analyzing'.tr() : analyzeButtonText),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
@@ -102,6 +81,29 @@ class GenericAnalysisPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox _loadingIcon(BuildContext context) {
+    return SizedBox(
+      width: context.dynamicWidth(0.05),
+      height: context.dynamicHeight(0.025),
+      child: CircularProgressIndicator(strokeWidth: context.dynamicWidth(0.005)),
+    );
+  }
+
+  BoxDecoration backgroundColor() {
+    return const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFF2E0249),
+          Color(0xFF3A0CA3),
+          Color.fromARGB(255, 22, 5, 63),
+          Color(0xFF000000),
+        ],
       ),
     );
   }
@@ -127,43 +129,17 @@ class GenericAnalysisPage extends StatelessWidget {
       return;
     }
     onAnalyze();
-    await subscriptionProvider.consumeCredits(userId, 1, 'Analiz işlemi');
+    await subscriptionProvider.consumeCredits(userId, 1, 'analyze_op'.tr());
   }
 
   void _showInsufficientCreditsDialog(BuildContext context, SubscriptionProvider subscriptionProvider, String userId) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Yetersiz Kredi'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Bu analiz için 1 kredi gereklidir. Krediniz yetersiz.'),
-            SizedBox(height: 16),
-            CreditIndicatorWidget(
-              showProgressBar: true,
-              showDetails: true,
-              padding: EdgeInsets.all(8),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('İptal'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/subscription_management');
-            },
-            child: const Text('Kredi Satın Al'),
-          ),
-        ],
-      ),
+      builder: (context) => const InsufficientCreditsDialog(),
     );
   }
-} 
+}
+
 
 
 // Color(0xFF1A1A2E), // Koyu mavi

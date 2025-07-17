@@ -167,6 +167,7 @@
     "register": "Register",
     "already_have_account": "Already have an account?",
     "login": "Login",
+    "or": "or",
     "login-with-google": "Login with Google",
     "registering": "Registering...",
     "logging_in": "Logging In...",
@@ -202,5 +203,9 @@
     "language": "Language",
     "user_preferences": "User Preferences",
     "privacy_policy": "Privacy Policy",
-    "terms_and_conditions": "Terms and Conditions"
+    "terms_and_conditions": "Terms and Conditions",
+    "insufficient_credit": "Insufficient Credit",
+    "insufficient_credit_desc":"1 credit is required for this analysis. Your loan is insufficient.",
+    "buy_credit": "Buy credit",
+    "analyze_op": "Analyze Operation"
 }

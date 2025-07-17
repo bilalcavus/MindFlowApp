@@ -1,14 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/injection/injection.dart';
+import 'package:mind_flow/presentation/view/chat/widgets/chat_app_bar.dart';
+import 'package:mind_flow/presentation/view/chat/widgets/chat_input_field.dart';
+import 'package:mind_flow/presentation/view/chat/widgets/chat_loading_indicator.dart';
+import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
-import 'package:mind_flow/presentation/widgets/chat_bubble.dart';
-import 'package:mind_flow/presentation/widgets/subscription_widgets.dart';
+import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -22,18 +24,27 @@ class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final AuthService _authService = getIt<AuthService>();
+  late VoidCallback _listener;
+  late ChatBotProvider _chatBotProvider;
+  
 
   @override
   void initState() {
     super.initState();
+    _chatBotProvider = context.read<ChatBotProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshChatHistory();
       _initializeSubscriptionListener();
     });
+    _listener = () {
+      if(mounted) _scrollToBottom();
+    };
+    _chatBotProvider.addListener(_listener);
   }
 
   @override
   void dispose() {
+    _chatBotProvider.removeListener(_listener);
     _scrollController.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -41,17 +52,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _initializeSubscriptionListener() {
     if (_authService.isLoggedIn && _authService.currentUserId != null) {
-      final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+      final subscriptionProvider = context.read<SubscriptionProvider>();
       subscriptionProvider.startListening(_authService.currentUserId!);
     }
   }
 
   Future<void> _refreshChatHistory() async {
-    final provider = Provider.of<ChatBotProvider>(context, listen: false);
+    final provider = context.read<ChatBotProvider>();
     await provider.initialize();
   }
 
-  void _scrollToBottom() {
+  Future<void> _scrollToBottom() async {
+     await Future.delayed(const Duration(milliseconds: 100));
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -63,65 +75,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ChatBotProvider>();
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(
-          provider.currentChatTypeTitle.tr(),
-          style: TextStyle(
-            fontSize: context.dynamicHeight(0.02),
-            fontWeight: FontWeight.w600,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Selector<ChatBotProvider, String>(
+          selector: (_, provider) => provider.currentChatTypeTitle,
+          builder: (_, title, __) => ChatHeader(
+            title: title.tr(), 
+            onShowHistory: _showChatSessions, 
+            onNewChat: _onNewChat, 
+            onClearChat: () => _showClearDialog(context.read<ChatBotProvider>()),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          if (_authService.isLoggedIn) ...[
-            IconButton(
-              icon: const Icon(HugeIcons.strokeRoundedBubbleChatIncome),
-              tooltip: 'chat_history'.tr(),
-              onPressed: () => _showChatSessions(),
-            ),
-            IconButton(
-              icon: const Icon(HugeIcons.strokeRoundedAdd01),
-              onPressed: () async {
-                final provider = Provider.of<ChatBotProvider>(context, listen: false);
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('new_chat_title'.tr()),
-                    content: Text('new_chat_content'.tr()),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text('cancel'.tr()),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: Text('new_chat'.tr()),
-                      ),
-                    ],
-                  ),
-                );
-                if (confirmed == true) {
-                  await provider.startNewSession();
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('new_chat_started'.tr())),
-                    );
-                  }
-                }
-              },
-            ),
-          ],
-          IconButton(
-            icon: const Icon(HugeIcons.strokeRoundedDelete02),
-            tooltip: 'clear_chat'.tr(),
-            onPressed: () => _showClearDialog(provider),
-          ),
-        ],
       ),
       body: Container(
         width: double.infinity,
@@ -134,74 +100,57 @@ class _ChatScreenState extends State<ChatScreen> {
               Color.fromARGB(255, 31, 4, 53),
               Color(0xFF000000),
               Color.fromARGB(255, 69, 8, 110),
-              
             ],
           ),
         ),
         child: Column(
           children: [
-            if (!_authService.isLoggedIn)
-              offlineChatWarning(),
             Expanded(
-              child: provider.chatMessages.isEmpty
-                  ? _buildEmptyState()
-                  : RefreshIndicator(
-                      onRefresh: _refreshChatHistory,
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.01)),
-                        itemCount: provider.chatMessages.length,
-                        itemBuilder: (context, index) {
-                          final message = provider.chatMessages[index];
-                          return ChatBubble(
-                            message: message,
-                            isLastMessage: index == provider.chatMessages.length - 1,
-                          );
-                        },
-                      ),
-                    ),
-            ),
-            if (provider.isLoading)
-              Row(
-                children: [
-                  SizedBox(
-                    width: context.dynamicWidth(0.05),
-                    height: context.dynamicHeight(0.025),
-                    child: CircularProgressIndicator(strokeWidth: context.dynamicWidth(0.005)),
-                  ),
-                  SizedBox(width: context.dynamicWidth(0.03)),
-                  Text('writing'.tr()),
-                ],
+              child: Consumer<ChatBotProvider>(
+                builder: (_, provider, __) => provider.chatMessages.isEmpty
+                ? _buildEmptyState()
+                : ChatMessageList(scrollController: _scrollController)
+            )),
+            Consumer<ChatBotProvider>(
+            builder: (_, provider, __) =>
+                provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
+          ),
+            Consumer<ChatBotProvider>(
+              builder: (_, provider, __) => ChatInputArea(
+                focusNode: _focusNode,
+                onSend: (msg) async {
+                  await _sendMessageWithCreditCheck(provider, msg);
+                  _scrollToBottom();
+                },
               ),
-            _buildMessageInput(provider),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Container offlineChatWarning() {
-    return Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(context.dynamicHeight(0.015)),
-            color: Colors.orange.withOpacity(0.1),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.orange, size: context.dynamicHeight(0.025)),
-                SizedBox(width: context.dynamicWidth(0.02)),
-                Expanded(
-                  child: Text(
-                    'offline_chat_warning'.tr(),
-                    style: TextStyle(
-                      color: Colors.orange.shade800,
-                      fontSize: context.dynamicHeight(0.015),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+void _onNewChat() async {
+  final provider = context.read<ChatBotProvider>();
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('new_chat_title'.tr()),
+      content: Text('new_chat_content'.tr()),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context, false), child: Text('cancel'.tr())),
+        TextButton(onPressed: () => Navigator.pop(context, true), child: Text('new_chat'.tr())),
+      ],
+    ),
+  );
+  if (confirmed == true) {
+    await provider.startNewSession();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('new_chat_started'.tr())));
+    }
   }
+}
+
 
   Widget _buildEmptyState() {
     return RefreshIndicator(
@@ -243,7 +192,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: () {
                     final provider = Provider.of<ChatBotProvider>(context, listen: false);
                     provider.chatController.text = 'sample_message'.tr();
-                    provider.sendChatMessage(provider.chatController.text, context);
+                    _sendMessageWithCreditCheck(provider, provider.chatController.text);
+                    FocusScope.of(context).unfocus();
                   },
                   icon: const Icon(HugeIcons.strokeRoundedChatting01),
                   label: Text('start_conversation'.tr()),
@@ -264,60 +214,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(ChatBotProvider provider) {
-    return Padding(
-      padding: EdgeInsets.all(context.dynamicHeight(0.015)),
-      child: Container(
-        height: context.dynamicHeight(0.1),
-        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(context.dynamicHeight(0.03))
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: provider.chatController,
-                focusNode: _focusNode,
-                maxLines: 2,
-                textInputAction: TextInputAction.send,
-                style: TextStyle(fontSize: context.dynamicHeight(0.018)),
-                decoration: InputDecoration(
-                  hintText: 'Mesajını yaz...',
-                  hintStyle: TextStyle(fontSize: context.dynamicHeight(0.018)),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                ),
-                onSubmitted: (text) {
-                  if (text.trim().isNotEmpty) {
-                    _sendMessageWithCreditCheck(provider, text);
-                    FocusScope.of(context).unfocus();
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _scrollToBottom();
-                      
-                    });
-                  }
-                },
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (provider.chatController.text.trim().isNotEmpty) {
-                  _sendMessageWithCreditCheck(provider, provider.chatController.text);
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _scrollToBottom();
-                  });
-                }
-              },
-              child: Icon(Iconsax.send_14, size: context.dynamicHeight(0.04)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
 
   Future<void> _showChatSessions() async {
     final provider = Provider.of<ChatBotProvider>(context, listen: false);
@@ -332,22 +228,14 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.7,
         decoration: const BoxDecoration(
-          color: Color(0xFF1A1A1A),
+          color: Colors.black,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(top: 12, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.grey[600],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+            _sheetDivider(context),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding:  EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.05)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -373,10 +261,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         children: [
                           Icon(
                             HugeIcons.strokeRoundedChatBot,
-                            size: 64,
+                            size: context.dynamicHeight(0.064),
                             color: Colors.grey[600],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: context.dynamicHeight(.016)),
                           Text(
                             'no_chat_history'.tr(),
                             style: TextStyle(color: Colors.grey[400]),
@@ -423,30 +311,6 @@ class _ChatScreenState extends State<ChatScreen> {
                               '$messageCount ${'messages'.tr()} • ${_formatDate(lastTime)}',
                               style: TextStyle(color: Colors.grey[400]),
                             ),
-                            trailing: isCurrentSession
-                                ? const Icon(Icons.radio_button_checked, color: Colors.blue)
-                                : PopupMenuButton<String>(
-                                    icon: const Icon(Icons.more_vert, color: Colors.grey),
-                                    onSelected: (value) async {
-                                      if (value == 'delete') {
-                                        await provider.deleteChatSession(sessionId);
-                                        Navigator.pop(context);
-                                        _showChatSessions(); // Refresh the list
-                                      }
-                                    },
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        value: 'delete',
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.delete, color: Colors.red),
-                                            const SizedBox(width: 8),
-                                            Text('Delete'.tr()),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                             onTap: isCurrentSession
                                 ? null
                                 : () async {
@@ -463,6 +327,18 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Container _sheetDivider(BuildContext context) {
+    return Container(
+            width: context.dynamicWidth(.3),
+            height: context.dynamicHeight(.004),
+            margin: const EdgeInsets.only(top: 12, bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.grey[600],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          );
   }
 
   String _formatDate(DateTime date) {
@@ -519,61 +395,23 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
   Future<void> _sendMessageWithCreditCheck(ChatBotProvider provider, String message) async {
-    if (!_authService.isLoggedIn) {
-      provider.sendChatMessage(message, context);
-      return;
-    }
-
-    final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+    final subscriptionProvider = context.read<SubscriptionProvider>();
     final userId = _authService.currentUserId;
-    
-    if (userId == null) {
-      provider.sendChatMessage(message, context);
-      return;
-    }
+    if (userId == null) return;
 
-    final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
-    
-    if (!hasEnoughCredits) {
+    if (!await subscriptionProvider.hasEnoughCredits(userId, 1)) {
       _showInsufficientCreditsDialog(subscriptionProvider, userId);
       return;
     }
-
-    provider.sendChatMessage(message, context);
+    await provider.sendChatMessage(message);
     await subscriptionProvider.consumeCredits(userId, 1, 'Chat mesajı');
   }
 
   void _showInsufficientCreditsDialog(SubscriptionProvider subscriptionProvider, String userId) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Yetersiz Kredi'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Bu işlem için 1 kredi gereklidir. Krediniz yetersiz.'),
-            SizedBox(height: 16),
-            CreditIndicatorWidget(
-              showProgressBar: true,
-              showDetails: true,
-              padding: EdgeInsets.all(8),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('İptal'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/subscription_management');
-            },
-            child: const Text('Kredi Satın Al'),
-          ),
-        ],
-      ),
+      builder: (context) => const InsufficientCreditsDialog()
     );
   }
 }
+

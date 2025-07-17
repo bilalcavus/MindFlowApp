@@ -2,12 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
+import 'package:mind_flow/presentation/view/auth/login/widgets/loading_icon.dart';
+import 'package:mind_flow/presentation/view/auth/login/widgets/login_button.dart';
+import 'package:mind_flow/presentation/view/auth/login/widgets/login_text_field.dart';
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
-import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
+
+part 'widgets/login_with_google.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -17,14 +21,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  bool _obscurePassword = true;
-
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
     return Scaffold(
       body: ScreenBackground(
-        
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -48,176 +49,30 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   child: Column(
                     children: [
-                      // Email
-                      TextField(
+                      LoginViewTextField(
                         controller: provider.emailController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
-                          hintText: 'Email', // Sadece email ile giriş
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(0.04),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
-                          ),
-                        ),
+                        hintText: 'email'.tr(),
+                        prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
                       ),
                       SizedBox(height: context.dynamicHeight(0.022)),
-                      // Password
-                      TextField(
+                      LoginViewTextField(
                         controller: provider.passwordController,
-                        obscureText: _obscurePassword,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                              color: Colors.white.withOpacity(0.7),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                          hintText: 'Şifre',
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(0.04),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            borderSide: BorderSide(color: const Color(0xFFB983FF), width: context.dynamicWidth(0.005)),
-                          ),
+                        hintText: 'password'.tr(),
+                        prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
+                        suffixIcon: _obsecureButton(provider),
                         ),
-                      ),
                       SizedBox(height: context.dynamicHeight(0.035)),
-                      // Login Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: context.dynamicHeight(0.07),
-                        child: ElevatedButton(
-                          onPressed: provider.isEmailLoading ? null : () async {
-                              await provider.handleLogin(context);
-                              FocusScope.of(context).unfocus();
-                              if (mounted && provider.authService.isLoggedIn) {
-                                RouteHelper.pushAndCloseOther(context, const AppNavigation());
-                              }
-                          } ,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black12,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            ),
-                            elevation: context.dynamicWidth(0.01),
-                          ),
-                          child: provider.isEmailLoading
-                              ? SizedBox(
-                                  width: context.dynamicWidth(0.06),
-                                  height: context.dynamicWidth(0.06),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2.5,
-                                  ),
-                                )
-                              : Text(
-                                  'Giriş Yap',
-                                  style: TextStyle(
-                                    fontSize: context.dynamicHeight(0.0225), 
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                        ),
-                      ),
+                      LoginButton(provider: provider, mounted: mounted),
                       SizedBox(height: context.dynamicHeight(0.022)),
                       Row(
                         children: [
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.04)),
-                            child: Text(
-                              'veya',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: context.dynamicWidth(0.035),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
+                          horizontalLine(),
+                          horizontalLineText(context),
+                          horizontalLine()
                         ],
                       ),
                       SizedBox(height: context.dynamicHeight(0.022)),
-                      SizedBox(
-                        width: double.infinity,
-                        height: context.dynamicHeight(0.07),
-                        child: OutlinedButton.icon(
-                          onPressed: provider.isGoogleLoading ? null : () async {
-                            try {
-                              await provider.handleGoogleSignIn(context);
-                            // ignore: empty_catches
-                            } catch (e) {
-                              
-                            }
-                          },
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            side: BorderSide(color: Colors.white.withOpacity(0.3)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-                            ),
-                            backgroundColor: Colors.white.withOpacity(0.05),
-                          ),
-                          icon: Image.asset(
-                            'assets/pictures/google-icon.png',
-                            height: context.dynamicWidth(0.06),
-                            width: context.dynamicWidth(0.06),
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(
-                                Icons.g_mobiledata,
-                                color: Colors.white,
-                                size: context.dynamicHeight(0.03),
-                              );
-                            },
-                          ),
-                          label: provider.isGoogleLoading
-                              ? SizedBox(
-                                  width: context.dynamicWidth(0.06),
-                                  height: context.dynamicWidth(0.06),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2.5,
-                                  ),
-                                )
-                              :  Text(
-                                  "login-with-google".tr(),
-                                  style: TextStyle(
-                                    fontSize: context.dynamicWidth(0.04),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                        ),
-                      ),
+                      LoginWithGoogle(provider: provider),
                       SizedBox(height: context.dynamicHeight(0.022)),
                       forgetPasswordSection(context),
                       registerNowSection(context),
@@ -230,6 +85,38 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
+    );
+  }
+
+  Padding horizontalLineText(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.04)),
+      child: Text(
+        'or'.tr(),
+        style: TextStyle(
+          color: Colors.white.withOpacity(0.6),
+          fontSize: context.dynamicWidth(0.035),
+        ),
+      ),
+    );
+  }
+
+  Expanded horizontalLine() {
+    return Expanded(
+      child: Container(
+        height: 1,
+        color: Colors.white.withOpacity(0.2),
+      ),
+    );
+  }
+
+  IconButton _obsecureButton(AuthenticationProvider provider) {
+    return IconButton(
+      icon: Icon(
+        provider.obsecurePassword ? Icons.visibility_off : Icons.visibility,
+        color: Colors.white.withOpacity(0.7),
+      ),
+      onPressed: () => provider.toggleCurrentPasswordVisibility()
     );
   }
 
@@ -276,4 +163,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+
 
