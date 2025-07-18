@@ -3,7 +3,7 @@ import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/domain/repositories/dream_analysis_repository.dart';
 
-class DreamAnalysisRepositoryImpl with RepositoryErrorHandling implements DreamAnalysisRepository {
+class DreamAnalysisRepositoryImpl with RepositoryHandling implements DreamAnalysisRepository {
   final RemoteDataSource _remoteDataSource;
 
   DreamAnalysisRepositoryImpl(this._remoteDataSource);

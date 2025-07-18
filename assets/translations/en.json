@@ -207,5 +207,6 @@
     "insufficient_credit": "Insufficient Credit",
     "insufficient_credit_desc":"1 credit is required for this analysis. Your loan is insufficient.",
     "buy_credit": "Buy credit",
-    "analyze_op": "Analyze Operation"
+    "analyze_op": "Analyze Operation",
+    "error_analyze_failed": "Analyze failed. Please try again."
 }

@@ -24,7 +24,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 5, // Chat type history için version 5
+      version: 6, // Yeni analiz tabloları için version 6
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -276,7 +276,121 @@ Future<String?> getUserPreference(String userId, String key) async {
       await _addChatTypeColumn(db);
       debugPrint('✅ Chat type history migration tamamlandı');
     }
+
+    if (oldVersion < 6) {
+      await _addOtherAnalysis(db);
+      debugPrint('Other analysis migration successed.');
+    }
   }
+
+  Future<void> _addOtherAnalysis(Database db) async {
+    try {
+      await db.execute('''
+        CREATE TABLE personality_analyses (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'personality',
+          traits_json TEXT NOT NULL,
+          personality_score_json TEXT NOT NULL,
+          dominant_trait TEXT NOT NULL,
+          secondary_traits_json TEXT,
+          strengths_json TEXT NOT NULL,
+          weakness_json TEXT NOT NULL,
+          suggested_role_json TEXT,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT NOT NULL,
+          mind_map_json TEXT NOT NULL,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+  ''');
+      await db.execute(''' 
+        CREATE TABLE habit_analyses (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'habit',
+          habits_json TEXT NOT NULL,
+          positive_habits_json TEXT NOT NULL,
+          negative_habits_json TEXT NOT NULL,
+          habit_scores_json TEXT NOT NULL,
+          lifestyle_category TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT,
+          mind_map_json TEXT NOT NULL,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+ ''');
+      await db.execute('''
+        CREATE TABLE mental_analyses (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'mental',
+          mental_scores_json TEXT NOT NULL,
+          cognitive_patterns TEXT NOT NULL,
+          mental_challenges TEXT NOT NULL,
+          themes TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT,
+          mind_map TEXT NOT NULL,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+ ''');
+      await db.execute(''' 
+        CREATE TABLE stress_analyses (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'stress',
+          stress_level DOUBLE NOT NULL,
+          burnout_risk DOUBLE NOT NULL,
+          stress_factors TEXT NOT NULL,
+          coping_strategies TEXT NOT NULL,
+          risk_scores_json TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT,
+          mind_map TEXT NOT NULL,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+      ''');
+    await db.execute('''
+      CREATE INDEX idx_personality_analyses_user_id ON personality_analyses (user_id, entry_id)
+    ''');
+    await db.execute('''
+      CREATE INDEX idx_habit_analyses_user_id ON habit_analyses (user_id, entry_id)
+    ''');
+    await db.execute('''
+      CREATE INDEX idx_mental_analyses_user_id ON mental_analyses (user_id, entry_id)
+    ''');
+    await db.execute('''
+      CREATE INDEX idx_stress_analyses_user_id ON stress_analyses (user_id, entry_id)
+    ''');
+    } catch (e) {
+      debugPrint('!!New tables are not created!!');
+    }
+  }
+
 
   Future<void> _addChatTypeColumn(Database db) async {
     try {
@@ -632,7 +746,7 @@ Future<String?> getUserPreference(String userId, String key) async {
   Future<Map<String, int>> getDatabaseInfo() async {
     final db = await database;
     
-    final tables = ['users', 'user_entries', 'emotion_analyses', 'dream_analyses', 'chat_messages', 'languages'];
+    final tables = ['users', 'user_entries', 'emotion_analyses', 'dream_analyses', 'chat_messages', 'languages', 'personality_analyses', 'habit_analyses', 'mental_analyses', 'stress_analyses'];
     final info = <String, int>{};
     
     for (final table in tables) {
@@ -642,4 +756,16 @@ Future<String?> getUserPreference(String userId, String key) async {
     
     return info;
   }
+
+  Future<List<String>> getAllTables() async {
+  final db = await database;
+  final result = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
+  
+  return result.map((row) => row['name'] as String).toList();
+}
+Future<List<Map<String, dynamic>>> getTableContent(String tableName) async {
+  final db = await database;
+  return await db.query(tableName);
+}
+
 } 

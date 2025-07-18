@@ -33,7 +33,6 @@ class DreamAnalysisPage extends StatelessWidget {
         }
       },
       textController: vm.textController,
-      availableModels: vm.availableModels,
       resultPage: const DreamAnalysisResultView(),
     );
   }

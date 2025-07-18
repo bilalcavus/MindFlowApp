@@ -12,6 +12,10 @@ import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/start/splash_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/habit_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/mental_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/personality_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/stress_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
@@ -23,6 +27,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
   await EasyLocalization.ensureInitialized();
+   final dbService = DatabaseService();
+
+  // Tabloları al
+  final tables = await dbService.getAllTables();
+  print("📌 Veritabanındaki Tablolar:");
+  tables.forEach(print);
+
+  // // Örn: users tablosunun içeriğini yazdır
+  // if (tables.contains('emotion_analyses')) {
+  //   final analyses = await dbService.getTableContent('emotion_analyses');
+  //   print("📌 Users Tablosu:");
+  //   for (var analysis in analyses) {
+  //     print(analysis);
+  //   }
+  // }
   
   try {
     await Firebase.initializeApp(
@@ -62,6 +81,10 @@ void main() async {
           providers: [
             ChangeNotifierProvider(create: (_) => getIt<EmotionAnalysisProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
+            ChangeNotifierProvider(create: (_) => getIt<PersonalityAnalysisProvider>()),
+            ChangeNotifierProvider(create: (_) => getIt<HabitAnalysisProvider>()),
+            ChangeNotifierProvider(create: (_) => getIt<MentalAnalysisProvider>()),
+            ChangeNotifierProvider(create: (_) => getIt<StressAnalysisProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),

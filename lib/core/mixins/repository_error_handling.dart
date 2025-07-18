@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/error/error_handler.dart';
 
-mixin RepositoryErrorHandling {
+mixin RepositoryHandling {
   Future<T> handleRepositoryOperation<T>({
     required Future<T> Function() operation,
     String? errorMessage,

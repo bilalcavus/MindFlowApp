@@ -16,7 +16,7 @@ class GenericAnalysisPage extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onAnalyze;
   final TextEditingController textController;
-  final List<String> availableModels;
+  final List<String>? availableModels;
   final Widget resultPage;
 
   const GenericAnalysisPage({
@@ -28,7 +28,7 @@ class GenericAnalysisPage extends StatelessWidget {
     required this.isLoading,
     required this.onAnalyze,
     required this.textController,
-    required this.availableModels,
+    this.availableModels,
     required this.resultPage,
   });
 

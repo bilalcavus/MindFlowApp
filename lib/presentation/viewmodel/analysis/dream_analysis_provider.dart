@@ -2,14 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
 
 class DreamAnalysisProvider extends ChangeNotifier {
-  final ApiRemoteDataSource _repo;
   final AuthService _authService;
   final UserEntryRepository _entryRepo;
   final DreamAnalysisDataRepository _analysisRepo;
@@ -22,13 +20,11 @@ class DreamAnalysisProvider extends ChangeNotifier {
   List<DreamAnalysisModel> analysisHistory = [];
   final TextEditingController textController = TextEditingController();
   
-  List<String> get availableModels => _repo.getAvailableModels();
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
 
   DreamAnalysisProvider(
     this.getDreamAnalysis,
-    this._repo,
     this._authService,
     this._entryRepo,
     this._analysisRepo,
@@ -98,7 +94,7 @@ class DreamAnalysisProvider extends ChangeNotifier {
         analysisHistory = analysisHistory.take(10).toList();
       }
     } catch (e) {
-      error = "error_clear_failed".tr(namedArgs: {'error': e.toString()});
+      error = "error_analyze_failed".tr();
     }
     isLoading = false;
     notifyListeners();
@@ -128,10 +124,10 @@ class DreamAnalysisProvider extends ChangeNotifier {
       if (analysis != null) {
         analysisResult = analysis;
       } else {
-        error = "error_not_found".tr(namedArgs: {'id': id.toString()});
+        error = "error_not_found".tr();
       }
     } catch (e) {
-      error = "error_load_failed".tr(namedArgs: {'error': e.toString()});
+      error = "error_load_failed".tr();
     }
     
     isLoading = false;
@@ -148,10 +144,10 @@ class DreamAnalysisProvider extends ChangeNotifier {
   }
 
 
-  void loadAnalysis(DreamAnalysisModel analysis) {
-    analysisResult = analysis;
-    notifyListeners();
-  }
+  // void loadAnalysis(DreamAnalysisModel analysis) {
+  //   analysisResult = analysis;
+  //   notifyListeners();
+  // }
 
   Future<void> clearHistory() async {
     if (!_isUserLoggedIn || _currentUserId == null) {

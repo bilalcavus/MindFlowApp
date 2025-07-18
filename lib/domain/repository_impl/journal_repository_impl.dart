@@ -3,7 +3,7 @@ import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
 import 'package:mind_flow/domain/repositories/journal_repository.dart';
 
-class JournalRepositoryImpl with RepositoryErrorHandling implements JournalRepository {
+class JournalRepositoryImpl with RepositoryHandling implements JournalRepository {
   final RemoteDataSource _remoteDataSource;
 
   JournalRepositoryImpl(this._remoteDataSource);

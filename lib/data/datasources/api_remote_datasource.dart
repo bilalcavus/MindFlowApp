@@ -6,6 +6,10 @@ import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
+import 'package:mind_flow/data/models/habit_analysis_model.dart';
+import 'package:mind_flow/data/models/mental_analysis_model.dart';
+import 'package:mind_flow/data/models/personality_analysis_model.dart';
+import 'package:mind_flow/data/models/stress_analysis_model.dart';
 
 class ApiRemoteDataSource implements RemoteDataSource {
   late DioHelper dioHelper;
@@ -77,6 +81,7 @@ class ApiRemoteDataSource implements RemoteDataSource {
         else if (result is Map && result.containsKey('error')) {
           final isRateLimit = result['isRateLimit'] == true;
           final errorMessage = result['error'].toString();
+          debugPrint('Error response from $provider/$modelKey: isRateLimit=$isRateLimit, error=$errorMessage, result=$result');
           
           if (isRateLimit) {
             debugPrint('Rate limit hit on $provider, trying next provider...');
@@ -88,11 +93,13 @@ class ApiRemoteDataSource implements RemoteDataSource {
             throw Exception("API hatası ($provider): $errorMessage");
           }
         } else {
+          debugPrint('Unexpected API response format from $provider/$modelKey: $result');
           throw Exception("API yanıtı beklenmedik formatta ($provider): $result");
         }
         
-      } catch (e) {
-        debugPrint('Error with $provider: $e');
+      } catch (e, stack) {
+        debugPrint('Error with $provider/$modelKey: $e');
+        debugPrint('Stack trace: $stack');
         if (i == fallbackConfig.length - 1) {
           rethrow;
         }
@@ -120,6 +127,47 @@ class ApiRemoteDataSource implements RemoteDataSource {
       userText,
       (json) => DreamAnalysisModel.fromJson(json),
       ApiConstants.dreamAnalysisContentPrompt,
+    );
+  }
+
+  
+  @override
+  Future<PersonalityAnalysisModel> analyzePersonality(String userText, {String? modelKey}) async {
+    return await _makeRequestWithFallback<PersonalityAnalysisModel>(
+      'personality',
+      userText,
+      (json) => PersonalityAnalysisModel.fromJson(json),
+      ApiConstants.personalityAnalysisContentPrompt
+    );
+  }
+
+  @override
+  Future<MentalAnalysisModel> analyzeMentality(String userText, {String? modelKey}) async {
+    return await _makeRequestWithFallback<MentalAnalysisModel>(
+      'mental',
+      userText,
+      (json) => MentalAnalysisModel.fromJson(json),
+      ApiConstants.mentalAnalysisContentPrompt
+    );
+  }
+
+  @override
+  Future<HabitAnalysisModel> analyzeHabit(String userText, {String? modelKey}) async {
+    return await _makeRequestWithFallback<HabitAnalysisModel>(
+      'habit',
+      userText,
+      (json) => HabitAnalysisModel.fromJson(json),
+      ApiConstants.habitAnalysisContentPrompt
+    );
+  }
+  
+  @override
+  Future<StressAnalysisModel> analyzeStress(String userText, {String? modelKey}) async {
+    return await _makeRequestWithFallback<StressAnalysisModel>(
+      'stress',
+      userText,
+      (json) => StressAnalysisModel.fromJson(json),
+      ApiConstants.stressAnalysisContentPrompt
     );
   }
 
@@ -324,4 +372,5 @@ class ApiRemoteDataSource implements RemoteDataSource {
   List<String> getAvailableProviders() {
     return ApiConstants.providers.map((p) => p['name'] as String).toList();
   }
+
 } 
