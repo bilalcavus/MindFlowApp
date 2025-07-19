@@ -2,9 +2,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/presentation/view/history/tabs/dream_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/emotion_history_tab.dart';
+import 'package:mind_flow/presentation/view/history/tabs/habits_history_tab.dart';
+import 'package:mind_flow/presentation/view/history/tabs/mental_history_tab.dart';
+import 'package:mind_flow/presentation/view/history/tabs/personality_history_tab.dart';
+import 'package:mind_flow/presentation/view/history/tabs/stress_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/widgets/segment_control.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/habit_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/mental_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/personality_analysis_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/analysis/stress_analysis_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,6 +30,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
   final List<String> _tabs = [
     "analysis_emotion_title".tr(),
     "analysis_dream_title".tr(),
+    "analysis_personality_title".tr(),
+    "analysis_habit_title".tr(),
+    "analysis_mental_title".tr(),
+    "analysis_stress_title".tr(),
   ];
 
   @override
@@ -31,6 +43,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<EmotionAnalysisProvider>().refreshHistory();
       context.read<DreamAnalysisProvider>().refreshHistory();
+      context.read<PersonalityAnalysisProvider>().refreshHistory();
+      context.read<HabitAnalysisProvider>().refreshHistory();
+      context.read<MentalAnalysisProvider>().refreshHistory();
+      context.read<StressAnalysisProvider>().refreshHistory();
     });
   }
 
@@ -74,6 +90,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 children: const [
                   EmotionHistoryTab(),
                   DreamHistoryTab(),
+                  PersonalityHistoryTab(),
+                  HabitsHistoryTab(),
+                  MentalHistoryTab(),
+                  StressHistoryTab(),
                 ],
               ),
             ),

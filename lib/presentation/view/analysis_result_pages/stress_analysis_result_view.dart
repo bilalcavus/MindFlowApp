@@ -172,7 +172,7 @@ class _StressAnalysisResultViewState extends State<StressAnalysisResultView> {
                 ],
               ),
               SizedBox(height: context.dynamicHeight(0.01)),
-              ...items.map((item) => Text('• $item')).toList(),
+              ...items.map((item) => Text('• $item')),
             ],
           ),
         ),
@@ -180,32 +180,6 @@ class _StressAnalysisResultViewState extends State<StressAnalysisResultView> {
     );
   }
 
-  Widget _buildMapSectionCard(String title, Map<String, double> map, Color color, BuildContext context) {
-    return LiquidGlassCard(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.circle, size: context.dynamicWidth(0.03), color: color),
-                  SizedBox(width: context.dynamicWidth(0.02)),
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.dynamicHeight(0.01)),
-              ...map.entries.map((e) => Text('${e.key}: %${e.value}')).toList(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildMindMapCard(Map<String, List<String>> mindMap, BuildContext context) {
     return LiquidGlassCard(

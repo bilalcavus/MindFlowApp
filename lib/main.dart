@@ -27,22 +27,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
   await EasyLocalization.ensureInitialized();
-   final dbService = DatabaseService();
-
-  // Tabloları al
-  final tables = await dbService.getAllTables();
-  print("📌 Veritabanındaki Tablolar:");
-  tables.forEach(print);
-
-  // // Örn: users tablosunun içeriğini yazdır
-  // if (tables.contains('emotion_analyses')) {
-  //   final analyses = await dbService.getTableContent('emotion_analyses');
-  //   print("📌 Users Tablosu:");
-  //   for (var analysis in analyses) {
-  //     print(analysis);
-  //   }
-  // }
-  
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,

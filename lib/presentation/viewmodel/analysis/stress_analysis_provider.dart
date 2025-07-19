@@ -73,10 +73,7 @@ class StressAnalysisProvider extends ChangeNotifier {
       );
       analysisResult = StressAnalysisModel(
         id: analysisId,
-         userId: _currentUserId!,
-        entryId: entryId,
         aiReply: analysisResult!.aiReply,
-        createdAt: analysisResult!.createdAt,
         stressLevel: analysisResult!.stressLevel,
         burnoutRisk: analysisResult!.burnoutRisk,
         stressFactors: analysisResult!.stressFactors,

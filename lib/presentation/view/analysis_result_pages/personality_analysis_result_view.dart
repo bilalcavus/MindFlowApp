@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/widgets/analysis_date_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/personality_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
+import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +24,7 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final provider = context.read<PersonalityAnalysisProvider>();
         provider.loadAnalysisById(widget.analysisId!);
+        
       });
     }
   }
@@ -58,7 +61,7 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
                     const Icon(Icons.error, size: 64, color: Colors.red),
                     SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
-                      "error_with_message".tr(namedArgs: {"error": provider.error ?? ""}),
+                      "error_analyze_failed".tr(namedArgs: {"error": provider.error ?? ""}),
                       style: TextStyle(fontSize: context.dynamicWidth(0.04)),
                       textAlign: TextAlign.center,
                     ),
@@ -99,27 +102,28 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AnalysisDate(result: result),
+                  SizedBox(height: context.dynamicHeight(0.02)),
                   _buildSectionCard('summary_title'.tr(), result.summary ?? '', Colors.blue, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard('advice_title'.tr(), result.advice ?? '', Colors.orange, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard('dominant_trait_title'.tr(), result.dominantTrait ?? '', Colors.purple, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMapSectionCard('traits_title'.tr(), result.traitsJson!, Colors.teal, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildMapSectionCard('personality_scores_title'.tr(), result.personalityScoreJson ?? {}, Colors.green, context),
+                  SizedBox(
+                    height: context.dynamicHeight(.3),
+                    child: RadarChartWidget(result: result),
+                  ),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  if (result.secondaryTraitsJson != null)
-                    _buildMapSectionCard('secondary_traits_title'.tr(), result.secondaryTraitsJson ?? {}, Colors.deepPurple, context),
+                  // if (result.secondaryTraitsJson != null)
+                  //   _buildMapSectionCard('secondary_traits_title'.tr(), result.secondaryTraitsJson ?? {}, Colors.deepPurple, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMapSectionCard('strengths_title'.tr(), result.strengthsJson ?? {}, Colors.green, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMapSectionCard('weaknesses_title'.tr(), result.weaknessJson ?? {}, Colors.red, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  if (result.suggestedRoleJson != null)
-                    _buildListMapSectionCard('suggested_roles_title'.tr(), result.suggestedRoleJson!, Colors.orange, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMindMapCard(result.mindMapJson ?? {}, context),
+                  _buildSectionCard('ai_reply_title'.tr(), result.aiReply ?? '', Colors.indigo, context),
                 ],
               ),
             );
@@ -175,7 +179,7 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
                 ],
               ),
               SizedBox(height: context.dynamicHeight(0.01)),
-              ...map.entries.map((e) => Text('${e.key}: ${e.value}')).toList(),
+              ...map.entries.map((e) => Text('${e.key}: ${e.value}')),
             ],
           ),
         ),
@@ -183,92 +187,5 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
     );
   }
 
-  Widget _buildListMapSectionCard(String title, Map<String, List<String>> map, Color color, BuildContext context) {
-    return LiquidGlassCard(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.circle, size: context.dynamicWidth(0.03), color: color),
-                  SizedBox(width: context.dynamicWidth(0.02)),
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.dynamicHeight(0.01)),
-              ...map.entries.map((e) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${e.key}:', style: TextStyle(fontWeight: FontWeight.bold)),
-                  ...e.value.map((v) => Text('• $v')).toList(),
-                ],
-              )).toList(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
-  Widget _buildMindMapCard(Map<String, List<String>> mindMap, BuildContext context) {
-    return LiquidGlassCard(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.circle, size: context.dynamicWidth(0.03), color: Colors.deepPurple),
-                  SizedBox(width: context.dynamicWidth(0.02)),
-                  Text(
-                    'mind_map_title'.tr(),
-                    style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.dynamicHeight(0.02)),
-              ...mindMap.entries.map((entry) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '📌 ${entry.key}',
-                        style: TextStyle(
-                          fontSize: context.dynamicWidth(0.035),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.purple,
-                        ),
-                      ),
-                      SizedBox(height: context.dynamicHeight(0.005)),
-                      ...entry.value.map(
-                        (subItem) => Padding(
-                          padding: EdgeInsets.only(left: context.dynamicWidth(0.04), top: context.dynamicHeight(0.002)),
-                          child: Row(
-                            children: [
-                              const Text('• ', style: TextStyle(color: Colors.grey)),
-                              Expanded(child: Text(subItem)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 } 

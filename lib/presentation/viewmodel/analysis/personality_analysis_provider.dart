@@ -74,19 +74,13 @@ class PersonalityAnalysisProvider extends ChangeNotifier {
       analysisResult = PersonalityAnalysisModel(
         id: analysisId,
         aiReply: analysisResult!.aiReply,
-        traitsJson: analysisResult!.traitsJson,
         personalityScoreJson: analysisResult!.personalityScoreJson,
         dominantTrait: analysisResult!.dominantTrait,
-        strengthsJson: analysisResult!.strengthsJson,
-        weaknessJson: analysisResult!.weaknessJson,
         summary: analysisResult!.summary,
         advice: analysisResult!.advice,
-        mindMapJson: analysisResult!.mindMapJson,
         modelUsed: analysisResult!.modelUsed,
         analysisDate: analysisResult!.analysisDate);
-
         await _userEntryRepository.updateUserEntry(userId: _currentUserId!, id: entryId, isAnalyzed: true);
-
         analysisHistory.insert(0, analysisResult!);
         if (analysisHistory.length > 10) {
           analysisHistory = analysisHistory.take(10).toList();
@@ -122,8 +116,10 @@ class PersonalityAnalysisProvider extends ChangeNotifier {
       } else {
         error = "error_not_found".tr(namedArgs: {'id': id.toString()});
       }
-    } catch (e) {
-      error = "error_load_failed".tr();
+    } catch (e, stack) {
+      debugPrint("loadAnalysisById hata: $e");
+  debugPrint(stack.toString());
+  error = "error_load_failed".tr();
     }
     finally{
       _setLoading(false);

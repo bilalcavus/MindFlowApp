@@ -7,7 +7,7 @@ import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 class AnalysisCard extends StatelessWidget {
   final String title;
   final DateTime date;
-  final List<String> themes;
+  final List<String>? themes;
   final VoidCallback onTap;
   final IconData icon;
   final Color iconColor;
@@ -16,7 +16,7 @@ class AnalysisCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.date,
-    required this.themes,
+    this.themes,
     required this.onTap,
     this.icon = Iconsax.heart,
     this.iconColor = Colors.red,
@@ -52,32 +52,32 @@ class AnalysisCard extends StatelessWidget {
                 ),
               ],
             ),
-            if (themes.isNotEmpty) ...[
-              SizedBox(height: context.dynamicHeight(0.01)),
-              Wrap(
-                spacing: context.dynamicWidth(0.01),
-                runSpacing: context.dynamicHeight(0.005),
-                children: themes.take(3).map((theme) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.dynamicWidth(0.02),
-                      vertical: context.dynamicHeight(0.005),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(context.dynamicHeight(0.01)),
-                    ),
-                    child: Text(
-                      theme,
-                      style: TextStyle(
-                        fontSize: context.dynamicHeight(0.015),
-                        color: Colors.blue,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+            // if (themes!.isNotEmpty) ...[
+            //   SizedBox(height: context.dynamicHeight(0.01)),
+            //   Wrap(
+            //     spacing: context.dynamicWidth(0.01),
+            //     runSpacing: context.dynamicHeight(0.005),
+            //     children: themes!.take(3).map((theme) {
+            //       return Container(
+            //         padding: EdgeInsets.symmetric(
+            //           horizontal: context.dynamicWidth(0.02),
+            //           vertical: context.dynamicHeight(0.005),
+            //         ),
+            //         decoration: BoxDecoration(
+            //           color: Colors.blue.withOpacity(0.1),
+            //           borderRadius: BorderRadius.circular(context.dynamicHeight(0.01)),
+            //         ),
+            //         child: Text(
+            //           theme,
+            //           style: TextStyle(
+            //             fontSize: context.dynamicHeight(0.015),
+            //             color: Colors.blue,
+            //           ),
+            //         ),
+            //       );
+            //     }).toList(),
+            //   ),
+            // ],
           ],
         ),
         trailing: Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)),

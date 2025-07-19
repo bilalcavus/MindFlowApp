@@ -73,10 +73,7 @@ class HabitAnalysisProvider extends ChangeNotifier {
       );
       analysisResult = HabitAnalysisModel(
         id: analysisId,
-        userId: _currentUserId!,
-        entryId: entryId,
         aiReply: analysisResult!.aiReply,
-        createdAt: analysisResult!.createdAt,
         habits: analysisResult!.habits,
         positiveHabits: analysisResult!.positiveHabits,
         negativeHabits: analysisResult!.negativeHabits,
@@ -84,7 +81,6 @@ class HabitAnalysisProvider extends ChangeNotifier {
         lifestyleCategory: analysisResult!.lifestyleCategory,
         summary: analysisResult!.summary,
         advice: analysisResult!.advice,
-        mindMap: analysisResult!.mindMap,
         modelUsed: analysisResult!.modelUsed,
         analysisDate: analysisResult!.analysisDate,
       );
@@ -93,8 +89,11 @@ class HabitAnalysisProvider extends ChangeNotifier {
       if (analysisHistory.length > 10) {
         analysisHistory = analysisHistory.take(10).toList();
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint("loadAnalysisById hata: $e");
+      debugPrint(stack.toString());
       error = "error_analyze_failed".tr();
+      
     } finally {
       _setLoading(false);
     }
@@ -123,7 +122,9 @@ class HabitAnalysisProvider extends ChangeNotifier {
       } else {
         error = "error_not_found".tr(namedArgs: {'id': id.toString()});
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint("loadAnalysisById hata: $e");
+      debugPrint(stack.toString());
       error = "error_load_failed".tr();
     } finally {
       _setLoading(false);

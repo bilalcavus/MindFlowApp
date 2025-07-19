@@ -117,7 +117,6 @@ class _HabitAnalysisResultViewState extends State<HabitAnalysisResultView> {
                       child: RadarChartWidget(result: result),
                     ),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMindMapCard(result.mindMap, context),
                 ],
               ),
             );
@@ -173,94 +172,11 @@ class _HabitAnalysisResultViewState extends State<HabitAnalysisResultView> {
                 ],
               ),
               SizedBox(height: context.dynamicHeight(0.01)),
-              ...items.map((item) => Text('• $item')).toList(),
+              ...items.map((item) => Text('• $item')),
             ],
           ),
         ),
       ],
     );
   }
-
-  Widget _buildMapSectionCard(String title, Map<String, double> map, Color color, BuildContext context) {
-    return LiquidGlassCard(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.circle, size: context.dynamicWidth(0.03), color: color),
-                  SizedBox(width: context.dynamicWidth(0.02)),
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.dynamicHeight(0.01)),
-              ...map.entries.map((e) => Text('${e.key}: %${e.value}')).toList(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMindMapCard(Map<String, List<String>> mindMap, BuildContext context) {
-    return LiquidGlassCard(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.circle, size: context.dynamicWidth(0.03), color: Colors.deepPurple),
-                  SizedBox(width: context.dynamicWidth(0.02)),
-                  Text(
-                    'mind_map_title'.tr(),
-                    style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.dynamicHeight(0.02)),
-              ...mindMap.entries.map((entry) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '📌 ${entry.key}',
-                        style: TextStyle(
-                          fontSize: context.dynamicWidth(0.035),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.purple,
-                        ),
-                      ),
-                      SizedBox(height: context.dynamicHeight(0.005)),
-                      ...entry.value.map(
-                        (subItem) => Padding(
-                          padding: EdgeInsets.only(left: context.dynamicWidth(0.04), top: context.dynamicHeight(0.002)),
-                          child: Row(
-                            children: [
-                              const Text('• ', style: TextStyle(color: Colors.grey)),
-                              Expanded(child: Text(subItem)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-} 
+}

@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/widgets/analysis_date_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
@@ -110,16 +110,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-                    child: Row(
-                      children: [
-                        const Icon(Iconsax.calendar, color: Colors.deepPurple),
-                        SizedBox(width: context.dynamicWidth(0.02)),
-                        analysisDateText(result, context),
-                      ],
-                    ),
-                  ),
+                  AnalysisDate(result: result),
                   SizedBox(height: context.dynamicHeight(0.02)),
                   if (result.symbols.isNotEmpty)
                     _buildSectionCard('symbols_title'.tr(), result.symbols.join(', '), Colors.teal),
@@ -225,9 +216,8 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
 
   Text analysisDateText(DreamAnalysisModel result, BuildContext context) {
     return Text(
-      '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)),
-    );
+          '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)));
   }
 
   Widget _buildSectionCard(String title, String content, Color color) {
@@ -313,4 +303,5 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
     );
   }
 }
+
 

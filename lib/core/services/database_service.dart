@@ -24,7 +24,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 6, // Yeni analiz tabloları için version 6
+      version: 9, // mind_map column removed from habit_analyses table
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -281,6 +281,70 @@ Future<String?> getUserPreference(String userId, String key) async {
       await _addOtherAnalysis(db);
       debugPrint('Other analysis migration successed.');
     }
+    if (oldVersion < 7) {
+      await _deletePersonalityColumns(db);
+      debugPrint('Some columns deleted.');
+    }
+    if (oldVersion < 8) {
+      await _deletePersonalityColumns(db);
+      debugPrint('Personality analysis columns deleted.');
+    }
+    if (oldVersion < 9) {
+      await _removeHabitMindMapColumn(db);
+      debugPrint('Mind map column removed from habit analyses.');
+    }
+  }
+
+  Future<void> _deletePersonalityColumns(Database db) async {
+    try {
+      // SQLite doesn't support DROP COLUMN directly, so we need to recreate the table
+      await db.execute('''
+        CREATE TABLE personality_analyses_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'personality',
+          personality_score_json TEXT NOT NULL,
+          dominant_trait TEXT NOT NULL,
+          secondary_traits_json TEXT,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT NOT NULL,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+      ''');
+
+      // Copy data from old table to new table
+      await db.execute('''
+        INSERT INTO personality_analyses_new (
+          id, user_id, entry_id, analysis_type, personality_score_json, 
+          dominant_trait, secondary_traits_json, summary, advice, ai_reply, 
+          model_used, analysis_date, created_at
+        )
+        SELECT 
+          id, user_id, entry_id, analysis_type, personality_score_json, 
+          dominant_trait, secondary_traits_json, summary, advice, ai_reply, 
+          model_used, analysis_date, created_at
+        FROM personality_analyses
+      ''');
+
+      // Drop old table and rename new table
+      await db.execute('DROP TABLE personality_analyses');
+      await db.execute('ALTER TABLE personality_analyses_new RENAME TO personality_analyses');
+
+      // Recreate index
+      await db.execute('''
+        CREATE INDEX idx_personality_analyses_user_id ON personality_analyses (user_id, entry_id)
+      ''');
+
+      debugPrint('✅ personality_analyses tablosundan sütunlar başarıyla silindi');
+    } catch (e) {
+      debugPrint('❌ Sütunlar silinirken hata: $e');
+    }
   }
 
   Future<void> _addOtherAnalysis(Database db) async {
@@ -323,7 +387,6 @@ Future<String?> getUserPreference(String userId, String key) async {
           summary TEXT NOT NULL,
           advice TEXT NOT NULL,
           ai_reply TEXT,
-          mind_map_json TEXT NOT NULL,
           model_used TEXT NOT NULL,
           analysis_date TEXT NOT NULL,
           created_at TEXT NOT NULL,
@@ -391,6 +454,54 @@ Future<String?> getUserPreference(String userId, String key) async {
     }
   }
 
+  Future<void> _removeHabitMindMapColumn(Database db) async {
+    try {
+      await db.execute('''
+        CREATE TABLE habit_analyses_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          entry_id INTEGER NOT NULL,
+          analysis_type TEXT NOT NULL DEFAULT 'habit',
+          habits_json TEXT NOT NULL,
+          positive_habits_json TEXT NOT NULL,
+          negative_habits_json TEXT NOT NULL,
+          habit_scores_json TEXT NOT NULL,
+          lifestyle_category TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          advice TEXT NOT NULL,
+          ai_reply TEXT,
+          model_used TEXT NOT NULL,
+          analysis_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+          FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+        )
+      ''');
+
+      // Copy data from old table to new table
+      await db.execute('''
+        INSERT INTO habit_analyses_new (
+          id, user_id, entry_id, analysis_type, habits_json, positive_habits_json, negative_habits_json, habit_scores_json, lifestyle_category, summary, advice, ai_reply, model_used, analysis_date, created_at
+        )
+        SELECT 
+          id, user_id, entry_id, analysis_type, habits_json, positive_habits_json, negative_habits_json, habit_scores_json, lifestyle_category, summary, advice, ai_reply, model_used, analysis_date, created_at
+        FROM habit_analyses
+      ''');
+
+      // Drop old table and rename new table
+      await db.execute('DROP TABLE habit_analyses');
+      await db.execute('ALTER TABLE habit_analyses_new RENAME TO habit_analyses');
+
+      // Recreate index
+      await db.execute('''
+        CREATE INDEX idx_habit_analyses_user_id ON habit_analyses (user_id, entry_id)
+      ''');
+
+      debugPrint('✅ habit_analyses tablosundan mind_map_json sütunu başarıyla silindi');
+    } catch (e) {
+      debugPrint('❌ Mind map column silinirken hata: $e');
+    }
+  }
 
   Future<void> _addChatTypeColumn(Database db) async {
     try {
@@ -766,6 +877,12 @@ Future<String?> getUserPreference(String userId, String key) async {
 Future<List<Map<String, dynamic>>> getTableContent(String tableName) async {
   final db = await database;
   return await db.query(tableName);
+}
+
+Future<List<Map<String, dynamic>>> getTableSchema(String tableName) async {
+  final db = await database;
+  final result = await db.rawQuery('PRAGMA table_info($tableName)');
+  return result;
 }
 
 } 

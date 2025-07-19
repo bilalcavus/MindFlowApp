@@ -73,8 +73,6 @@ class MentalAnalysisProvider extends ChangeNotifier {
       );
       analysisResult = MentalAnalysisModel(
         id: analysisId,
-        userId: _currentUserId!,
-        entryId: entryId,
         aiReply: analysisResult!.aiReply,
         mentalScores: analysisResult!.mentalScores,
         cognitivePatterns: analysisResult!.cognitivePatterns,
@@ -85,7 +83,6 @@ class MentalAnalysisProvider extends ChangeNotifier {
         mindMap: analysisResult!.mindMap,
         modelUsed: analysisResult!.modelUsed,
         analysisDate: analysisResult!.analysisDate, 
-        createdAt: analysisResult!.createdAt,
       );
       await _userEntryRepository.updateUserEntry(userId: _currentUserId!, id: entryId, isAnalyzed: true);
       analysisHistory.insert(0, analysisResult!);
