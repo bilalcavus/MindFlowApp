@@ -5,7 +5,7 @@ import 'package:mind_flow/core/services/auth_service.dart';
 
 class HomeHeader extends StatelessWidget {
   final AuthService authService;
-  const HomeHeader({required this.authService});
+  const HomeHeader({super.key, required this.authService});
 
   @override
   Widget build(BuildContext context) {

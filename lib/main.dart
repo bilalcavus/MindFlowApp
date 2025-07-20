@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
-import 'package:mind_flow/core/services/firestore_setup_service.dart';
 import 'package:mind_flow/core/theme/app_theme.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
@@ -32,8 +31,9 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     await setupDependencies();
-    final firestoreSetup = FirestoreSetupService();
-    await firestoreSetup.initializeFirestore();
+    // final firestoreSetup = FirestoreSetupService();
+    // await firestoreSetup.initializeFirestore(); //PROD için yoruma alındı
+    
     await _initializeDatabase();
     await _initializeProviders();
     

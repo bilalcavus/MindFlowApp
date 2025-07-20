@@ -66,10 +66,10 @@ class GenericAnalysisPage extends StatelessWidget {
                         onPressed: isLoading ? null : () => _analyzeWithCreditCheck(context),
                         icon: isLoading
                             ? _loadingIcon(context)
-                            : const Icon(HugeIcons.strokeRoundedAiBrowser),
+                            : const Icon(HugeIcons.strokeRoundedSent),
                         label: Text(isLoading ? 'analyzing'.tr() : analyzeButtonText),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
+                          backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                         ),
