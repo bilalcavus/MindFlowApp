@@ -152,6 +152,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                       height: context.dynamicHeight(0.3),
                       child: RadarChartWidget(result: result),
                     ),
+                    SizedBox(height: context.dynamicHeight(0.03)),
                   if (result.symbolMeanings.isNotEmpty)
                     LiquidGlassCard(
                       children: [

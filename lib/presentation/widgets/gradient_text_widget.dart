@@ -15,7 +15,7 @@ class GradientTextWidget extends StatelessWidget {
       shaderCallback: (bounds) => gradient.createShader(
           Rect.fromLTWH(0, 0, bounds.width, bounds.height),
         ),
-      child: Text(text, style: Theme.of(context).textTheme.titleLarge?.copyWith(
+      child: Text(text, style: Theme.of(context).textTheme.titleMedium?.copyWith(
         fontWeight: FontWeight.bold,
         color: Colors.white
       )),

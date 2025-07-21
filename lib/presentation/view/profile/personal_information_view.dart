@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
@@ -55,25 +56,7 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                               colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                             ),
                           ),
-                          child: CircleAvatar(
-                            radius: context.dynamicHeight(0.06),
-                            backgroundColor: Colors.white,
-                            backgroundImage: user?.photoURL != null 
-                                ? NetworkImage(user!.photoURL!) 
-                                : null,
-                            child: user?.photoURL == null 
-                                ? Text(
-                                    user?.displayName?.isNotEmpty == true 
-                                        ? user!.displayName![0].toUpperCase()
-                                        : '👤',
-                                    style: TextStyle(
-                                      fontSize: context.dynamicHeight(0.05),
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xFF8B5CF6),
-                                    ),
-                                  )
-                                : null,
-                          ),
+                          child: UserAvatar(user: user),
                         ),
                         SizedBox(height: context.dynamicHeight(0.015)),
                         Text(
@@ -312,6 +295,38 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
       margin: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.015)),
       height: 1,
       color: Colors.white.withOpacity(0.1),
+    );
+  }
+}
+
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({
+    super.key,
+    required this.user,
+  });
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: context.dynamicHeight(0.06),
+      backgroundColor: Colors.white,
+      backgroundImage: user?.photoURL != null 
+          ? NetworkImage(user!.photoURL!) 
+          : null,
+      child: user?.photoURL == null 
+          ? Text(
+              user?.displayName?.isNotEmpty == true 
+                  ? user!.displayName![0].toUpperCase()
+                  : '👤',
+              style: TextStyle(
+                fontSize: context.dynamicHeight(0.05),
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF8B5CF6),
+              ),
+            )
+          : null,
     );
   }
 } 

@@ -57,6 +57,14 @@ class SubscriptionRepository {
     );
 
     await createUserSubscription(newSubscription);
+
+    // Kullanıcıyı premium/freemium olarak güncelle
+    final user = await _firestoreService.getUser(userId);
+    if (user != null) {
+      bool isPremium = newPlanId == 'premium' || newPlanId == 'enterprise';
+      final updatedUser = user.copyWith(isPremiumUser: isPremium);
+      await _firestoreService.createOrUpdateUser(updatedUser);
+    }
   }
 
   Future<UserCredits?> getUserCredits(String userId) async {

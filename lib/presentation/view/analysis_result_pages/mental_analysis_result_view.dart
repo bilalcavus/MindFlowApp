@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/mental_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
-import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
@@ -110,11 +109,11 @@ class _MentalAnalysisResultViewState extends State<MentalAnalysisResultView> {
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildListSectionCard('themes_title'.tr(), result.themes, Colors.green, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  SizedBox(
-                      height: context.dynamicHeight(0.3),
-                      child: RadarChartWidget(result: result),
-                    ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  // SizedBox(
+                  //     height: context.dynamicHeight(0.3),
+                  //     child: RadarChartWidget(result: result),
+                  //   ),
+                  // SizedBox(height: context.dynamicHeight(0.015)),
                   _buildMindMapCard(result.mindMap, context),
                 ],
               ),

@@ -10,6 +10,7 @@ import 'package:mind_flow/presentation/view/chat/widgets/chat_loading_indicator.
 import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -134,14 +135,16 @@ void _onNewChat() async {
   final provider = context.read<ChatBotProvider>();
   final confirmed = await showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text('new_chat_title'.tr()),
-      content: Text('new_chat_content'.tr()),
+    builder: (context) => CustomAlertDialog(
+      title: 'new_chat_title'.tr(),
+      content: 'new_chat_content'.tr(),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context, false), child: Text('cancel'.tr())),
-        TextButton(onPressed: () => Navigator.pop(context, true), child: Text('new_chat'.tr())),
-      ],
-    ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, false), child: Text('cancel'.tr())),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true), child: Text('new_chat'.tr())),
+      ]
+    )
   );
   if (confirmed == true) {
     await provider.startNewSession();
@@ -260,7 +263,7 @@ void _onNewChat() async {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            HugeIcons.strokeRoundedChatBot,
+                            HugeIcons.strokeRoundedFileEmpty02,
                             size: context.dynamicHeight(0.064),
                             color: Colors.grey[600],
                           ),
@@ -360,15 +363,14 @@ void _onNewChat() async {
     final isLoggedIn = _authService.isLoggedIn;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('clear_chat'.tr()),
-        content: Text(
-          isLoggedIn 
+      builder: (context) => 
+      CustomAlertDialog(
+        title: 'clear_chat'.tr(),
+      content: isLoggedIn 
             ? 'clear_chat_content_logged_in'.tr()
-            : 'clear_chat_content_offline'.tr()
-        ),
-        actions: [
-          TextButton(
+            : 'clear_chat_content_offline'.tr(),
+      actions: [
+        TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('cancel'.tr()),
           ),
@@ -388,8 +390,7 @@ void _onNewChat() async {
             },
             child: Text('clear'.tr()),
           ),
-        ],
-      ),
+      ])
     );
   }
 

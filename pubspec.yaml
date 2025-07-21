@@ -38,6 +38,7 @@ dependencies:
   google_sign_in: ^6.2.1
   google_fonts: ^6.2.1
   pretty_dio_logger: ^1.4.0
+  leak_tracker: ^10.0.4
 
 dev_dependencies:
   flutter_test:

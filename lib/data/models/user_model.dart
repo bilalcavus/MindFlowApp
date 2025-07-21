@@ -11,6 +11,7 @@ class User {
   final DateTime? lastLoginAt;
   final bool isActive;
   final Map<String, dynamic>? userPreferences;
+  final bool isPremiumUser;
 
   User({
     required this.id,
@@ -21,6 +22,7 @@ class User {
     this.lastLoginAt,
     this.isActive = true,
     this.userPreferences,
+    this.isPremiumUser = false,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class User {
       userPreferences: json['user_preferences_json'] != null
           ? Map<String, dynamic>.from(jsonDecode(json['user_preferences_json']))
           : null,
+      isPremiumUser: json['is_premium_user'] ?? false,
     );
   }
 
@@ -53,6 +56,7 @@ class User {
           : null,
       isActive: data['isActive'] ?? true,
       userPreferences: data['userPreferences'],
+      isPremiumUser: data['isPremiumUser'] ?? false,
     );
   }
 
@@ -66,6 +70,7 @@ class User {
       'last_login_at': lastLoginAt?.toIso8601String(),
       'is_active': isActive ? 1 : 0,
       'user_preferences_json': userPreferences != null ? jsonEncode(userPreferences) : null,
+      'is_premium_user': isPremiumUser,
     };
   }
 
@@ -78,6 +83,7 @@ class User {
       'lastLoginAt': lastLoginAt != null ? Timestamp.fromDate(lastLoginAt!) : null,
       'isActive': isActive,
       'userPreferences': userPreferences,
+      'isPremiumUser': isPremiumUser,
     };
   }
 
@@ -90,6 +96,7 @@ class User {
     DateTime? lastLoginAt,
     bool? isActive,
     Map<String, dynamic>? userPreferences,
+    bool? isPremiumUser,
   }) {
     return User(
       id: id ?? this.id,
@@ -100,6 +107,7 @@ class User {
       lastLoginAt: lastLoginAt ?? this.lastLoginAt,
       isActive: isActive ?? this.isActive,
       userPreferences: userPreferences ?? this.userPreferences,
+      isPremiumUser: isPremiumUser ?? this.isPremiumUser,
     );
   }
 

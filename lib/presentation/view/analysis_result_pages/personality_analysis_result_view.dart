@@ -110,18 +110,12 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard('dominant_trait_title'.tr(), result.dominantTrait ?? '', Colors.purple, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  SizedBox(height: context.dynamicHeight(0.015)),
                   _buildMapSectionCard('personality_scores_title'.tr(), result.personalityScoreJson ?? {}, Colors.green, context),
+                  SizedBox(height: context.dynamicHeight(0.03)),
                   SizedBox(
                     height: context.dynamicHeight(.3),
                     child: RadarChartWidget(result: result),
                   ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  // if (result.secondaryTraitsJson != null)
-                  //   _buildMapSectionCard('secondary_traits_title'.tr(), result.secondaryTraitsJson ?? {}, Colors.deepPurple, context),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  SizedBox(height: context.dynamicHeight(0.015)),
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildSectionCard('ai_reply_title'.tr(), result.aiReply ?? '', Colors.indigo, context),
                 ],
@@ -186,6 +180,4 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
       ],
     );
   }
-
-
-} 
+}

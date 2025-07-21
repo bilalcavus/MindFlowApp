@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
@@ -24,10 +25,11 @@ class AnalysisGrid extends StatelessWidget {
           children: [
             Padding(
             padding: EdgeInsets.symmetric(horizontal: context.dynamicHeight(0.02)),
-            child: const GradientTextWidget(gradient: LinearGradient(colors: [
-              Colors.blue,
-              Colors.red
-            ]), text: "Let's Analyze!")
+            child:  GradientTextWidget(gradient: const LinearGradient(colors: [
+              Colors.cyan,
+              Colors.red,
+              Colors.white
+            ]), text: "analyze_grid_title".tr())
           ),
           ],
         ),

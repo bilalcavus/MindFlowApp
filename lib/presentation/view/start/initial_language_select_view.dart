@@ -127,200 +127,172 @@ class _InitialLanguageSelectViewState extends State<InitialLanguageSelectView> {
             ],
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'choose_language'.tr(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: context.dynamicHeight(0.035),
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.08)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: context.dynamicHeight(0.08)),
+                  Text(
+                    'choose_language'.tr(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: context.dynamicHeight(0.035),
+                      fontWeight: FontWeight.bold,
                     ),
-                    
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.08)),
-                  child: Column(
-                    children: [
-                      ..._languages.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final language = entry.value;
-                        final isSelected = index == _selectedIndex;
-
-                        return Container(
-                          margin: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _selectedIndex = index;
-                                });
-                              },
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: context.dynamicHeight(0.04)),
+                  ..._languages.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final language = entry.value;
+                    final isSelected = index == _selectedIndex;
+                    return Container(
+                      margin: EdgeInsets.only(bottom: context.dynamicHeight(0.02)),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = index;
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+                            decoration: BoxDecoration(
+                              color: isSelected 
+                                ? Colors.white.withOpacity(0.15)
+                                : Colors.white.withOpacity(0.05),
                               borderRadius: BorderRadius.circular(20),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-                                decoration: BoxDecoration(
-                                  color: isSelected 
-                                    ? Colors.white.withOpacity(0.15)
-                                    : Colors.white.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: isSelected 
-                                      ? const Color(0xFFB983FF)
-                                      : Colors.white.withOpacity(0.1),
-                                    width: isSelected ? 2 : 1,
+                              border: Border.all(
+                                color: isSelected 
+                                  ? const Color(0xFFB983FF)
+                                  : Colors.white.withOpacity(0.1),
+                                width: isSelected ? 2 : 1,
+                              ),
+                              boxShadow: isSelected ? [
+                                BoxShadow(
+                                  color: const Color(0xFFB983FF).withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ] : null,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: context.dynamicWidth(0.12),
+                                  height: context.dynamicWidth(0.12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.2),
+                                    ),
                                   ),
-                                  boxShadow: isSelected ? [
-                                    BoxShadow(
-                                      color: const Color(0xFFB983FF).withOpacity(0.3),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
+                                  child: Center(
+                                    child: Text(
+                                      language['flag'],
+                                      style: TextStyle(
+                                        fontSize: context.dynamicWidth(0.06),
+                                      ),
                                     ),
-                                  ] : null,
+                                  ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    // Flag container
-                                    Container(
-                                      width: context.dynamicWidth(0.12),
-                                      height: context.dynamicWidth(0.12),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                          color: Colors.white.withOpacity(0.2),
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          language['flag'],
-                                          style: TextStyle(
-                                            fontSize: context.dynamicWidth(0.06),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: context.dynamicWidth(0.04)),
-                                    
-                                    // Language info
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            language['nativeName'],
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: context.dynamicHeight(0.025),
-                                              fontWeight: isSelected 
-                                                ? FontWeight.bold 
-                                                : FontWeight.w600,
-                                            ),
-                                          ),
-                                          SizedBox(height: context.dynamicHeight(0.005)),
-                                          Text(
-                                            language['description'],
-                                            style: TextStyle(
-                                              color: Colors.white.withOpacity(0.6),
-                                              fontSize: context.dynamicHeight(0.018),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    
-                                    // Selection indicator
-                                    if (isSelected)
-                                      Container(
-                                        width: context.dynamicWidth(0.08),
-                                        height: context.dynamicWidth(0.08),
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFB983FF),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: const Icon(
-                                          Icons.check,
+                                SizedBox(width: context.dynamicWidth(0.04)),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        language['label'],
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          size: 20,
+                                          fontSize: context.dynamicHeight(0.025),
+                                          fontWeight: isSelected 
+                                            ? FontWeight.bold 
+                                            : FontWeight.w600,
                                         ),
                                       ),
-                                  ],
+                                      SizedBox(height: context.dynamicHeight(0.005)),
+                                      Text(
+                                        language['description'],
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.6),
+                                          fontSize: context.dynamicHeight(0.018),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                if (isSelected)
+                                  Container(
+                                    width: context.dynamicWidth(0.08),
+                                    height: context.dynamicWidth(0.08),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFB983FF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                              ],
                             ),
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Continue button section
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.dynamicWidth(0.08),
-                    vertical: context.dynamicHeight(0.02),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: context.dynamicHeight(0.06),
-                        child: ElevatedButton(
-                          onPressed: _saveLanguage,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.pink,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                                Text(
-                                'continue'.tr(),
-                                  style: TextStyle(
-                                  fontSize: context.dynamicHeight(0.022),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(width: context.dynamicWidth(0.02)),
-                              Icon(Icons.arrow_forward, size: context.dynamicHeight(0.025)),
-                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: context.dynamicHeight(0.02)),
-                                             Text(
-                         'you_can_change_later'.tr(),
-                         style: TextStyle(
-                           color: Colors.white.withOpacity(0.5),
-                           fontSize: context.dynamicHeight(0.016),
-                         ),
-                       ),
-                    ],
+                    );
+                  }),
+                  SizedBox(height: context.dynamicHeight(0.04)),
+                  SizedBox(
+                    width: double.infinity,
+                    height: context.dynamicHeight(0.06),
+                    child: ElevatedButton(
+                      onPressed: _saveLanguage,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.pink,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'continue'.tr(),
+                            style: TextStyle(
+                              fontSize: context.dynamicHeight(0.022),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(width: context.dynamicWidth(0.02)),
+                          Icon(Icons.arrow_forward, size: context.dynamicHeight(0.025)),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  Text(
+                    'you_can_change_later'.tr(),
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.5),
+                      fontSize: context.dynamicHeight(0.016),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: context.dynamicHeight(0.04)),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

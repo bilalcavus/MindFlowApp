@@ -36,24 +36,29 @@ class ChatTypeSelection extends StatelessWidget {
                 ),
                 ],
               ),
-              SizedBox(
-                height: context.dynamicHeight(0.11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: chatTypes.take(3).map((chatType) {
-                    return _buildChatTypeItem(context, chatType);
-                  }).toList(),
-                ),
-              ),
               SizedBox(height: context.dynamicHeight(0.01)),
-              SizedBox(
-                height: context.dynamicHeight(0.1),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: chatTypes.skip(3).take(3).map((chatType) {
-                    return _buildChatTypeItem(context, chatType);
-                  }).toList(),
-                ),
+              LiquidGlassCard(
+                children: [
+                  SizedBox(
+                    height: context.dynamicHeight(0.11),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: chatTypes.take(3).map((chatType) {
+                        return _buildChatTypeItem(context, chatType);
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: context.dynamicHeight(0.01)),
+                  SizedBox(
+                    height: context.dynamicHeight(0.1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: chatTypes.skip(3).take(3).map((chatType) {
+                        return _buildChatTypeItem(context, chatType);
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
             ],
           );

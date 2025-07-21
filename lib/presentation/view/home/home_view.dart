@@ -32,7 +32,7 @@ class HomeView extends StatelessWidget {
                 HomeHeader(authService: authService),
                 SizedBox(height: context.dynamicHeight(.024)),
                 const ChatTypeSelection(isDark: true),
-                SizedBox(height: context.dynamicHeight(.01)),
+                SizedBox(height: context.dynamicHeight(.03)),
                 AnalysisGrid(analysisList: analysisList, isDark: isDark),
                 ],
               ),

@@ -21,6 +21,7 @@ class FirestoreSetupService {
       await _checkRequiredIndexes();
       
       await _initializeCurrentUser();
+
       
       debugPrint('✅ Firestore setup tamamlandı!');
     } catch (e) {

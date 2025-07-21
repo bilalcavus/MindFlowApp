@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mind_flow/data/models/user_model.dart';
@@ -24,6 +25,10 @@ class AuthService {
     required String password,
     required String displayName,
   }) async {
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(email)) {
+      return Future.error('invalid_email_warning'.tr());
+    }
     final cred = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -40,6 +45,7 @@ class AuthService {
       lastLoginAt: null,
       isActive: true,
       userPreferences: null,
+      isPremiumUser: false,
     );
     await createUserInFirestore(userModel);
     return userModel;
@@ -63,6 +69,7 @@ class AuthService {
       lastLoginAt: null,
       isActive: true,
       userPreferences: null,
+      isPremiumUser: false,
     );
     await createUserInFirestore(userModel);
     return userModel;
@@ -168,6 +175,7 @@ class AuthService {
         lastLoginAt: null,
         isActive: true,
         userPreferences: null,
+        isPremiumUser: false,
       );
       await createUserInFirestore(userModel);
       return userModel;

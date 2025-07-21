@@ -26,12 +26,13 @@ class ApiRemoteDataSource implements RemoteDataSource {
     {double temperature = 0.7, int maxTokens = 1000}
   ) async {
     final fallbackConfig = ApiConstants.fallbackModels[analysisType] ?? [];
-    
+    bool allRateLimited = true;
+    Exception? lastException;
+
     for (int i = 0; i < fallbackConfig.length; i++) {
       final config = fallbackConfig[i];
       final provider = config['provider']!;
       final modelKey = config['model']!;
-      
       try {
         dioHelper.switchProvider(provider);
         final modelName = ApiConstants.getProviderModel(provider, modelKey);
@@ -62,11 +63,11 @@ class ApiRemoteDataSource implements RemoteDataSource {
           final content = result['choices'][0]['message']['content'];
           final start = content.indexOf('{');
           final end = content.lastIndexOf('}');
-          
+
           if (start == -1 || end == -1) {
             throw Exception("AI'dan geçerli JSON yanıtı alınamadı");
           }
-          
+
           final jsonStr = content.substring(start, end + 1);
 
           try {
@@ -77,37 +78,108 @@ class ApiRemoteDataSource implements RemoteDataSource {
           } catch (e) {
             throw Exception("JSON parse hatası: $e");
           }
-        } 
+        }
         else if (result is Map && result.containsKey('error')) {
           final isRateLimit = result['isRateLimit'] == true;
           final errorMessage = result['error'].toString();
           debugPrint('Error response from $provider/$modelKey: isRateLimit=$isRateLimit, error=$errorMessage, result=$result');
-          
+
           if (isRateLimit) {
             debugPrint('Rate limit hit on $provider, trying next provider...');
-            if (i == fallbackConfig.length - 1) {
-              throw Exception("Tüm API sağlayıcılarında rate limit'e takıldı");
-            }
+            lastException = Exception("Tüm API sağlayıcılarında rate limit'e takıldı");
             continue;
           } else {
+            allRateLimited = false;
             throw Exception("API hatası ($provider): $errorMessage");
           }
         } else {
           debugPrint('Unexpected API response format from $provider/$modelKey: $result');
+          allRateLimited = false;
           throw Exception("API yanıtı beklenmedik formatta ($provider): $result");
         }
-        
       } catch (e, stack) {
         debugPrint('Error with $provider/$modelKey: $e');
         debugPrint('Stack trace: $stack');
-        if (i == fallbackConfig.length - 1) {
-          rethrow;
+        if (!ApiConstants.isRateLimitError(e.toString())) {
+          allRateLimited = false;
         }
+        lastException = e is Exception ? e : Exception(e.toString());
         continue;
       }
     }
-    
-    throw Exception("Hiçbir API sağlayıcısından yanıt alınamadı");
+
+    // Eğer tüm free modeller rate limit'e takıldıysa paid fallback'e geç
+    if (allRateLimited) {
+      debugPrint('Free modeller tükendi, ücretli modellere geçiliyor...');
+      final paidFallbackConfig = ApiConstants.paidFallbackModels[analysisType] ?? [];
+      for (int i = 0; i < paidFallbackConfig.length; i++) {
+        final config = paidFallbackConfig[i];
+        final provider = config['provider']!;
+        final modelKey = config['model']!;
+        try {
+          dioHelper.switchProvider(provider);
+          final modelName = ApiConstants.getProviderModel(provider, modelKey);
+          if (modelName == null) {
+            debugPrint('Paid model $modelKey not found for provider $provider, skipping...');
+            continue;
+          }
+          debugPrint('Trying PAID $provider with model $modelKey ($modelName)...');
+          final requestData = {
+            "model": modelName,
+            "messages": [
+              {
+                "role": "system",
+                "content": systemPrompt
+              },
+              {
+                "role": "user",
+                "content": userText
+              }
+            ],
+            "temperature": temperature,
+            "max_tokens": maxTokens
+          };
+
+          final result = await dioHelper.dioPost('/chat/completions', requestData);
+
+          if (result is Map && result.containsKey('choices')) {
+            final content = result['choices'][0]['message']['content'];
+            final start = content.indexOf('{');
+            final end = content.lastIndexOf('}');
+
+            if (start == -1 || end == -1) {
+              throw Exception("AI'dan geçerli JSON yanıtı alınamadı (PAID)");
+            }
+
+            final jsonStr = content.substring(start, end + 1);
+
+            try {
+              final decoded = json.decode(jsonStr);
+              decoded['model_used'] = modelKey;
+              decoded['provider_used'] = provider;
+              return fromJson(decoded);
+            } catch (e) {
+              throw Exception("JSON parse hatası (PAID): $e");
+            }
+          }
+          else if (result is Map && result.containsKey('error')) {
+            final errorMessage = result['error'].toString();
+            debugPrint('Error response from PAID $provider/$modelKey: error=$errorMessage, result=$result');
+            throw Exception("API hatası (PAID $provider): $errorMessage");
+          } else {
+            debugPrint('Unexpected API response format from PAID $provider/$modelKey: $result');
+            throw Exception("API yanıtı beklenmedik formatta (PAID $provider): $result");
+          }
+        } catch (e, stack) {
+          debugPrint('Error with PAID $provider/$modelKey: $e');
+          debugPrint('Stack trace: $stack');
+          lastException = e is Exception ? e : Exception(e.toString());
+          continue;
+        }
+      }
+    }
+
+    throw lastException ?? Exception("Hiçbir API sağlayıcısından yanıt alınamadı");
   }
 
   @override
@@ -180,8 +252,7 @@ class ApiRemoteDataSource implements RemoteDataSource {
   
   @override
   Future<String> getChatResponseWithContext(List<Map<String, String>> messages, {String? modelKey, String? chatType}) async {
-    // If we have a chat type, always use fallback system for better reliability
-    // If no chat type but specific model requested, use specific model method
+      // If we have a chat type, always use fallback system for better reliability
     if (modelKey != null && chatType == null) {
       return await _getChatResponseWithSpecificModelAndContext(messages, modelKey, chatType: chatType);
     }
@@ -208,7 +279,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
         
         debugPrint('🔄 Attempting fallback ${i+1}/${fallbackConfig.length}: $provider with model $modelKeyToUse ($modelName)...');
         
-        // Get system prompt based on chat type
         final systemPrompt = chatType != null 
             ? ApiConstants.getChatTypeSystemPrompt(chatType)
             : ApiConstants.chatbotContentPrompt;

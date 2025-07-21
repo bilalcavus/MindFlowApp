@@ -7,7 +7,7 @@ import 'package:mind_flow/data/repositories/dream_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/domain/usecases/get_dream_analysis.dart';
 
-class DreamAnalysisProvider extends ChangeNotifier {
+class DreamAnalysisProvider extends ChangeNotifier{
   final AuthService _authService;
   final UserEntryRepository _entryRepo;
   final DreamAnalysisDataRepository _analysisRepo;

@@ -27,6 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final user = _authService.firebaseUser;
     return Scaffold(
       body: ScreenBackground(
         child: SafeArea(
@@ -52,11 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
                               colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                             ),
                           ),
-                          child: CircleAvatar(
-                            radius: context.dynamicHeight(0.05),
-                            backgroundColor: Colors.white,
-                            child: Text('👦', style: TextStyle(fontSize: context.dynamicHeight(0.05))),
-                          ),
+                          child: UserAvatar(user: user)
                         ),
                         SizedBox(height: context.dynamicHeight(0.02)),
                         Text(
