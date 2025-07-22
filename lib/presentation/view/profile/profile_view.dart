@@ -9,6 +9,8 @@ import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/profile/account_password_view.dart';
 import 'package:mind_flow/presentation/view/profile/personal_information_view.dart';
+import 'package:mind_flow/presentation/view/profile/privacy_policy_view.dart';
+import 'package:mind_flow/presentation/view/profile/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
@@ -114,8 +116,12 @@ class _ProfileViewState extends State<ProfileView> {
         ]),
         SizedBox(height: context.dynamicHeight(0.02)),
         _buildSettingsCard([
-          _settingsTile(Iconsax.shield, 'privacy_policy'.tr(), null),
-          _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), null),
+          _settingsTile(Iconsax.shield, 'privacy_policy'.tr(), () {
+            RouteHelper.push(context, const PrivacyPolicyView());
+          }),
+          _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), () {
+            RouteHelper.push(context, const TermsAndConditionsView());
+          }),
           _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);
             if (mounted) {
