@@ -6,7 +6,7 @@ class GetPersonalityAnalysis {
 
   GetPersonalityAnalysis(this._repository);
 
-  Future<PersonalityAnalysisModel> call(String userText){
-    return _repository.analyzePersonality(userText);
+  Future<PersonalityAnalysisModel> call(String userText, {bool isPremiumUser = false}){
+    return _repository.analyzePersonality(userText, isPremiumUser: isPremiumUser);
   }
 }

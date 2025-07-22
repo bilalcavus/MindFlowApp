@@ -23,9 +23,11 @@ class ApiRemoteDataSource implements RemoteDataSource {
     String userText,
     T Function(Map<String, dynamic>) fromJson,
     String systemPrompt,
-    {double temperature = 0.7, int maxTokens = 1000}
+    {double temperature = 0.7, int maxTokens = 1000, bool isPremiumUser = false}
   ) async {
-    final fallbackConfig = ApiConstants.fallbackModels[analysisType] ?? [];
+    final fallbackConfig = isPremiumUser
+        ? ApiConstants.paidFallbackModels[analysisType] ?? []
+        : ApiConstants.fallbackModels[analysisType] ?? [];
     bool allRateLimited = true;
     Exception? lastException;
 
@@ -108,8 +110,8 @@ class ApiRemoteDataSource implements RemoteDataSource {
       }
     }
 
-    // Eğer tüm free modeller rate limit'e takıldıysa paid fallback'e geç
-    if (allRateLimited) {
+    // Eğer tüm modeller rate limit'e takıldıysa ve premium değilse paid fallback'e geç
+    if (allRateLimited && !isPremiumUser) {
       debugPrint('Free modeller tükendi, ücretli modellere geçiliyor...');
       final paidFallbackConfig = ApiConstants.paidFallbackModels[analysisType] ?? [];
       for (int i = 0; i < paidFallbackConfig.length; i++) {
@@ -183,83 +185,93 @@ class ApiRemoteDataSource implements RemoteDataSource {
   }
 
   @override
-  Future<EmotionAnalysisModel> analyzeEmotion(String userText, {String? modelKey}) async {
+  Future<EmotionAnalysisModel> analyzeEmotion(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<EmotionAnalysisModel>(
       'emotion',
       userText,
       (json) => EmotionAnalysisModel.fromJson(json),
       ApiConstants.emotionAnalysisPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
 
   @override
-  Future<DreamAnalysisModel> analyzeDream(String userText, {String? modelKey}) async {
+  Future<DreamAnalysisModel> analyzeDream(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<DreamAnalysisModel>(
       'dream',
       userText,
       (json) => DreamAnalysisModel.fromJson(json),
       ApiConstants.dreamAnalysisContentPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
 
   
   @override
-  Future<PersonalityAnalysisModel> analyzePersonality(String userText, {String? modelKey}) async {
+  Future<PersonalityAnalysisModel> analyzePersonality(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<PersonalityAnalysisModel>(
       'personality',
       userText,
       (json) => PersonalityAnalysisModel.fromJson(json),
-      ApiConstants.personalityAnalysisContentPrompt
+      ApiConstants.personalityAnalysisContentPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
 
   @override
-  Future<MentalAnalysisModel> analyzeMentality(String userText, {String? modelKey}) async {
+  Future<MentalAnalysisModel> analyzeMentality(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<MentalAnalysisModel>(
       'mental',
       userText,
       (json) => MentalAnalysisModel.fromJson(json),
-      ApiConstants.mentalAnalysisContentPrompt
+      ApiConstants.mentalAnalysisContentPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
 
   @override
-  Future<HabitAnalysisModel> analyzeHabit(String userText, {String? modelKey}) async {
+  Future<HabitAnalysisModel> analyzeHabit(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<HabitAnalysisModel>(
       'habit',
       userText,
       (json) => HabitAnalysisModel.fromJson(json),
-      ApiConstants.habitAnalysisContentPrompt
+      ApiConstants.habitAnalysisContentPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
   
   @override
-  Future<StressAnalysisModel> analyzeStress(String userText, {String? modelKey}) async {
+  Future<StressAnalysisModel> analyzeStress(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<StressAnalysisModel>(
       'stress',
       userText,
       (json) => StressAnalysisModel.fromJson(json),
-      ApiConstants.stressAnalysisContentPrompt
+      ApiConstants.stressAnalysisContentPrompt,
+      isPremiumUser: isPremiumUser,
     );
   }
 
   @override
-  Future<String> getChatResponse(String userMessage, {String? modelKey}) async {
+  Future<String> getChatResponse(String userMessage, {String? modelKey, bool isPremiumUser = false}) async {
     return await getChatResponseWithContext([
       {'role': 'user', 'content': userMessage}
-    ], modelKey: modelKey);
+    ], modelKey: modelKey, isPremiumUser: isPremiumUser);
   }
   
   @override
-  Future<String> getChatResponseWithContext(List<Map<String, String>> messages, {String? modelKey, String? chatType}) async {
+  Future<String> getChatResponseWithContext(List<Map<String, String>> messages, {String? modelKey, String? chatType, bool isPremiumUser = false}) async {
       // If we have a chat type, always use fallback system for better reliability
     if (modelKey != null && chatType == null) {
       return await _getChatResponseWithSpecificModelAndContext(messages, modelKey, chatType: chatType);
     }
     
     final fallbackConfig = chatType != null 
-        ? ApiConstants.getChatTypeFallbackModels(chatType)
-        : ApiConstants.fallbackModels['chat'] ?? [];
+        ? (isPremiumUser
+            ? ApiConstants.getChatTypeFallbackModels(chatType, paid: true)
+            : ApiConstants.getChatTypeFallbackModels(chatType))
+        : (isPremiumUser
+            ? ApiConstants.paidFallbackModels['chat'] ?? []
+            : ApiConstants.fallbackModels['chat'] ?? []);
     
     debugPrint('🎯 Chat Type: $chatType');
     debugPrint('📋 Fallback Config: ${fallbackConfig.map((e) => e['model']).join(', ')}');

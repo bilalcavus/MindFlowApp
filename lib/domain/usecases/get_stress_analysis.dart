@@ -6,7 +6,7 @@ class GetStressAnalysis {
 
   GetStressAnalysis(this._repository);
 
-  Future<StressAnalysisModel> call(String userText){
-    return _repository.analyzeStress(userText);
+  Future<StressAnalysisModel> call(String userText, {bool isPremiumUser = false}){
+    return _repository.analyzeStress(userText, isPremiumUser: isPremiumUser);
   }
 }

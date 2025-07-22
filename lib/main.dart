@@ -38,6 +38,7 @@ void main() async {
     
     await _initializeDatabase();
     await _initializeProviders();
+    await AuthService().fetchAndSetCurrentUser();
     
     final userId = getIt<AuthService>().currentUserId;
     final savedLocale = userId != null

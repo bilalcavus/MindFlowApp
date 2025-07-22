@@ -68,6 +68,7 @@ class AuthenticationProvider extends ChangeNotifier {
         email: emailController.text.trim(),
         password: passwordController.text,
       );
+        print('Premium mu? ${authService.currentUser?.isPremiumUser}');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -179,6 +180,7 @@ class AuthenticationProvider extends ChangeNotifier {
         password: password,
         displayName: displayName,
       );
+      
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),
@@ -207,6 +209,7 @@ class AuthenticationProvider extends ChangeNotifier {
     
     try {
       await authService.signInWithGoogle();
+        print('Premium mu? ${authService.currentUser?.isPremiumUser}');
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),

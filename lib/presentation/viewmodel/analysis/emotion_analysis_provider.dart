@@ -43,6 +43,7 @@ class EmotionAnalysisProvider extends ChangeNotifier {
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   Future<void> analyzeEmotion(String text) async {
     if (text.trim().isEmpty) {
@@ -65,7 +66,7 @@ class EmotionAnalysisProvider extends ChangeNotifier {
         entryType: "emotion",
         modelUsed: selectedModel,
       );
-      analysisResult = await getAnalyzeEmotion(text, selectedModel);
+      analysisResult = await getAnalyzeEmotion(text, selectedModel, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         isLoading = false;

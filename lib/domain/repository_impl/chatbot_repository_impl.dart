@@ -8,9 +8,9 @@ class ChatbotRepositoryImpl with RepositoryHandling implements ChatBotRepository
   ChatbotRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<String> chatResponse(String userMessage, String modelKey) {
+  Future<String> chatResponse(String userMessage, String modelKey, {bool isPremiumUser = false}) {
     return handleRepositoryOperation(
-      operation: () => _remoteDataSource.getChatResponse(userMessage, modelKey: modelKey),
+      operation: () => _remoteDataSource.getChatResponse(userMessage, modelKey: modelKey, isPremiumUser: isPremiumUser),
       errorMessage: 'Failed to get chat response',
     );
   }

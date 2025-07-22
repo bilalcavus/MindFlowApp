@@ -9,9 +9,9 @@ class DreamAnalysisRepositoryImpl with RepositoryHandling implements DreamAnalys
   DreamAnalysisRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<DreamAnalysisModel> analyzeDream(String userText, String modelKey) {
+  Future<DreamAnalysisModel> analyzeDream(String userText, String modelKey, {bool isPremiumUser = false}) {
     return handleRepositoryOperation(
-      operation: () => _remoteDataSource.analyzeDream(userText, modelKey: modelKey),
+      operation: () => _remoteDataSource.analyzeDream(userText, modelKey: modelKey, isPremiumUser: isPremiumUser),
       errorMessage: 'Failed to analyze dream',
     );
   }

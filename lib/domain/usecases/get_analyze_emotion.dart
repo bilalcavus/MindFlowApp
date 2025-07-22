@@ -6,9 +6,7 @@ class GetAnalyzeEmotion {
 
   GetAnalyzeEmotion(this.repository);
 
-  Future<EmotionAnalysisModel> call(String userText, String modelKey) {
-    return repository.analyzeEmotion(userText, modelKey);
+  Future<EmotionAnalysisModel> call(String userText, String modelKey, {bool isPremiumUser = false}) {
+    return repository.analyzeEmotion(userText, modelKey, isPremiumUser: isPremiumUser);
   }
-
-  
 }

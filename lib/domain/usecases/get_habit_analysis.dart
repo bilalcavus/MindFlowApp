@@ -5,7 +5,7 @@ class GetHabitAnalysis {
   final HabitRepository _repository;
 
   GetHabitAnalysis(this._repository);
-  Future<HabitAnalysisModel> call(String userText) {
-    return _repository.analyzeHabit(userText);
+  Future<HabitAnalysisModel> call(String userText, {bool isPremiumUser = false}) {
+    return _repository.analyzeHabit(userText, isPremiumUser: isPremiumUser);
   }
 }

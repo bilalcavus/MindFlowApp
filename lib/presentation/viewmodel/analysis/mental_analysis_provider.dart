@@ -22,12 +22,13 @@ class MentalAnalysisProvider extends ChangeNotifier {
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   MentalAnalysisProvider(
     this._authService,
     this._analysisRepository,
     this._userEntryRepository,
-    this._getMentalAnalysis
+    this._getMentalAnalysis,
   );
 
   Future<void> initialize() async => await _loadAnalysisHistory();
@@ -59,7 +60,7 @@ class MentalAnalysisProvider extends ChangeNotifier {
         entryType: "mental",
         modelUsed: selectedModel
       );
-      analysisResult = await _getMentalAnalysis(text);
+      analysisResult = await _getMentalAnalysis(text, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         _setLoading(false);

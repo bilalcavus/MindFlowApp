@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/habit_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
-import 'package:mind_flow/presentation/widgets/radar_chart_widget.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
@@ -111,12 +110,6 @@ class _HabitAnalysisResultViewState extends State<HabitAnalysisResultView> {
                   _buildListSectionCard('positive_habits_title'.tr(), result.positiveHabits, Colors.green, context),
                   SizedBox(height: context.dynamicHeight(0.015)),
                   _buildListSectionCard('negative_habits_title'.tr(), result.negativeHabits, Colors.red, context),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  SizedBox(
-                      height: context.dynamicHeight(0.3),
-                      child: RadarChartWidget(result: result),
-                    ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
                 ],
               ),
             );

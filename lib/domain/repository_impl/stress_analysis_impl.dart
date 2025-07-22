@@ -9,8 +9,8 @@ class StressAnalysisImpl with RepositoryHandling implements StressRepository {
   StressAnalysisImpl(this._dataSource);
   
   @override
-  Future<StressAnalysisModel> analyzeStress(String userText) {
-    return handleRepositoryOperation(operation: () => _dataSource.analyzeStress(userText));
+  Future<StressAnalysisModel> analyzeStress(String userText, {bool isPremiumUser = false}) {
+    return handleRepositoryOperation(operation: () => _dataSource.analyzeStress(userText, isPremiumUser: isPremiumUser));
   }
   
 }

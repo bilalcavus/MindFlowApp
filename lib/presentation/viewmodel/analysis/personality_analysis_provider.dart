@@ -22,6 +22,7 @@ class PersonalityAnalysisProvider extends ChangeNotifier {
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   PersonalityAnalysisProvider(
     this._authService,
@@ -59,7 +60,7 @@ class PersonalityAnalysisProvider extends ChangeNotifier {
         entryType: "personality",
         modelUsed: selectedModel
       );
-      analysisResult = await _getPersonalityAnalysis(text);
+      analysisResult = await _getPersonalityAnalysis(text, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         _setLoading(false);

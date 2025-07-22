@@ -6,7 +6,7 @@ class GetMentalAnalysis {
 
   GetMentalAnalysis(this._repository);
 
-  Future<MentalAnalysisModel> call(String userText){
-    return _repository.analyzeMentality(userText);
+  Future<MentalAnalysisModel> call(String userText, {bool isPremiumUser = false}){
+    return _repository.analyzeMentality(userText, isPremiumUser: isPremiumUser);
   }
 }

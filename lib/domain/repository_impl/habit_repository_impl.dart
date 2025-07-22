@@ -9,7 +9,7 @@ class HabitRepositoryImpl with RepositoryHandling implements HabitRepository {
   HabitRepositoryImpl(this._dataSource);
 
   @override
-  Future<HabitAnalysisModel> analyzeHabit(String userText) {
-    return handleRepositoryOperation(operation: () => _dataSource.analyzeHabit(userText));
+  Future<HabitAnalysisModel> analyzeHabit(String userText, {bool isPremiumUser = false}) {
+    return handleRepositoryOperation(operation: () => _dataSource.analyzeHabit(userText, isPremiumUser: isPremiumUser));
   }
 }

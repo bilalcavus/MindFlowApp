@@ -22,6 +22,7 @@ class DreamAnalysisProvider extends ChangeNotifier{
   
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   DreamAnalysisProvider(
     this.getDreamAnalysis,
@@ -58,7 +59,7 @@ class DreamAnalysisProvider extends ChangeNotifier{
         content: text.trim(),
         entryType: "dream",
         modelUsed: selectedModel);
-      analysisResult = await getDreamAnalysis(text, selectedModel);
+      analysisResult = await getDreamAnalysis(text, selectedModel, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         isLoading = false;

@@ -22,12 +22,13 @@ class HabitAnalysisProvider extends ChangeNotifier {
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   HabitAnalysisProvider(
     this._authService,
     this._analysisRepository,
     this._userEntryRepository,
-    this._getHabitAnalysis
+    this._getHabitAnalysis,
   );
 
   Future<void> initialize() async => await _loadAnalysisHistory();
@@ -59,7 +60,7 @@ class HabitAnalysisProvider extends ChangeNotifier {
         entryType: "habit",
         modelUsed: selectedModel
       );
-      analysisResult = await _getHabitAnalysis(text);
+      analysisResult = await _getHabitAnalysis(text, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         _setLoading(false);

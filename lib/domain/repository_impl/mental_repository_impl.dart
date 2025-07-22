@@ -8,7 +8,7 @@ class MentalRepositoryImpl with RepositoryHandling implements MentalRepository {
 
   MentalRepositoryImpl(this._dataSource);
   @override
-  Future<MentalAnalysisModel> analyzeMentality(String userText) {
-    return handleRepositoryOperation(operation: () => _dataSource.analyzeMentality(userText));
+  Future<MentalAnalysisModel> analyzeMentality(String userText, {bool isPremiumUser = false}) {
+    return handleRepositoryOperation(operation: () => _dataSource.analyzeMentality(userText, isPremiumUser: isPremiumUser));
   }
 }

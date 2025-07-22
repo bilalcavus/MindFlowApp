@@ -16,6 +16,17 @@ class AuthService {
   String? get currentUserId => firebaseUser?.uid;
   bool get isLoggedIn => firebaseUser != null;
 
+  User? _currentUser;
+  User? get currentUser => _currentUser;
+
+  Future<void> fetchAndSetCurrentUser() async {
+    if (firebaseUser == null) return;
+    final doc = await FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).get();
+    if (doc.exists) {
+      _currentUser = User.fromFirestore(doc);
+    }
+  }
+
   Future<void> createUserInFirestore(User user) async {
     await FirebaseFirestore.instance.collection('users').doc(user.id).set(user.toFirestore(), SetOptions(merge: true));
   }
@@ -36,18 +47,27 @@ class AuthService {
     await cred.user?.updateDisplayName(displayName);
     await cred.user?.reload();
     final user = _firebaseAuth.currentUser;
-    final userModel = User(
-      id: user!.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? '',
-      avatarUrl: user.photoURL,
-      createdAt: DateTime.now(),
-      lastLoginAt: null,
-      isActive: true,
-      userPreferences: null,
-      isPremiumUser: false,
-    );
-    await createUserInFirestore(userModel);
+    // Firestore'da var mı kontrol et
+    final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    User userModel;
+    if (doc.exists) {
+      userModel = User.fromFirestore(doc);
+    } else {
+      userModel = User(
+        id: user.uid,
+        email: user.email ?? '',
+        displayName: user.displayName ?? '',
+        avatarUrl: user.photoURL,
+        createdAt: DateTime.now(),
+        lastLoginAt: null,
+        isActive: true,
+        userPreferences: null,
+        isPremiumUser: false,
+      );
+      await createUserInFirestore(userModel);
+      
+    }
+    _currentUser = userModel;
     return userModel;
   }
 
@@ -60,18 +80,26 @@ class AuthService {
       password: password,
     );
     final user = cred.user;
-    final userModel = User(
-      id: user!.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? '',
-      avatarUrl: user.photoURL,
-      createdAt: DateTime.now(),
-      lastLoginAt: null,
-      isActive: true,
-      userPreferences: null,
-      isPremiumUser: false,
-    );
-    await createUserInFirestore(userModel);
+    // Firestore'dan oku
+    final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    User userModel;
+    if (doc.exists) {
+      userModel = User.fromFirestore(doc);
+    } else {
+      userModel = User(
+        id: user.uid,
+        email: user.email ?? '',
+        displayName: user.displayName ?? '',
+        avatarUrl: user.photoURL,
+        createdAt: DateTime.now(),
+        lastLoginAt: null,
+        isActive: true,
+        userPreferences: null,
+        isPremiumUser: false,
+      );
+      await createUserInFirestore(userModel);
+    }
+    _currentUser = userModel;
     return userModel;
   }
 
@@ -165,19 +193,26 @@ class AuthService {
       if (user == null) {
         throw Exception('Google Sign-In başarısız');
       }
-
-      final userModel = User(
-        id: user.uid,
-        email: user.email ?? '',
-        displayName: user.displayName ?? '',
-        avatarUrl: user.photoURL,
-        createdAt: DateTime.now(),
-        lastLoginAt: null,
-        isActive: true,
-        userPreferences: null,
-        isPremiumUser: false,
-      );
-      await createUserInFirestore(userModel);
+      // Firestore'dan oku
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      User userModel;
+      if (doc.exists) {
+        userModel = User.fromFirestore(doc);
+      } else {
+        userModel = User(
+          id: user.uid,
+          email: user.email ?? '',
+          displayName: user.displayName ?? '',
+          avatarUrl: user.photoURL,
+          createdAt: DateTime.now(),
+          lastLoginAt: null,
+          isActive: true,
+          userPreferences: null,
+          isPremiumUser: false,
+        );
+        await createUserInFirestore(userModel);
+      }
+      _currentUser = userModel;
       return userModel;
     } catch (e) {
       throw Exception('Google Sign-In hatası: $e');

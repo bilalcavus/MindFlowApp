@@ -9,9 +9,9 @@ class JournalRepositoryImpl with RepositoryHandling implements JournalRepository
   JournalRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<EmotionAnalysisModel> analyzeEmotion(String userText, String modelKey) {
+  Future<EmotionAnalysisModel> analyzeEmotion(String userText, String modelKey, {bool isPremiumUser = false}) {
     return handleRepositoryOperation(
-      operation: () => _remoteDataSource.analyzeEmotion(userText, modelKey: modelKey),
+      operation: () => _remoteDataSource.analyzeEmotion(userText, modelKey: modelKey, isPremiumUser: isPremiumUser),
       errorMessage: 'Failed to analyze emotion',
     );
   }

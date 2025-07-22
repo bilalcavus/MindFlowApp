@@ -22,12 +22,13 @@ class StressAnalysisProvider extends ChangeNotifier {
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   StressAnalysisProvider(
     this._authService,
     this._analysisRepository,
     this._userEntryRepository,
-    this._getStressAnalysis
+    this._getStressAnalysis,
   );
 
   Future<void> initialize() async => await _loadAnalysisHistory();
@@ -59,7 +60,7 @@ class StressAnalysisProvider extends ChangeNotifier {
         entryType: "stress",
         modelUsed: selectedModel
       );
-      analysisResult = await _getStressAnalysis(text);
+      analysisResult = await _getStressAnalysis(text, isPremiumUser: isPremiumUser);
       if (analysisResult == null) {
         error = "error_api".tr();
         _setLoading(false);

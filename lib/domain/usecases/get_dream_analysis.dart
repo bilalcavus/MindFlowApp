@@ -7,8 +7,8 @@ class GetDreamAnalysis {
 
   GetDreamAnalysis(this.repository);
 
-  Future<DreamAnalysisModel> call(String userText, String modelKey) {
-    return repository.analyzeDream(userText, modelKey);
+  Future<DreamAnalysisModel> call(String userText, String modelKey, {bool isPremiumUser = false}) {
+    return repository.analyzeDream(userText, modelKey, isPremiumUser: isPremiumUser);
   }
   
 }

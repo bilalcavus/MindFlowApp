@@ -3,6 +3,6 @@ import 'package:mind_flow/domain/repositories/base_repository.dart';
 
 abstract class JournalRepository extends BaseRepository{
   
-  Future<EmotionAnalysisModel> analyzeEmotion(String userText, String modelkey);
+  Future<EmotionAnalysisModel> analyzeEmotion(String userText, String modelkey, {bool isPremiumUser = false});
   
 }

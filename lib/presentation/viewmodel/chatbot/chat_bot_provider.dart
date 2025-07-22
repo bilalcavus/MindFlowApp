@@ -9,6 +9,7 @@ class ChatBotProvider extends ChangeNotifier {
   final AuthService _authService;
   final ChatMessageRepository _chatRepo;
   final GetChatResponse getChatResponse;
+  // final User currentUser; // KALDIRILDI
 
   bool isLoading = false;
   String selectedModel = ApiConstants.defaultModel;
@@ -26,6 +27,8 @@ class ChatBotProvider extends ChangeNotifier {
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
   String? get currentSessionId => _currentSessionId;
+
+  bool get isPremiumUser => _authService.currentUser?.isPremiumUser ?? false;
 
   String get currentChatTypeTitle {
     final config = ApiConstants.getChatTypeConfig(currentChatType);
@@ -78,7 +81,12 @@ class ChatBotProvider extends ChangeNotifier {
 
   Future<String> _fetchAIResponse() async {
     final context = _buildConversationContext();
-    return await getChatResponse.callWithContext(context, activeModel, chatType: currentChatType);
+    return await getChatResponse.callWithContext(
+      context,
+      activeModel,
+      chatType: currentChatType,
+      isPremiumUser: isPremiumUser,
+    );
   }
 
   void _addMessage(ChatMessage message) {

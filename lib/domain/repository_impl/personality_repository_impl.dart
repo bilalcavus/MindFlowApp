@@ -8,7 +8,7 @@ class PersonalityRepositoryImpl with RepositoryHandling implements PersonalityRe
 
   PersonalityRepositoryImpl(this._dataSource);
   @override
-  Future<PersonalityAnalysisModel> analyzePersonality(String userText) {
-    return handleRepositoryOperation(operation: () => _dataSource.analyzePersonality(userText));
+  Future<PersonalityAnalysisModel> analyzePersonality(String userText, {bool isPremiumUser = false}) {
+    return handleRepositoryOperation(operation: () => _dataSource.analyzePersonality(userText, isPremiumUser: isPremiumUser));
   }
 }
