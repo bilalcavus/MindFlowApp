@@ -12,6 +12,7 @@ class User {
   final bool isActive;
   final Map<String, dynamic>? userPreferences;
   final bool isPremiumUser;
+  final String? fcmToken;
 
   User({
     required this.id,
@@ -23,6 +24,7 @@ class User {
     this.isActive = true,
     this.userPreferences,
     this.isPremiumUser = false,
+    this.fcmToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class User {
           ? Map<String, dynamic>.from(jsonDecode(json['user_preferences_json']))
           : null,
       isPremiumUser: json['is_premium_user'] ?? false,
+      fcmToken: json['fcm_token'],
     );
   }
 
@@ -57,6 +60,7 @@ class User {
       isActive: data['isActive'] ?? true,
       userPreferences: data['userPreferences'],
       isPremiumUser: data['isPremiumUser'] ?? false,
+      fcmToken: data['fcmToken'],
     );
   }
 
@@ -71,6 +75,7 @@ class User {
       'is_active': isActive ? 1 : 0,
       'user_preferences_json': userPreferences != null ? jsonEncode(userPreferences) : null,
       'is_premium_user': isPremiumUser,
+      'fcm_token': fcmToken,
     };
   }
 
@@ -84,6 +89,7 @@ class User {
       'isActive': isActive,
       'userPreferences': userPreferences,
       'isPremiumUser': isPremiumUser,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -97,6 +103,7 @@ class User {
     bool? isActive,
     Map<String, dynamic>? userPreferences,
     bool? isPremiumUser,
+    String? fcmToken,
   }) {
     return User(
       id: id ?? this.id,
@@ -108,6 +115,7 @@ class User {
       isActive: isActive ?? this.isActive,
       userPreferences: userPreferences ?? this.userPreferences,
       isPremiumUser: isPremiumUser ?? this.isPremiumUser,
+      fcmToken: fcmToken ?? this.fcmToken,
     );
   }
 

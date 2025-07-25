@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mind_flow/data/models/subscription_model.dart';
 import 'package:mind_flow/data/repositories/subscription_repository.dart';
@@ -120,6 +121,8 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> loadUserCredits(String userId) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if(userId == null) return;
     try {
       _setLoading(true);
       _setError(null);
@@ -281,6 +284,8 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   void listenToSubscriptionChanges(String userId) {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if(userId == null) return;
     _subscriptionRepository.getUserSubscriptionStream(userId).listen((subscription) {
       _userSubscription = subscription;
       notifyListeners();

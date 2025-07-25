@@ -112,7 +112,6 @@ class _ProfileViewState extends State<ProfileView> {
               builder: (context) => const LanguageSelectView(),
             );
           }),
-          _settingsTile(HugeIcons.strokeRoundedPreferenceHorizontal, 'user_preferences'.tr(), null),
         ]),
         SizedBox(height: context.dynamicHeight(0.02)),
         _buildSettingsCard([
