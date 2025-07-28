@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:leak_tracker/leak_tracker.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
+import 'package:mind_flow/core/services/google_play_billing_service.dart';
 import 'package:mind_flow/core/services/notification_service.dart';
 import 'package:mind_flow/core/theme/app_theme.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
@@ -39,6 +40,14 @@ void main() async {
     );
     await NotificationService().initialize();
     await setupDependencies();
+    
+    // Initialize Google Play Billing (with error handling)
+    try {
+      await getIt<GooglePlayBillingService>().initialize();
+    } catch (e) {
+      debugPrint('Google Play Billing initialization failed: $e');
+      // Continue without billing for now
+    }
     
     await _initializeDatabase();
     await _initializeProviders();

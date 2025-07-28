@@ -3,6 +3,7 @@ import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
+import 'package:mind_flow/core/services/google_play_billing_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
@@ -78,6 +79,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<UserPreferencesRepository>(() => UserPreferencesRepository());
   getIt.registerLazySingleton<LanguageRepository>(() => LanguageRepository());
   getIt.registerLazySingleton<SubscriptionRepository>(() => SubscriptionRepository(getIt()));
+
   getIt.registerLazySingleton<HabitAnalysisRepository>(() => HabitAnalysisRepository());
   getIt.registerLazySingleton<PersonalityAnalysisRepository>(() => PersonalityAnalysisRepository());
   getIt.registerLazySingleton<MentalAnalysisRepository>(() => MentalAnalysisRepository());
@@ -93,6 +95,7 @@ Future<void> setupDependencies() async {
   
   // Core Services
   getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
+  getIt.registerLazySingleton<GooglePlayBillingService>(() => GooglePlayBillingService(getIt()));
   
 
   // Repositories
@@ -129,7 +132,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => NavigationProvider());
   getIt.registerLazySingleton(() => AuthenticationProvider(getIt()));
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));
-  getIt.registerLazySingleton(() => SubscriptionProvider(getIt()));
+  getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<GooglePlayBillingService>()));
   getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
 
 }

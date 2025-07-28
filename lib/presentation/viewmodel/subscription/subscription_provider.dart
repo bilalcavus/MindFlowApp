@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mind_flow/core/services/google_play_billing_service.dart';
 import 'package:mind_flow/data/models/subscription_model.dart';
 import 'package:mind_flow/data/repositories/subscription_repository.dart';
 
 class SubscriptionProvider extends ChangeNotifier {
   final SubscriptionRepository _subscriptionRepository;
+  final GooglePlayBillingService _billingService;
 
-  SubscriptionProvider(this._subscriptionRepository);
+  SubscriptionProvider(this._subscriptionRepository, this._billingService);
 
   List<SubscriptionPlan> _subscriptionPlans = [];
   UserSubscription? _userSubscription;
@@ -164,10 +166,29 @@ class SubscriptionProvider extends ChangeNotifier {
       _setLoading(true);
       _setError(null);
       
-      await _subscriptionRepository.upgradeSubscription(userId, newPlanId);
-      final plan = await _subscriptionRepository.getSubscriptionPlan(newPlanId);
-      if (plan != null) {
-        await _subscriptionRepository.resetUserCredits(userId, plan.creditsPerMonth);
+      if (newPlanId == 'premium') {
+        // Google Play Billing ile premium abonelik satın al
+        if (_billingService.isAvailable) {
+          final success = await _billingService.purchaseSubscription();
+          if (success) {
+            // Purchase listener otomatik olarak Firestore'u güncelleyecek
+            return true;
+          }
+        }
+        
+        // Fallback: Eski sistem (test için)
+        await _subscriptionRepository.upgradeSubscription(userId, newPlanId);
+        final plan = await _subscriptionRepository.getSubscriptionPlan(newPlanId);
+        if (plan != null) {
+          await _subscriptionRepository.resetUserCredits(userId, plan.creditsPerMonth);
+        }
+      } else {
+        // Freemium plana geçiş
+        await _subscriptionRepository.upgradeSubscription(userId, newPlanId);
+        final plan = await _subscriptionRepository.getSubscriptionPlan(newPlanId);
+        if (plan != null) {
+          await _subscriptionRepository.resetUserCredits(userId, plan.creditsPerMonth);
+        }
       }
       
       // Real-time listener'lar otomatik olarak güncelleyecek
@@ -223,15 +244,27 @@ class SubscriptionProvider extends ChangeNotifier {
     try {
       _setError(null);
       
-      await _subscriptionRepository.addCredits(userId, amount, description);
+      // Google Play Billing ile kredi satın al
+      if (_billingService.isAvailable) {
+        final success = await _billingService.purchaseCredits(amount);
+        if (success) {
+          // Purchase listener otomatik olarak Firestore'u güncelleyecek
+          return true;
+        }
+      }
       
-      // Real-time listener'lar otomatik olarak güncelleyecek
-      // Sadece transaction'ları yeniden yükle
-      await loadCreditTransactions(userId);
+      // Fallback: Eski sistem (test için)
+      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+      if (currentUserId != null) {
+        await _subscriptionRepository.addCredits(currentUserId, amount, description);
+        await loadCreditTransactions(currentUserId);
+        return true;
+      }
       
-      return true;
+      _setError('Kredi satın alınamadı');
+      return false;
     } catch (e) {
-      _setError('Bonus kredi eklenemedi: $e');
+      _setError('Kredi satın alma hatası: $e');
       return false;
     }
   }

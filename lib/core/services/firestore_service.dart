@@ -404,4 +404,4 @@ class FirestoreService {
       rethrow;
     }
   }
-} 
+}

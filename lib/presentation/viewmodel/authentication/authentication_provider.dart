@@ -14,15 +14,18 @@ class AuthenticationProvider extends ChangeNotifier {
   final AuthService authService;
   final newPasswordController = TextEditingController();
   final currentPasswordController = TextEditingController();
+  final resetPasswordController = TextEditingController();
 
   AuthenticationProvider(this.authService);
 
   bool _isEmailLoading = false;
   bool _isGoogleLoading = false;
   bool _isLoading = false;
+  bool _isResetPasswordLoading = false;
   bool get isEmailLoading => _isEmailLoading;
   bool get isGoogleLoading => _isGoogleLoading;
   bool get isLoading => _isLoading;
+  bool get isResetPasswordLoading => _isResetPasswordLoading;
   bool obsecurePassword = true;
   bool obsecureCurrentPassword = true;
   bool obsecureLoginPassword = true;
@@ -34,6 +37,7 @@ class AuthenticationProvider extends ChangeNotifier {
     passwordController.dispose();
     newPasswordController.dispose();
     currentPasswordController.dispose();
+    resetPasswordController.dispose();
     super.dispose();
   }
 
@@ -173,6 +177,77 @@ class AuthenticationProvider extends ChangeNotifier {
     }
     finally{
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> handleResetPassword(BuildContext context) async {
+    if (resetPasswordController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('invalid_email_warning'.tr()),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(resetPasswordController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('invalid_email_warning'.tr()),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    _isResetPasswordLoading = true;
+    notifyListeners();
+    
+    try {
+      await authService.resetPassword(resetPasswordController.text.trim());
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("reset_password_success".tr()),
+            backgroundColor: Colors.green,
+          )
+        );
+        resetPasswordController.clear();
+        Navigator.of(context).pop();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        String errorMessage = "Şifre sıfırlama hatası";
+        if (e.code == 'user-not-found') {
+          errorMessage = "Bu email adresi ile kayıtlı kullanıcı bulunamadı";
+        } else if (e.code == 'invalid-email') {
+          errorMessage = "Geçersiz email adresi";
+        } else if (e.code == 'too-many-requests') {
+          errorMessage = "Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin";
+        }
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Şifre sıfırlama hatası: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      _isResetPasswordLoading = false;
       notifyListeners();
     }
   }

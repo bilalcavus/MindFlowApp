@@ -86,6 +86,8 @@ class UserSubscription {
   final DateTime? cancelledAt;
   final String? paymentMethod;
   final String? transactionId;
+  final String? purchaseToken;
+  final String? orderId;
   final bool autoRenewal;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -100,6 +102,8 @@ class UserSubscription {
     this.cancelledAt,
     this.paymentMethod,
     this.transactionId,
+    this.purchaseToken,
+    this.orderId,
     this.autoRenewal = true,
     required this.createdAt,
     required this.updatedAt,
@@ -122,6 +126,8 @@ class UserSubscription {
           : null,
       paymentMethod: data['paymentMethod'],
       transactionId: data['transactionId'],
+      purchaseToken: data['purchaseToken'],
+      orderId: data['orderId'],
       autoRenewal: data['autoRenewal'] ?? true,
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: (data['updatedAt'] as Timestamp).toDate(),
@@ -138,6 +144,8 @@ class UserSubscription {
       'cancelledAt': cancelledAt != null ? Timestamp.fromDate(cancelledAt!) : null,
       'paymentMethod': paymentMethod,
       'transactionId': transactionId,
+      'purchaseToken': purchaseToken,
+      'orderId': orderId,
       'autoRenewal': autoRenewal,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),

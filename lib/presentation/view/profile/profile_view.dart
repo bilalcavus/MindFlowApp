@@ -130,6 +130,34 @@ class _ProfileViewState extends State<ProfileView> {
             }
           }),
         ]),
+        // // Debug modda cleanup butonu
+        // if (kDebugMode) ...[
+        //   SizedBox(height: context.dynamicHeight(0.02)),
+        //   _buildSettingsCard([
+        //     _settingsTile(Iconsax.trash, 'Cleanup Firestore (Debug)', () async {
+        //       try {
+        //         await FirestoreSetupService().cleanupFirestore();
+        //         if (mounted) {
+        //           ScaffoldMessenger.of(context).showSnackBar(
+        //             const SnackBar(
+        //               content: Text('Firestore cleanup tamamlandı!'),
+        //               backgroundColor: Colors.green,
+        //             ),
+        //           );
+        //         }
+        //       } catch (e) {
+        //         if (mounted) {
+        //           ScaffoldMessenger.of(context).showSnackBar(
+        //             SnackBar(
+        //               content: Text('Cleanup hatası: $e'),
+        //               backgroundColor: Colors.red,
+        //             ),
+        //           );
+        //         }
+        //       }
+        //     }),
+        //   ]),
+        // ],
         SizedBox(height: context.dynamicHeight(0.025)),
       ],
     );

@@ -47,7 +47,6 @@ class AuthService {
     await cred.user?.updateDisplayName(displayName);
     await cred.user?.reload();
     final user = _firebaseAuth.currentUser;
-    // Firestore'da var mı kontrol et
     final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     User userModel;
     if (doc.exists) {
@@ -222,5 +221,32 @@ class AuthService {
   Future<void> signOutGoogle() async {
     await _googleSignIn.signOut();
     await _firebaseAuth.signOut();
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on fb.FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw fb.FirebaseAuthException(
+          code: 'user-not-found',
+          message: 'Bu email adresi ile kayıtlı kullanıcı bulunamadı',
+        );
+      } else if (e.code == 'invalid-email') {
+        throw fb.FirebaseAuthException(
+          code: 'invalid-email',
+          message: 'Geçersiz email adresi',
+        );
+      } else if (e.code == 'too-many-requests') {
+        throw fb.FirebaseAuthException(
+          code: 'too-many-requests',
+          message: 'Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin',
+        );
+      } else {
+        rethrow;
+      }
+    } catch (e) {
+      throw Exception('Şifre sıfırlama hatası: $e');
+    }
   }
 } 

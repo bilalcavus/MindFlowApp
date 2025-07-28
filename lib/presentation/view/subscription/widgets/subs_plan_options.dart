@@ -66,7 +66,7 @@ class SubsPlanOptions extends StatelessWidget {
                 SizedBox(height: context.dynamicHeight(0.015)),
                 PlanCardWidget(
                   name: 'premium'.tr(),
-                  price: '\$9.99${'per_month'.tr()}',
+                  price: '\$19.99${'per_month'.tr()}',
                   credits: '100',
                   features: ['unlimited_analyses'.tr(), 'unlimited_chat'.tr(), 'priority_support'.tr(), 'advanced_features'.tr()],
                   isCurrent: provider.currentPlan?.id == 'premium',
