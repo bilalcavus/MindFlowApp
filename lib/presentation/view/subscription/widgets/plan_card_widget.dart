@@ -100,7 +100,7 @@ class PlanCardWidget extends StatelessWidget {
                 SizedBox(width: context.dynamicWidth(0.02)),
                 Expanded(
                   child: Text(
-                    feature,
+                    feature.tr(),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.8),
                       fontSize: context.dynamicHeight(0.014),

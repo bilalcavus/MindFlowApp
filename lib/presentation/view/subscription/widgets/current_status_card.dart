@@ -52,7 +52,7 @@ class CurrentStatusCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    provider.currentPlan?.description ?? '',
+                    '${provider.currentPlan?.description}'.tr(),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.7),
                       fontSize: context.dynamicHeight(0.016),

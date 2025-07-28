@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
@@ -47,7 +48,7 @@ class CreditIndicatorWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Kalan Kredi',
+                    'remaining_credit'.tr(),
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   Text(
@@ -76,11 +77,11 @@ class CreditIndicatorWidget extends StatelessWidget {
               if (showDetails) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Kullanılan: ${credits.usedCredits}',
+                  '${'credit_used'.tr()}: ${credits.usedCredits}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 Text(
-                  'Yenileme: ${_formatDate(credits.nextResetDate)}',
+                  '${'renewal_date'.tr()}: ${_formatDate(credits.nextResetDate)}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

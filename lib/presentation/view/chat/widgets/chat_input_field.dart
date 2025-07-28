@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
@@ -26,8 +27,8 @@ class ChatInputArea extends StatelessWidget {
               child: TextField(
                 controller: _controller,
                 focusNode: focusNode,
-                maxLines: 2,
-                decoration: const InputDecoration(hintText: "Mesajını yaz...", border: InputBorder.none),
+                maxLines: 1,
+                decoration: InputDecoration(hintText: "write_message".tr(), border: InputBorder.none),
               ),
             ),
             IconButton(
