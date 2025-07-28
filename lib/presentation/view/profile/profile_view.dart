@@ -14,10 +14,8 @@ import 'package:mind_flow/presentation/view/profile/support_ticket_view.dart';
 import 'package:mind_flow/presentation/view/profile/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
-import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -128,7 +126,6 @@ class _ProfileViewState extends State<ProfileView> {
           _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);
             if (mounted) {
-              context.read<SubscriptionProvider>().dispose();
               RouteHelper.pushAndCloseOther(context, const LoginView());
             }
           }),

@@ -242,7 +242,7 @@ class FirestoreSetupService {
       
       final collections = [
         'users',
-        'user_subscriptions', 
+        'user_subscriptions',
         'user_credits',
         'credit_transactions',
       ];

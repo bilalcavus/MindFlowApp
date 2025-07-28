@@ -37,6 +37,8 @@
     "write_journal_first": "Schreibe erst einen Tagebucheintrag für deine erste Analyse!",
     "no_dream_history": "Noch kein Verlauf der Traumanalysen",
     "write_dream_first": "Schreibe zuerst einen Traum für die erste Analyse!",
+     "no_personality_history": "Noch keine Persönlichkeitsanalyse vorhanden",
+    "write_personality_first": "Beschreibe deine Persönlichkeit, um deine erste Analyse zu machen!",
     "no_habit_history": "Noch kein Verlauf der Gewohnheitsanalysen",
     "write_habit_first": "Schreibe zuerst einen Gewohnheitseintrag für die erste Analyse!",
     "no_mental_history": "Noch kein Verlauf der mentalen Analysen",

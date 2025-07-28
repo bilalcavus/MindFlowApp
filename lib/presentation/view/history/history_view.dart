@@ -116,9 +116,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           Icon(
                             analysisType['icon'],
                             color: analysisType['color'],
-                            size: 40,
+                            size: context.dynamicHeight(0.04),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: context.dynamicHeight(0.01)),
                           Text(
                             analysisType['title'].toString().tr(),
                             style: TextStyle(
@@ -137,31 +137,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _getCurrentHistoryTab() {
-    switch (AnalysisTypes.selectedAnalysisType) {
-      case 0:
-        return const EmotionHistoryTab();
-      case 1:
-        return const DreamHistoryTab();
-      case 2:
-        return const PersonalityHistoryTab();
-      case 3:
-        return const HabitsHistoryTab();
-      case 4:
-        return const MentalHistoryTab();
-      case 5:
-        return const StressHistoryTab();
-      default:
-        return const EmotionHistoryTab();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +180,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       color: selectedAnalysis['color'],
                       size: 24,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: context.dynamicWidth(0.02)),
                     Text(
                       selectedAnalysis['title'].toString().tr(),
                       style: TextStyle(
@@ -208,7 +189,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: context.dynamicWidth(0.02)),
                     Icon(
                       Icons.arrow_drop_down,
                       color: selectedAnalysis['color'],
@@ -217,7 +198,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ),
             ),
-            // History content
             Expanded(
               child: _getCurrentHistoryTab(),
             ),
@@ -228,4 +208,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 }
 
-
+  Widget _getCurrentHistoryTab() {
+    switch (AnalysisTypes.selectedAnalysisType) {
+      case 0:
+        return const EmotionHistoryTab();
+      case 1:
+        return const DreamHistoryTab();
+      case 2:
+        return const PersonalityHistoryTab();
+      case 3:
+        return const HabitsHistoryTab();
+      case 4:
+        return const MentalHistoryTab();
+      case 5:
+        return const StressHistoryTab();
+      default:
+        return const EmotionHistoryTab();
+    }
+  }

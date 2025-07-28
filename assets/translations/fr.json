@@ -37,6 +37,8 @@
   "write_journal_first": "Écrivez une entrée de journal pour faire votre première analyse !",
   "no_dream_history": "Pas encore d'historique d'analyse des rêves",
   "write_dream_first": "Écrivez un rêve pour faire votre première analyse !",
+  "no_personality_history": "Aucune analyse de personnalité pour le moment",
+    "write_personality_first": "Décris ta personnalité pour effectuer ta première analyse !",
   "no_habit_history": "Pas encore d'historique d'analyse des habitudes",
   "write_habit_first": "Écrivez une entrée d'habitude pour faire votre première analyse !",
   "no_mental_history": "Pas encore d'historique d'analyse mentale",

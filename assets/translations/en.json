@@ -37,6 +37,8 @@
     "write_journal_first": "Write a journal entry to make your first analysis!",
     "no_dream_history": "No dream analysis history yet",
     "write_dream_first": "Write a dream to make your first analysis!",
+    "no_personality_history": "No personality analysis history yet",
+    "write_personality_first": "Describe your personality to do your first analysis!",
     "no_habit_history": "No habit analysis history yet",
     "write_habit_first": "Write a habit entry to make your first analysis!",
     "no_mental_history": "No mental analysis history yet",

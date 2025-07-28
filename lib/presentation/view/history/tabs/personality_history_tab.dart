@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/personality_analysis_result_view.dart';
 import 'package:mind_flow/presentation/view/history/widgets/analysis_card.dart';
 import 'package:mind_flow/presentation/view/history/widgets/clear_dialog.dart';
@@ -22,9 +23,9 @@ class PersonalityHistoryTab extends StatelessWidget {
         if (state.isLoading) return const Center(child: CircularProgressIndicator());
         if (state.items.isEmpty) {
           return EmptyState(
-            icon: Icons.bedtime,
-            title: 'no_dream_history'.tr(),
-            subtitle: 'write_dream_first'.tr(),
+            icon: Iconsax.personalcard,
+            title: 'no_personality_history'.tr(),
+            subtitle: 'write_personality_first'.tr(),
             onRefresh: () => context.read<PersonalityAnalysisProvider>().refreshHistory(),
           );
         }

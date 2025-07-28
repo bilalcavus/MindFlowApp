@@ -37,6 +37,8 @@
     "write_journal_first": "Tulis catatan pertama untuk memulai analisis!",
     "no_dream_history": "Belum ada riwayat analisis mimpi",
     "write_dream_first": "Tulis mimpi pertama untuk memulai analisis!",
+    "no_personality_history": "Belum ada riwayat analisis kepribadian",
+    "write_personality_first": "Jelaskan kepribadianmu untuk melakukan analisis pertama!",
     "no_habit_history": "Belum ada riwayat analisis kebiasaan",
     "write_habit_first": "Tulis catatan kebiasaan untuk memulai analisis pertama!",
     "no_mental_history": "Belum ada riwayat analisis mental",

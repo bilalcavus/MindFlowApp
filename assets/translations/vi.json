@@ -37,6 +37,8 @@
   "write_journal_first": "Hãy viết nhật ký để thực hiện phân tích đầu tiên!",
   "no_dream_history": "Chưa có lịch sử phân tích giấc mơ",
   "write_dream_first": "Hãy viết một giấc mơ để thực hiện phân tích đầu tiên!",
+  "no_personality_history": "Chưa có lịch sử phân tích tính cách",
+    "write_personality_first": "Hãy mô tả tính cách của bạn để thực hiện phân tích đầu tiên!",
   "no_habit_history": "Chưa có lịch sử phân tích thói quen",
   "write_habit_first": "Hãy viết ghi chép thói quen để thực hiện phân tích đầu tiên!",
   "no_mental_history": "Chưa có lịch sử phân tích tâm lý",

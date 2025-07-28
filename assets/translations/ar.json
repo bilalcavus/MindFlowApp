@@ -37,6 +37,8 @@
   "write_journal_first": "اكتب مدونة لتقوم بأول تحليل لك!",
   "no_dream_history": "لا يوجد تاريخ لتحليل الأحلام بعد",
   "write_dream_first": "اكتب حلمًا لتقوم بأول تحليل لك!",
+  "no_personality_history": "لا يوجد سجل لتحليل الشخصية بعد",
+    "write_personality_first": "صف شخصيتك لإجراء أول تحليل لك!",
   "no_habit_history": "لا يوجد تاريخ لتحليل العادات بعد",
   "write_habit_first": "اكتب مدخلاً عن العادات لتقوم بأول تحليل لك!",
   "no_mental_history": "لا يوجد تاريخ للتحليل الذهني بعد",

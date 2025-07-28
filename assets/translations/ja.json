@@ -37,6 +37,8 @@
   "write_journal_first": "最初の分析のために日記を書いてください！",
   "no_dream_history": "まだ夢の分析履歴がありません",
   "write_dream_first": "最初の分析のために夢を書いてください！",
+  "no_personality_history": "まだ性格分析の履歴がありません",
+    "write_personality_first": "最初の分析をするために自分の性格を説明してみましょう！",
   "no_habit_history": "まだ習慣分析の履歴がありません",
   "write_habit_first": "最初の分析のために習慣の記録を書いてください！",
   "no_mental_history": "まだメンタル分析の履歴がありません",

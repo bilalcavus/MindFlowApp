@@ -7,7 +7,7 @@ import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/view/start/initial_language_select_view.dart';
-import 'package:mind_flow/presentation/widgets/custom_logo.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -50,28 +50,13 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-
-            ],
-          ),
-        ),
+      body: ScreenBackground(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
               child: Lottie.asset("assets/lotties/mind-flow-loading2.json", height: 150)
             ),
-            const CustomLogo()
           ],
         ),
       ),

@@ -37,7 +37,7 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    await NotificationService().initialize(); // Bildirim servisini başlat
+    await NotificationService().initialize();
     await setupDependencies();
     
     await _initializeDatabase();

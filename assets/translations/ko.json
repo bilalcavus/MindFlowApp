@@ -37,6 +37,8 @@
   "write_journal_first": "첫 분석을 위해 일기 작성을 해보세요!",
   "no_dream_history": "아직 꿈 분석 기록이 없습니다",
   "write_dream_first": "첫 분석을 위해 꿈을 적어보세요!",
+  "no_personality_history": "아직 성격 분석 기록이 없습니다",
+    "write_personality_first": "첫 분석을 위해 당신의 성격을 설명해보세요!",
   "no_habit_history": "아직 습관 분석 기록이 없습니다",
   "write_habit_first": "첫 분석을 위해 습관 기록을 적어보세요!",
   "no_mental_history": "아직 정신 분석 기록이 없습니다",

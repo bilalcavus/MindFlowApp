@@ -37,6 +37,8 @@
     "write_journal_first": "İlk analizini yapmak için bir günlük girişi yaz!",
     "no_dream_history": "Henüz rüya analizi geçmişi yok",
     "write_dream_first": "İlk analizini yapmak için bir rüya yaz!",
+    "no_personality_history": "Henüz kişilik analizi geçmişi yok",
+    "write_personality_first": "İlk analizini yapmak için kişiliğini anlat!",
     "no_habit_history": "Henüz alışkanlık analizi geçmişi yok",
     "write_habit_first": "İlk analizini yapmak için bir alışkanlık yazısı yaz!",
     "no_mental_history": "Henüz zihinsel analiz geçmişi yok",
