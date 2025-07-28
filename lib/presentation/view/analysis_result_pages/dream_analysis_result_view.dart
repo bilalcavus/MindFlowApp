@@ -68,7 +68,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                     Icon(Icons.error, size: context.dynamicWidth(0.06), color: Colors.red),
                     SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
-                      "error_with_message".tr(namedArgs: {"error": provider.error ?? ""}),
+                      "error_analyze_failed".tr(namedArgs: {"error": provider.error ?? ""}),
                       style: TextStyle(fontSize: context.dynamicWidth(0.04)),
                       textAlign: TextAlign.center,
                     ),

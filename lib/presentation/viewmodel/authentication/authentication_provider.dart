@@ -25,6 +25,8 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool obsecurePassword = true;
   bool obsecureCurrentPassword = true;
+  bool obsecureLoginPassword = true;
+
 
   @override
   void dispose() {
@@ -45,6 +47,10 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleLoginPasswordVisibility() {
+    obsecureLoginPassword = !obsecureLoginPassword;
+    notifyListeners();
+  }
 
   bool validatePasswordChange() {
     if (currentPasswordController.text.trim().isEmpty) {

@@ -60,6 +60,7 @@ class _LoginViewState extends State<LoginView> {
                         hintText: 'password'.tr(),
                         prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
                         suffixIcon: _obsecureButton(provider),
+                        obscureText: provider.obsecureLoginPassword,
                         ),
                       SizedBox(height: context.dynamicHeight(0.035)),
                       LoginButton(provider: provider, mounted: mounted),
@@ -113,10 +114,10 @@ class _LoginViewState extends State<LoginView> {
   IconButton _obsecureButton(AuthenticationProvider provider) {
     return IconButton(
       icon: Icon(
-        provider.obsecurePassword ? Icons.visibility_off : Icons.visibility,
+        provider.obsecureLoginPassword ? Icons.visibility_off : Icons.visibility,
         color: Colors.white.withOpacity(0.7),
       ),
-      onPressed: () => provider.toggleCurrentPasswordVisibility()
+      onPressed: () => provider.toggleLoginPasswordVisibility()
     );
   }
 

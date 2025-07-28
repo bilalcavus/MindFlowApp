@@ -23,6 +23,7 @@ import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart'
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 import 'package:provider/provider.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -79,6 +80,7 @@ void main() async {
             ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
             ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
+            ChangeNotifierProvider(create: (_) => getIt<SupportTicketProvider>()),
             ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
           ],
           child: const MyApp(),

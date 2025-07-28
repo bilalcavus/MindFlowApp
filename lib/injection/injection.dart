@@ -17,6 +17,7 @@ import 'package:mind_flow/data/repositories/stress_analysis_repository.dart';
 import 'package:mind_flow/data/repositories/subscription_repository.dart';
 import 'package:mind_flow/data/repositories/user_entry_repository.dart';
 import 'package:mind_flow/data/repositories/user_preferences_repository.dart';
+import 'package:mind_flow/data/repositories/user_ticket_repository.dart';
 // DataSources
 
 
@@ -59,6 +60,7 @@ import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart'
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 
 final getIt = GetIt.instance;
 
@@ -80,6 +82,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<PersonalityAnalysisRepository>(() => PersonalityAnalysisRepository());
   getIt.registerLazySingleton<MentalAnalysisRepository>(() => MentalAnalysisRepository());
   getIt.registerLazySingleton<StressAnalysisRepository>(() => StressAnalysisRepository());
+  getIt.registerLazySingleton<UserTicketRepository>(() => UserTicketRepository(getIt()));
 
   // Core
   getIt.registerLazySingleton<DioHelper>(() => DioHelper());
@@ -127,5 +130,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => AuthenticationProvider(getIt()));
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));
   getIt.registerLazySingleton(() => SubscriptionProvider(getIt()));
+  getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
 
 }

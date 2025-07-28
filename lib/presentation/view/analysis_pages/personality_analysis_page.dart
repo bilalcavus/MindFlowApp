@@ -26,7 +26,7 @@ class PersonalityAnalysisPage extends StatelessWidget {
         } else if (vm.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('error_with_message: ${vm.error}'.tr()),
+              content: Text('error_analyze_failed: ${vm.error}'.tr()),
               backgroundColor: Colors.red,
             ),
           );

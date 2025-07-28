@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mind_flow/data/models/subscription_model.dart';
+import 'package:mind_flow/data/models/support_ticket_model.dart';
 import 'package:mind_flow/data/models/user_model.dart' as app_user;
 
 class FirestoreService {
@@ -18,6 +19,7 @@ class FirestoreService {
   CollectionReference get _userSubscriptionsCollection => _firestore.collection('user_subscriptions');
   CollectionReference get _userCreditsCollection => _firestore.collection('user_credits');
   CollectionReference get _creditTransactionsCollection => _firestore.collection('credit_transactions');
+  CollectionReference get _supportTicketCollection => _firestore.collection('support_tickets');
 
   String? get currentUserId => _auth.currentUser?.uid;
 
@@ -141,6 +143,15 @@ class FirestoreService {
       await _userCreditsCollection.doc(credits.userId).set(credits.toFirestore(), SetOptions(merge: true));
     } catch (e) {
       debugPrint('Error creating/updating user credits: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> createSupportTicket(SupportTicketModel ticket) async {
+    try {
+      await _supportTicketCollection.add(ticket.toFirestore());
+    } catch (e) {
+      debugPrint('Error creating ticket: $e');
       rethrow;
     }
   }

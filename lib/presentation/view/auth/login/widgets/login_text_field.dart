@@ -7,20 +7,24 @@ class LoginViewTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.prefixIcon,
-    this.suffixIcon
+    this.suffixIcon,
+    this.obscureText = false,
   });
 
   final TextEditingController controller;
   final String hintText;
   final Widget prefixIcon;
   final Widget? suffixIcon;
+  final bool obscureText;
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      obscureText: obscureText,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
         filled: true,

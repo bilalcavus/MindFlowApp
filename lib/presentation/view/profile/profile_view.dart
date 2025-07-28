@@ -10,11 +10,14 @@ import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/profile/account_password_view.dart';
 import 'package:mind_flow/presentation/view/profile/personal_information_view.dart';
 import 'package:mind_flow/presentation/view/profile/privacy_policy_view.dart';
+import 'package:mind_flow/presentation/view/profile/support_ticket_view.dart';
 import 'package:mind_flow/presentation/view/profile/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
+import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -45,8 +48,6 @@ class _ProfileViewState extends State<ProfileView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(height: context.dynamicHeight(0.025)),
-                        // Profile Avatar
                         Container(
                           padding: EdgeInsets.all(context.dynamicWidth(0.01)),
                           decoration: const BoxDecoration(
@@ -57,7 +58,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                           child: UserAvatar(user: user)
                         ),
-                        SizedBox(height: context.dynamicHeight(0.02)),
+                        SizedBox(height: context.dynamicHeight(0.01)),
                         Text(
                           _authService.firebaseUser?.displayName ?? '',
                           style: TextStyle(
@@ -74,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
                             fontSize: context.dynamicHeight(0.02),
                           ),
                         ),
-                        SizedBox(height: context.dynamicHeight(0.03)),
+                        SizedBox(height: context.dynamicHeight(0.02)),
                         _buildSettingsList(),
                       ],
                     ),
@@ -112,6 +113,9 @@ class _ProfileViewState extends State<ProfileView> {
               builder: (context) => const LanguageSelectView(),
             );
           }),
+          _settingsTile(HugeIcons.strokeRoundedCustomerSupport, 'support_ticket'.tr(), () {
+            RouteHelper.push(context, const SupportTicketView());
+          }),
         ]),
         SizedBox(height: context.dynamicHeight(0.02)),
         _buildSettingsCard([
@@ -124,6 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
           _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);
             if (mounted) {
+              context.read<SubscriptionProvider>().dispose();
               RouteHelper.pushAndCloseOther(context, const LoginView());
             }
           }),

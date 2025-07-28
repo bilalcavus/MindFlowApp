@@ -75,7 +75,7 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
                     const Icon(Icons.error, size: 64, color: Colors.red),
                     SizedBox(height: context.dynamicHeight(0.02)),
                     Text(
-                      "error_with_message".tr(namedArgs: {"error": vm.error ?? ""}),
+                      "error_analyze_failed".tr(namedArgs: {"error": vm.error ?? ""}),
                       style: TextStyle(fontSize: context.dynamicWidth(0.04)),
                       textAlign: TextAlign.center,
                     ),
