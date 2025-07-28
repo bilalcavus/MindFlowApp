@@ -46,5 +46,7 @@ app.*.map.json
 .env
 assets/config/.env
 
+GOOGLE_PLAY_BILLING_SETUP.md
+
 #api constants
 lib/core/constants/api_constants.dart
