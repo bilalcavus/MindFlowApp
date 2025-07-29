@@ -96,8 +96,9 @@ void main() async {
         ),
       ),
     );
-  } catch (e) {
+  } catch (e, stackTrace) {
     debugPrint('Uygulama başlatma hatası: $e');
+    debugPrint('Stack trace: $stackTrace');
   }
 }
 
