@@ -310,5 +310,23 @@
     "enter_ticket_title": "Masukkan permintaan dukungan Anda",
     "enter_ticket_body": "Silakan masukkan permintaan Anda dengan jelas dan rinci.",
     "ticket_sent": "Permintaan Anda telah dikirim.",
-    "support_ticket": "Permintaan Dukungan / Keluhan"
+    "support_ticket": "Permintaan Dukungan / Keluhan",
+
+    "delete_account": "Hapus Akun",
+    "delete_account_warning": "Tindakan ini tidak dapat dibatalkan. Akun dan semua data terkait akan dihapus secara permanen.",
+    "deletion_consequences": "Apa yang terjadi ketika Anda menghapus akun:",
+    "all_data_permanent": "Semua data Anda akan dihapus secara permanen",
+    "analysis_history_lost": "Riwayat analisis Anda akan hilang",
+    "subscription_cancelled": "Langganan Anda akan dibatalkan",
+    "cannot_recover": "Anda tidak dapat memulihkan akun setelah dihapus",
+    "confirm_deletion": "Konfirmasi Penghapusan Akun",
+    "current_password": "Kata Sandi Saat Ini",
+    "type_delete_confirmation": "Ketik 'delete' untuk mengkonfirmasi",
+    "agree_to_deletion": "Saya setuju untuk menghapus akun saya secara permanen",
+    "understand_consequences": "Saya memahami konsekuensi penghapusan akun",
+    "delete_account_permanently": "Hapus Akun Secara Permanen",
+    "final_confirmation": "Konfirmasi Akhir",
+    "final_confirmation_message": "Apakah Anda benar-benar yakin ingin menghapus akun Anda? Tindakan ini tidak dapat dibatalkan dan semua data Anda akan hilang secara permanen.",
+    "cancel": "Batal",
+    "deletion_error": "Penghapusan akun gagal: {error}"
 }

@@ -312,4 +312,65 @@ class AuthenticationProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> handleAccountDeletion(BuildContext context, {required String password}) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final user = authService.firebaseUser;
+      if (user == null) {
+        throw Exception('Kullanıcı oturumu bulunamadı');
+      }
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      
+      await user.reauthenticateWithCredential(credential);
+      await authService.deleteUserData();
+      await user.delete();
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Hesabınız başarıyla silindi'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        String errorMessage = "Hesap silme hatası";
+        if (e.code == 'wrong-password') {
+          errorMessage = "Şifre yanlış";
+        } else if (e.code == 'requires-recent-login') {
+          errorMessage = "Bu işlem için tekrar giriş yapmanız gerekiyor";
+        } else if (e.code == 'user-not-found') {
+          errorMessage = "Kullanıcı bulunamadı";
+        }
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      rethrow;
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Hesap silme hatası: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

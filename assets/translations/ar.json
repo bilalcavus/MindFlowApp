@@ -282,5 +282,22 @@
   "enter_ticket_title": "أدخل طلب الدعم الخاص بك",
   "enter_ticket_body": "يرجى إدخال طلبك بطريقة واضحة ومفصلة.",
   "ticket_sent": "تم إرسال طلبك.",
-  "support_ticket": "طلب دعم / شكوى"
+  "support_ticket": "طلب دعم / شكوى",
+  "delete_account": "حذف الحساب",
+  "delete_account_warning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف حسابك وجميع البيانات المرتبطة به بشكل دائم.",
+  "deletion_consequences": "ما يحدث عند حذف حسابك:",
+  "all_data_permanent": "سيتم حذف جميع بياناتك بشكل دائم",
+  "analysis_history_lost": "سيتم فقدان تاريخ تحليلاتك",
+  "subscription_cancelled": "سيتم إلغاء اشتراكك",
+  "cannot_recover": "لا يمكنك استرداد حسابك بعد الحذف",
+  "confirm_deletion": "تأكيد حذف الحساب",
+  "current_password": "كلمة المرور الحالية",
+  "type_delete_confirmation": "اكتب 'delete' للتأكيد",
+  "agree_to_deletion": "أوافق على حذف حسابي بشكل دائم",
+  "understand_consequences": "أفهم عواقب حذف الحساب",
+  "delete_account_permanently": "حذف الحساب بشكل دائم",
+  "final_confirmation": "التأكيد النهائي",
+  "final_confirmation_message": "هل أنت متأكد تمامًا من أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء وستفقد جميع بياناتك بشكل دائم.",
+  "cancel": "إلغاء",
+  "deletion_error": "فشل في حذف الحساب: {error}"
 }

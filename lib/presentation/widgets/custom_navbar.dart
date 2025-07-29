@@ -71,8 +71,7 @@ class CustomBottomNavbar extends StatelessWidget {
       onTap: () => onTap(index),
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: context.dynamicWidth(0.04),
-          vertical: context.dynamicHeight(0.01),
+          horizontal: context.dynamicWidth(0.02),
         ),
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -86,7 +85,6 @@ class CustomBottomNavbar extends StatelessWidget {
               color: isSelected ? Colors.grey[200] : Colors.grey[600],
               size: context.dynamicWidth(0.06),
             ),
-            SizedBox(height: context.dynamicHeight(0.005)),
             Text(
               label,
               style: TextStyle(

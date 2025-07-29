@@ -7,6 +7,7 @@ import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/view/profile/account_deletion_view.dart';
 import 'package:mind_flow/presentation/view/profile/account_password_view.dart';
 import 'package:mind_flow/presentation/view/profile/personal_information_view.dart';
 import 'package:mind_flow/presentation/view/profile/privacy_policy_view.dart';
@@ -122,6 +123,9 @@ class _ProfileViewState extends State<ProfileView> {
           }),
           _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), () {
             RouteHelper.push(context, const TermsAndConditionsView());
+          }),
+          _settingsTile(Iconsax.trash, 'delete_account'.tr(), () {
+            RouteHelper.push(context, const AccountDeletionView());
           }),
           _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);

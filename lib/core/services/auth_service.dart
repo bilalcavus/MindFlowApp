@@ -249,4 +249,71 @@ class AuthService {
       throw Exception('Şifre sıfırlama hatası: $e');
     }
   }
+
+  Future<void> deleteUserData() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) return;
+
+      final userId = user.uid;
+      final batch = FirebaseFirestore.instance.batch();
+
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+      batch.delete(userDoc);
+
+      final analysisCollections = [
+        'dream_analysis',
+        'emotion_analysis', 
+        'personality_analysis',
+        'habit_analysis',
+        'mental_analysis',
+        'stress_analysis',
+      ];
+
+      for (final collection in analysisCollections) {
+        final query = FirebaseFirestore.instance
+            .collection(collection)
+            .where('userId', isEqualTo: userId);
+        
+        final docs = await query.get();
+        for (final doc in docs.docs) {
+          batch.delete(doc.reference);
+        }
+      }
+
+      final chatQuery = FirebaseFirestore.instance
+          .collection('chat_messages')
+          .where('userId', isEqualTo: userId);
+      
+      final chatDocs = await chatQuery.get();
+      for (final doc in chatDocs.docs) {
+        batch.delete(doc.reference);
+      }
+
+      final subscriptionQuery = FirebaseFirestore.instance
+          .collection('subscriptions')
+          .where('userId', isEqualTo: userId);
+      
+      final subscriptionDocs = await subscriptionQuery.get();
+      for (final doc in subscriptionDocs.docs) {
+        batch.delete(doc.reference);
+      }
+
+      final ticketQuery = FirebaseFirestore.instance
+          .collection('support_tickets')
+          .where('userId', isEqualTo: userId);
+      
+      final ticketDocs = await ticketQuery.get();
+      for (final doc in ticketDocs.docs) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+      
+      _currentUser = null;
+      
+    } catch (e) {
+      throw Exception('Kullanıcı verilerini silme hatası: $e');
+    }
+  }
 } 
