@@ -176,27 +176,43 @@ class AuthService {
 
   Future<User> signInWithGoogle() async {
     try {
+      // Google Sign-In'i başlat
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       
       if (googleUser == null) {
         throw Exception('Google Sign-In iptal edildi');
       }
+
+      // Google authentication bilgilerini al
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        throw Exception('Google authentication token alınamadı');
+      }
+
+      // Firebase credential oluştur
       final credential = fb.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+
+      // Firebase ile giriş yap
       final userCredential = await _firebaseAuth.signInWithCredential(credential);
       final user = userCredential.user;
 
       if (user == null) {
-        throw Exception('Google Sign-In başarısız');
+        throw Exception('Firebase authentication başarısız');
       }
-      // Firestore'dan oku
+
+      // Firestore'dan kullanıcı bilgilerini al veya oluştur
       final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       User userModel;
+      
       if (doc.exists) {
         userModel = User.fromFirestore(doc);
+        // Son giriş zamanını güncelle
+        userModel = userModel.copyWith(lastLoginAt: DateTime.now());
+        await createUserInFirestore(userModel);
       } else {
         userModel = User(
           id: user.uid,
@@ -204,16 +220,48 @@ class AuthService {
           displayName: user.displayName ?? '',
           avatarUrl: user.photoURL,
           createdAt: DateTime.now(),
-          lastLoginAt: null,
+          lastLoginAt: DateTime.now(),
           isActive: true,
           userPreferences: null,
           isPremiumUser: false,
         );
         await createUserInFirestore(userModel);
       }
+      
       _currentUser = userModel;
       return userModel;
+      
+    } on fb.FirebaseAuthException catch (e) {
+      String errorMessage = 'Google Sign-In hatası';
+      
+      switch (e.code) {
+        case 'account-exists-with-different-credential':
+          errorMessage = 'Bu email adresi farklı bir yöntemle kayıtlı';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'Geçersiz kimlik bilgileri';
+          break;
+        case 'operation-not-allowed':
+          errorMessage = 'Google Sign-In etkin değil';
+          break;
+        case 'user-disabled':
+          errorMessage = 'Kullanıcı hesabı devre dışı';
+          break;
+        case 'user-not-found':
+          errorMessage = 'Kullanıcı bulunamadı';
+          break;
+        case 'network-request-failed':
+          errorMessage = 'Ağ bağlantısı hatası';
+          break;
+        default:
+          errorMessage = 'Google Sign-In hatası: ${e.message}';
+      }
+      
+      throw Exception(errorMessage);
     } catch (e) {
+      if (e.toString().contains('network')) {
+        throw Exception('İnternet bağlantısı hatası. Lütfen bağlantınızı kontrol edin.');
+      }
       throw Exception('Google Sign-In hatası: $e');
     }
   }

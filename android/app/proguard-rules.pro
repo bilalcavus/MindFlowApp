@@ -80,21 +80,21 @@
 }
 
 # Keep custom models
--keep class com.example.mind_flow.data.models.** { *; }
--keep class com.example.mind_flow.domain.entities.** { *; }
+-keep class com.bilalcavus.mindflow.data.models.** { *; }
+-keep class com.bilalcavus.mindflow.domain.entities.** { *; }
 
 # Keep providers
--keep class com.example.mind_flow.presentation.viewmodel.** { *; }
+-keep class com.bilalcavus.mindflow.presentation.viewmodel.** { *; }
 
 # Keep services
--keep class com.example.mind_flow.core.services.** { *; }
+-keep class com.bilalcavus.mindflow.core.services.** { *; }
 
 # Keep repositories
--keep class com.example.mind_flow.data.repositories.** { *; }
--keep class com.example.mind_flow.domain.repository_impl.** { *; }
+-keep class com.bilalcavus.mindflow.data.repositories.** { *; }
+-keep class com.bilalcavus.mindflow.domain.repository_impl.** { *; }
 
 # Keep use cases
--keep class com.example.mind_flow.domain.usecases.** { *; }
+-keep class com.bilalcavus.mindflow.domain.usecases.** { *; }
 
 # Multidex support
 -keep class androidx.multidex.** { *; }

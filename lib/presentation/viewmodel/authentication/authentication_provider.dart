@@ -290,7 +290,8 @@ class AuthenticationProvider extends ChangeNotifier {
     
     try {
       await authService.signInWithGoogle();
-        print('Premium mu? ${authService.currentUser?.isPremiumUser}');
+      print('Premium mu? ${authService.currentUser?.isPremiumUser}');
+      
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),
@@ -299,10 +300,28 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       if (context.mounted) {
+        String errorMessage = "google_signin_failed".tr();
+        
+        // Daha spesifik hata mesajları
+        if (e.toString().contains('network')) {
+          errorMessage = 'İnternet bağlantısı hatası. Lütfen bağlantınızı kontrol edin.';
+        } else if (e.toString().contains('account-exists-with-different-credential')) {
+          errorMessage = 'Bu email adresi farklı bir yöntemle kayıtlı.';
+        } else if (e.toString().contains('invalid-credential')) {
+          errorMessage = 'Geçersiz kimlik bilgileri.';
+        } else if (e.toString().contains('operation-not-allowed')) {
+          errorMessage = 'Google Sign-In etkin değil.';
+        } else if (e.toString().contains('user-disabled')) {
+          errorMessage = 'Kullanıcı hesabı devre dışı.';
+        } else if (e.toString().contains('user-not-found')) {
+          errorMessage = 'Kullanıcı bulunamadı.';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("google_signin_failed".tr()),
+            content: Text(errorMessage),
             backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 4),
           ),
         );
       }

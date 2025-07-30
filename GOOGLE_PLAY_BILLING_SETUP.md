@@ -8,7 +8,7 @@ Google Play Console > Uygulamanız > Monetizasyon > Ürünler > Abonelikler
 Aşağıdaki ürünleri oluşturun:
 
 #### Premium Abonelik
-- **Ürün ID**: `mind_flow_premium_monthly`
+- **Ürün ID**: `mind_flow_premium`
 - **Ad**: `Mind Flow Premium`
 - **Açıklama**: `Aylık premium abonelik - sınırsız analiz ve öncelikli destek`
 - **Fiyat**: $19.99/ay

@@ -29,6 +29,7 @@ class ModernAnalysisCard extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.016)),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(item.icon, color: Colors.white, size: context.dynamicHeight(.04)),
               Text(item.title, style: TextStyle(
@@ -42,7 +43,14 @@ class ModernAnalysisCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: context.dynamicHeight(0.005)),
-              Text(item.subTitle, style: TextStyle(fontSize: context.dynamicHeight(0.013)))
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Text(
+                    item.subTitle,
+                    style: TextStyle(fontSize: context.dynamicHeight(0.013)),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

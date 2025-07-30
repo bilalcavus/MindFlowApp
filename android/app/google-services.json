@@ -7,18 +7,34 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579921522050:android:e4e104ee22caa6187bf39b",
+        "mobilesdk_app_id": "1:579921522050:android:204e087b784218c87bf39b",
         "android_client_info": {
-          "package_name": "com.example.mind_flow"
+          "package_name": "com.bilalcavus.mindflow"
         }
       },
       "oauth_client": [
         {
-          "client_id": "579921522050-8su6bbvj3ue8ji4urtou4bqrigl4dab2.apps.googleusercontent.com",
+          "client_id": "579921522050-6d6pti2u8gcdlc0ltvhropavplh4m519.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.mind_flow",
+            "package_name": "com.bilalcavus.mindflow",
+            "certificate_hash": "c90ee0281c3776f14688b5f564d46092ed25d0d0"
+          }
+        },
+        {
+          "client_id": "579921522050-e9cnl8cnnpc41f8532ubavcgua2fbcgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bilalcavus.mindflow",
             "certificate_hash": "e2d99068264d401fafb32edd8834d3b606c840e5"
+          }
+        },
+        {
+          "client_id": "579921522050-ns15kgf95t0fvue02i170k2ec7qe4t71.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bilalcavus.mindflow",
+            "certificate_hash": "66cce438d222eb761c640971b551354b8ed2ffbc"
           }
         },
         {

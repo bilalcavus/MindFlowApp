@@ -15,18 +15,20 @@ class AppNavigation extends StatelessWidget {
       create: (_) => NavigationProvider(),
       child: Consumer<NavigationProvider>(
         builder: (context, navProvider, _) {
-          return Scaffold(
-            body: IndexedStack(
-              index: navProvider.currentIndex,
-              children: const [
-                HomeView(),
-                HistoryScreen(),
-                ProfileView()
-              ],
-            ),
-            bottomNavigationBar: CustomBottomNavbar(
-              currentIndex: navProvider.currentIndex,
-              onTap: navProvider.changePage,
+          return SafeArea(
+            child: Scaffold(
+              body: IndexedStack(
+                index: navProvider.currentIndex,
+                children: const [
+                  HomeView(),
+                  HistoryScreen(),
+                  ProfileView()
+                ],
+              ),
+              bottomNavigationBar: CustomBottomNavbar(
+                currentIndex: navProvider.currentIndex,
+                onTap: navProvider.changePage,
+              ),
             ),
           );
         },

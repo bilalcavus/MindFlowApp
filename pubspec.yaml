@@ -41,7 +41,7 @@ dependencies:
   leak_tracker: ^10.0.4
   firebase_messaging: ^15.2.10
   flutter_local_notifications: ^16.1.0
-  in_app_purchase: ^3.1.13
+  in_app_purchase: ^3.2.0
   in_app_purchase_android: ^0.3.6+1
 
 dev_dependencies:

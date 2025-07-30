@@ -7,7 +7,7 @@ import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/data/models/subscription_model.dart';
 
 class GooglePlayBillingService {
-  static const String _premiumSubscriptionId = 'mind_flow_premium_monthly';
+  static const String _premiumSubscriptionId = 'mind_flow_premium';
   static const String _credit5Id = 'mind_flow_credits_5';
   static const String _credit10Id = 'mind_flow_credits_10';
   static const String _credit20Id = 'mind_flow_credits_20';
