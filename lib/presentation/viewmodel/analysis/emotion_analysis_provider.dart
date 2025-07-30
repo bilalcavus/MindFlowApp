@@ -47,7 +47,7 @@ class EmotionAnalysisProvider extends ChangeNotifier {
 
   Future<void> analyzeEmotion(String text) async {
     if (text.trim().isEmpty) {
-      error = "error_empty_text".tr();
+      error = "error_dream_empty_text".tr();
       notifyListeners();
       return;
     }

@@ -257,6 +257,7 @@
   "buy_credit": "Mua tín dụng",
   "analyze_op": "Thực hiện phân tích",
   "error_analyze_failed": "Phân tích thất bại. Vui lòng thử lại.",
+  "error_dream_empty_text": "Vui lòng nhập văn bản",
 
   "subscription_management": "Quản lý đăng ký",
   "current_subscription": "Đăng ký hiện tại",
@@ -304,7 +305,7 @@
   "five_credits": "5 Tín dụng",
   "ten_credits": "10 Tín dụng",
   "twenty_credits": "20 Tín dụng",
-  "confirm_credit_purchase": "Bạn có chắc muốn mua {credits} tín dụng? Giá: ${credits}",
+  "confirm_credit_purchase": "Bạn có chắc muốn mua {credits} tín dụng?",
   "purchase_successful": "Mua hàng thành công",
   "purchase_failed": "Mua hàng thất bại",
   "credits_added": "Đã thêm tín dụng",

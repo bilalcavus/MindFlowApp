@@ -241,6 +241,7 @@
     "buy_credit": "Beli Kredit",
     "analyze_op": "Proses Analisis",
     "error_analyze_failed": "Analisis gagal. Silakan coba lagi.",
+    "error_dream_empty_text": "Silakan masukkan teks",
 
     "subscription_management": "Manajemen Langganan",
     "current_subscription": "Langganan Saat Ini",
@@ -285,7 +286,7 @@
     "cancel": "Batal",
     "confirm": "Konfirmasi",
     "buy_credits_title": "Beli {credits} Kredit",
-    "confirm_credit_purchase": "Apakah Anda yakin ingin membeli {credits} kredit? Harga: ${credits}",
+    "confirm_credit_purchase": "Apakah Anda yakin ingin membeli {credits} kredit?",
     "purchase": "Beli",
     "plan_changed_success": "Paket berhasil diubah!",
     "plan_change_failed": "Gagal mengubah paket!",

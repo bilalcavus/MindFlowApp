@@ -91,7 +91,7 @@ class MentalAnalysisProvider extends ChangeNotifier {
         analysisHistory = analysisHistory.take(10).toList();
       }
     } catch (e) {
-      error = "error_analyze_failed".tr();
+      error = "error_dream_empty_text".tr();
     } finally {
       _setLoading(false);
     }

@@ -63,7 +63,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors:  [Color(0xFF1A0025), Color(0xFF059669)],
+            colors:  [Color(0xFF1A0025), Color.fromARGB(255, 5, 121, 150)],
           ),
         ),
         child: SafeArea(

@@ -46,7 +46,7 @@ class StressAnalysisProvider extends ChangeNotifier {
 
   Future<void> stressAnalyze(String text) async {
     if (text.trim().isEmpty) {
-      error = "please enter a text";
+      error = "error_dream_empty_text".tr();
       return;
     }
 

@@ -41,38 +41,45 @@ void main() async {
     await NotificationService().initialize();
     await setupDependencies();
     
-    // Initialize Google Play Billing (with error handling)
     try {
       await getIt<GooglePlayBillingService>().initialize();
     } catch (e) {
       debugPrint('Google Play Billing initialization failed: $e');
-      // Continue without billing for now
     }
     
     await _initializeDatabase();
     await _initializeProviders();
     await AuthService().fetchAndSetCurrentUser();
-    
+
     final userId = getIt<AuthService>().currentUserId;
     final savedLocale = userId != null
         ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
         : null;
-    final locale = savedLocale != null ? Locale(savedLocale) : const Locale('en');
+
+    const supportedLocales = [
+      Locale('en'),
+      Locale('tr'),
+      Locale('de'),
+      Locale('fr'),
+      Locale('ar'),
+      Locale('id'),
+      Locale('ms'),
+      Locale('ja'),
+      Locale('ko'),
+      Locale('th'),
+      Locale('vi'),
+    ];
+
+    Locale deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    Locale startLocale = supportedLocales.firstWhere(
+      (locale) => locale.languageCode == deviceLocale.languageCode,
+      orElse: () => const Locale('en'),
+    );
+    final locale = savedLocale != null ? Locale(savedLocale) : startLocale;
+
     runApp(
       EasyLocalization(
-        supportedLocales: const [
-          Locale('en'),
-          Locale('tr'),
-          Locale('de'),
-          Locale('fr'),
-          Locale('ar'),
-          Locale('id'),
-          Locale('ms'),
-          Locale('ja'),
-          Locale('ko'),
-          Locale('th'),
-          Locale('vi'),
-        ],
+        supportedLocales: supportedLocales,
         path: 'assets/translations',
         fallbackLocale: const Locale('en'),
         saveLocale: true,

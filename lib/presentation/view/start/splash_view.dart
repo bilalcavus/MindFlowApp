@@ -6,7 +6,6 @@ import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
-import 'package:mind_flow/presentation/view/start/initial_language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
 
@@ -37,7 +36,7 @@ class _SplashViewState extends State<SplashView> {
       }
       if (_authService.isLoggedIn) {
         debugPrint('✅ Kullanıcı zaten giriş yapmış: ${_authService.firebaseUser?.displayName}');
-        RouteHelper.pushAndCloseOther(context, const InitialLanguageSelectView());
+        RouteHelper.pushAndCloseOther(context, const AppNavigation());
       } else {
         debugPrint('❌ Kullanıcı giriş yapmamış, login sayfasına yönlendiriliyor');
         RouteHelper.pushAndCloseOther(context, const LoginView());

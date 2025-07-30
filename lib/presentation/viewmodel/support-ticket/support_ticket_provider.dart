@@ -52,7 +52,7 @@ class SupportTicketProvider extends ChangeNotifier {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('ticked_sent'.tr()),
+          content: Text('ticket_sent'.tr()),
           backgroundColor: Colors.green,
           ),
         );

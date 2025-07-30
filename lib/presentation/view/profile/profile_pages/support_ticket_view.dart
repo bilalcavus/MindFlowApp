@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
@@ -21,14 +20,6 @@ class SupportTicketView extends StatelessWidget {
             builder: (context, provider, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    const Icon(Iconsax.info_circle),
-                    SizedBox(width: context.dynamicWidth(0.02)),
-                    Text('ticket_title'.tr()),
-                  ],
-                ),
-                SizedBox(height: context.dynamicHeight(0.03)),
                 CustomTextField(
                   controller: provider.controller,
                   label: 'enter_ticket_title'.tr(),

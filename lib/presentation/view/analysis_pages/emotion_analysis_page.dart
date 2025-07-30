@@ -26,7 +26,7 @@ class EmotionAnalysisPage extends StatelessWidget {
         } else if (vm.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Hata: ${vm.error}'),
+              content: Text('${vm.error}'),
               backgroundColor: Colors.red,
             ),
           );

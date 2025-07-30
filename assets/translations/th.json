@@ -241,6 +241,7 @@
   "buy_credit": "ซื้อเครดิต",
   "analyze_op": "ดำเนินการวิเคราะห์",
   "error_analyze_failed": "การวิเคราะห์ล้มเหลว กรุณาลองใหม่อีกครั้ง",
+  "error_dream_empty_text": "กรุณากรอกข้อความ",
 
   "subscription_management": "การจัดการการสมัครสมาชิก",
   "current_subscription": "การสมัครสมาชิกปัจจุบัน",
@@ -286,7 +287,7 @@
   "five_credits": "5 เครดิ",
   "ten_credits": "10 เครดิต",
   "twenty_credits": "20 เครดิต",
-  "confirm_credit_purchase": "คุณแน่ใจหรือไม่ที่จะซื้อเครดิต {credits} เครดิต? ราคา: ${credits}",
+  "confirm_credit_purchase": "คุณแน่ใจหรือไม่ที่จะซื้อเครดิต {credits} เครดิต?",
   "purchase_successful": "การซื้อสำเร็จ",
   "purchase_failed": "การซื้อล้มเหลว",
   "credits_added": "เพิ่มเครดิตแล้ว",

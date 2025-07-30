@@ -240,6 +240,7 @@
   "buy_credit": "크레딧 구매",
   "analyze_op": "분석 실행",
   "error_analyze_failed": "분석에 실패했습니다. 다시 시도해 주세요.",
+  "error_dream_empty_text": "텍스트를 입력해 주세요",
 
   "subscription_management": "구독 관리",
   "current_subscription": "현재 구독",
@@ -285,7 +286,7 @@
   "cancel": "취소",
   "confirm": "확인",
   "buy_credits_title": "{credits} 크레딧 구매",
-  "confirm_credit_purchase": "{credits} 크레딧을 구매하시겠습니까? 가격: ${credits}",
+  "confirm_credit_purchase": "{credits} 크레딧을 구매하시겠습니까?",
   "purchase": "구매",
   "plan_changed_success": "플랜이 성공적으로 변경되었습니다!",
   "plan_change_failed": "플랜 변경에 실패했습니다!",

@@ -26,7 +26,7 @@ class StressBurnoutAnalysisPage extends StatelessWidget {
         } else if (vm.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('error_analyze_failed: ${vm.error}'.tr()),
+              content: Text('${vm.error}'.tr()),
               backgroundColor: Colors.red,
             ),
           );

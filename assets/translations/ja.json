@@ -241,6 +241,7 @@
   "buy_credit": "クレジットを購入",
   "analyze_op": "分析操作",
   "error_analyze_failed": "分析に失敗しました。もう一度お試しください。",
+  "error_dream_empty_text": "テキストを入力してください",
 
   "subscription_management": "サブスクリプション管理",
   "current_subscription": "現在のサブスクリプション",
@@ -284,7 +285,7 @@
   "confirm_freemium_downgrade": "フリーミアムプランに切り替えますか？",
   "confirm": "確認",
   "buy_credits_title": "{credits}クレジット購入",
-  "confirm_credit_purchase": "{credits}クレジットを購入しますか？価格: ${credits}",
+  "confirm_credit_purchase": "{credits}クレジットを購入しますか？",
   "purchase": "購入",
   "plan_changed_success": "プランが正常に変更されました！",
   "plan_change_failed": "プラン変更に失敗しました！",

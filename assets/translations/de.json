@@ -258,6 +258,7 @@
     "buy_credit": "Guthaben kaufen",
     "analyze_op": "Analyse durchführen",
     "error_analyze_failed": "Analyse fehlgeschlagen. Bitte versuche es erneut.",
+    "error_dream_empty_text": "Bitte geben Sie einen Text ein",
 
     "subscription_management": "Abonnement-Verwaltung",
     "current_subscription": "Aktuelles Abonnement",
@@ -303,7 +304,7 @@
     "cancel": "Abbrechen",
     "confirm": "Bestätigen",
     "buy_credits_title": "{credits} Kredite kaufen",
-    "confirm_credit_purchase": "Sind Sie sicher, dass Sie {credits} Kredite kaufen möchten? Preis: ${credits}",
+    "confirm_credit_purchase": "Sind Sie sicher, dass Sie {credits} Kredite kaufen möchten?",
     "purchase": "Kaufen",
     "plan_changed_success": "Tarif erfolgreich geändert!",
     "plan_change_failed": "Tarifänderung fehlgeschlagen!",

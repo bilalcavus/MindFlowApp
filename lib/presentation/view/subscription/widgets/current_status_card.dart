@@ -55,7 +55,7 @@ class CurrentStatusCard extends StatelessWidget {
                     '${provider.currentPlan?.description}'.tr(),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.7),
-                      fontSize: context.dynamicHeight(0.016),
+                      fontSize: context.dynamicHeight(0.012),
                     ),
                   ),
                 ],

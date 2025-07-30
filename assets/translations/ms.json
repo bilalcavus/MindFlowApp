@@ -260,6 +260,7 @@
   "buy_credit": "Beli Kredit",
   "analyze_op": "Operasi Analisis",
   "error_analyze_failed": "Analisis gagal. Sila cuba lagi.",
+  "error_dream_empty_text": "Sila masukkan teks",
 
   "subscription_management": "Pengurusan Langganan",
   "current_subscription": "Langganan Semasa",
@@ -303,7 +304,7 @@
   "confirm_freemium_downgrade": "Adakah anda pasti mahu beralih ke pelan Freemium?",
   "confirm": "Sahkan",
   "buy_credits_title": "Beli {credits} Kredit",
-  "confirm_credit_purchase": "Adakah anda pasti mahu membeli {credits} kredit? Harga: ${credits}",
+  "confirm_credit_purchase": "Adakah anda pasti mahu membeli {credits} kredit?",
   "purchase": "Beli",
   "plan_changed_success": "Pelan berjaya diubah!",
   "plan_change_failed": "Gagal mengubah pelan!",

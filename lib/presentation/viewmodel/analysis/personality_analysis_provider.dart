@@ -46,7 +46,7 @@ class PersonalityAnalysisProvider extends ChangeNotifier {
 
   Future<void> personalityAnalyze(String text) async {
     if (text.trim().isEmpty) {
-      error = "please enter a text";
+      error = "error_dream_empty_text".tr();
       return;
     }
 
