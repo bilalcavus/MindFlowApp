@@ -44,6 +44,7 @@ class AuthService {
       email: email,
       password: password,
     );
+    await cred.user?.sendEmailVerification();
     await cred.user?.updateDisplayName(displayName);
     await cred.user?.reload();
     final user = _firebaseAuth.currentUser;
@@ -74,10 +75,14 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final cred = await _firebaseAuth.signInWithEmailAndPassword(
+    try {
+      final cred = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+   if (!cred.user!.emailVerified) {
+      return Future.error('Please confirm your email');
+    }
     final user = cred.user;
     // Firestore'dan oku
     final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
@@ -100,6 +105,10 @@ class AuthService {
     }
     _currentUser = userModel;
     return userModel;
+    } catch (e) {
+      return Future.error('$e');
+    }
+    
   }
 
   Future<void> logout() async {

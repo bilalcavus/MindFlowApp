@@ -72,17 +72,17 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<void> handleLogin(BuildContext context) async {
     _isEmailLoading = true;
     notifyListeners();
-
     try {
       await authService.login(
         email: emailController.text.trim(),
         password: passwordController.text,
       );
+      
         print('Premium mu? ${authService.currentUser?.isPremiumUser}');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Giriş hatası: ${e.toString()}'),
+          content: Text(e.toString()),
           backgroundColor: Colors.red,
         ),
       );
@@ -264,8 +264,13 @@ class AuthenticationProvider extends ChangeNotifier {
       
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const AppNavigation()),
+          MaterialPageRoute(builder: (_) => const LoginView()),
           (route) => false,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Kayıt başarılı, lütfen e-posta adresinize gelen bağlantıyla e-posta adresinizi doğrulayın.'),
+          ),
         );
       }
     } catch (e) {

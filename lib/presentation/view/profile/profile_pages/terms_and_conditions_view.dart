@@ -13,12 +13,14 @@ class TermsAndConditionsView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Text(
-            'terms_conditions_content'.tr(),
-            style: const TextStyle(fontSize: 16),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Text(
+              'terms_conditions_content'.tr(),
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
         ),
       ),

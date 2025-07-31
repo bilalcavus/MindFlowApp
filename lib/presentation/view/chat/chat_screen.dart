@@ -90,42 +90,44 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 31, 4, 53),
-              Color(0xFF000000),
-              Color.fromARGB(255, 69, 8, 110),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 31, 4, 53),
+                Color(0xFF000000),
+                Color.fromARGB(255, 69, 8, 110),
+              ],
+            ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Consumer<ChatBotProvider>(
+                  builder: (_, provider, __) => provider.chatMessages.isEmpty
+                  ? _buildEmptyState()
+                  : ChatMessageList(scrollController: _scrollController)
+              )),
+              Consumer<ChatBotProvider>(
+              builder: (_, provider, __) =>
+                  provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
+            ),
+              Consumer<ChatBotProvider>(
+                builder: (_, provider, __) => ChatInputArea(
+                  focusNode: _focusNode,
+                  onSend: (msg) async {
+                    await _sendMessageWithCreditCheck(provider, msg);
+                    _scrollToBottom();
+                  },
+                ),
+              ),
             ],
           ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: Consumer<ChatBotProvider>(
-                builder: (_, provider, __) => provider.chatMessages.isEmpty
-                ? _buildEmptyState()
-                : ChatMessageList(scrollController: _scrollController)
-            )),
-            Consumer<ChatBotProvider>(
-            builder: (_, provider, __) =>
-                provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
-          ),
-            Consumer<ChatBotProvider>(
-              builder: (_, provider, __) => ChatInputArea(
-                focusNode: _focusNode,
-                onSend: (msg) async {
-                  await _sendMessageWithCreditCheck(provider, msg);
-                  _scrollToBottom();
-                },
-              ),
-            ),
-          ],
         ),
       ),
     );
