@@ -334,8 +334,33 @@
 "wrong_password": "Incorrect password.",
 "invalid_email": "Invalid email address.",
 "login_failed": "Login failed. Please check your credentials.",
-"empty_failed": "Please do not leave any fields empty."
-
-
+"empty_failed": "Please do not leave any fields empty.",
+"exit_failed": "Logout failed",
+"password_confirm_warning": "Please fill in all fields and make sure passwords match",
+"password_changing_success": "Password changed successfully",
+"password_changing_error": "Password change error",
+"wrong_current_password": "Current password is incorrect",
+"weak_new_password": "New password is too weak",
+"requires_recent_login": "You need to login again for this operation",
+"account_deletion_success": "Your account has been successfully deleted",
+"account_deletion_error": "Account deletion error",
+"wrong_password_for_deletion": "Incorrect password",
+"requires_recent_login_for_deletion": "You need to login again for this operation",
+"user_session_not_found": "User session not found",
+"network_error": "Network connection error. Please check your connection.",
+"account_exists_different_credential": "This email address is registered with a different method.",
+"invalid_credential": "Invalid credentials.",
+"operation_not_allowed": "Google Sign-In is not enabled.",
+"user_disabled": "User account is disabled.",
+"user_not_found_google": "User not found.",
+"too_many_requests": "Too many attempts. Please try again later.",
+"password_reset_error": "Password reset error",
+"password_reset_error_with_details": "Password reset error: {error}",
+"clear_history": "Clear History",
+"clear_history_confirmation": "Are you sure you want to delete all analysis history in this category?\n\nThis action cannot be undone.",
+"history_cleared_success": "✅ Analysis history cleared",
+"history_clear_error": "❌ Error: {error}",
+"clear": "Clear",
+"loading_credit_info": "Loading credit information..."
 
 }

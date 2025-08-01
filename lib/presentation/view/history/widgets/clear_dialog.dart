@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 void showClearDialog(BuildContext context, Future<void> Function() onClear) {
@@ -5,15 +6,12 @@ void showClearDialog(BuildContext context, Future<void> Function() onClear) {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 25, 14, 45),
-      title: const Text('Geçmişi Temizle'),
-      content: const Text(
-        'Bu kategorideki tüm analiz geçmişini silmek istediğinizden emin misiniz?\n\n'
-        'Bu işlem geri alınamaz.',
-      ),
+      title: Text('clear_history'.tr()),
+      content: Text('clear_history_confirmation'.tr()),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('İptal'),
+          child: Text('cancel'.tr()),
         ),
         TextButton(
           onPressed: () async {
@@ -22,19 +20,19 @@ void showClearDialog(BuildContext context, Future<void> Function() onClear) {
               await onClear();
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('✅ Analiz geçmişi temizlendi')),
+                  SnackBar(content: Text('history_cleared_success'.tr())),
                 );
               }
             } catch (e) {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('❌ Hata: $e'), backgroundColor: Colors.red),
+                  SnackBar(content: Text('history_clear_error'.tr(args: [e.toString()])), backgroundColor: Colors.red),
                 );
               }
             }
           },
           style: TextButton.styleFrom(foregroundColor: Colors.red),
-          child: const Text('Temizle'),
+          child: Text('clear'.tr()),
         ),
       ],
     ),

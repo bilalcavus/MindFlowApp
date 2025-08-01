@@ -24,9 +24,9 @@ class CreditIndicatorWidget extends StatelessWidget {
         if (credits == null) {
           return Container(
             padding: padding,
-            child: const Text(
-              'Kredi bilgisi yükleniyor...',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+            child: Text(
+              'loading_credit_info'.tr(),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
           );
         }
@@ -141,7 +141,7 @@ class PremiumBadgeWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'Freemium',
+                    'freemium'.tr(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: size * 0.6,

@@ -72,7 +72,7 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<void> handleLogin(BuildContext context) async {
     if(emailController.text.isEmpty || passwordController.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen boş alan bırakmayınız.'), backgroundColor: Colors.red)
+        SnackBar(content: Text('empty_failed'.tr()), backgroundColor: Colors.red)
       );
     }
     _isEmailLoading = true;
@@ -106,7 +106,7 @@ class AuthenticationProvider extends ChangeNotifier {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Çıkış hatası: ${e.toString()}'),
+            content: Text('exit_failed'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -120,8 +120,8 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<void> handleChangePassword(BuildContext context) async {
     if (!validatePasswordChange()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Lütfen tüm alanları doldurun ve şifrelerin eşleştiğinden emin olun'),
+        SnackBar(
+          content: Text('password_confirm_warning'.tr()),
           backgroundColor: Colors.orange,
         ),
       );
@@ -139,8 +139,8 @@ class AuthenticationProvider extends ChangeNotifier {
       
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Şifre başarıyla değiştirildi"),
+          SnackBar(
+            content: Text("password_changing_success".tr()),
             backgroundColor: Colors.green,
           )
         );
@@ -151,13 +151,13 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } on FirebaseAuthException catch (e){
       if (context.mounted) {
-        String errorMessage = "Şifre değiştirme hatası";
+        String errorMessage = "password_changing_error".tr();
         if (e.code == 'wrong-password') {
-          errorMessage = "Mevcut şifre yanlış";
+          errorMessage = "wrong_current_password".tr();
         } else if (e.code == 'weak-password') {
-          errorMessage = "Yeni şifre çok zayıf";
+          errorMessage = "weak_new_password".tr();
         } else if (e.code == 'requires-recent-login') {
-          errorMessage = "Bu işlem için tekrar giriş yapmanız gerekiyor";
+          errorMessage = "requires_recent_login".tr();
         }
         
         ScaffoldMessenger.of(context).showSnackBar(
@@ -172,7 +172,7 @@ class AuthenticationProvider extends ChangeNotifier {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Şifre değiştirme hatası: ${e.toString()}'),
+            content: Text('password_changing_error'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -224,13 +224,13 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
-        String errorMessage = "Şifre sıfırlama hatası";
+        String errorMessage = "password_reset_error".tr();
         if (e.code == 'user-not-found') {
-          errorMessage = "Bu email adresi ile kayıtlı kullanıcı bulunamadı";
+          errorMessage = "user_not_found".tr();
         } else if (e.code == 'invalid-email') {
-          errorMessage = "Geçersiz email adresi";
+          errorMessage = "invalid_email".tr();
         } else if (e.code == 'too-many-requests') {
-          errorMessage = "Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin";
+          errorMessage = "too_many_requests".tr();
         }
         
         ScaffoldMessenger.of(context).showSnackBar(
@@ -244,7 +244,7 @@ class AuthenticationProvider extends ChangeNotifier {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Şifre sıfırlama hatası: ${e.toString()}'),
+            content: Text('password_reset_error_with_details'.tr(args: [e.toString()])),
             backgroundColor: Colors.red,
           ),
         );
@@ -271,8 +271,8 @@ class AuthenticationProvider extends ChangeNotifier {
           (route) => false,
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('email_confirm_message'),
+           SnackBar(
+            content: Text('email_confirm_message'.tr()),
           ),
         );
       }
@@ -310,19 +310,19 @@ class AuthenticationProvider extends ChangeNotifier {
       if (context.mounted) {
         String errorMessage = "google_signin_failed".tr();
         
-        // Daha spesifik hata mesajları
+        // More specific error messages
         if (e.toString().contains('network')) {
-          errorMessage = 'İnternet bağlantısı hatası. Lütfen bağlantınızı kontrol edin.';
+          errorMessage = 'network_error'.tr();
         } else if (e.toString().contains('account-exists-with-different-credential')) {
-          errorMessage = 'Bu email adresi farklı bir yöntemle kayıtlı.';
+          errorMessage = 'account_exists_different_credential'.tr();
         } else if (e.toString().contains('invalid-credential')) {
-          errorMessage = 'Geçersiz kimlik bilgileri.';
+          errorMessage = 'invalid_credential'.tr();
         } else if (e.toString().contains('operation-not-allowed')) {
-          errorMessage = 'Google Sign-In etkin değil.';
+          errorMessage = 'operation_not_allowed'.tr();
         } else if (e.toString().contains('user-disabled')) {
-          errorMessage = 'Kullanıcı hesabı devre dışı.';
+          errorMessage = 'user_disabled'.tr();
         } else if (e.toString().contains('user-not-found')) {
-          errorMessage = 'Kullanıcı bulunamadı.';
+          errorMessage = 'user_not_found_google'.tr();
         }
         
         ScaffoldMessenger.of(context).showSnackBar(
@@ -347,7 +347,7 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       final user = authService.firebaseUser;
       if (user == null) {
-        throw Exception('Kullanıcı oturumu bulunamadı');
+        throw Exception('user_session_not_found'.tr());
       }
       final credential = EmailAuthProvider.credential(
         email: user.email!,
@@ -360,21 +360,21 @@ class AuthenticationProvider extends ChangeNotifier {
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Hesabınız başarıyla silindi'),
+          SnackBar(
+            content: Text('account_deletion_success'.tr()),
             backgroundColor: Colors.green,
           ),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
-        String errorMessage = "Hesap silme hatası";
+        String errorMessage = "account_deletion_error".tr();
         if (e.code == 'wrong-password') {
-          errorMessage = "Şifre yanlış";
+          errorMessage = "wrong_password_for_deletion".tr();
         } else if (e.code == 'requires-recent-login') {
-          errorMessage = "Bu işlem için tekrar giriş yapmanız gerekiyor";
+          errorMessage = "requires_recent_login_for_deletion".tr();
         } else if (e.code == 'user-not-found') {
-          errorMessage = "Kullanıcı bulunamadı";
+          errorMessage = "user_not_found".tr();
         }
         
         ScaffoldMessenger.of(context).showSnackBar(
@@ -389,7 +389,7 @@ class AuthenticationProvider extends ChangeNotifier {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Hesap silme hatası: ${e.toString()}'),
+            content: Text('account_deletion_error'.tr()),
             backgroundColor: Colors.red,
           ),
         );
