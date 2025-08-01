@@ -70,6 +70,11 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<void> handleLogin(BuildContext context) async {
+    if(emailController.text.isEmpty || passwordController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lütfen boş alan bırakmayınız.'), backgroundColor: Colors.red)
+      );
+    }
     _isEmailLoading = true;
     notifyListeners();
     try {
@@ -77,8 +82,6 @@ class AuthenticationProvider extends ChangeNotifier {
         email: emailController.text.trim(),
         password: passwordController.text,
       );
-      
-        print('Premium mu? ${authService.currentUser?.isPremiumUser}');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -86,7 +89,7 @@ class AuthenticationProvider extends ChangeNotifier {
           backgroundColor: Colors.red,
         ),
       );
-      rethrow;
+      // rethrow;
     } finally {
       emailController.clear();
       passwordController.clear();

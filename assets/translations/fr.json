@@ -330,6 +330,12 @@
   "exit_app_title": "Quitter l’application",
   "exit_app_warning": "Êtes-vous sûr de vouloir quitter l’application ?",
   "yes": "Oui",
-  "no": "Non"
+  "no": "Non",
+  "user_not_found": "Aucun utilisateur trouvé avec cette adresse e‑mail.",
+"wrong_password": "Mot de passe incorrect.",
+"invalid_email": "Adresse e‑mail invalide.",
+"login_failed": "Échec de la connexion. Veuillez vérifier vos informations.",
+"empty_failed": "Veuillez ne laisser aucun champ vide."
+
 
 }

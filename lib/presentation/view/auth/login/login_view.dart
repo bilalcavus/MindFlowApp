@@ -34,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 const CustomLogo(),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.07), vertical: context.dynamicHeight(0.04)),
+                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.07), vertical: context.dynamicHeight(0.02)),
                   margin: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.07),
@@ -63,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
                         suffixIcon: _obsecureButton(provider),
                         obscureText: provider.obsecureLoginPassword,
                         ),
-                      SizedBox(height: context.dynamicHeight(0.035)),
+                      forgetPasswordSection(context),
                       LoginButton(provider: provider, mounted: mounted),
                       SizedBox(height: context.dynamicHeight(0.022)),
                       Row(
@@ -76,7 +76,6 @@ class _LoginViewState extends State<LoginView> {
                       SizedBox(height: context.dynamicHeight(0.022)),
                       LoginWithGoogle(provider: provider),
                       SizedBox(height: context.dynamicHeight(0.022)),
-                      forgetPasswordSection(context),
                       registerNowSection(context),
                     ],
                   ),
@@ -122,8 +121,8 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Row registerNowSection(BuildContext context) {
-    return Row(
+  Column registerNowSection(BuildContext context) {
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text('dont_have_account'.tr(), style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: context.dynamicWidth(0.035))),
@@ -146,7 +145,7 @@ class _LoginViewState extends State<LoginView> {
 
   Row forgetPasswordSection(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
           onPressed: () {

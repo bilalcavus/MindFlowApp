@@ -329,7 +329,13 @@
     "exit_app_title": "Exit App",
     "exit_app_warning": "Are you sure you want to exit the app?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "user_not_found": "No user found with this email address.",
+"wrong_password": "Incorrect password.",
+"invalid_email": "Invalid email address.",
+"login_failed": "Login failed. Please check your credentials.",
+"empty_failed": "Please do not leave any fields empty."
+
 
 
 }

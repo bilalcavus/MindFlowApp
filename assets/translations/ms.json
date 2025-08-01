@@ -326,6 +326,12 @@
   "exit_app_title": "Keluar Aplikasi",
   "exit_app_warning": "Adakah anda pasti mahu keluar dari aplikasi?",
   "yes": "Ya",
-  "no": "Tidak"
+  "no": "Tidak",
+  "user_not_found": "Tiada pengguna ditemui dengan alamat e-mel ini.",
+"wrong_password": "Kata laluan salah.",
+"invalid_email": "Alamat e-mel tidak sah.",
+"login_failed": "Log masuk gagal. Sila semak maklumat anda.",
+"empty_failed": "Sila jangan tinggalkan ruangan kosong."
+
 
 }

@@ -331,6 +331,12 @@
     "exit_app_title": "App beenden",
     "exit_app_warning": "Möchten Sie die App wirklich beenden?",
     "yes": "Ja",
-    "no": "Nein"
+    "no": "Nein",
+    "user_not_found": "Kein Benutzer mit dieser E‑Mail‑Adresse gefunden.",
+"wrong_password": "Falsches Passwort.",
+"invalid_email": "Ungültige E‑Mail‑Adresse.",
+"login_failed": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Angaben.",
+"empty_failed": "Bitte lassen Sie keine Felder leer."
+
 
 }

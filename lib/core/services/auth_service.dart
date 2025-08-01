@@ -104,8 +104,16 @@ class AuthService {
     }
     _currentUser = userModel;
     return userModel;
-    } catch (e) {
-      return Future.error('$e');
+    } on fb.FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return Future.error('user_not_found'.tr());
+      } else if(e.code == 'wrong-password'){
+        return Future.error('wrong_password'.tr());
+      } else if(e.code == 'invalid-email'){
+        return Future.error('invalid_email'.tr());
+      } else {
+        return Future.error('login_failed'.tr());
+      }
     }
     
   }

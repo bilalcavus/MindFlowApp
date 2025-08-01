@@ -328,6 +328,12 @@
   "exit_app_title": "Thoát ứng dụng",
   "exit_app_warning": "Bạn có chắc chắn muốn thoát khỏi ứng dụng không?",
   "yes": "Có",
-  "no": "Không"
+  "no": "Không",
+  "user_not_found": "Không tìm thấy người dùng với địa chỉ email này.",
+"wrong_password": "Mật khẩu không đúng.",
+"invalid_email": "Địa chỉ email không hợp lệ.",
+"login_failed": "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.",
+"empty_failed": "Vui lòng không để trống các trường."
+
 
 }

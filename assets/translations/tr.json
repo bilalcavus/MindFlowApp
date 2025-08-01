@@ -335,5 +335,10 @@
     "exit_app_title": "Uygulamadan Çıkış",
     "exit_app_warning": "Uygulamadan çıkmak istediğinize emin misiniz?",
     "yes": "Evet",
-    "no": "Hayır"
+    "no": "Hayır",
+    "user_not_found": "Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.",
+    "wrong_password": "Şifre yanlış.",
+    "invalid_email": "Geçersiz e-posta adresi.",
+    "login_failed": "Giriş başarısız. Lütfen bilgilerinizi kontrol ediniz.",
+    "empty_failed": "Lütfen boş alan bırakmayınız."
 }

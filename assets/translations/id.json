@@ -332,6 +332,12 @@
     "exit_app_title": "Keluar Aplikasi",
     "exit_app_warning": "Apakah Anda yakin ingin keluar dari aplikasi?",
     "yes": "Ya",
-    "no": "Tidak"
+    "no": "Tidak",
+    "user_not_found": "Tidak ada pengguna yang ditemukan dengan alamat email ini.",
+"wrong_password": "Kata sandi salah.",
+"invalid_email": "Alamat email tidak valid.",
+"login_failed": "Gagal masuk. Silakan periksa informasi Anda.",
+"empty_failed": "Jangan biarkan kolom kosong."
+
 
 }
