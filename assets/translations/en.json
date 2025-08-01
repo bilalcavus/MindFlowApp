@@ -193,11 +193,7 @@
     "messages": "messages",
     "Delete": "Delete",
     "save_button": "Save",
-    
-    
-
     "change_password_title": "Change Password",
-    "current_password": "Current password",
     "enter_current_password": "Enter your current password",
     "new_password": "New Password",
     "enter_new_password":"Enter your new password (at least 6 character)",
@@ -231,7 +227,8 @@
     "confirm_password_required": "Confirm password is required",
     "passwords_not_match": "Passwords do not match",
     "invalid_email_warning": "Please enter a valid email address.",
-
+    "please_confirm_email": "Please confirm your email address.",
+    "email_confirm_message": "Registration successful, please verify your email address by clicking the link sent to your inbox. If needed, check your spam folder.",
     "subscription_management": "Subscription Management",
     "current_subscription": "Current Subscription",
     "credit_status": "Credit Status",
@@ -260,7 +257,6 @@
     "ad_free": "Ad-free",
     "unlimited_analyses": "Unlimited analyses",
     "unlimited_chat": "Unlimited chat",
-    "priority_support": "Priority support",
     "advanced_features": "Advanced features",
     "upgrade_to_premium": "Upgrade to Premium",
     "select_plan": "Select Plan",
@@ -272,7 +268,6 @@
     "freemium_plan": "Freemium Plan",
     "confirm_premium_upgrade": "Are you sure you want to upgrade to Premium plan?",
     "confirm_freemium_downgrade": "Are you sure you want to switch to Freemium plan?",
-    "cancel": "Cancel",
     "confirm": "Confirm",
     "buy_credits_title": "Buy {credits} Credits",
     "confirm_credit_purchase": "Are you sure you want to buy {credits} credits?",
@@ -330,6 +325,11 @@
     "enter_ticket_title": "Enter your support request",
     "enter_ticket_body": "Please enter your request in a clear and detailed manner.",
     "ticket_sent": "Your request has been sent.",
-    "support_ticket": "Support / Complaint Request"
+    "support_ticket": "Support / Complaint Request",
+    "exit_app_title": "Exit App",
+    "exit_app_warning": "Are you sure you want to exit the app?",
+    "yes": "Yes",
+    "no": "No"
+
 
 }

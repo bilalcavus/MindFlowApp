@@ -158,7 +158,6 @@
     "chat_motivation_prompt": "Sen insanların hedeflerine ulaşmasına ve zorlukları aşmasına yardım etmeye odaklanan ilham verici bir yaşam koçu ve motivasyon mentorususn. Cesaret verme, kişisel büyüme için pratik stratejiler ve hesap verebilirlik desteği sağlıyorsun. Hedefler, zorluklar ve ilerlemeler hakkındaki konuşmalarımızı hatırlayarak kişiselleştirilmiş motivasyon sunuyor ve başarıları birlikte kutluyorsun. Cevapların oldukça kısa olsun, daha detaylı cevap öner ve eğer kullanıcı daha detaylı cevap isterse detaylı cevap ver.",
 
     "select_model": "Model Seç",
-    "cancel": "İptal",
     "model_changed": "Model değiştirildi: {model}",
     "clear_chat": "Sohbeti Temizle",
     "new_chat": "Yeni Sohbet",
@@ -198,7 +197,6 @@
     
 
     "change_password_title": "Şifre Değiştir",
-    "current_password": "Mevcut Şifre",
     "enter_current_password": "Mevcut şifrenizi girin",
     "new_password": "Yeni Şifre",
     "enter_new_password":"Yeni şifrenizi girin (en az 6 karakter)",
@@ -319,6 +317,8 @@
     "continue": "Devam et",
     "google_signin_failed": "Google ile giriş başarısız oldu. Lütfen tekrar deneyin.",
     "invalid_email_warning": "Lütfen geçerli bir e-posta adresi giriniz.",
+    "please_confirm_email": "Lütfen e-posta adresinizi doğrulayın.",
+    "email_confirm_message": "Kayıt başarılı, lütfen e-posta adresinize gelen bağlantıyla e-posta adresinizi doğrulayın. Gerekirse spam klasörünü kontrol edin.",
     "reset_password_success": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.",
     "forgot_password_title": "Şifremi Unuttum",
     "forgot_password_description": "Email adresinizi girin, şifre sıfırlama bağlantısını göndereceğiz",
@@ -331,5 +331,9 @@
     "enter_ticket_title": "Destek talebinizi giriniz",
     "enter_ticket_body": "Lütfen açıklayıcı bir şekilde talebinizi giriniz.",
     "ticket_sent": "Talebiniz gönderildi.",
-    "support_ticket": "Destek / Şikayet Talebi"
+    "support_ticket": "Destek / Şikayet Talebi",
+    "exit_app_title": "Uygulamadan Çıkış",
+    "exit_app_warning": "Uygulamadan çıkmak istediğinize emin misiniz?",
+    "yes": "Evet",
+    "no": "Hayır"
 }

@@ -213,7 +213,8 @@
   "confirm_password_required": "비밀번호 확인을 입력하세요",
   "passwords_not_match": "비밀번호가 일치하지 않습니다",
   "invalid_email_warning": "유효한 이메일 주소를 입력하세요.",
-
+  "please_confirm_email": "이메일 주소를 확인해 주세요.",
+  "email_confirm_message": "회원가입이 성공적으로 완료되었습니다. 수신된 링크를 클릭하여 이메일 주소를 인증해 주세요. 필요한 경우 스팸 폴더도 확인하세요.",
   "basic_information": "기본 정보",
   "account_information": "계정 정보",
   "login_providers": "로그인 제공자",
@@ -270,7 +271,6 @@
   "ad_free": "광고 없음",
   "unlimited_analyses": "무제한 분석",
   "unlimited_chat": "무제한 채팅",
-  "priority_support": "우선 지원",
   "advanced_features": "고급 기능",
   "active": "활성",
   "upgrade_to_premium": "프리미엄으로 업그레이드",
@@ -283,7 +283,6 @@
   "freemium_plan": "프리미엄 플랜",
   "confirm_premium_upgrade": "프리미엄 플랜으로 업그레이드하시겠습니까?",
   "confirm_freemium_downgrade": "프리미엄 플랜으로 전환하시겠습니까?",
-  "cancel": "취소",
   "confirm": "확인",
   "buy_credits_title": "{credits} 크레딧 구매",
   "confirm_credit_purchase": "{credits} 크레딧을 구매하시겠습니까?",
@@ -319,7 +318,6 @@
   "subscription_cancelled": "구독이 취소됩니다",
   "cannot_recover": "삭제 후 계정을 복구할 수 없습니다",
   "confirm_deletion": "계정 삭제 확인",
-  "current_password": "현재 비밀번호",
   "type_delete_confirmation": "확인하려면 'delete'를 입력하세요",
   "agree_to_deletion": "계정을 영구적으로 삭제하는 것에 동의합니다",
   "understand_consequences": "계정 삭제의 결과를 이해합니다",
@@ -327,5 +325,10 @@
   "final_confirmation": "최종 확인",
   "final_confirmation_message": "정말로 계정을 삭제하시겠습니까? 이 작업은 취소할 수 없으며 모든 데이터가 영구적으로 손실됩니다.",
   "cancel": "취소",
-  "deletion_error": "계정 삭제 실패: {error}"
+  "deletion_error": "계정 삭제 실패: {error}",
+  "exit_app_title": "앱 종료",
+  "exit_app_warning": "앱을 종료하시겠습니까?",
+  "yes": "예",
+  "no": "아니요"
+
 }

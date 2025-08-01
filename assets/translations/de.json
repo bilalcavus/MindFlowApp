@@ -196,7 +196,6 @@
     "save_button": "Speichern",
 
     "change_password_title": "Passwort ändern",
-    "current_password": "Aktuelles Passwort",
     "enter_current_password": "Gib dein aktuelles Passwort ein",
     "new_password": "Neues Passwort",
     "enter_new_password": "Gib dein neues Passwort ein (mindestens 6 Zeichen)",
@@ -288,7 +287,6 @@
     "ad_free": "Werbefrei",
     "unlimited_analyses": "Unbegrenzte Analysen",
     "unlimited_chat": "Unbegrenzter Chat",
-    "priority_support": "Prioritäts-Support",
     "advanced_features": "Erweiterte Funktionen",
     "active": "Aktiv",
     "upgrade_to_premium": "Zu Premium upgraden",
@@ -301,7 +299,6 @@
     "freemium_plan": "Freemium-Tarif",
     "confirm_premium_upgrade": "Sind Sie sicher, dass Sie zum Premium-Tarif wechseln möchten?",
     "confirm_freemium_downgrade": "Sind Sie sicher, dass Sie zum Freemium-Tarif wechseln möchten?",
-    "cancel": "Abbrechen",
     "confirm": "Bestätigen",
     "buy_credits_title": "{credits} Kredite kaufen",
     "confirm_credit_purchase": "Sind Sie sicher, dass Sie {credits} Kredite kaufen möchten?",
@@ -316,6 +313,8 @@
     "continue": "Weiter",
     "google_signin_failed": "Google-Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
     "invalid_email_warning": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "please_confirm_email": "Bitte bestätigen Sie Ihre E‑Mail‑Adresse.",
+    "email_confirm_message": "Registrierung erfolgreich – bitte bestätigen Sie Ihre E‑Mail‑Adresse über den Link, den Sie per E‑Mail erhalten haben. Prüfen Sie ggf. auch Ihren Spam‑Ordner.",
     "reset_password_success": "Der Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.",
     "forgot_password_title": "Passwort vergessen",
     "forgot_password_description": "Geben Sie Ihre E-Mail-Adresse ein, wir senden Ihnen einen Link zum Zurücksetzen des Passworts",
@@ -328,5 +327,10 @@
     "enter_ticket_title": "Geben Sie Ihre Support-Anfrage ein",
     "enter_ticket_body": "Bitte geben Sie Ihre Anfrage klar und ausführlich ein.",
     "ticket_sent": "Ihre Anfrage wurde gesendet.",
-    "support_ticket": "Support / Beschwerdeanfrage"
+    "support_ticket": "Support / Beschwerdeanfrage",
+    "exit_app_title": "App beenden",
+    "exit_app_warning": "Möchten Sie die App wirklich beenden?",
+    "yes": "Ja",
+    "no": "Nein"
+
 }

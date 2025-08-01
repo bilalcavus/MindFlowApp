@@ -80,11 +80,10 @@ class AuthService {
       email: email,
       password: password,
     );
-   if (!cred.user!.emailVerified) {
-      return Future.error('Please confirm your email');
+    if (!cred.user!.emailVerified) {
+      return Future.error('please_confirm_email'.tr());
     }
     final user = cred.user;
-    // Firestore'dan oku
     final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     User userModel;
     if (doc.exists) {

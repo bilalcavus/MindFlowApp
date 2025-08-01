@@ -271,7 +271,6 @@
     "ad_free": "Tanpa iklan",
     "unlimited_analyses": "Analisis tak terbatas",
     "unlimited_chat": "Chat tak terbatas",
-    "priority_support": "Dukungan prioritas",
     "advanced_features": "Fitur canggih",
     "upgrade_to_premium": "Upgrade ke Premium",
     "select_plan": "Pilih Paket",
@@ -283,7 +282,6 @@
     "freemium_plan": "Paket Freemium",
     "confirm_premium_upgrade": "Apakah Anda yakin ingin upgrade ke paket Premium?",
     "confirm_freemium_downgrade": "Apakah Anda yakin ingin beralih ke paket Freemium?",
-    "cancel": "Batal",
     "confirm": "Konfirmasi",
     "buy_credits_title": "Beli {credits} Kredit",
     "confirm_credit_purchase": "Apakah Anda yakin ingin membeli {credits} kredit?",
@@ -298,6 +296,8 @@
     "continue": "Lanjutkan",
     "google_signin_failed": "Gagal masuk dengan Google. Silakan coba lagi.",
     "invalid_email_warning": "Silakan masukkan alamat email yang valid.",
+    "please_confirm_email": "Silakan konfirmasi alamat email Anda.",
+    "email_confirm_message": "Pendaftaran berhasil, silakan verifikasi alamat email Anda melalui tautan yang dikirim. Jika perlu, periksa folder spam.",
     "reset_password_success": "Tautan pengaturan ulang kata sandi telah dikirim ke alamat email Anda.",
     "forgot_password_title": "Lupa Kata Sandi",
     "forgot_password_description": "Masukkan alamat email Anda, kami akan mengirimkan tautan pengaturan ulang kata sandi",
@@ -321,7 +321,6 @@
     "subscription_cancelled": "Langganan Anda akan dibatalkan",
     "cannot_recover": "Anda tidak dapat memulihkan akun setelah dihapus",
     "confirm_deletion": "Konfirmasi Penghapusan Akun",
-    "current_password": "Kata Sandi Saat Ini",
     "type_delete_confirmation": "Ketik 'delete' untuk mengkonfirmasi",
     "agree_to_deletion": "Saya setuju untuk menghapus akun saya secara permanen",
     "understand_consequences": "Saya memahami konsekuensi penghapusan akun",
@@ -329,5 +328,10 @@
     "final_confirmation": "Konfirmasi Akhir",
     "final_confirmation_message": "Apakah Anda benar-benar yakin ingin menghapus akun Anda? Tindakan ini tidak dapat dibatalkan dan semua data Anda akan hilang secara permanen.",
     "cancel": "Batal",
-    "deletion_error": "Penghapusan akun gagal: {error}"
+    "deletion_error": "Penghapusan akun gagal: {error}",
+    "exit_app_title": "Keluar Aplikasi",
+    "exit_app_warning": "Apakah Anda yakin ingin keluar dari aplikasi?",
+    "yes": "Ya",
+    "no": "Tidak"
+
 }

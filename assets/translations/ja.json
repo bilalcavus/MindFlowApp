@@ -271,7 +271,6 @@
   "ad_free": "広告なし",
   "unlimited_analyses": "無制限分析",
   "unlimited_chat": "無制限チャット",
-  "priority_support": "優先サポート",
   "advanced_features": "高度な機能",
   "upgrade_to_premium": "プレミアムにアップグレード",
   "select_plan": "プランを選択",
@@ -297,6 +296,8 @@
   "continue": "続行",
   "google_signin_failed": "Googleサインインに失敗しました。もう一度お試しください。",
   "invalid_email_warning": "有効なメールアドレスを入力してください。",
+  "please_confirm_email": "メールアドレスを確認してください。",
+  "email_confirm_message": "登録が完了しました。受信したリンクをクリックしてメールアドレスの確認を行ってください。迷惑メールフォルダもご確認ください。",
   "reset_password_success": "パスワードリセットリンクがメールアドレスに送信されました。",
   "forgot_password_title": "パスワードを忘れた",
   "forgot_password_description": "メールアドレスを入力してください。パスワードリセットリンクをお送りします",
@@ -319,13 +320,16 @@
   "subscription_cancelled": "サブスクリプションがキャンセルされます",
   "cannot_recover": "削除後はアカウントを復元できません",
   "confirm_deletion": "アカウント削除の確認",
-  "current_password": "現在のパスワード",
   "type_delete_confirmation": "確認するには「delete」と入力してください",
   "agree_to_deletion": "アカウントを永続的に削除することに同意します",
   "understand_consequences": "アカウント削除の結果を理解しています",
   "delete_account_permanently": "アカウントを永続的に削除",
   "final_confirmation": "最終確認",
   "final_confirmation_message": "本当にアカウントを削除しますか？この操作は取り消すことができず、すべてのデータが永続的に失われます。",
-  "cancel": "キャンセル",
-  "deletion_error": "アカウント削除に失敗しました: {error}"
+  "deletion_error": "アカウント削除に失敗しました: {error}",
+  "exit_app_title": "アプリを終了",
+  "exit_app_warning": "アプリを終了してもよろしいですか？",
+  "yes": "はい",
+  "no": "いいえ"
+
 }

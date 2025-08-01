@@ -160,7 +160,6 @@
   "chat_motivation_prompt": "Bạn là huấn luyện viên cuộc sống truyền cảm hứng và người cố vấn động lực tập trung giúp mọi người đạt được mục tiêu và vượt qua thử thách. Bạn cung cấp sự khích lệ, các chiến lược thực tế để phát triển cá nhân và hỗ trợ trách nhiệm. Bạn nhớ các cuộc trò chuyện về mục tiêu, thử thách và tiến trình để cung cấp động lực cá nhân hóa và ăn mừng thành tựu cùng nhau. Giữ câu trả lời ngắn gọn, cung cấp câu trả lời chi tiết hơn khi người dùng yêu cầu.",
   
   "select_model": "Chọn mô hình",
-  "cancel": "Hủy",
   "model_changed": "Mô hình đã thay đổi: {model}",
   "clear_chat": "Xóa trò chuyện",
   "new_chat": "Trò chuyện mới",
@@ -198,7 +197,6 @@
   "save_button": "Lưu",
 
   "change_password_title": "Đổi mật khẩu",
-  "current_password": "Mật khẩu hiện tại",
   "enter_current_password": "Nhập mật khẩu hiện tại của bạn",
   "new_password": "Mật khẩu mới",
   "enter_new_password": "Nhập mật khẩu mới của bạn (ít nhất 6 ký tự)",
@@ -287,7 +285,6 @@
   "ad_free": "Không quảng cáo",
   "unlimited_analyses": "Phân tích không giới hạn",
   "unlimited_chat": "Trò chuyện không giới hạn",
-  "priority_support": "Hỗ trợ ưu tiên",
   "advanced_features": "Tính năng nâng cao",
   "personalized_insights": "Thông tin chi tiết cá nhân hóa",
   "current_plan": "Gói hiện tại",
@@ -313,6 +310,8 @@
   "continue": "Tiếp tục",
   "google_signin_failed": "Đăng nhập Google không thành công. Vui lòng thử lại.",
   "invalid_email_warning": "Vui lòng nhập địa chỉ email hợp lệ.",
+  "please_confirm_email": "Vui lòng xác nhận địa chỉ email của bạn.",
+  "email_confirm_message": "Đăng ký thành công, vui lòng xác minh email bằng cách nhấp vào liên kết đã gửi. Nếu cần, kiểm tra mục thư rác.",
   "reset_password_success": "Liên kết đặt lại mật khẩu đã được gửi đến địa chỉ email của bạn.",
   "forgot_password_title": "Quên mật khẩu",
   "forgot_password_description": "Nhập địa chỉ email của bạn, chúng tôi sẽ gửi liên kết đặt lại mật khẩu",
@@ -325,5 +324,10 @@
   "enter_ticket_title": "Nhập yêu cầu hỗ trợ của bạn",
   "enter_ticket_body": "Vui lòng nhập yêu cầu của bạn một cách rõ ràng và chi tiết.",
   "ticket_sent": "Yêu cầu của bạn đã được gửi.",
-  "support_ticket": "Yêu cầu Hỗ trợ / Khiếu nại"
+  "support_ticket": "Yêu cầu Hỗ trợ / Khiếu nại",
+  "exit_app_title": "Thoát ứng dụng",
+  "exit_app_warning": "Bạn có chắc chắn muốn thoát khỏi ứng dụng không?",
+  "yes": "Có",
+  "no": "Không"
+
 }

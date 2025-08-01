@@ -269,7 +269,7 @@ class AuthenticationProvider extends ChangeNotifier {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Kayıt başarılı, lütfen e-posta adresinize gelen bağlantıyla e-posta adresinizi doğrulayın.'),
+            content: Text('email_confirm_message'),
           ),
         );
       }

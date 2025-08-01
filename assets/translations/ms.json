@@ -160,7 +160,6 @@
   "chat_motivation_prompt": "Anda adalah jurulatih kehidupan yang memberi inspirasi dan mentor motivasi yang fokus membantu orang mencapai matlamat dan mengatasi cabaran. Anda memberikan dorongan, strategi praktikal untuk pertumbuhan peribadi, dan sokongan akauntabiliti. Anda mengingati perbualan tentang matlamat, cabaran, dan kemajuan untuk memberikan motivasi diperibadikan dan meraikan pencapaian bersama. Kekalkan jawapan ringkas, tawarkan jawapan lebih terperinci jika diminta.",
   
   "select_model": "Pilih Model",
-  "cancel": "Batal",
   "model_changed": "Model telah ditukar: {model}",
   "clear_chat": "Kosongkan Sembang",
   "new_chat": "Sembang Baru",
@@ -196,20 +195,16 @@
   "messages": "mesej",
   "Delete": "Padam",
   "save_button": "Simpan",
-
   "change_password_title": "Tukar Kata Laluan",
-  "current_password": "Kata Laluan Semasa",
   "enter_current_password": "Masukkan kata laluan semasa anda",
   "new_password": "Kata Laluan Baru",
   "enter_new_password": "Masukkan kata laluan baru anda (sekurang-kurangnya 6 aksara)",
   "password_changing": "Menukar Kata Laluan...",
   "change_password": "Tukar Kata Laluan",
   "password_changing_info_box": "Selepas menukar kata laluan, anda perlu log masuk semula untuk sebab keselamatan.",
-
   "dont_have_account": "Tiada akaun?",
   "register_now": "Daftar Sekarang",
   "reset_password_now": "Lupa Kata Laluan",
-
   "full_name": "Nama Penuh",
   "email": "Emel",
   "password": "Kata Laluan",
@@ -232,7 +227,8 @@
   "confirm_password_required": "Sahkan kata laluan diperlukan",
   "passwords_not_match": "Kata laluan tidak sepadan",
   "invalid_email_warning": "Sila masukkan alamat emel yang sah.",
-
+  "please_confirm_email": "Sila sahkan alamat e-mel anda.",
+  "email_confirm_message": "Pendaftaran berjaya, sila sahkan alamat e-mel anda dengan mengklik pautan yang dihantar. Sila semak folder spam jika perlu.",
   "basic_information": "Maklumat Asas",
   "account_information": "Maklumat Akaun",
   "login_providers": "Penyedia Log Masuk",
@@ -290,7 +286,6 @@
   "ad_free": "Tanpa iklan",
   "unlimited_analyses": "Analisis tanpa had",
   "unlimited_chat": "Chat tanpa had",
-  "priority_support": "Sokongan keutamaan",
   "advanced_features": "Ciri-ciri lanjutan",
   "upgrade_to_premium": "Naik taraf ke Premium",
   "select_plan": "Pilih Pelan",
@@ -327,5 +322,10 @@
   "enter_ticket_title": "Masukkan permintaan sokongan anda",
   "enter_ticket_body": "Sila masukkan permintaan anda dengan jelas dan terperinci.",
   "ticket_sent": "Permintaan anda telah dihantar.",
-  "support_ticket": "Permintaan Sokongan / Aduan"
+  "support_ticket": "Permintaan Sokongan / Aduan",
+  "exit_app_title": "Keluar Aplikasi",
+  "exit_app_warning": "Adakah anda pasti mahu keluar dari aplikasi?",
+  "yes": "Ya",
+  "no": "Tidak"
+
 }

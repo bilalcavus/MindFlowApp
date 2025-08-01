@@ -15,8 +15,11 @@ import 'package:mind_flow/presentation/view/profile/profile_pages/support_ticket
 import 'package:mind_flow/presentation/view/profile/profile_pages/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
 import 'package:mind_flow/presentation/widgets/screen_background.dart';
+import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
+import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -32,56 +35,67 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     final user = _authService.firebaseUser;
-    return Scaffold(
-      body: ScreenBackground(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.dynamicWidth(0.05), 
-                      vertical: context.dynamicHeight(0.0125)
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(context.dynamicWidth(0.01)),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
+    final navigationController = context.read<NavigationProvider>();
+    return WillPopScope(
+      onWillPop: () async {
+        if(navigationController.currentIndex != 0){
+          navigationController.goBack();
+          return false;
+        }
+        bool? shouldExit = await showExitDialog(context);
+        return shouldExit ?? false;
+      },
+      child: Scaffold(
+        body: ScreenBackground(
+          child: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.dynamicWidth(0.05), 
+                        vertical: context.dynamicHeight(0.0125)
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(context.dynamicWidth(0.01)),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
+                              ),
+                            ),
+                            child: UserAvatar(user: user)
+                          ),
+                          SizedBox(height: context.dynamicHeight(0.01)),
+                          Text(
+                            _authService.firebaseUser?.displayName ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: context.dynamicHeight(0.03),
                             ),
                           ),
-                          child: UserAvatar(user: user)
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.01)),
-                        Text(
-                          _authService.firebaseUser?.displayName ?? '',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: context.dynamicHeight(0.03),
+                          SizedBox(height: context.dynamicHeight(0.01)),
+                          Text(
+                            _authService.firebaseUser?.email ?? '',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.7),
+                              fontSize: context.dynamicHeight(0.02),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.01)),
-                        Text(
-                          _authService.firebaseUser?.email ?? '',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: context.dynamicHeight(0.02),
-                          ),
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.02)),
-                        _buildSettingsList(),
-                      ],
+                          SizedBox(height: context.dynamicHeight(0.02)),
+                          _buildSettingsList(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
