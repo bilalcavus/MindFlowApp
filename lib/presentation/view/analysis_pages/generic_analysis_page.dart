@@ -37,8 +37,20 @@ class GenericAnalysisPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
-        backgroundColor: Colors.transparent
+        title: Text(title, style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize
+        )),
+        actions: [
+          Consumer<SubscriptionProvider>(
+            builder: (context, provider, child) {
+              final credits = provider.userCredits;
+              return Padding(
+                padding: EdgeInsets.only(right: context.dynamicWidth(.03)),
+                child: Text('🪙 ${credits?.remainingCredits} ${'credit'.tr()}'),
+              );
+            },
+          )
+        ],
       ),
       body: Container(
         width: double.infinity,

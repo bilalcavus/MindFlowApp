@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeHeader extends StatelessWidget {
   final AuthService authService;
@@ -29,6 +31,12 @@ class HomeHeader extends StatelessWidget {
               Text(
                 "what_you_want".tr(),
                 style: theme.textTheme.titleSmall?.copyWith(color: Colors.grey[300]),
+              ),
+              Consumer<SubscriptionProvider>(
+                builder: (context, provider, child) {
+                  final credits = provider.userCredits;
+                  return Text('🪙 ${credits?.remainingCredits} ${'remaining_credit'.tr()}', style: theme.textTheme.bodySmall,);
+                },
               ),
             ],
           ),

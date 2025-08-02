@@ -12,7 +12,7 @@ class SupportTicketView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("support_ticket".tr())),
+      appBar: AppBar(title: Text("support_ticket".tr(), style: Theme.of(context).textTheme.bodyLarge), centerTitle: true,),
       body: ScreenBackground(
         child: Padding(
           padding: EdgeInsets.all(context.dynamicHeight(0.03)),

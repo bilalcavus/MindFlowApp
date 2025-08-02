@@ -28,7 +28,7 @@ class _AccountPasswordViewState extends State<AccountPasswordView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('change_password_title'.tr()),
+        title: Text('change_password_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
       body: ScreenBackground(

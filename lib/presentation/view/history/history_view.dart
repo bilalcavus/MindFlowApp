@@ -163,9 +163,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text("analysis_history".tr(),
-              style: Theme.of(context).textTheme.bodyLarge),
+            style: Theme.of(context).textTheme.bodyLarge),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 22, 5, 63),
         ),
         body: ScreenBackground(
           child: Column(

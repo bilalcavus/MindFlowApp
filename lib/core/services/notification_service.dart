@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -19,6 +22,7 @@ class NotificationService {
       // iOS için ek ayarlar eklenebilir
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await requestPermission();
 
     FirebaseMessaging.onMessage.listen(_onMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenedApp);
@@ -48,8 +52,6 @@ class NotificationService {
         ),
       );
     }
-    debugPrint('Bildirim geldi: \\${notification?.title}');
-    debugPrint('Bildirim içeriği: \\${notification?.body}');
   }
 
   void _onMessageOpenedApp(RemoteMessage message) {
@@ -58,7 +60,23 @@ class NotificationService {
   }
 
   Future<void> requestPermission() async {
-    await FirebaseMessaging.instance.requestPermission();
+    if(Platform.isIOS){
+      NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else if(Platform.isAndroid) {
+      if (await Permission.notification.isDenied) {
+        final status = await Permission.notification.request();
+        if(status.isGranted){
+          debugPrint('Bildirim izni verildi');
+        } else {
+          debugPrint('Bildirim izni reddedildi');
+        }
+      }
+    }
+    // await FirebaseMessaging.instance.requestPermission();
   }
 
   Future<String?> getFcmToken() async {

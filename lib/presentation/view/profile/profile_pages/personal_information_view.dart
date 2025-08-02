@@ -29,11 +29,9 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('personal_information'.tr()),
+        title: Text('personal_information'.tr(), style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: Colors.white,
       ),
       body: ScreenBackground(
         child: SafeArea(

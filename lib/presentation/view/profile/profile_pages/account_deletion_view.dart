@@ -40,9 +40,9 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
       appBar: AppBar(
         title: Text(
           'delete_account'.tr(),
-          style: const TextStyle(color: Colors.white),
+            style: Theme.of(context).textTheme.bodyLarge,
         ),
-        backgroundColor: Colors.transparent,
+        centerTitle: true,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),

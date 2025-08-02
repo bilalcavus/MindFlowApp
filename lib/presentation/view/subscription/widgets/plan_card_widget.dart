@@ -21,13 +21,13 @@ class PlanCardWidget extends StatelessWidget {
       padding: EdgeInsets.all(context.dynamicWidth(0.04)),
       decoration: BoxDecoration(
         color: isPremium 
-            ? Colors.amber.withOpacity(0.2)
+            ? Colors.pink.withOpacity(0.3)
             : Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
         border: Border.all(
           color: isCurrent 
               ? Colors.green 
-              : Colors.white.withOpacity(0.2),
+              : Colors.transparent,
           width: isCurrent ? 2 : 1,
         ),
       ),
