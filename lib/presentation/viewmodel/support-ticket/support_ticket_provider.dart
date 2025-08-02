@@ -16,7 +16,7 @@ class SupportTicketProvider extends ChangeNotifier {
   String? _error;
   String? get error => _error;
 
-  List<SupportTicketModel> _tickets = [];
+  final List<SupportTicketModel> _tickets = [];
   List<SupportTicketModel> get tickets => _tickets;
 
     void _setLoading(bool loading) {
