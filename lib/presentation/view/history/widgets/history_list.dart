@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 
 class HistoryList extends StatelessWidget {
@@ -36,21 +35,11 @@ class HistoryList extends StatelessWidget {
                   fontSize: context.dynamicHeight(0.018),
                 ),
               ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Iconsax.refresh,
-                        size: context.dynamicHeight(0.025)),
-                    onPressed: () => onRefresh(),
-                    tooltip: 'refresh'.tr(),
-                  ),
-                  IconButton(
-                    icon: Icon(HugeIcons.strokeRoundedDelete01,
-                        size: context.dynamicHeight(0.025)),
-                    onPressed: onClear,
-                    tooltip: 'clear_history'.tr(),
-                  ),
-                ],
+              IconButton(
+                icon: Icon(HugeIcons.strokeRoundedDelete01,
+                    size: context.dynamicHeight(0.025)),
+                onPressed: onClear,
+                tooltip: 'clear_history'.tr(),
               ),
             ],
           ),
