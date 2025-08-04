@@ -1,3 +1,4 @@
+import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,10 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LeakTracking.start();
+  final config = ClarityConfig(
+    projectId: "spl9m3hxrx",
+    logLevel : LogLevel.None
+  );
   await dotenv.load(fileName: "assets/config/.env");
   await EasyLocalization.ensureInitialized();
   try {
@@ -78,28 +83,31 @@ void main() async {
     final locale = savedLocale != null ? Locale(savedLocale) : startLocale;
 
     runApp(
-      EasyLocalization(
-        supportedLocales: supportedLocales,
-        path: 'assets/translations',
-        fallbackLocale: const Locale('en'),
-        saveLocale: true,
-        startLocale: locale,
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => getIt<EmotionAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<PersonalityAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<HabitAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<MentalAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<StressAnalysisProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
-            ChangeNotifierProvider(create: (_) => getIt<SupportTicketProvider>()),
-            ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
-          ],
-          child: const MyApp(),
+      ClarityWidget(
+        clarityConfig: config,
+        app: EasyLocalization(
+          supportedLocales: supportedLocales,
+          path: 'assets/translations',
+          fallbackLocale: const Locale('en'),
+          saveLocale: true,
+          startLocale: locale,
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => getIt<EmotionAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<DreamAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<PersonalityAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<HabitAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<MentalAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<StressAnalysisProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<NavigationProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<ChatBotProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
+              ChangeNotifierProvider(create: (_) => getIt<SupportTicketProvider>()),
+              ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
+            ],
+            child: const MyApp(),
+          ),
         ),
       ),
     );
