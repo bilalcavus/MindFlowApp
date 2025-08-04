@@ -258,10 +258,6 @@ We welcome contributions! Please follow these steps:
 - Write **tests** for critical functionality
 - Ensure **localization** for new strings
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
 ## 🙏 Acknowledgments
 
 - **OpenRouter** - Multi-model AI API
@@ -271,7 +267,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - **Google** - Gemini models
 - **Meta** - Llama models
 
-## 📞 Support
+## Support
 
 - **Email**: infomindflow1@gmail.com
 
@@ -280,8 +276,5 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 **Made with by the Mind Flow Team**
 
 *Your AI-powered mental wellness companion* 🧠✨
-
-[![GitHub stars](https://img.shields.io/github/stars/bilalcavus/mind_flow?style=social)](https://github.com/bilalcavus/mind_flow)
-[![GitHub forks](https://img.shields.io/github/forks/bilalcavus/mind_flow?style=social)](https://github.com/bilalcavus/mind_flow)
 
 </div>
