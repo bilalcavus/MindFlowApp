@@ -80,9 +80,12 @@ class AuthService {
       email: email,
       password: password,
     );
+    
     if (!cred.user!.emailVerified) {
+      await _firebaseAuth.signOut();
       return Future.error('please_confirm_email'.tr());
     }
+    
     final user = cred.user;
     final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     User userModel;

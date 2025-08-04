@@ -857,12 +857,18 @@ Future<String?> getUserPreference(String userId, String key) async {
   Future<Map<String, int>> getDatabaseInfo() async {
     final db = await database;
     
-    final tables = ['users', 'user_entries', 'emotion_analyses', 'dream_analyses', 'chat_messages', 'languages', 'personality_analyses', 'habit_analyses', 'mental_analyses', 'stress_analyses'];
+    // Sadece mevcut tabloları al
+    final allTables = await getAllTables();
     final info = <String, int>{};
     
-    for (final table in tables) {
-      final result = await db.rawQuery('SELECT COUNT(*) as count FROM $table');
-      info[table] = result.first['count'] as int;
+    for (final table in allTables) {
+      try {
+        final result = await db.rawQuery('SELECT COUNT(*) as count FROM $table');
+        info[table] = result.first['count'] as int;
+      } catch (e) {
+        debugPrint('⚠️ $table tablosu sorgulanırken hata: $e');
+        info[table] = 0;
+      }
     }
     
     return info;
@@ -879,10 +885,155 @@ Future<List<Map<String, dynamic>>> getTableContent(String tableName) async {
   return await db.query(tableName);
 }
 
-Future<List<Map<String, dynamic>>> getTableSchema(String tableName) async {
-  final db = await database;
-  final result = await db.rawQuery('PRAGMA table_info($tableName)');
-  return result;
-}
+  Future<List<Map<String, dynamic>>> getTableSchema(String tableName) async {
+    final db = await database;
+    final result = await db.rawQuery('PRAGMA table_info($tableName)');
+    return result;
+  }
+
+  Future<void> createMissingTables() async {
+    final db = await database;
+    
+    // Tabloların zaten oluşturulup oluşturulmadığını kontrol et
+    final tablesCreated = await getUserPreference('system', 'tables_created');
+    if (tablesCreated == 'true') {
+      debugPrint('✅ Tüm tablolar zaten oluşturulmuş, tekrar oluşturulmayacak');
+      return;
+    }
+    
+    final allTables = await getAllTables();
+    
+    // Eksik tabloları kontrol et ve oluştur
+    final requiredTables = [
+      'personality_analyses',
+      'habit_analyses', 
+      'mental_analyses',
+      'stress_analyses'
+    ];
+    
+    bool anyTableCreated = false;
+    
+    for (final tableName in requiredTables) {
+      if (!allTables.contains(tableName)) {
+        debugPrint('🔧 Eksik tablo oluşturuluyor: $tableName');
+        await _createTableIfMissing(db, tableName);
+        anyTableCreated = true;
+      }
+    }
+    
+    // Eğer herhangi bir tablo oluşturulduysa, bunu kaydet
+    if (anyTableCreated) {
+      await saveUserPreference('system', 'tables_created', 'true', DateTime.now().toIso8601String());
+      debugPrint('✅ Tablo oluşturma durumu kaydedildi');
+    }
+  }
+
+  Future<void> _createTableIfMissing(Database db, String tableName) async {
+    try {
+      switch (tableName) {
+        case 'personality_analyses':
+          await db.execute('''
+            CREATE TABLE personality_analyses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id TEXT NOT NULL,
+              entry_id INTEGER NOT NULL,
+              analysis_type TEXT NOT NULL DEFAULT 'personality',
+              personality_score_json TEXT NOT NULL,
+              dominant_trait TEXT NOT NULL,
+              secondary_traits_json TEXT,
+              summary TEXT NOT NULL,
+              advice TEXT NOT NULL,
+              ai_reply TEXT NOT NULL,
+              model_used TEXT NOT NULL,
+              analysis_date TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+              FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+            )
+          ''');
+          await db.execute('CREATE INDEX idx_personality_analyses_user_id ON personality_analyses (user_id, entry_id)');
+          break;
+          
+        case 'habit_analyses':
+          await db.execute('''
+            CREATE TABLE habit_analyses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id TEXT NOT NULL,
+              entry_id INTEGER NOT NULL,
+              analysis_type TEXT NOT NULL DEFAULT 'habit',
+              habits_json TEXT NOT NULL,
+              positive_habits_json TEXT NOT NULL,
+              negative_habits_json TEXT NOT NULL,
+              habit_scores_json TEXT NOT NULL,
+              lifestyle_category TEXT NOT NULL,
+              summary TEXT NOT NULL,
+              advice TEXT NOT NULL,
+              ai_reply TEXT,
+              model_used TEXT NOT NULL,
+              analysis_date TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+              FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+            )
+          ''');
+          await db.execute('CREATE INDEX idx_habit_analyses_user_id ON habit_analyses (user_id, entry_id)');
+          break;
+          
+        case 'mental_analyses':
+          await db.execute('''
+            CREATE TABLE mental_analyses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id TEXT NOT NULL,
+              entry_id INTEGER NOT NULL,
+              analysis_type TEXT NOT NULL DEFAULT 'mental',
+              mental_scores_json TEXT NOT NULL,
+              cognitive_patterns TEXT NOT NULL,
+              mental_challenges TEXT NOT NULL,
+              themes TEXT NOT NULL,
+              summary TEXT NOT NULL,
+              advice TEXT NOT NULL,
+              ai_reply TEXT,
+              mind_map TEXT NOT NULL,
+              model_used TEXT NOT NULL,
+              analysis_date TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+              FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+            )
+          ''');
+          await db.execute('CREATE INDEX idx_mental_analyses_user_id ON mental_analyses (user_id, entry_id)');
+          break;
+          
+        case 'stress_analyses':
+          await db.execute('''
+            CREATE TABLE stress_analyses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id TEXT NOT NULL,
+              entry_id INTEGER NOT NULL,
+              analysis_type TEXT NOT NULL DEFAULT 'stress',
+              stress_level DOUBLE NOT NULL,
+              burnout_risk DOUBLE NOT NULL,
+              stress_factors TEXT NOT NULL,
+              coping_strategies TEXT NOT NULL,
+              risk_scores_json TEXT NOT NULL,
+              summary TEXT NOT NULL,
+              advice TEXT NOT NULL,
+              ai_reply TEXT,
+              mind_map TEXT NOT NULL,
+              model_used TEXT NOT NULL,
+              analysis_date TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+              FOREIGN KEY (entry_id) REFERENCES user_entries (id) ON DELETE CASCADE
+            )
+          ''');
+          await db.execute('CREATE INDEX idx_stress_analyses_user_id ON stress_analyses (user_id, entry_id)');
+          break;
+      }
+      debugPrint('✅ $tableName tablosu başarıyla oluşturuldu');
+    } catch (e) {
+      debugPrint('❌ $tableName tablosu oluşturulurken hata: $e');
+    }
+  }
 
 } 

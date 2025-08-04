@@ -12,7 +12,7 @@ import 'package:mind_flow/core/theme/app_theme.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
-import 'package:mind_flow/presentation/view/start/splash_view.dart';
+import 'package:mind_flow/presentation/view/splash/splash_view.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/habit_analysis_provider.dart';
@@ -132,8 +132,31 @@ Future<void> _initializeDatabase() async {
     final dbService = getIt<DatabaseService>();
     await dbService.database;
     debugPrint('✅ Local database initialize edildi');
+    
+    // Eksik tabloları kontrol et ve oluştur (sadece bir kez)
+    await dbService.createMissingTables();
+    
+    // Veritabanı tablo bilgilerini göster
+    await _showDatabaseInfo(dbService);
   } catch (e) {
     debugPrint('❌ Veritabanı başlatma hatası: $e');
+  }
+}
+
+Future<void> _showDatabaseInfo(DatabaseService dbService) async {
+  try {
+    // Tüm tabloları al
+    final allTables = await dbService.getAllTables();
+    debugPrint('📊 Veritabanı Tabloları: ${allTables.join(', ')}');
+    
+    // Tablo bilgilerini al
+    final dbInfo = await dbService.getDatabaseInfo();
+    debugPrint('📈 Tablo Kayıt Sayıları:');
+    dbInfo.forEach((tableName, count) {
+      debugPrint('   • $tableName: $count kayıt');
+    });
+  } catch (e) {
+    debugPrint('❌ Veritabanı bilgileri alınırken hata: $e');
   }
 }
 

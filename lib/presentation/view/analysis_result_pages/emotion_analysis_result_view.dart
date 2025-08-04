@@ -119,19 +119,12 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (result.summary.isNotEmpty)
-                    _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
-                    
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildSectionCard(
-                    'main_themes_title'.tr(),
-                    result.themes.join(', '),
-                    Colors.green,
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.05)),
-                  SizedBox(
-                  height: context.dynamicHeight(0.3),
-                  child: RadarChartWidget(result: result)),
+              if (result.summary.isNotEmpty)
+                _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
+              SizedBox(height: context.dynamicHeight(0.02)),
+              SizedBox(
+                height: context.dynamicHeight(0.3),
+                child: RadarChartWidget(result: result)),
               SizedBox(height: context.dynamicHeight(0.02)),
               LiquidGlassCard(children: [
                 ...result.emotions.entries.map((e) => Padding(

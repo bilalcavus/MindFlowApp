@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
@@ -119,32 +120,32 @@ class GenericAnalysisPage extends StatelessWidget {
     );
   }
 
-  Future<void> _analyzeWithCreditCheck(BuildContext context) async {
-    final authService = AuthService();
-    
-    if (!authService.isLoggedIn) {
+    Future<void> _analyzeWithCreditCheck(BuildContext context) async {
+      final authService = getIt<AuthService>();
+      
+      if (!authService.isLoggedIn) {
+        onAnalyze();
+        return;
+      }
+
+      final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+      final userId = authService.currentUserId;
+      
+      if (userId == null) {
+        onAnalyze();
+        return;
+      }
+      final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
+      if (!hasEnoughCredits) {
+        _showInsufficientCreditsDialog(context, subscriptionProvider, userId);
+        return;
+      }
       onAnalyze();
-      return;
+      await subscriptionProvider.consumeCredits(userId, 1, 'analyze_op'.tr());
     }
 
-    final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
-    final userId = authService.currentUserId;
-    
-    if (userId == null) {
-      onAnalyze();
-      return;
-    }
-    final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
-    if (!hasEnoughCredits) {
-      _showInsufficientCreditsDialog(context, subscriptionProvider, userId);
-      return;
-    }
-    onAnalyze();
-    await subscriptionProvider.consumeCredits(userId, 1, 'analyze_op'.tr());
-  }
-
-  void _showInsufficientCreditsDialog(BuildContext context, SubscriptionProvider subscriptionProvider, String userId) {
-    showDialog(
+    void _showInsufficientCreditsDialog(BuildContext context, SubscriptionProvider subscriptionProvider, String userId) {
+      showDialog(
       context: context,
       builder: (context) => const InsufficientCreditsDialog(),
     );
