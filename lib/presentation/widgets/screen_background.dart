@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 
 class ScreenBackground extends StatelessWidget {
   const ScreenBackground({super.key, required this.child});
@@ -8,6 +9,7 @@ class ScreenBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: context.dynamicHeight(1),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

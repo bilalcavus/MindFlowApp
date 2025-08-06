@@ -25,7 +25,7 @@ class ModernAnalysisCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.005)),
+          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.007)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

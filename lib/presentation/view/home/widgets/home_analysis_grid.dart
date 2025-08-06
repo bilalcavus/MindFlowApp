@@ -40,7 +40,7 @@ class AnalysisGrid extends StatelessWidget {
           itemCount: analysisList.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 0.85,
+            childAspectRatio: 0.9,
             crossAxisSpacing: context.dynamicWidth(0.03),
             mainAxisSpacing: context.dynamicHeight(0.02),
           ),
