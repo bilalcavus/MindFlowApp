@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:leak_tracker/leak_tracker.dart';
+import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/google_play_billing_service.dart';
@@ -34,7 +35,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LeakTracking.start();
   final config = ClarityConfig(
-    projectId: "spl9m3hxrx",
+    projectId: ApiConstants.clarifyProjectId,
     logLevel : LogLevel.None
   );
   await dotenv.load(fileName: "assets/config/.env");
@@ -144,29 +145,29 @@ Future<void> _initializeDatabase() async {
     // Eksik tabloları kontrol et ve oluştur (sadece bir kez)
     await dbService.createMissingTables();
     
-    // Veritabanı tablo bilgilerini göster
-    await _showDatabaseInfo(dbService);
+    // // Veritabanı tablo bilgilerini göster
+    // await _showDatabaseInfo(dbService);
   } catch (e) {
     debugPrint('❌ Veritabanı başlatma hatası: $e');
   }
 }
 
-Future<void> _showDatabaseInfo(DatabaseService dbService) async {
-  try {
-    // Tüm tabloları al
-    final allTables = await dbService.getAllTables();
-    debugPrint('📊 Veritabanı Tabloları: ${allTables.join(', ')}');
+// Future<void> _showDatabaseInfo(DatabaseService dbService) async {
+//   try {
+//     // Tüm tabloları al
+//     final allTables = await dbService.getAllTables();
+//     debugPrint('📊 Veritabanı Tabloları: ${allTables.join(', ')}');
     
-    // Tablo bilgilerini al
-    final dbInfo = await dbService.getDatabaseInfo();
-    debugPrint('📈 Tablo Kayıt Sayıları:');
-    dbInfo.forEach((tableName, count) {
-      debugPrint('   • $tableName: $count kayıt');
-    });
-  } catch (e) {
-    debugPrint('❌ Veritabanı bilgileri alınırken hata: $e');
-  }
-}
+//     // Tablo bilgilerini al
+//     final dbInfo = await dbService.getDatabaseInfo();
+//     debugPrint('📈 Tablo Kayıt Sayıları:');
+//     dbInfo.forEach((tableName, count) {
+//       debugPrint('   • $tableName: $count kayıt');
+//     });
+//   } catch (e) {
+//     debugPrint('❌ Veritabanı bilgileri alınırken hata: $e');
+//   }
+// }
 
 Future<void> _initializeProviders() async {
   try {

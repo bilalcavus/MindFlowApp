@@ -60,8 +60,10 @@ flutter:
     - assets/
     - assets/config/
     - assets/lotties/
-    - assets/pictures/
+    - assets/logo/
     - assets/translations/
+    - assets/images/
+    - assets/icon/
   fonts:
     - family: Manrope
       fonts:

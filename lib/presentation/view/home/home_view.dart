@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: context.dynamicWidth(0.05),
-                vertical: context.dynamicHeight(0.01)
+                vertical: context.dynamicHeight(0.03)
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

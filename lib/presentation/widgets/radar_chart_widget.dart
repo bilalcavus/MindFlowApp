@@ -40,7 +40,7 @@ class RadarChartWidget<T> extends StatelessWidget {
     return RadarChart(
       RadarChartData(
         dataSets: [
-          RadarDataSet(
+            RadarDataSet(
             dataEntries: value.values.map((e) => RadarEntry(value: e.toDouble())).toList(),
             borderColor: Colors.purple,
             fillColor: Colors.purple.withOpacity(0.3),

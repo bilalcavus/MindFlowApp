@@ -39,9 +39,9 @@ class AnalysisGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: analysisList.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.95,
-            crossAxisSpacing: context.dynamicWidth(0.04),
+            crossAxisCount: 3,
+            childAspectRatio: 0.85,
+            crossAxisSpacing: context.dynamicWidth(0.03),
             mainAxisSpacing: context.dynamicHeight(0.02),
           ),
           itemBuilder: (context, index) {

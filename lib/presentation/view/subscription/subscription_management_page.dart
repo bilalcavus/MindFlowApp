@@ -8,6 +8,7 @@ import 'package:mind_flow/presentation/view/subscription/widgets/credit_status_w
 import 'package:mind_flow/presentation/view/subscription/widgets/current_status_card.dart';
 import 'package:mind_flow/presentation/view/subscription/widgets/subs_plan_options.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionManagementPage extends StatefulWidget {
@@ -56,16 +57,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors:  [Color(0xFF1A0025), Color.fromARGB(255, 5, 121, 150)],
-          ),
-        ),
+      body: ScreenBackground(
         child: SafeArea(
           child: Consumer<SubscriptionProvider>(
             builder: (context, provider, child) {

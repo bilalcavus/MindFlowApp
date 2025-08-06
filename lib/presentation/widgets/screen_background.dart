@@ -11,13 +11,13 @@ class ScreenBackground extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          end: Alignment.bottomRight,
           colors: [
-          Color(0xFF2E0249),
-          Color(0xFF3A0CA3),
-          Color.fromARGB(255, 22, 5, 63),
-          Color(0xFF000000),
+            Color.fromARGB(52, 62, 0, 163),  // Bright magenta
+            Color.fromARGB(0, 102, 15, 15),
+            Color.fromARGB(255, 0, 0, 0),
           ],
+          stops: [0.1, 0.4, 0.6],
         ),
       ),
       child: child

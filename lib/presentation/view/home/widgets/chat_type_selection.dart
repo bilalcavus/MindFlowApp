@@ -37,28 +37,24 @@ class ChatTypeSelection extends StatelessWidget {
                 ],
               ),
               SizedBox(height: context.dynamicHeight(0.01)),
-              LiquidGlassCard(
-                children: [
-                  SizedBox(
-                    height: context.dynamicHeight(0.11),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: chatTypes.take(3).map((chatType) {
-                        return _buildChatTypeItem(context, chatType);
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.01)),
-                  SizedBox(
-                    height: context.dynamicHeight(0.1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: chatTypes.skip(3).take(3).map((chatType) {
-                        return _buildChatTypeItem(context, chatType);
-                      }).toList(),
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: context.dynamicHeight(0.11),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: chatTypes.take(3).map((chatType) {
+                    return _buildChatTypeItem(context, chatType);
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: context.dynamicHeight(0.01)),
+              SizedBox(
+                height: context.dynamicHeight(0.1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: chatTypes.skip(3).take(3).map((chatType) {
+                    return _buildChatTypeItem(context, chatType);
+                  }).toList(),
+                ),
               ),
             ],
           );
@@ -79,7 +75,7 @@ Widget _buildChatTypeItem(BuildContext context, String chatType) {
       RouteHelper.push(context, const ChatScreen());
     },
     child: SizedBox(
-      width: context.dynamicWidth(0.28), // Adjusted width for 3 items per row
+      width: context.dynamicWidth(0.28),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

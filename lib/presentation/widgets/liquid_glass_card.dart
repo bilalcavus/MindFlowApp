@@ -18,7 +18,7 @@ class LiquidGlassCard extends StatelessWidget {
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.black.withOpacity(0.1)),
       ),
       child: Column(
         children: children,

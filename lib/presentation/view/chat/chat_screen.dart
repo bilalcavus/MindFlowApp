@@ -11,6 +11,7 @@ import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart'
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
+import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -91,20 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color.fromARGB(255, 31, 4, 53),
-                Color(0xFF000000),
-                Color.fromARGB(255, 69, 8, 110),
-              ],
-            ),
-          ),
+        child: ScreenBackground(
           child: Column(
             children: [
               Expanded(

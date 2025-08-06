@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/emotion_analysis_page.dart';
@@ -27,30 +25,34 @@ class ModernAnalysisCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.016)),
+          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.005)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(item.icon, color: Colors.white, size: context.dynamicHeight(.04)),
-              Text(item.title, style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: context.dynamicHeight(.018),
-                  shadows: isDark
-                      ? [const Shadow(color: Colors.black54, blurRadius: 2)]
-                      : null,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: context.dynamicHeight(0.005)),
+              Image.asset(item.icon, height: context.dynamicHeight(.06)),
               Flexible(
                 child: SingleChildScrollView(
-                  child: Text(
-                    item.subTitle,
-                    style: TextStyle(fontSize: context.dynamicHeight(0.013)),
+                  child: Text(item.title, style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: context.dynamicHeight(.016),
+                      shadows: isDark
+                          ? [const Shadow(color: Colors.black54, blurRadius: 2)]
+                          : null,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
+              SizedBox(height: context.dynamicHeight(0.005)),
+              // Flexible(
+              //   child: SingleChildScrollView(
+              //     child: Text(
+              //       item.subTitle,
+              //       style: TextStyle(fontSize: context.dynamicHeight(0.013)),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -61,7 +63,7 @@ class ModernAnalysisCard extends StatelessWidget {
 
 class AnalysisItem {
   final String title;
-  final IconData icon;
+  final String icon;
   final Color color;
   final Widget page;
   final Gradient gradient;
@@ -83,7 +85,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_dream_title".tr(),
         subTitle: "analysis_dream_subtitle".tr(),
-        icon: HugeIcons.strokeRoundedBlackHole,
+        icon: 'assets/icon/dream_icon.png',
         color: isDark ? Colors.deepPurple.shade200 : Colors.deepPurple,
         page: const DreamAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -93,7 +95,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_emotion_title".tr(),
         subTitle: "analysis_emotion_subtitle".tr(),
-        icon: Iconsax.heart,
+        icon: 'assets/icon/emotion_icon.png',
         color: isDark ? Colors.pink.shade200 : Colors.pink,
         page: const EmotionAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -103,7 +105,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_personality_title".tr(),
         subTitle: "analysis_personality_subtitle".tr(),
-        icon: Iconsax.personalcard,
+        icon: 'assets/icon/personality_icon.png',
         color: isDark ? Colors.blue.shade200 : Colors.blue,
         page: const PersonalityAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -113,7 +115,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_habit_title".tr(),
         subTitle: "analysis_habit_subtitle".tr(),
-        icon: Iconsax.repeat,
+        icon: 'assets/icon/habit_icon.png',
         color: isDark ? Colors.green.shade200 : Colors.green,
         page: const HabitAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -123,7 +125,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_mental_title".tr(),
         subTitle: "analysis_mental_subtitle".tr(),
-        icon: HugeIcons.strokeRoundedBrain,
+        icon: 'assets/icon/mental_icon.png',
         color: isDark ? Colors.teal.shade200 : Colors.teal,
         page: const MentalAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -133,7 +135,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_stress_title".tr(),
         subTitle: "analysis_stress_subtitle".tr(),
-        icon: HugeIcons.strokeRoundedFire,
+        icon: 'assets/icon/stress_icon.png',
         color: isDark ? Colors.orange.shade200 : Colors.orange,
         page: const StressBurnoutAnalysisPage(),
         gradient: LinearGradient(colors: isDark
