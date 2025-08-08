@@ -45,7 +45,7 @@ class NotificationService {
           android: AndroidNotificationDetails(
             'default_channel',
             'Genel',
-            icon: '@mipmap/ic_launcher',
+            icon: '@mipmap/app_icon',
             importance: Importance.max,
             priority: Priority.high,
           ),

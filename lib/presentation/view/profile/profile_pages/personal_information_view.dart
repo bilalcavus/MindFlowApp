@@ -54,7 +54,7 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                               colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                             ),
                           ),
-                          child: UserAvatar(user: user),
+                          child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06)),
                         ),
                         SizedBox(height: context.dynamicHeight(0.015)),
                         Text(
@@ -301,14 +301,18 @@ class UserAvatar extends StatelessWidget {
   const UserAvatar({
     super.key,
     required this.user,
+    required this.fontSize,
+    required this.radius
   });
 
   final User? user;
+  final double fontSize;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: context.dynamicHeight(0.06),
+      radius: radius,
       backgroundColor: Colors.white,
       backgroundImage: user?.photoURL != null 
           ? NetworkImage(user!.photoURL!) 
@@ -319,7 +323,7 @@ class UserAvatar extends StatelessWidget {
                   ? user!.displayName![0].toUpperCase()
                   : '👤',
               style: TextStyle(
-                fontSize: context.dynamicHeight(0.05),
+                fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF8B5CF6),
               ),

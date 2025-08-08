@@ -48,9 +48,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) => Container(
-        height: context.dynamicHeight(.6),
+        height: context.dynamicHeight(.5  ),
         decoration:  BoxDecoration(
-          color: Colors.black,
+          color: const Color.fromARGB(255, 26, 26, 26),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(context.dynamicHeight(0.02)),
             topRight: Radius.circular(context.dynamicHeight(0.02)),
@@ -85,7 +85,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 15,
-                  childAspectRatio: 1.4,
+                  childAspectRatio: 2,
                 ),
                 itemCount: AnalysisTypes.analysisTypes.length,
                 itemBuilder: (context, index) {
@@ -103,7 +103,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       decoration: BoxDecoration(
                         color: isSelected 
                             ? analysisType['color'].withOpacity(0.3)
-                            : const Color.fromARGB(255, 3, 0, 3),
+                            : Color.fromARGB(255, 28, 28, 28),
                         borderRadius: BorderRadius.circular(15),
                         border: isSelected
                             ? Border.all(

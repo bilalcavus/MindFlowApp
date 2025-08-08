@@ -68,7 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                               ),
                             ),
-                            child: UserAvatar(user: user)
+                            child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06),)
                           ),
                           SizedBox(height: context.dynamicHeight(0.01)),
                           Text(

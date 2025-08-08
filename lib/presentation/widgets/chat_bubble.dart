@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
+import 'package:mind_flow/injection/injection.dart';
+import 'package:mind_flow/presentation/view/profile/profile_pages/personal_information_view.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -16,8 +18,9 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = getIt<AuthService>();
     final isUser = message.type == MessageType.user;
-    
+    final user = authService.firebaseUser;
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: context.dynamicHeight(0.005), 
@@ -30,14 +33,11 @@ class ChatBubble extends StatelessWidget {
           if (!isUser) ...[
              CircleAvatar(
               radius: context.dynamicHeight(0.025),
-              backgroundColor: Colors.deepPurple,
-              child: Icon(
-                HugeIcons.strokeRoundedAiBrain04,
-                size: context.dynamicHeight(0.025),
-                color: Colors.white,
-              ),
+              backgroundColor: Colors.transparent,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset('assets/icon/chat_assistan_icon.png'))
             ),
-            SizedBox(width: context.dynamicWidth(0.02)),
           ],
           Flexible(
             child: Container(
@@ -76,16 +76,7 @@ class ChatBubble extends StatelessWidget {
           ),
           SizedBox(height: context.dynamicHeight(0.01)),
           if (isUser) ...[
-            SizedBox(width: context.dynamicWidth(0.02)),
-            CircleAvatar(
-              radius: context.dynamicHeight(0.02),
-              backgroundColor: Colors.grey[300],
-              child: Icon(
-                Icons.person,
-                size: context.dynamicHeight(0.02),
-                color: Colors.grey,
-              ),
-            ),
+            UserAvatar(user: user, fontSize: context.dynamicHeight(0.02), radius: context.dynamicHeight(0.025),)
           ],
         ],
       ),
