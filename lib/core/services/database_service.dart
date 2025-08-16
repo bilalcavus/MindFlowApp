@@ -24,7 +24,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 9, // mind_map column removed from habit_analyses table
+      version: 10, // updated chat_type CHECK constraint to accept 'motivation'
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -116,7 +116,7 @@ class DatabaseService {
         model_used TEXT,
         analysis_data_json TEXT,
         session_id TEXT,
-        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation_inspiration')),
+        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation')),
         created_at TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
       )
@@ -292,6 +292,10 @@ Future<String?> getUserPreference(String userId, String key) async {
     if (oldVersion < 9) {
       await _removeHabitMindMapColumn(db);
       debugPrint('Mind map column removed from habit analyses.');
+    }
+    if (oldVersion < 10) {
+      await _updateChatTypeConstraint(db);
+      debugPrint('✅ Chat type constraint updated to accept motivation.');
     }
   }
 
@@ -517,6 +521,42 @@ Future<String?> getUserPreference(String userId, String key) async {
     }
   }
 
+  Future<void> _updateChatTypeConstraint(Database db) async {
+    try {
+      // SQLite doesn't support ALTER COLUMN directly, so we need to recreate the table
+      // Create new table with updated constraint
+      await db.execute('''
+        CREATE TABLE chat_messages_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL,
+          message TEXT NOT NULL,
+          message_type TEXT NOT NULL CHECK (message_type IN ('user', 'ai')),
+          timestamp TEXT NOT NULL,
+          model_used TEXT,
+          analysis_data_json TEXT,
+          session_id TEXT,
+          chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation')),
+          created_at TEXT NOT NULL
+        )
+      ''');
+
+      // Copy data from old table to new table
+      await db.execute('''
+        INSERT INTO chat_messages_new (id, user_id, message, message_type, timestamp, model_used, analysis_data_json, session_id, chat_type, created_at)
+        SELECT id, user_id, message, message_type, timestamp, model_used, analysis_data_json, session_id, chat_type, created_at
+        FROM chat_messages
+      ''');
+
+      // Drop old table and rename new table
+      await db.execute('DROP TABLE chat_messages');
+      await db.execute('ALTER TABLE chat_messages_new RENAME TO chat_messages');
+
+      debugPrint('✅ chat_messages tablosundaki chat_type constraint güncellendi');
+    } catch (e) {
+      debugPrint('❌ Chat type constraint güncellenirken hata: $e');
+    }
+  }
+
   Future<void> _migrateToFirebaseUID(Database db) async {
     // Geçici tablolar oluştur
     await db.execute('''
@@ -599,7 +639,7 @@ Future<String?> getUserPreference(String userId, String key) async {
         model_used TEXT,
         analysis_data_json TEXT,
         session_id TEXT,
-        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation_inspiration')),
+        chat_type TEXT DEFAULT 'general_chat' CHECK (chat_type IN ('mental_health', 'career_guidance', 'creative_writing', 'technical_help', 'general_chat', 'motivation')),
         created_at TEXT NOT NULL
       )
     ''');

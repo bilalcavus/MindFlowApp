@@ -110,7 +110,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
       }
     }
 
-    // Eğer tüm modeller rate limit'e takıldıysa ve premium değilse paid fallback'e geç
     if (allRateLimited && !isPremiumUser) {
       debugPrint('Free modeller tükendi, ücretli modellere geçiliyor...');
       final paidFallbackConfig = ApiConstants.paidFallbackModels[analysisType] ?? [];
@@ -260,7 +259,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
   
   @override
   Future<String> getChatResponseWithContext(List<Map<String, String>> messages, {String? modelKey, String? chatType, bool isPremiumUser = false}) async {
-      // If we have a chat type, always use fallback system for better reliability
     if (modelKey != null && chatType == null) {
       return await _getChatResponseWithSpecificModelAndContext(messages, modelKey, chatType: chatType);
     }
@@ -312,7 +310,20 @@ class ApiRemoteDataSource implements RemoteDataSource {
 
         if (result is Map && result.containsKey('choices')) {
           debugPrint('✅ Success with $provider/$modelKeyToUse');
-          return result['choices'][0]['message']['content'].trim();
+          String content = result['choices'][0]['message']['content'].trim();
+          
+          // Filter thinking process for all chat types
+          if (chatType == 'mental_health' || chatType == 'motivation' || chatType == 'career_guidance' || chatType == 'creative_writing' || chatType == 'technical_help' || chatType == 'general_chat') {
+            debugPrint('🧹 Original content length: ${content.length}');
+            final originalContent = content;
+            content = _cleanThinkingContent(content);
+            debugPrint('🧹 Cleaned content length: ${content.length}');
+            if (originalContent != content) {
+              debugPrint('✅ Thinking content was filtered out');
+            }
+          }
+          
+          return content;
         } 
         else {
           debugPrint('❌ Unexpected chat response format from $provider: $result');
@@ -378,7 +389,20 @@ class ApiRemoteDataSource implements RemoteDataSource {
         final result = await dioHelper.dioPost('/chat/completions', requestData);
 
         if (result is Map && result.containsKey('choices')) {
-          return result['choices'][0]['message']['content'].trim();
+          String content = result['choices'][0]['message']['content'].trim();
+          
+          // Filter thinking process for all chat types
+          if (chatType == 'mental_health' || chatType == 'motivation' || chatType == 'career_guidance' || chatType == 'creative_writing' || chatType == 'technical_help' || chatType == 'general_chat') {
+            debugPrint('🧹 Original content length: ${content.length}');
+            final originalContent = content;
+            content = _cleanThinkingContent(content);
+            debugPrint('🧹 Cleaned content length: ${content.length}');
+            if (originalContent != content) {
+              debugPrint('✅ Thinking content was filtered out');
+            }
+          }
+          
+          return content;
         }
       } catch (e) {
         debugPrint('Error with $provider/$modelKey: $e');
@@ -387,6 +411,50 @@ class ApiRemoteDataSource implements RemoteDataSource {
     }
     
     throw Exception('Model $modelKey not available on any provider');
+  }
+
+  /// Cleans thinking process content from AI responses
+  String _cleanThinkingContent(String content) {
+    debugPrint('🧪 Original content: $content');
+    
+    // Remove <thinking> tags and their content (case insensitive)
+    content = content.replaceAll(RegExp(r'<thinking>.*?</thinking>', caseSensitive: false, dotAll: true), '');
+    
+    // Remove <think> tags and their content (case insensitive, more aggressive)
+    content = content.replaceAll(RegExp(r'<think>.*?</think>', caseSensitive: false, dotAll: true), '');
+    
+    // Remove everything from <think> to end of text if closing tag is missing
+    if (content.toLowerCase().contains('<think>') && !content.toLowerCase().contains('</think>')) {
+      final thinkIndex = content.toLowerCase().indexOf('<think>');
+      if (thinkIndex >= 0) {
+        content = content.substring(0, thinkIndex);
+      }
+    } else {
+      content = content.replaceAll(RegExp(r'<think>.*', caseSensitive: false, dotAll: true), '');
+    }
+    
+    // Remove any standalone thinking tags
+    content = content.replaceAll(RegExp(r'</?think>', caseSensitive: false), '');
+    content = content.replaceAll(RegExp(r'</?thinking>', caseSensitive: false), '');
+    
+    // Remove any thinking-related text patterns
+    content = content.replaceAll(RegExp(r'Let me think.*?(\n|$)', caseSensitive: false, multiLine: true), '');
+    content = content.replaceAll(RegExp(r"I'm thinking.*?(\n|$)", caseSensitive: false, multiLine: true), '');
+    content = content.replaceAll(RegExp(r'Thinking.*?(\n|$)', caseSensitive: false, multiLine: true), '');
+    content = content.replaceAll(RegExp(r'^Think.*?(\n|$)', caseSensitive: false, multiLine: true), '');
+    
+    // Remove Turkish thinking patterns
+    content = content.replaceAll(RegExp(r'Düşünüyorum.*?(\n|$)', caseSensitive: false, multiLine: true), '');
+    content = content.replaceAll(RegExp(r'Düşünmeliyim.*?(\n|$)', caseSensitive: false, multiLine: true), '');
+    
+    // Remove multiple consecutive newlines and clean up
+    content = content.replaceAll(RegExp(r'\n\s*\n\s*\n+'), '\n\n');
+    content = content.replaceAll(RegExp(r'^\s*\n+'), ''); // Remove leading empty lines
+    
+    final cleanedContent = content.trim();
+    debugPrint('🧪 Cleaned content: $cleanedContent');
+    
+    return cleanedContent;
   }
 
   @override

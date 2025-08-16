@@ -47,16 +47,13 @@ class HabitAnalysisModel {
     if (jsonData == null) return [];
     
     try {
-      // If it's already a List, return it directly
       if (jsonData is List) {
         return jsonData.map((e) => e.toString()).toList();
       }
       
-      // If it's a string, try to parse as JSON
       if (jsonData is String) {
         String data = jsonData.trim();
         
-        // Handle case where the string might be a simple comma-separated list
         if (data.startsWith('[') && data.endsWith(']')) {
           try {
             final decoded = jsonDecode(data);
@@ -64,12 +61,9 @@ class HabitAnalysisModel {
               return decoded.map((e) => e.toString()).toList();
             }
           } catch (jsonError) {
-            // If JSON parsing fails, try to parse as Python-style list
-            print('JSON parsing failed, trying Python-style list parsing: $jsonError');
             return _parsePythonStyleList(data);
           }
         } else {
-          // Handle simple comma-separated string
           return data.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
         }
       }

@@ -85,52 +85,6 @@ class AuthenticationProvider extends ChangeNotifier {
         email: emailController.text.trim(),
         password: passwordController.text,
       );
-      
-      // // Email verification kontrolü
-      // if (!authService.firebaseUser!.emailVerified) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: Text('please_confirm_email'.tr()),
-      //       backgroundColor: Colors.orange,
-      //       duration: const Duration(seconds: 5),
-      //       action: SnackBarAction(
-      //         label: 'resend_email'.tr(),
-      //         onPressed: () async {
-      //           try {
-      //             await authService.firebaseUser!.sendEmailVerification();
-      //             if (context.mounted) {
-      //               ScaffoldMessenger.of(context).showSnackBar(
-      //                 SnackBar(
-      //                   content: Text('verification_email_sent'.tr()),
-      //                   backgroundColor: Colors.green,
-      //                 ),
-      //               );
-      //             }
-      //           } catch (e) {
-      //             if (context.mounted) {
-      //               ScaffoldMessenger.of(context).showSnackBar(
-      //                 SnackBar(
-      //                   content: Text('verification_email_error'.tr()),
-      //                   backgroundColor: Colors.red,
-      //                 ),
-      //               );
-      //             }
-      //           }
-      //         },
-      //       ),
-      //     ),
-      //   );
-      //   return;
-      // }
-      
-      // // Başarılı giriş - ana sayfaya yönlendir
-      // if (context.mounted) {
-      //   Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (_) => const AppNavigation()),
-      //     (route) => false,
-      //   );
-      // }
-      
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

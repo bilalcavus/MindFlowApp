@@ -210,7 +210,6 @@ class GooglePlayBillingService {
     // For now, we'll do basic verification
     if (purchaseDetails.verificationData.serverVerificationData.isNotEmpty) {
       debugPrint('Purchase verification data found');
-      // TODO: Implement server-side verification
       return true;
     }
     debugPrint('No verification data found');

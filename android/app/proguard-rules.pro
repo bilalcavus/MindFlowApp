@@ -103,4 +103,43 @@
 -dontwarn com.google.android.play.core.**
 -dontwarn com.google.android.play.core.splitcompat.**
 -dontwarn com.google.android.play.core.splitinstall.**
--dontwarn com.google.android.play.core.tasks.** 
+-dontwarn com.google.android.play.core.tasks.**
+
+# Additional rules for common dependencies
+-keep class com.google.android.gms.auth.** { *; }
+-keep class com.google.android.gms.common.** { *; }
+
+# Lottie
+-keep class com.airbnb.lottie.** { *; }
+
+# Shared Preferences
+-keep class androidx.preference.** { *; }
+
+# Permission Handler
+-keep class com.baseflow.permissionhandler.** { *; }
+
+# Device Info Plus
+-keep class dev.fluttercommunity.plus.device_info.** { *; }
+
+# In App Purchase
+-keep class com.android.billingclient.** { *; }
+
+# Flutter Local Notifications
+-keep class com.dexterous.** { *; }
+-keep class androidx.core.app.** { *; }
+
+# Keep all classes in your app package
+-keep class com.bilalcavus.mindflow.** { *; }
+
+# Keep all classes with @Keep annotation
+-keep class * {
+    @androidx.annotation.Keep *;
+}
+
+# Keep all classes with @Keep annotation from androidx
+-keep @androidx.annotation.Keep class * {*;}
+
+# Keep all methods with @Keep annotation
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+} 
