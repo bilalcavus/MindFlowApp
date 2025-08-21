@@ -61,11 +61,11 @@ class NotificationService {
 
   Future<void> requestPermission() async {
     if(Platform.isIOS){
-      NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      // NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      //   alert: true,
+      //   badge: true,
+      //   sound: true,
+      // );
     } else if(Platform.isAndroid) {
       if (await Permission.notification.isDenied) {
         final status = await Permission.notification.request();

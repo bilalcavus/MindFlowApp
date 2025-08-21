@@ -70,8 +70,8 @@ class HabitAnalysisModel {
       
       return [];
     } catch (e) {
-      print('Error parsing string list: $e');
-      print('Input data: $jsonData');
+      // print('Error parsing string list: $e');
+      // print('Input data: $jsonData');
       return [];
     }
   }
@@ -115,7 +115,6 @@ class HabitAnalysisModel {
       }).where((item) => item.isNotEmpty).toList();
       
     } catch (e) {
-      print('Error parsing Python-style list: $e');
       return [];
     }
   }
@@ -141,8 +140,6 @@ class HabitAnalysisModel {
       
       return {};
     } catch (e) {
-      print('Error parsing string int map: $e');
-      print('Input data: $jsonData');
       return {};
     }
   }

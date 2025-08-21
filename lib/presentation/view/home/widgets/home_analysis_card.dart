@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/emotion_analysis_page.dart';
@@ -85,7 +86,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_dream_title".tr(),
         subTitle: "analysis_dream_subtitle".tr(),
-        icon: 'assets/icon/dream_icon.png',
+        icon: AssetConstants.DREAM_ANALYSIS_ICON,
         color: isDark ? Colors.deepPurple.shade200 : Colors.deepPurple,
         page: const DreamAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -95,7 +96,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_emotion_title".tr(),
         subTitle: "analysis_emotion_subtitle".tr(),
-        icon: 'assets/icon/emotion_icon.png',
+        icon: AssetConstants.EMOTION_ANALYSIS_ICON,
         color: isDark ? Colors.pink.shade200 : Colors.pink,
         page: const EmotionAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -105,7 +106,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_personality_title".tr(),
         subTitle: "analysis_personality_subtitle".tr(),
-        icon: 'assets/icon/personality_icon.png',
+        icon: AssetConstants.PERSONALITY_ANALYSIS_ICON,
         color: isDark ? Colors.blue.shade200 : Colors.blue,
         page: const PersonalityAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -115,7 +116,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_habit_title".tr(),
         subTitle: "analysis_habit_subtitle".tr(),
-        icon: 'assets/icon/habit_icon.png',
+        icon: AssetConstants.HABIT_ANALYSIS_ICON,
         color: isDark ? Colors.green.shade200 : Colors.green,
         page: const HabitAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -125,7 +126,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_mental_title".tr(),
         subTitle: "analysis_mental_subtitle".tr(),
-        icon: 'assets/icon/mental_icon.png',
+        icon: AssetConstants.MENTAL_ANALYSIS_ICON,
         color: isDark ? Colors.teal.shade200 : Colors.teal,
         page: const MentalAnalysisPage(),
         gradient: LinearGradient(colors: isDark
@@ -135,7 +136,7 @@ class GetAnalysisList {
       AnalysisItem(
         title: "analysis_stress_title".tr(),
         subTitle: "analysis_stress_subtitle".tr(),
-        icon: 'assets/icon/stress_icon.png',
+        icon: AssetConstants.STRESS_ANALYSIS_ICON,
         color: isDark ? Colors.orange.shade200 : Colors.orange,
         page: const StressBurnoutAnalysisPage(),
         gradient: LinearGradient(colors: isDark

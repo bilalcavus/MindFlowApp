@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
@@ -36,7 +37,7 @@ class ChatBubble extends StatelessWidget {
               backgroundColor: Colors.transparent,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset('assets/icon/chat_assistan_icon.png'))
+                child: Image.asset(AssetConstants.ASSISTANT_ICON))
             ),
           ],
           Flexible(
@@ -65,10 +66,10 @@ class ChatBubble extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.dynamicHeight(0.0125),
                           color: isUser ? Colors.white70 : Colors.grey,
+                          ),
                         ),
-                      ),
-                    ],
-                                    ),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -312,7 +312,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
           debugPrint('✅ Success with $provider/$modelKeyToUse');
           String content = result['choices'][0]['message']['content'].trim();
           
-          // Filter thinking process for all chat types
           if (chatType == 'mental_health' || chatType == 'motivation' || chatType == 'career_guidance' || chatType == 'creative_writing' || chatType == 'technical_help' || chatType == 'general_chat') {
             debugPrint('🧹 Original content length: ${content.length}');
             final originalContent = content;
@@ -368,7 +367,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
         dioHelper.switchProvider(provider);
         debugPrint('Using specific model: $provider/$modelKey ($modelName)');
         
-        // Get system prompt based on chat type
         final systemPrompt = chatType != null 
             ? ApiConstants.getChatTypeSystemPrompt(chatType)
             : ApiConstants.chatbotContentPrompt;
@@ -391,7 +389,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
         if (result is Map && result.containsKey('choices')) {
           String content = result['choices'][0]['message']['content'].trim();
           
-          // Filter thinking process for all chat types
           if (chatType == 'mental_health' || chatType == 'motivation' || chatType == 'career_guidance' || chatType == 'creative_writing' || chatType == 'technical_help' || chatType == 'general_chat') {
             debugPrint('🧹 Original content length: ${content.length}');
             final originalContent = content;
@@ -413,17 +410,13 @@ class ApiRemoteDataSource implements RemoteDataSource {
     throw Exception('Model $modelKey not available on any provider');
   }
 
-  /// Cleans thinking process content from AI responses
   String _cleanThinkingContent(String content) {
     debugPrint('🧪 Original content: $content');
     
-    // Remove <thinking> tags and their content (case insensitive)
     content = content.replaceAll(RegExp(r'<thinking>.*?</thinking>', caseSensitive: false, dotAll: true), '');
     
-    // Remove <think> tags and their content (case insensitive, more aggressive)
     content = content.replaceAll(RegExp(r'<think>.*?</think>', caseSensitive: false, dotAll: true), '');
     
-    // Remove everything from <think> to end of text if closing tag is missing
     if (content.toLowerCase().contains('<think>') && !content.toLowerCase().contains('</think>')) {
       final thinkIndex = content.toLowerCase().indexOf('<think>');
       if (thinkIndex >= 0) {
@@ -433,11 +426,9 @@ class ApiRemoteDataSource implements RemoteDataSource {
       content = content.replaceAll(RegExp(r'<think>.*', caseSensitive: false, dotAll: true), '');
     }
     
-    // Remove any standalone thinking tags
     content = content.replaceAll(RegExp(r'</?think>', caseSensitive: false), '');
     content = content.replaceAll(RegExp(r'</?thinking>', caseSensitive: false), '');
     
-    // Remove any thinking-related text patterns
     content = content.replaceAll(RegExp(r'Let me think.*?(\n|$)', caseSensitive: false, multiLine: true), '');
     content = content.replaceAll(RegExp(r"I'm thinking.*?(\n|$)", caseSensitive: false, multiLine: true), '');
     content = content.replaceAll(RegExp(r'Thinking.*?(\n|$)', caseSensitive: false, multiLine: true), '');

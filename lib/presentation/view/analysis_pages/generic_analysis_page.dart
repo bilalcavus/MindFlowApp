@@ -73,7 +73,9 @@ class GenericAnalysisPage extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        onPressed: isLoading ? null : () => _analyzeWithCreditCheck(context),
+                        onPressed: isLoading ? null : () => 
+                        textController.text.isNotEmpty ?
+                        _analyzeWithCreditCheck(context) : null,
                         icon: isLoading
                             ? _loadingIcon(context)
                             : const Icon(HugeIcons.strokeRoundedSent),

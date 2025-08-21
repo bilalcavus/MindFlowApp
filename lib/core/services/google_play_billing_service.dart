@@ -56,15 +56,15 @@ class GooglePlayBillingService {
   Future<void> _loadProducts() async {
     try {
       debugPrint('Loading products from Google Play...');
-      const Set<String> _kIds = <String>{
+      const Set<String> kIds = <String>{
         _premiumSubscriptionId,
         _credit5Id,
         _credit10Id,
         _credit20Id,
       };
 
-      debugPrint('Querying products: $_kIds');
-      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_kIds);
+      debugPrint('Querying products: $kIds');
+      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(kIds);
       
       if (response.notFoundIDs.isNotEmpty) {
         debugPrint('Product IDs not found: ${response.notFoundIDs}');

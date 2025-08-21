@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/core/constants/asset_constants.dart';
 
 class CustomLogo extends StatelessWidget {
   const CustomLogo({
@@ -7,6 +8,6 @@ class CustomLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/logo/new-logo.png', height: 200, );
+    return Image.asset(AssetConstants.MINDFLOW_LOGO, height: 200, );
   }
 } 

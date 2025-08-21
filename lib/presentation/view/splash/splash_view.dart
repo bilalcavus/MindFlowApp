@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mind_flow/core/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
@@ -75,7 +76,7 @@ class _SplashViewState extends State<SplashView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Lottie.asset("assets/lotties/mind-flow-loading2.json", height: 150)
+              child: Lottie.asset(AssetConstants.SPLASH_LOTTIE, height: 150)
             ),
             const CustomLogo()
           ],

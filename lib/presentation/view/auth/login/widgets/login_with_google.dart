@@ -31,7 +31,7 @@ class LoginWithGoogle extends StatelessWidget {
           backgroundColor: Colors.white.withOpacity(0.05),
         ),
         icon: Image.asset(
-          'assets/logo/google-icon.png',
+          AssetConstants.GOOGLE_ICON_PATH,
           height: context.dynamicWidth(0.06),
           width: context.dynamicWidth(0.06),
           errorBuilder: (context, error, stackTrace) {
