@@ -1,11 +1,19 @@
-import 'dart:ui';
-
+import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:logger/logger.dart';
+import 'package:mind_flow/core/constants/asset_constants.dart';
+import 'package:mind_flow/core/constants/enum/locales.dart';
+import 'package:mind_flow/core/init/config/app_environment.dart';
+import 'package:mind_flow/core/init/config/env.dart';
 import 'package:mind_flow/core/init/init_billing_service.dart';
 import 'package:mind_flow/core/init/init_database.dart';
-import 'package:mind_flow/core/init/user_lang_pref.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/notification_service.dart';
+import 'package:mind_flow/data/repositories/langauge_repository.dart';
+import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/main.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
@@ -21,9 +29,24 @@ import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 import 'package:provider/provider.dart';
+@immutable
 
-class AppInitializer {
-  Future<Locale> initialize() async {
+final class AppInitializer {
+  
+  Future<void> make() async {
+    //hata yönetimi icin
+    await runZonedGuarded<Future<void>>(_initialize, (error, stack){
+      Logger().e(error);
+    });
+  }
+  Future<void> _initialize() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    AppEnvironment.setup(Env());
+    FlutterError.onError = (details){
+      Logger().e(details.exceptionAsString());
+    };
     // Dependency injection ve servisler
     await NotificationService().initialize();
     await setupDependencies();
@@ -31,11 +54,21 @@ class AppInitializer {
     await initalizeGoogleBilling();
     await AuthService().fetchAndSetCurrentUser();
     
-
-    // Kullanıcı dilini döndük
-    final locale = await initializeUserLangPref();
-    return locale;
   }
+
+  Future<Locale> initializeUserLangPref() async {
+    final userId = getIt<AuthService>().currentUserId;
+    final savedLocale = userId != null
+        ? await getIt<LanguageRepository>().getSavedLanguagePreference(userId)
+        : null;
+    Locale deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    Locale startLocale = Locales.supportedLocales.firstWhere(
+      (locale) => locale.languageCode == deviceLocale.languageCode,
+      orElse: () => const Locale('en'),
+    );
+      final locale = savedLocale != null ? Locale(savedLocale) : startLocale;
+      return locale;
+}
 
   Widget buildProviders() {
     return MultiProvider(
