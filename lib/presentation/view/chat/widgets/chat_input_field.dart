@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class ChatInputArea extends StatelessWidget {
   final FocusNode focusNode;
@@ -18,7 +19,7 @@ class ChatInputArea extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.02), vertical: context.dynamicHeight(0.005)),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 27, 27, 27),
+          color: CustomColorTheme.chatScreenInput(context),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Row(
@@ -32,7 +33,7 @@ class ChatInputArea extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Iconsax.send_1, color: Colors.white),
+              icon: const Icon(Iconsax.send_1),
               onPressed: () {
                 if (_controller.text.trim().isNotEmpty) {
                   onSend(_controller.text);

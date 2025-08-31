@@ -10,7 +10,6 @@ import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class SplashView extends StatefulWidget {
@@ -71,16 +70,14 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ScreenBackground(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Lottie.asset(AssetConstants.SPLASH_LOTTIE, height: 150)
-            ),
-            const CustomLogo()
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Lottie.asset(AssetConstants.SPLASH_LOTTIE, height: 150)
+          ),
+          const CustomLogo()
+        ],
       ),
     );
   }

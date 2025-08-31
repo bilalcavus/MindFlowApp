@@ -5,6 +5,7 @@ import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/core/services/google_play_billing_service.dart';
 import 'package:mind_flow/core/services/shared_prefs_service.dart';
+import 'package:mind_flow/core/theme/theme_provider.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
@@ -134,5 +135,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));
   getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<GooglePlayBillingService>()));
   getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
+  getIt.registerLazySingleton(() => ThemeProvider());
 
 }

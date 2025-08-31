@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
-import 'package:mind_flow/core/constants/asset_constants.dart';
 import 'package:mind_flow/core/constants/enum/locales.dart';
 import 'package:mind_flow/core/init/config/app_environment.dart';
 import 'package:mind_flow/core/init/config/env.dart';
@@ -12,6 +10,7 @@ import 'package:mind_flow/core/init/init_billing_service.dart';
 import 'package:mind_flow/core/init/init_database.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/notification_service.dart';
+import 'package:mind_flow/core/theme/theme_provider.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
 import 'package:mind_flow/injection/injection.dart';
@@ -84,6 +83,7 @@ final class AppInitializer {
         ChangeNotifierProvider(create: (_) => getIt<AuthenticationProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<LanguageProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<SupportTicketProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<ThemeProvider>()),
         ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
       ],
       child: const MyApp(),

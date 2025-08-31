@@ -7,7 +7,6 @@ import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 
 class AccountDeletionView extends StatefulWidget {
   const AccountDeletionView({super.key});
@@ -44,28 +43,25 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
         ),
         centerTitle: true,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: ScreenBackground(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: context.dynamicWidth(0.05),
-              vertical: context.dynamicHeight(0.02),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildWarningCard(),
-                SizedBox(height: context.dynamicHeight(0.03)),
-                _buildConsequencesCard(),
-                SizedBox(height: context.dynamicHeight(0.03)),
-                _buildConfirmationForm(),
-                SizedBox(height: context.dynamicHeight(0.04)),
-                _buildDeleteButton(),
-                SizedBox(height: context.dynamicHeight(0.02)),
-              ],
-            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.dynamicWidth(0.05),
+            vertical: context.dynamicHeight(0.02),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildWarningCard(),
+              SizedBox(height: context.dynamicHeight(0.03)),
+              _buildConsequencesCard(),
+              SizedBox(height: context.dynamicHeight(0.03)),
+              _buildConfirmationForm(),
+              SizedBox(height: context.dynamicHeight(0.04)),
+              _buildDeleteButton(),
+              SizedBox(height: context.dynamicHeight(0.02)),
+            ],
           ),
         ),
       ),
@@ -184,7 +180,6 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
           Text(
             'confirm_deletion'.tr(),
             style: TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: context.dynamicHeight(0.02),
             ),
@@ -195,17 +190,16 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
           TextFormField(
             controller: _passwordController,
             obscureText: _obscurePassword,
-            style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'current_password'.tr(),
-              labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+              // labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                // borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                // borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -214,7 +208,6 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.white.withOpacity(0.7),
                 ),
                 onPressed: () {
                   setState(() {
@@ -229,17 +222,15 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
           // Confirmation text field
           TextFormField(
             controller: _confirmationController,
-            style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'type_delete_confirmation'.tr(),
-              labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+              // labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                // borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -260,7 +251,6 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
             title: Text(
               'agree_to_deletion'.tr(),
               style: TextStyle(
-                color: Colors.white,
                 fontSize: context.dynamicHeight(0.016),
               ),
             ),
@@ -278,7 +268,6 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
             title: Text(
               'understand_consequences'.tr(),
               style: TextStyle(
-                color: Colors.white,
                 fontSize: context.dynamicHeight(0.016),
               ),
             ),

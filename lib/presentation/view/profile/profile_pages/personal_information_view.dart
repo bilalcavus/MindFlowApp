@@ -6,7 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 
 class PersonalInformationView extends StatefulWidget {
   const PersonalInformationView({super.key});
@@ -33,42 +32,120 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ScreenBackground(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(context.dynamicHeight(0.025)),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: context.dynamicHeight(0.02)),
-                  Padding(
-                    padding: EdgeInsets.all(context.dynamicHeight(0.025)),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(context.dynamicWidth(0.015)),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(context.dynamicHeight(0.025)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: context.dynamicHeight(0.02)),
+                Padding(
+                  padding: EdgeInsets.all(context.dynamicHeight(0.025)),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(context.dynamicWidth(0.015)),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
+                          ),
+                        ),
+                        child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06)),
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.015)),
+                      Text(
+                        user?.displayName ?? 'user_name'.tr(),
+                        style: TextStyle(
+                          fontSize: context.dynamicHeight(0.025),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: context.dynamicHeight(0.025)),
+                LiquidGlassCard(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(context.dynamicHeight(0.02)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'basic_information'.tr(),
+                            style: TextStyle(
+                              fontSize: context.dynamicHeight(0.022),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06)),
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.015)),
-                        Text(
-                          user?.displayName ?? 'user_name'.tr(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: context.dynamicHeight(0.025),
-                            fontWeight: FontWeight.bold,
+                          SizedBox(height: context.dynamicHeight(0.02)),
+                          _buildInfoRow(
+                            Iconsax.user,
+                            'full_name'.tr(),
+                            user?.displayName ?? 'not_set'.tr(),
                           ),
-                        ),
-                      ],
+                          _buildDivider(),
+                          _buildInfoRow(
+                            Iconsax.sms,
+                            'email'.tr(),
+                            user?.email ?? 'not_set'.tr(),
+                          ),
+                          _buildDivider(),
+                          _buildInfoRow(
+                            Iconsax.shield_tick,
+                            'email_verified'.tr(),
+                            user?.emailVerified == true ? 'verified'.tr() : 'not_verified'.tr(),
+                            valueColor: user?.emailVerified == true ? Colors.green : Colors.orange,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.025)),
+                  ],
+                ),
+                SizedBox(height: context.dynamicHeight(0.025)),
+                LiquidGlassCard(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(context.dynamicHeight(0.02)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'account_information'.tr(),
+                            style: TextStyle(
+                              fontSize: context.dynamicHeight(0.022),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: context.dynamicHeight(0.02)),
+                          // _buildInfoRow(
+                          //   Iconsax.profile_2user,
+                          //   'user_id'.tr(),
+                          //   user?.uid ?? 'not_available'.tr(),
+                          //   isSelectable: true,
+                          // ),
+                          // _buildDivider(),
+                          _buildInfoRow(
+                            Iconsax.calendar,
+                            'account_created'.tr(),
+                            _formatDate(user?.metadata.creationTime),
+                          ),
+                          _buildDivider(),
+                          _buildInfoRow(
+                            Iconsax.clock,
+                            'last_login'.tr(),
+                            _formatDate(user?.metadata.lastSignInTime),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                
+                SizedBox(height: context.dynamicHeight(0.025)),
+                if (user?.providerData.isNotEmpty == true)
                   LiquidGlassCard(
                     children: [
                       Padding(
@@ -77,111 +154,27 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'basic_information'.tr(),
+                              'login_providers'.tr(),
                               style: TextStyle(
-                                color: Colors.white,
                                 fontSize: context.dynamicHeight(0.022),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(height: context.dynamicHeight(0.02)),
-                            _buildInfoRow(
-                              Iconsax.user,
-                              'full_name'.tr(),
-                              user?.displayName ?? 'not_set'.tr(),
-                            ),
-                            _buildDivider(),
-                            _buildInfoRow(
-                              Iconsax.sms,
-                              'email'.tr(),
-                              user?.email ?? 'not_set'.tr(),
-                            ),
-                            _buildDivider(),
-                            _buildInfoRow(
-                              Iconsax.shield_tick,
-                              'email_verified'.tr(),
-                              user?.emailVerified == true ? 'verified'.tr() : 'not_verified'.tr(),
-                              valueColor: user?.emailVerified == true ? Colors.green : Colors.orange,
-                            ),
+                            ...user!.providerData.map((provider) => Column(
+                              children: [
+                                _buildProviderRow(provider.providerId),
+                                if (provider != user.providerData.last) _buildDivider(),
+                              ],
+                            )),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: context.dynamicHeight(0.025)),
-                  LiquidGlassCard(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'account_information'.tr(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: context.dynamicHeight(0.022),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: context.dynamicHeight(0.02)),
-                            // _buildInfoRow(
-                            //   Iconsax.profile_2user,
-                            //   'user_id'.tr(),
-                            //   user?.uid ?? 'not_available'.tr(),
-                            //   isSelectable: true,
-                            // ),
-                            // _buildDivider(),
-                            _buildInfoRow(
-                              Iconsax.calendar,
-                              'account_created'.tr(),
-                              _formatDate(user?.metadata.creationTime),
-                            ),
-                            _buildDivider(),
-                            _buildInfoRow(
-                              Iconsax.clock,
-                              'last_login'.tr(),
-                              _formatDate(user?.metadata.lastSignInTime),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  SizedBox(height: context.dynamicHeight(0.025)),
-                  if (user?.providerData.isNotEmpty == true)
-                    LiquidGlassCard(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'login_providers'.tr(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: context.dynamicHeight(0.022),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: context.dynamicHeight(0.02)),
-                              ...user!.providerData.map((provider) => Column(
-                                children: [
-                                  _buildProviderRow(provider.providerId),
-                                  if (provider != user.providerData.last) _buildDivider(),
-                                ],
-                              )),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  
-                  SizedBox(height: context.dynamicHeight(0.025)),
-                ],
-              ),
+                
+                SizedBox(height: context.dynamicHeight(0.025)),
+              ],
             ),
           ),
         ),
@@ -197,7 +190,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
         children: [
           Icon(
             icon,
-            color: Colors.white.withOpacity(0.8),
             size: context.dynamicHeight(0.022),
           ),
           SizedBox(width: context.dynamicWidth(0.04)),
@@ -208,7 +200,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                 Text(
                   label,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
                     fontSize: context.dynamicHeight(0.016),
                   ),
                 ),
@@ -217,7 +208,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                     ? SelectableText(
                         value,
                         style: TextStyle(
-                          color: valueColor ?? Colors.white,
                           fontSize: context.dynamicHeight(0.018),
                           fontWeight: FontWeight.w500,
                         ),
@@ -225,7 +215,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
                     : Text(
                         value,
                         style: TextStyle(
-                          color: valueColor ?? Colors.white,
                           fontSize: context.dynamicHeight(0.018),
                           fontWeight: FontWeight.w500,
                         ),
@@ -278,7 +267,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
           Text(
             name,
             style: TextStyle(
-              color: Colors.white,
               fontSize: context.dynamicHeight(0.018),
               fontWeight: FontWeight.w500,
             ),
@@ -292,7 +280,6 @@ class _PersonalInformationViewState extends State<PersonalInformationView> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.015)),
       height: 1,
-      color: Colors.white.withOpacity(0.1),
     );
   }
 }

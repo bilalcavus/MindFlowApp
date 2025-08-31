@@ -9,8 +9,8 @@ import 'package:mind_flow/presentation/view/home/widgets/home_analysis_grid.dart
 import 'package:mind_flow/presentation/view/home/widgets/home_header.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -57,24 +57,23 @@ class _HomeViewState extends State<HomeView> {
         return false;
       },
       child: Scaffold(
-        body: ScreenBackground(
-          child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.dynamicWidth(0.05),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: context.dynamicHeight(0.01)),
-                  HomeHeader(authService: authService),
-                  SizedBox(height: context.dynamicHeight(.024)),
-                  const ChatTypeSelection(isDark: true),
-                  SizedBox(height: context.dynamicHeight(.03)),
-                  AnalysisGrid(analysisList: analysisList, isDark: isDark),
-                  ],
-                ),
+        backgroundColor: CustomColorTheme.scaffoldColor(context),
+        body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: context.dynamicWidth(0.05),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: context.dynamicHeight(0.01)),
+                HomeHeader(authService: authService),
+                SizedBox(height: context.dynamicHeight(.024)),
+                const ChatTypeSelection(isDark: true),
+                SizedBox(height: context.dynamicHeight(.03)),
+                AnalysisGrid(analysisList: analysisList, isDark: isDark),
+                ],
               ),
             ),
           ),

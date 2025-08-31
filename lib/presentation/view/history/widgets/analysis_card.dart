@@ -41,12 +41,11 @@ class AnalysisCard extends StatelessWidget {
             Row(
               children: [
                 Icon(HugeIcons.strokeRoundedTime04,
-                    size: context.dynamicHeight(0.02), color: Colors.grey[400]),
+                    size: context.dynamicHeight(0.02)),
                 SizedBox(width: context.dynamicWidth(0.01)),
                 Text(
                   '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
                   style: TextStyle(
-                    color: Colors.grey[400],
                     fontSize: context.dynamicHeight(0.016),
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/core/theme/theme_provider.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/account_deletion_view.dart';
@@ -17,8 +18,9 @@ import 'package:mind_flow/presentation/view/subscription/subscription_management
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/widgets/language_select_view.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
+import 'package:mind_flow/presentation/widgets/theme_selection_button.dart';
 import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
@@ -46,56 +48,54 @@ class _ProfileViewState extends State<ProfileView> {
         return shouldExit ?? false;
       },
       child: Scaffold(
-        body: ScreenBackground(
-          child: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: context.dynamicWidth(0.05), 
-                        vertical: context.dynamicHeight(0.0125)
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(context.dynamicWidth(0.01)),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
-                              ),
-                            ),
-                            child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06),)
-                          ),
-                          SizedBox(height: context.dynamicHeight(0.01)),
-                          Text(
-                            _authService.firebaseUser?.displayName ?? '',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: context.dynamicHeight(0.03),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.dynamicWidth(0.05), 
+                      vertical: context.dynamicHeight(0.0125)
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(context.dynamicWidth(0.01)),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                             ),
                           ),
-                          SizedBox(height: context.dynamicHeight(0.01)),
-                          Text(
-                            _authService.firebaseUser?.email ?? '',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
-                              fontSize: context.dynamicHeight(0.02),
-                            ),
+                          child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06),)
+                        ),
+                        SizedBox(height: context.dynamicHeight(0.01)),
+                        Text(
+                          _authService.firebaseUser?.displayName ?? '',
+                          style: TextStyle(
+                            // color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: context.dynamicHeight(0.03),
                           ),
-                          SizedBox(height: context.dynamicHeight(0.02)),
-                          _buildSettingsList(),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: context.dynamicHeight(0.01)),
+                        Text(
+                          _authService.firebaseUser?.email ?? '',
+                          style: TextStyle(
+                            // color: Colors.white.withOpacity(0.7),
+                            fontSize: context.dynamicHeight(0.02),
+                          ),
+                        ),
+                        SizedBox(height: context.dynamicHeight(0.02)),
+                        _buildSettingsList(),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -122,10 +122,20 @@ class _ProfileViewState extends State<ProfileView> {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              backgroundColor: Colors.transparent,
+              backgroundColor: CustomColorTheme.bottomSheet(context),
               builder: (context) => const LanguageSelectView(),
             );
           }),
+          _settingsTileWithTrailing(
+            Iconsax.moon,
+            'theme'.tr(),
+            null,
+            trailing: Consumer<ThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return ThemeSelectionButton(themeProvider: themeProvider);
+              },
+            ),
+          ),
           _settingsTile(HugeIcons.strokeRoundedCustomerSupport, 'support_ticket'.tr(), () {
             RouteHelper.push(context, const SupportTicketView());
           }),
@@ -176,7 +186,6 @@ class _ProfileViewState extends State<ProfileView> {
         //     }),
         //   ]),
         // ],
-        SizedBox(height: context.dynamicHeight(0.025)),
       ],
     );
   }
@@ -184,11 +193,11 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _buildSettingsCard(List<Widget> children) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.07),
+        color: CustomColorTheme.containerColor(context),
         borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: CustomColorTheme.containerShadow(context),
             blurRadius: context.dynamicHeight(0.0125),
             offset: Offset(0, context.dynamicHeight(0.005)),
           ),
@@ -211,12 +220,35 @@ class _ProfileViewState extends State<ProfileView> {
       title: Text(
         title,
         style: TextStyle(
-          color: title == "log_out".tr() ? Colors.red : Colors.white,
+          color: title == "log_out".tr() ? Colors.red : null,
           fontWeight: FontWeight.w500,
           fontSize: context.dynamicHeight(0.018),
         ),
       ),
-      trailing: trailing ?? (title != "log_out".tr() ? Icon(Icons.arrow_forward_ios, color: Colors.white, size: context.dynamicHeight(0.02)) : null),
+      trailing: trailing ?? (title != "log_out".tr() ? Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)) : null),
+      onTap: onTap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
+      ),
+    );
+  }
+
+  Widget _settingsTileWithTrailing(IconData icon, String title, VoidCallback? onTap, {required Widget trailing}) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: title == "log_out".tr() ? Colors.red : Colors.lightBlue,
+        size: context.dynamicHeight(0.025),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: title == "log_out".tr() ? Colors.red : null,
+          fontWeight: FontWeight.w500,
+          fontSize: context.dynamicHeight(0.018),
+        ),
+      ),
+      trailing: trailing,
       onTap: onTap,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),

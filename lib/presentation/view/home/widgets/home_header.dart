@@ -24,13 +24,12 @@ class HomeHeader extends StatelessWidget {
                 }),
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
                 ),
               ),
               SizedBox(height: context.dynamicHeight(.01)),
               Text(
                 "what_you_want".tr(),
-                style: theme.textTheme.titleSmall?.copyWith(color: Colors.grey[300]),
+                style: theme.textTheme.titleSmall
               ),
               Consumer<SubscriptionProvider>(
                 builder: (context, provider, child) {

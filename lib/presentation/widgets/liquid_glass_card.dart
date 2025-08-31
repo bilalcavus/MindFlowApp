@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class LiquidGlassCard extends StatelessWidget {
   final List<Widget> children;
@@ -9,11 +10,11 @@ class LiquidGlassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.07),
+        color: CustomColorTheme.containerColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: CustomColorTheme.containerShadow(context),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

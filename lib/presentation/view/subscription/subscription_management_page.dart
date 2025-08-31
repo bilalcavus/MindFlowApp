@@ -8,7 +8,6 @@ import 'package:mind_flow/presentation/view/subscription/widgets/credit_status_w
 import 'package:mind_flow/presentation/view/subscription/widgets/current_status_card.dart';
 import 'package:mind_flow/presentation/view/subscription/widgets/subs_plan_options.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionManagementPage extends StatefulWidget {
@@ -49,7 +48,6 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         title: Text(
           'subscription_management'.tr(),
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: context.dynamicHeight(0.02),
           ),
@@ -57,31 +55,29 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: ScreenBackground(
-        child: SafeArea(
-          child: Consumer<SubscriptionProvider>(
-            builder: (context, provider, child) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(context.dynamicWidth(0.05)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    const CurrentStatusCard(),
-                    SizedBox(height: context.dynamicHeight(0.03)),
-                    const CreditStatusWidget(),
-                    SizedBox(height: context.dynamicHeight(0.03)),
-                    const SubsPlanOptions(),
-                    SizedBox(height: context.dynamicHeight(0.03)),
-                    const CreditPurchaseWidget(),
-                    SizedBox(height: context.dynamicHeight(0.03)),
-                    // _buildUsageHistory(provider),
-                    // SizedBox(height: context.dynamicHeight(0.05)),
-                  ],
-                ),
-              );
-            },
-          ),
+      body: SafeArea(
+        child: Consumer<SubscriptionProvider>(
+          builder: (context, provider, child) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(context.dynamicWidth(0.05)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  const CurrentStatusCard(),
+                  SizedBox(height: context.dynamicHeight(0.03)),
+                  const CreditStatusWidget(),
+                  SizedBox(height: context.dynamicHeight(0.03)),
+                  const SubsPlanOptions(),
+                  SizedBox(height: context.dynamicHeight(0.03)),
+                  const CreditPurchaseWidget(),
+                  SizedBox(height: context.dynamicHeight(0.03)),
+                  // _buildUsageHistory(provider),
+                  // SizedBox(height: context.dynamicHeight(0.05)),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

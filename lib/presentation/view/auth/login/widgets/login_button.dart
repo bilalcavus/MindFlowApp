@@ -20,7 +20,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: context.dynamicHeight(0.07),
+      height: context.dynamicHeight(0.05),
       child: ElevatedButton(
         onPressed: provider.isEmailLoading ? null : () async {
             FocusScope.of(context).unfocus();
@@ -30,8 +30,6 @@ class LoginButton extends StatelessWidget {
             }
         } ,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black12,
-          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
           ),
@@ -48,9 +46,10 @@ class LoginButton extends StatelessWidget {
     return Text(
       'login'.tr(),
       style: TextStyle(
-        fontSize: context.dynamicHeight(0.0225), 
+        fontSize: context.dynamicHeight(0.018), 
         fontWeight: FontWeight.bold
       ),
+      textAlign: TextAlign.center,
     );
   }
 }

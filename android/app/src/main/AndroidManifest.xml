@@ -5,7 +5,7 @@
     <application
         android:label="Mind Flow : AI Analyze - Chat"
         android:name="${applicationName}"
-        android:icon="@mipmap/mf_logo">
+        android:icon="@mipmap/mindflow_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

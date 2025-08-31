@@ -23,12 +23,12 @@ class LoginWithGoogle extends StatelessWidget {
           }
         },
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
-          side: BorderSide(color: Colors.white.withOpacity(0.3)),
+          foregroundColor: CustomColorTheme.textColor(context),
+          side: BorderSide.none,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
           ),
-          backgroundColor: Colors.white.withOpacity(0.05),
+          backgroundColor: CustomColorTheme.containerColor(context)
         ),
         icon: Image.asset(
           AssetConstants.GOOGLE_ICON_PATH,
@@ -37,7 +37,6 @@ class LoginWithGoogle extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) {
             return Icon(
               Icons.g_mobiledata,
-              color: Colors.white,
               size: context.dynamicHeight(0.03),
             );
           },

@@ -15,8 +15,8 @@ import 'package:mind_flow/presentation/viewmodel/analysis/mental_analysis_provid
 import 'package:mind_flow/presentation/viewmodel/analysis/personality_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/stress_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -45,12 +45,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void _showAnalysisTypeBottomSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: CustomColorTheme.bottomSheet(context),
       isScrollControlled: true,
       builder: (context) => Container(
         height: context.dynamicHeight(.5  ),
         decoration:  BoxDecoration(
-          color: const Color.fromARGB(255, 26, 26, 26),
+          color: CustomColorTheme.bottomSheet(context),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(context.dynamicHeight(0.02)),
             topRight: Radius.circular(context.dynamicHeight(0.02)),
@@ -72,7 +72,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               child: Text(
                 "select_analysis_type".tr(),
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: context.dynamicHeight(0.02),
                   fontWeight: FontWeight.bold,
                 ),
@@ -103,7 +102,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       decoration: BoxDecoration(
                         color: isSelected 
                             ? analysisType['color'].withOpacity(0.3)
-                            : Color.fromARGB(255, 28, 28, 28),
+                            : CustomColorTheme.bottomSheetAnalyzeColor(context),
                         borderRadius: BorderRadius.circular(15),
                         border: isSelected
                             ? Border.all(
@@ -124,7 +123,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           Text(
                             analysisType['title'].toString().tr(),
                             style: TextStyle(
-                              color: isSelected ? analysisType['color'] : Colors.white,
+                              color: isSelected ? analysisType['color'] : null,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
@@ -160,59 +159,57 @@ class _HistoryScreenState extends State<HistoryScreen> {
           return shouldExit ?? false;
       },
       child: Scaffold(
-        backgroundColor: Colors.black,
+        // backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text("analysis_history".tr(),
             style: Theme.of(context).textTheme.bodyLarge),
           centerTitle: true,
         ),
-        body: ScreenBackground(
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () => _showAnalysisTypeBottomSheet(),
-                child: Container(
-                  margin: const EdgeInsets.all(16),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: selectedAnalysis['color'].withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: selectedAnalysis['color'],
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        selectedAnalysis['icon'],
-                        color: selectedAnalysis['color'],
-                        size: 24,
-                      ),
-                      SizedBox(width: context.dynamicWidth(0.02)),
-                      Text(
-                        selectedAnalysis['title'].toString().tr(),
-                        style: TextStyle(
-                          color: selectedAnalysis['color'],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(width: context.dynamicWidth(0.02)),
-                      Icon(
-                        Icons.arrow_drop_down,
-                        color: selectedAnalysis['color'],
-                      ),
-                    ],
+        body: Column(
+          children: [
+            InkWell(
+              onTap: () => _showAnalysisTypeBottomSheet(),
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: selectedAnalysis['color'].withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(
+                    color: selectedAnalysis['color'],
+                    width: 1,
                   ),
                 ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      selectedAnalysis['icon'],
+                      color: selectedAnalysis['color'],
+                      size: 24,
+                    ),
+                    SizedBox(width: context.dynamicWidth(0.02)),
+                    Text(
+                      selectedAnalysis['title'].toString().tr(),
+                      style: TextStyle(
+                        color: selectedAnalysis['color'],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: context.dynamicWidth(0.02)),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: selectedAnalysis['color'],
+                    ),
+                  ],
+                ),
               ),
-              Expanded(
-                child: _getCurrentHistoryTab(),
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: _getCurrentHistoryTab(),
+            ),
+          ],
         ),
       ),
     );

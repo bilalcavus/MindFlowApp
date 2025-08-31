@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class CreditIndicatorWidget extends StatelessWidget {
@@ -26,7 +27,7 @@ class CreditIndicatorWidget extends StatelessWidget {
             padding: padding,
             child: Text(
               'loading_credit_info'.tr(),
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 14),
             ),
           );
         }
@@ -39,7 +40,7 @@ class CreditIndicatorWidget extends StatelessWidget {
               color: _getBorderColor(credits.remainingCredits),
               width: 2,
             ),
-            color: Theme.of(context).cardColor,
+            color: CustomColorTheme.containerColor(context)
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,13 +138,11 @@ class PremiumBadgeWidget extends StatelessWidget {
               ? Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.grey[400],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     'freemium'.tr(),
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: size * 0.6,
                       fontWeight: FontWeight.w500,
                     ),
@@ -152,7 +151,6 @@ class PremiumBadgeWidget extends StatelessWidget {
               : Icon(
                   Icons.person,
                   size: size,
-                  color: Colors.grey[400],
                 );
         }
 
@@ -173,13 +171,11 @@ class PremiumBadgeWidget extends StatelessWidget {
                     Icon(
                       Iconsax.star1,
                       size: size * 0.7,
-                      color: Colors.white,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       planName,
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: size * 0.6,
                         fontWeight: FontWeight.bold,
                       ),

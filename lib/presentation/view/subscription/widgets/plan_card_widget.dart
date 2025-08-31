@@ -22,7 +22,7 @@ class PlanCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: isPremium 
             ? Colors.pink.withOpacity(0.3)
-            : Colors.white.withOpacity(0.1),
+            : null,
         borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
         border: Border.all(
           color: isCurrent 
@@ -43,7 +43,6 @@ class PlanCardWidget extends StatelessWidget {
                   Text(
                     name,
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: context.dynamicHeight(0.02),
                     ),
@@ -51,7 +50,7 @@ class PlanCardWidget extends StatelessWidget {
                   Text(
                     price,
                     style: TextStyle(
-                      color: isPremium ? Colors.amber : Colors.white.withOpacity(0.7),
+                      color: isPremium ? Colors.green : null,
                       fontSize: context.dynamicHeight(0.018),
                       fontWeight: FontWeight.w600,
                     ),
@@ -83,7 +82,6 @@ class PlanCardWidget extends StatelessWidget {
           Text(
             '$credits ${'credits_per_month'.tr()}',
             style: TextStyle(
-              color: Colors.white,
               fontSize: context.dynamicHeight(0.016),
             ),
           ),
@@ -102,7 +100,6 @@ class PlanCardWidget extends StatelessWidget {
                   child: Text(
                     feature.tr(),
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
                       fontSize: context.dynamicHeight(0.014),
                     ),
                   ),

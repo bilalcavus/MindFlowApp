@@ -45,7 +45,7 @@ class NotificationService {
           android: AndroidNotificationDetails(
             'default_channel',
             'Genel',
-            icon: '@mipmap/mf_logo',
+            icon: '@mipmap/mindflow_icon',
             importance: Importance.max,
             priority: Priority.high,
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class CustomBottomNavbar extends StatelessWidget {
   final int currentIndex;
@@ -19,10 +20,10 @@ class CustomBottomNavbar extends StatelessWidget {
     return Container(
       height: context.dynamicHeight(0.08),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: CustomColorTheme.bottomNavBarColor(context),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: CustomColorTheme.containerShadow(context),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -74,7 +75,7 @@ class CustomBottomNavbar extends StatelessWidget {
           horizontal: context.dynamicWidth(0.02),
         ),
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          // color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -82,13 +83,13 @@ class CustomBottomNavbar extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.grey[200] : Colors.grey[600],
+              // color: isSelected ? Colors.grey[200] : Colors.grey[600],
               size: context.dynamicWidth(0.06),
             ),
             Text(
               label,
               style: TextStyle(
-                color:  isSelected ? Colors.grey[200] : Colors.grey[600],
+                // color:  isSelected ? Colors.grey[200] : Colors.grey[600],
                 fontSize: context.dynamicHeight(0.014),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),

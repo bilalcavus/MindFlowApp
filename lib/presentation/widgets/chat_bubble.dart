@@ -65,7 +65,7 @@ class ChatBubble extends StatelessWidget {
                         _formatTime(message.timestamp),
                         style: TextStyle(
                           fontSize: context.dynamicHeight(0.0125),
-                          color: isUser ? Colors.white70 : Colors.grey,
+                          // color: isUser ? Colors.white70 : Colors.grey,
                           ),
                         ),
                       ],

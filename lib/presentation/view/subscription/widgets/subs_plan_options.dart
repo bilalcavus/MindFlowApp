@@ -22,7 +22,6 @@ class SubsPlanOptions extends StatelessWidget {
           Text(
             'plan_options'.tr(),
             style: TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: context.dynamicHeight(0.02),
             ),
@@ -31,7 +30,7 @@ class SubsPlanOptions extends StatelessWidget {
           if (provider.isLoading)
             const Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
               ),
             )
           else if (provider.subscriptionPlans.isNotEmpty)

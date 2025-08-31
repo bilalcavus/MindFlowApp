@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/subscription/subscription_widgets.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,7 +28,6 @@ class CurrentStatusCard extends StatelessWidget {
             Text(
               'current_subscription'.tr(),
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: context.dynamicHeight(0.02),
               ),
@@ -46,7 +46,6 @@ class CurrentStatusCard extends StatelessWidget {
                   Text(
                     provider.currentPlan?.name ?? '',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: context.dynamicHeight(0.02),
                       fontWeight: FontWeight.w600,
                     ),
@@ -54,7 +53,7 @@ class CurrentStatusCard extends StatelessWidget {
                   Text(
                     '${provider.currentPlan?.description}'.tr(),
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: CustomColorTheme.textColor(context),
                       fontSize: context.dynamicHeight(0.012),
                     ),
                   ),

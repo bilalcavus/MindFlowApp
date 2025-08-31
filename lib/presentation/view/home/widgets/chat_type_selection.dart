@@ -89,7 +89,7 @@ Widget _buildChatTypeItem(BuildContext context, String chatType) {
             style: TextStyle(
               fontSize: context.dynamicHeight(.014),
               fontWeight: FontWeight.w700,
-              color: Colors.white,
+              // color: Colors.white,
             ),
             textAlign: TextAlign.center,
             maxLines: 2,

@@ -15,7 +15,6 @@ class CreditPurchaseWidget extends StatelessWidget {
         Text(
           'buy_credits'.tr(),
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: context.dynamicHeight(0.02),
           ),

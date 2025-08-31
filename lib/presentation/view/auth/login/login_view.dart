@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mind_flow/core/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
+import 'package:mind_flow/core/theme/theme_provider.dart';
 import 'package:mind_flow/presentation/view/auth/forgot_password_view.dart';
 import 'package:mind_flow/presentation/view/auth/login/widgets/loading_icon.dart';
 import 'package:mind_flow/presentation/view/auth/login/widgets/login_button.dart';
@@ -10,7 +11,8 @@ import 'package:mind_flow/presentation/view/auth/login/widgets/login_text_field.
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
+import 'package:mind_flow/presentation/widgets/theme_selection_button.dart';
 import 'package:provider/provider.dart';
 
 part 'widgets/login_with_google.dart';
@@ -26,64 +28,68 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AuthenticationProvider>();
+    final themeProvider = context.watch<ThemeProvider>();
     return Scaffold(
-      body: ScreenBackground(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CustomLogo(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.07), vertical: context.dynamicHeight(0.02)),
-                  margin: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.07),
-                    borderRadius: BorderRadius.circular(context.dynamicWidth(0.06)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.18),
-                        blurRadius: context.dynamicWidth(0.06),
-                        offset: Offset(0, context.dynamicHeight(0.01)),
-                      ),
-                    ],
-                    border: Border.all(color: Colors.white.withOpacity(0.08)),
-                  ),
-                  child: Column(
-                    children: [
-                      LoginViewTextField(
-                        controller: provider.emailController,
-                        hintText: 'email'.tr(),
-                        prefixIcon: const Icon(Icons.email_outlined, color: Colors.white),
-                      ),
-                      SizedBox(height: context.dynamicHeight(0.022)),
-                      LoginViewTextField(
-                        controller: provider.passwordController,
-                        hintText: 'password'.tr(),
-                        prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
-                        suffixIcon: _obsecureButton(provider),
-                        obscureText: provider.obsecureLoginPassword,
-                        ),
-                      forgetPasswordSection(context),
-                      LoginButton(provider: provider, mounted: mounted),
-                      SizedBox(height: context.dynamicHeight(0.022)),
-                      Row(
-                        children: [
-                          horizontalLine(),
-                          horizontalLineText(context),
-                          horizontalLine()
-                        ],
-                      ),
-                      SizedBox(height: context.dynamicHeight(0.022)),
-                      LoginWithGoogle(provider: provider),
-                      SizedBox(height: context.dynamicHeight(0.022)),
-                      registerNowSection(context),
-                    ],
-                  ),
+      appBar: AppBar(
+        actions: [
+          ThemeSelectionButton(themeProvider: themeProvider)
+        ],
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CustomLogo(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.07), vertical: context.dynamicHeight(0.02)),
+                margin: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.06)),
+                decoration: BoxDecoration(
+                  color: CustomColorTheme.containerColor(context),
+                  borderRadius: BorderRadius.circular(context.dynamicWidth(0.06)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CustomColorTheme.containerShadow(context),
+                      blurRadius: context.dynamicWidth(0.06),
+                      offset: Offset(0, context.dynamicHeight(0.01)),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.08)),
                 ),
-                SizedBox(height: context.dynamicHeight(0.03)),
-              ],
-            ),
+                child: Column(
+                  children: [
+                    LoginViewTextField(
+                      controller: provider.emailController,
+                      hintText: 'email'.tr(),
+                      prefixIcon: const Icon(Icons.email_outlined),
+                    ),
+                    SizedBox(height: context.dynamicHeight(0.022)),
+                    LoginViewTextField(
+                      controller: provider.passwordController,
+                      hintText: 'password'.tr(),
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      suffixIcon: _obsecureButton(provider),
+                      obscureText: provider.obsecureLoginPassword,
+                      ),
+                    forgetPasswordSection(context),
+                    LoginButton(provider: provider, mounted: mounted),
+                    SizedBox(height: context.dynamicHeight(0.022)),
+                    Row(
+                      children: [
+                        horizontalLine(),
+                        horizontalLineText(context),
+                        horizontalLine()
+                      ],
+                    ),
+                    SizedBox(height: context.dynamicHeight(0.022)),
+                    LoginWithGoogle(provider: provider),
+                    SizedBox(height: context.dynamicHeight(0.022)),
+                    registerNowSection(context),
+                  ],
+                ),
+              ),
+              SizedBox(height: context.dynamicHeight(0.03)),
+            ],
           ),
         ),
       ),
@@ -96,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
       child: Text(
         'or'.tr(),
         style: TextStyle(
-          color: Colors.white.withOpacity(0.6),
+          // color: Colors.white.withOpacity(0.6),
           fontSize: context.dynamicWidth(0.035),
         ),
       ),
@@ -107,7 +113,7 @@ class _LoginViewState extends State<LoginView> {
     return Expanded(
       child: Container(
         height: 1,
-        color: Colors.white.withOpacity(0.2),
+        color: CustomColorTheme.textColor(context)
       ),
     );
   }
@@ -116,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
     return IconButton(
       icon: Icon(
         provider.obsecureLoginPassword ? Icons.visibility_off : Icons.visibility,
-        color: Colors.white.withOpacity(0.7),
+        color: CustomColorTheme.textColor(context)
       ),
       onPressed: () => provider.toggleLoginPasswordVisibility()
     );
@@ -126,7 +132,7 @@ class _LoginViewState extends State<LoginView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('dont_have_account'.tr(), style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: context.dynamicWidth(0.035))),
+        Text('dont_have_account'.tr(), style: TextStyle(color: CustomColorTheme.textColor(context), fontSize: context.dynamicWidth(0.035))),
         TextButton(
           onPressed: () {
             RouteHelper.push(context, const RegisterView());

@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/init/app_initializer.dart';
 import 'package:mind_flow/core/init/product_localization.dart';
-import 'package:mind_flow/core/theme/app_theme.dart';
+import 'package:mind_flow/core/theme/theme_provider.dart';
 import 'package:mind_flow/presentation/view/splash/splash_view.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   await AppInitializer().make();
@@ -22,15 +23,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mind Flow',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      locale: context.locale,
-      supportedLocales: context.supportedLocales,
-      localizationsDelegates: context.localizationDelegates,
-      home: const SplashView(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+        title: 'Mind Flow',
+        debugShowCheckedModeBanner: false,
+        theme: themeProvider.themeData,
+        themeMode: ThemeMode.system,
+        locale: context.locale,
+        supportedLocales: context.supportedLocales,
+        localizationsDelegates: context.localizationDelegates,
+        home: const SplashView(),
+        );
+      }
     );
   }
 }

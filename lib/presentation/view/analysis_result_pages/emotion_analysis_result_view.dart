@@ -35,123 +35,106 @@ class _JournalAnalysisScreenState extends State<JournalAnalysisScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('analysis_emotion_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
-        backgroundColor: const Color(0xFF1A0025),
-        foregroundColor: Colors.white,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF3A0CA3),
-              Color.fromARGB(255, 22, 5, 63),
-              Color(0xFF000000),
-            ],
-          ),
-        ),
-        child: Builder(
-          builder: (_) {
-            if (vm.isLoading) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircularProgressIndicator(),
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    Text('analyzing'.tr()),
-                  ],
-                ),
-              );
-            }
-        
-            if (vm.error != null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error, size: 64, color: Colors.red),
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    Text(
-                      "error_analyze_failed".tr(namedArgs: {"error": vm.error ?? ""}),
-                      style: TextStyle(fontSize: context.dynamicWidth(0.04)),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    ElevatedButton(
-                      onPressed: () => vm.analyzeEmotion(vm.textController.text),
-                      child: Text('try_again'.tr()),
-                    ),
-                  ],
-                ),
-              );
-            }
-        
-            if (vm.analysisResult == null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.psychology, size: 64, color: Colors.grey),
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    Text(
-                      widget.analysisId != null 
-                          ? 'loading_analysis'.tr()
-                          : 'write_journal_first'.tr(),
-                      style: TextStyle(fontSize: context.dynamicWidth(0.04), color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                    if (widget.analysisId != null) ...[
-                      SizedBox(height: context.dynamicHeight(0.02)),
-                      const CircularProgressIndicator(),
-                    ],
-                  ],
-                ),
-              );
-            }
-        
-            final result = vm.analysisResult!;
-        
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+      body: Builder(
+        builder: (_) {
+          if (vm.isLoading) {
+            return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-              if (result.summary.isNotEmpty)
-                _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
-              SizedBox(height: context.dynamicHeight(0.02)),
-              SizedBox(
-                height: context.dynamicHeight(0.3),
-                child: RadarChartWidget(result: result)),
-              SizedBox(height: context.dynamicHeight(0.02)),
-              LiquidGlassCard(children: [
-                ...result.emotions.entries.map((e) => Padding(
-                  padding: EdgeInsets.all(context.dynamicWidth(0.02)),
-                  child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(e.key),
-                    Text("%${e.value}"),
-                      ],
-                    ),
-                )
-                  ),
-              ]),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildSectionCard(
-                    'advice_title'.tr(),
-                    result.advice,
-                    Colors.orange,
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  _buildMindMapCard(result.mindMap),
+                  const CircularProgressIndicator(),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  Text('analyzing'.tr()),
                 ],
               ),
             );
-          },
-        ),
+          }
+      
+          if (vm.error != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  Text(
+                    "error_analyze_failed".tr(namedArgs: {"error": vm.error ?? ""}),
+                    style: TextStyle(fontSize: context.dynamicWidth(0.04)),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  ElevatedButton(
+                    onPressed: () => vm.analyzeEmotion(vm.textController.text),
+                    child: Text('try_again'.tr()),
+                  ),
+                ],
+              ),
+            );
+          }
+      
+          if (vm.analysisResult == null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.psychology, size: 64, color: Colors.grey),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  Text(
+                    widget.analysisId != null 
+                        ? 'loading_analysis'.tr()
+                        : 'write_journal_first'.tr(),
+                    style: TextStyle(fontSize: context.dynamicWidth(0.04), color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (widget.analysisId != null) ...[
+                    SizedBox(height: context.dynamicHeight(0.02)),
+                    const CircularProgressIndicator(),
+                  ],
+                ],
+              ),
+            );
+          }
+      
+          final result = vm.analysisResult!;
+      
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            if (result.summary.isNotEmpty)
+              _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
+            SizedBox(height: context.dynamicHeight(0.02)),
+            SizedBox(
+              height: context.dynamicHeight(0.3),
+              child: RadarChartWidget(result: result)),
+            SizedBox(height: context.dynamicHeight(0.02)),
+            LiquidGlassCard(children: [
+              ...result.emotions.entries.map((e) => Padding(
+                padding: EdgeInsets.all(context.dynamicWidth(0.02)),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(e.key),
+                  Text("%${e.value}"),
+                    ],
+                  ),
+              )
+                ),
+            ]),
+                SizedBox(height: context.dynamicHeight(0.015)),
+                _buildSectionCard(
+                  'advice_title'.tr(),
+                  result.advice,
+                  Colors.orange,
+                ),
+                SizedBox(height: context.dynamicHeight(0.015)),
+                _buildMindMapCard(result.mindMap),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

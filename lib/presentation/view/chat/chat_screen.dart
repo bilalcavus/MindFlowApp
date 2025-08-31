@@ -11,8 +11,8 @@ import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart'
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Selector<ChatBotProvider, String>(
@@ -92,30 +92,28 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: SafeArea(
-        child: ScreenBackground(
-          child: Column(
-            children: [
-              Expanded(
-                child: Consumer<ChatBotProvider>(
-                  builder: (_, provider, __) => provider.chatMessages.isEmpty
-                  ? _buildEmptyState()
-                  : ChatMessageList(scrollController: _scrollController)
-              )),
-              Consumer<ChatBotProvider>(
-              builder: (_, provider, __) =>
-                  provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
-            ),
-              Consumer<ChatBotProvider>(
-                builder: (_, provider, __) => ChatInputArea(
-                  focusNode: _focusNode,
-                  onSend: (msg) async {
-                    await _sendMessageWithCreditCheck(provider, msg);
-                    _scrollToBottom();
-                  },
-                ),
-              ),
-            ],
+        child: Column(
+          children: [
+            Expanded(
+              child: Consumer<ChatBotProvider>(
+                builder: (_, provider, __) => provider.chatMessages.isEmpty
+                ? _buildEmptyState()
+                : ChatMessageList(scrollController: _scrollController)
+            )),
+            Consumer<ChatBotProvider>(
+            builder: (_, provider, __) =>
+                provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
           ),
+            Consumer<ChatBotProvider>(
+              builder: (_, provider, __) => ChatInputArea(
+                focusNode: _focusNode,
+                onSend: (msg) async {
+                  await _sendMessageWithCreditCheck(provider, msg);
+                  _scrollToBottom();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -217,12 +215,11 @@ void _onNewChat() async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.7,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration:  BoxDecoration(
+          color: CustomColorTheme.bottomSheetContainer(context),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           children: [
@@ -235,13 +232,12 @@ void _onNewChat() async {
                   Text(
                     'chat_history'.tr(),
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close),
                   ),
                 ],
               ),
@@ -278,7 +274,7 @@ void _onNewChat() async {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
-                            color: isCurrentSession ? Colors.blue.withOpacity(0.2) : Colors.grey[900],
+                            color: isCurrentSession ? Colors.blue.withOpacity(0.2) : null,
                             borderRadius: BorderRadius.circular(12),
                             border: isCurrentSession
                                 ? Border.all(color: Colors.blue, width: 1)
@@ -296,13 +292,12 @@ void _onNewChat() async {
                             title: Text(
                               'Session ${sessionId.substring(8, 16)}',
                               style: TextStyle(
-                                color: Colors.white,
                                 fontWeight: isCurrentSession ? FontWeight.bold : FontWeight.normal,
                               ),
                             ),
                             subtitle: Text(
                               '$messageCount ${'messages'.tr()} • ${_formatDate(lastTime)}',
-                              style: TextStyle(color: Colors.grey[400]),
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
                             onTap: isCurrentSession
                                 ? null

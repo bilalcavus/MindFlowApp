@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class LoginViewTextField extends StatelessWidget {
   const LoginViewTextField({
@@ -21,17 +22,16 @@ class LoginViewTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+        // hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
         filled: true,
         fillColor: Colors.white.withOpacity(0.04),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+          borderSide: BorderSide(color: CustomColorTheme.textColor(context)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),

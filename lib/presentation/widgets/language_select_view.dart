@@ -112,7 +112,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 7, 7, 7),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(context.dynamicHeight(0.03)),
           topRight: Radius.circular(context.dynamicHeight(0.03)),
@@ -130,7 +129,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
             width: context.dynamicWidth(0.1),
             height: context.dynamicHeight(0.005),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(context.dynamicHeight(0.0025)),
             ),
           ),
@@ -150,7 +148,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                   ),
                   child: Icon(
                     HugeIcons.strokeRoundedLanguageSkill,
-                    color: Colors.white,
                     size: context.dynamicHeight(0.03),
                   ),
                 ),
@@ -159,7 +156,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                   child: Text(
                     'choose_language'.tr(),
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: context.dynamicHeight(0.025),
                       fontWeight: FontWeight.bold,
                     ),
@@ -221,7 +217,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                           Text(
                             language['label'],
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: context.dynamicHeight(0.02),
                               fontWeight:
                                   isSelected ? FontWeight.bold : FontWeight.w500,
@@ -231,7 +226,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
                           Text(
                             language['description'],
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
                               fontSize: context.dynamicHeight(0.0175),
                             ),
                           ),

@@ -6,7 +6,6 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
-import 'package:mind_flow/presentation/widgets/screen_background.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -54,44 +53,42 @@ class GenericAnalysisPage extends StatelessWidget {
           )
         ],
       ),
-      body: ScreenBackground(
-        child: Padding(
-          padding: EdgeInsets.all(context.dynamicHeight(0.018)),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(context.dynamicHeight(0.016)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomTextField(
-                      controller: textController,
-                      label: textFieldLabel,
-                      hint: textFieldHint,
-                      maxLines: 10),
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: isLoading ? null : () => 
-                        textController.text.isNotEmpty ?
-                        _analyzeWithCreditCheck(context) : null,
-                        icon: isLoading
-                            ? _loadingIcon(context)
-                            : const Icon(HugeIcons.strokeRoundedSent),
-                        label: Text(isLoading ? 'analyzing'.tr() : analyzeButtonText),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-                        ),
+      body: Padding(
+        padding: EdgeInsets.all(context.dynamicHeight(0.018)),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(context.dynamicHeight(0.016)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextField(
+                    controller: textController,
+                    label: textFieldLabel,
+                    hint: textFieldHint,
+                    maxLines: 10),
+                  SizedBox(height: context.dynamicHeight(0.02)),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: isLoading ? null : () => 
+                      textController.text.isNotEmpty ?
+                      _analyzeWithCreditCheck(context) : null,
+                      icon: isLoading
+                          ? _loadingIcon(context)
+                          : const Icon(HugeIcons.strokeRoundedSent),
+                      label: Text(isLoading ? 'analyzing'.tr() : analyzeButtonText),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.all(context.dynamicHeight(0.02)),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

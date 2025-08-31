@@ -14,7 +14,6 @@ class CreditStatusWidget extends StatelessWidget {
         Text(
           'credit_status'.tr(),
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: context.dynamicHeight(0.02),
           ),
