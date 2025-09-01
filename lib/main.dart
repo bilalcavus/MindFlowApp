@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/init/app_initializer.dart';
 import 'package:mind_flow/core/init/product_localization.dart';
-import 'package:mind_flow/core/theme/theme_provider.dart';
+import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/presentation/view/splash/splash_view.dart';
 import 'package:provider/provider.dart';
 

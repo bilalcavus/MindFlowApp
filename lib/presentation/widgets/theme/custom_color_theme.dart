@@ -61,6 +61,19 @@ class CustomColorTheme {
         : Colors.white.withOpacity(0.1);
   }
 
+
+  static Color? navbarSelectedColor(BuildContext context){
+    return isDarkMode(context)
+        ? Colors.grey[200]
+        : Colors.grey[800];
+  }
+
+  static Color? navbarUnselectedColor(BuildContext context){
+    return isDarkMode(context)
+        ? Colors.grey[200]
+        : Colors.grey[800];
+  }
+
    static Color containerColor(BuildContext context){
     return isDarkMode(context)
         ? Colors.white.withOpacity(0.07)

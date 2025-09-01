@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/api_constants.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/mental_analysis_model.dart';
 import 'package:mind_flow/data/repositories/mental_analysis_repository.dart';

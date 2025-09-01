@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
+import 'package:mind_flow/presentation/view/analysis_result_pages/widgets/analysis_date_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/mental_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 import 'package:provider/provider.dart';
@@ -27,25 +29,24 @@ class _MentalAnalysisResultViewState extends State<MentalAnalysisResultView> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<MentalAnalysisProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('analysis_mental_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
       ),
-      body: Builder(
-        builder: (_) {
-          if (provider.isLoading) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  SizedBox(height: context.dynamicHeight(0.02)),
-                  Text('analyzing'.tr()),
-                ],
-              ),
-            );
-          }
+      body: Consumer<MentalAnalysisProvider>(
+        builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                context.dynamicHeight(0.02).height,
+                Text('analyzing'.tr()),
+              ],
+            ),
+          );
+        }
           if (provider.error != null) {
             return Center(
               child: Column(
@@ -95,6 +96,7 @@ class _MentalAnalysisResultViewState extends State<MentalAnalysisResultView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AnalysisDate(result: result),
                 _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue, context),
                 SizedBox(height: context.dynamicHeight(0.015)),
                 _buildSectionCard('advice_title'.tr(), result.advice, Colors.orange, context),

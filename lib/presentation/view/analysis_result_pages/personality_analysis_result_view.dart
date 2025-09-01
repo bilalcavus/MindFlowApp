@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/widgets/analysis_date_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/personality_analysis_provider.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
@@ -30,25 +31,24 @@ class _PersonalityAnalysisResultViewState extends State<PersonalityAnalysisResul
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<PersonalityAnalysisProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('analysis_personality_title'.tr(), style: Theme.of(context).textTheme.bodyLarge),
       ),
-      body: Builder(
-        builder: (_) {
-          if (provider.isLoading) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  SizedBox(height: context.dynamicHeight(0.02)),
-                  Text('analyzing'.tr()),
-                ],
-              ),
-            );
-          }
+      body: Consumer<PersonalityAnalysisProvider>(
+        builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                context.dynamicHeight(0.02).height,
+                Text('analyzing'.tr()),
+              ],
+            ),
+          );
+        }
           if (provider.error != null) {
             return Center(
               child: Column(

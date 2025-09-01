@@ -11,28 +11,28 @@ class DreamAnalysisPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<DreamAnalysisProvider>();
+    final provider = context.watch<DreamAnalysisProvider>();
     return GenericAnalysisPage(
       title: 'analysis_dream_title'.tr(),
       textFieldLabel: 'analysis_dream_center_title'.tr(),
       textFieldHint: 'analysis_dream_text'.tr(),
       analyzeButtonText: 'send'.tr(),
-      isLoading: vm.isLoading,
+      isLoading: provider.isLoading,
       onAnalyze: () async {
-        await vm.dreamAnalyzeText(vm.textController.text);
-        vm.clearText();
-        if (vm.analysisResult?.id != null) {
-          RouteHelper.push(context, DreamAnalysisResultView(analysisId: vm.analysisResult!.id,));
-        } else if (vm.error != null) {
+        await provider.dreamAnalyzeText(provider.textController.text);
+        provider.clearText();
+        if (provider.analysisResult?.id != null) {
+          RouteHelper.push(context, DreamAnalysisResultView(analysisId: provider.analysisResult!.id,));
+        } else if (provider.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${vm.error}'.tr()),
+              content: Text('${provider.error}'.tr()),
               backgroundColor: Colors.red,
             ),
           );
         }
       },
-      textController: vm.textController,
+      textController: provider.textController,
       resultPage: const DreamAnalysisResultView(),
     );
   }

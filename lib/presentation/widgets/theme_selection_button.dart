@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/theme/theme_provider.dart';
+import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 
 class ThemeSelectionButton extends StatelessWidget {
   const ThemeSelectionButton({

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:mind_flow/core/constants/api_constants.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 

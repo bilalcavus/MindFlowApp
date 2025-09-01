@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/api_constants.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
 import 'package:mind_flow/domain/usecases/get_chat_response.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 
 class ChatBotProvider extends ChangeNotifier {
   final AuthService _authService;
   final ChatMessageRepository _chatRepo;
   final GetChatResponse getChatResponse;
-  // final User currentUser; // KALDIRILDI
+  final SubscriptionProvider subscriptionProvider;
 
   bool isLoading = false;
   String selectedModel = ApiConstants.defaultModel;
@@ -22,7 +23,7 @@ class ChatBotProvider extends ChangeNotifier {
   static const int maxTokensPerMessage = 30;
   
 
-  ChatBotProvider(this.getChatResponse, this._authService, this._chatRepo);
+  ChatBotProvider(this.getChatResponse, this._authService, this._chatRepo, this.subscriptionProvider);
 
   String? get _currentUserId => _authService.currentUserId;
   bool get _isUserLoggedIn => _authService.isLoggedIn;
@@ -204,6 +205,21 @@ class ChatBotProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> sendMessageWithCreditCheck(Future Function() showDialog, String message) async {
+    
+    final userId = _authService.currentUserId;
+    if (userId == null) return;
+
+    final hasCredit = await subscriptionProvider.hasEnoughCredits(userId, 1);
+    if (!hasCredit) {
+      await showDialog();
+      return;
+    }
+    await sendChatMessage(message);
+    await subscriptionProvider.consumeCredits(userId, 1, 'Chat mesajı');
+  }
+
 
   Map<String, dynamic> getSessionStats() {
     if (chatMessages.isEmpty) return {};

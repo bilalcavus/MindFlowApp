@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/analysis_types.dart';
+import 'package:mind_flow/core/utility/constants/analysis_types.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/view/history/tabs/dream_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/emotion_history_tab.dart';

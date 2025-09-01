@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/api_constants.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';

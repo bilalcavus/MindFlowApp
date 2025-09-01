@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/error/error_handler.dart';
+import 'package:mind_flow/core/utility/error/error_handler.dart';
 
 mixin RepositoryHandling {
   Future<T> handleRepositoryOperation<T>({

@@ -2,14 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
-import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/injection/injection.dart';
+import 'package:mind_flow/presentation/view/chat/mixin/chat_screen_mixin.dart';
 import 'package:mind_flow/presentation/view/chat/widgets/chat_app_bar.dart';
 import 'package:mind_flow/presentation/view/chat/widgets/chat_input_field.dart';
 import 'package:mind_flow/presentation/view/chat/widgets/chat_loading_indicator.dart';
 import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart';
+import 'package:mind_flow/presentation/view/chat/widgets/empty_chat_state.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
-import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
@@ -22,58 +21,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  final ScrollController _scrollController = ScrollController();
-  final FocusNode _focusNode = FocusNode();
-  final AuthService _authService = getIt<AuthService>();
-  late VoidCallback _listener;
-  late ChatBotProvider _chatBotProvider;
-  
-
-  @override
-  void initState() {
-    super.initState();
-    _chatBotProvider = context.read<ChatBotProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _refreshChatHistory();
-      _initializeSubscriptionListener();
-    });
-    _listener = () {
-      if(mounted) _scrollToBottom();
-    };
-    _chatBotProvider.addListener(_listener);
-  }
-
-  @override
-  void dispose() {
-    _chatBotProvider.removeListener(_listener);
-    _scrollController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _initializeSubscriptionListener() {
-    if (_authService.isLoggedIn && _authService.currentUserId != null) {
-      final subscriptionProvider = context.read<SubscriptionProvider>();
-      subscriptionProvider.startListening(_authService.currentUserId!);
-    }
-  }
-
-  Future<void> _refreshChatHistory() async {
-    final provider = context.read<ChatBotProvider>();
-    await provider.initialize();
-  }
-
-  Future<void> _scrollToBottom() async {
-     await Future.delayed(const Duration(milliseconds: 100));
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    }
-  }
+class _ChatScreenState extends State<ChatScreen> with ChatScreenMixin{
 
   @override
   Widget build(BuildContext context) {
@@ -97,19 +45,24 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: Consumer<ChatBotProvider>(
                 builder: (_, provider, __) => provider.chatMessages.isEmpty
-                ? _buildEmptyState()
-                : ChatMessageList(scrollController: _scrollController)
-            )),
+                  ? EmptyChatState(context: context, refresh: refreshChatHistory)
+                  : ChatMessageList(scrollController: scrollController)
+                )),
             Consumer<ChatBotProvider>(
-            builder: (_, provider, __) =>
-                provider.isLoading ? const LoadingIndicator() : const SizedBox.shrink(),
-          ),
+              builder: (_, provider, __) => provider.isLoading
+                ? const LoadingIndicator()
+                : const SizedBox.shrink(),
+            ),
             Consumer<ChatBotProvider>(
               builder: (_, provider, __) => ChatInputArea(
-                focusNode: _focusNode,
+                focusNode: focusNode,
                 onSend: (msg) async {
-                  await _sendMessageWithCreditCheck(provider, msg);
-                  _scrollToBottom();
+                  await provider.sendMessageWithCreditCheck(() => showDialog(
+                      context: context,
+                      builder: (context) => const InsufficientCreditsDialog()),
+                    msg
+                  );
+                  scrollToBottom();
                 },
               ),
             ),
@@ -142,68 +95,6 @@ void _onNewChat() async {
   }
 }
 
-
-  Widget _buildEmptyState() {
-    return RefreshIndicator(
-      onRefresh: _refreshChatHistory,
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: context.dynamicWidth(0.23),
-                  height: context.dynamicHeight(0.1),
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(context.dynamicHeight(0.05)),
-                  ),
-                  child: Icon(
-                    HugeIcons.strokeRoundedAiGenerative,
-                    size: context.dynamicHeight(0.05),
-                    color: Colors.deepPurple.shade800,
-                  ),
-                ),
-                SizedBox(height: context.dynamicHeight(0.01)),
-                Padding(
-                  padding: EdgeInsets.all(context.dynamicHeight(0.01)),
-                  child: Text(
-                    'hello_message'.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: context.dynamicHeight(0.02),
-                    ),
-                  ),
-                ),
-                SizedBox(height: context.dynamicHeight(0.03)),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    final provider = Provider.of<ChatBotProvider>(context, listen: false);
-                    provider.chatController.text = 'sample_message'.tr();
-                    _sendMessageWithCreditCheck(provider, provider.chatController.text);
-                    FocusScope.of(context).unfocus();
-                  },
-                  icon: const Icon(HugeIcons.strokeRoundedChatting01),
-                  label: Text('start_conversation'.tr()),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple.shade800,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.dynamicWidth(0.06), 
-                      vertical: context.dynamicHeight(0.015)
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
 
   Future<void> _showChatSessions() async {
@@ -304,7 +195,7 @@ void _onNewChat() async {
                                 : () async {
                                     Navigator.pop(context);
                                     await provider.loadChatSession(sessionId);
-                                    _scrollToBottom();
+                                    scrollToBottom();
                                   },
                           ),
                         );
@@ -345,7 +236,7 @@ void _onNewChat() async {
   }
 
   void _showClearDialog(ChatBotProvider provider) {
-    final isLoggedIn = _authService.isLoggedIn;
+    final isLoggedIn = authService.isLoggedIn;
     showDialog(
       context: context,
       builder: (context) => 
@@ -376,27 +267,6 @@ void _onNewChat() async {
             child: Text('clear'.tr()),
           ),
       ])
-    );
-  }
-
-
-  Future<void> _sendMessageWithCreditCheck(ChatBotProvider provider, String message) async {
-    final subscriptionProvider = context.read<SubscriptionProvider>();
-    final userId = _authService.currentUserId;
-    if (userId == null) return;
-
-    if (!await subscriptionProvider.hasEnoughCredits(userId, 1)) {
-      _showInsufficientCreditsDialog(subscriptionProvider, userId);
-      return;
-    }
-    await provider.sendChatMessage(message);
-    await subscriptionProvider.consumeCredits(userId, 1, 'Chat mesajı');
-  }
-
-  void _showInsufficientCreditsDialog(SubscriptionProvider subscriptionProvider, String userId) {
-    showDialog(
-      context: context,
-      builder: (context) => const InsufficientCreditsDialog()
     );
   }
 }

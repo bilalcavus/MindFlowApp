@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
-import 'package:mind_flow/core/theme/theme_provider.dart';
+import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/account_deletion_view.dart';

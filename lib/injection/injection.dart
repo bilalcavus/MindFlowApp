@@ -4,8 +4,7 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/core/services/google_play_billing_service.dart';
-import 'package:mind_flow/core/services/shared_prefs_service.dart';
-import 'package:mind_flow/core/theme/theme_provider.dart';
+import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/repositories/chat_message_repository.dart';
@@ -95,7 +94,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<ApiRemoteDataSource>(() => ApiRemoteDataSource());
   
   // Core Services
-  getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
+  // getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
   getIt.registerLazySingleton<GooglePlayBillingService>(() => GooglePlayBillingService(getIt()));
   
 
@@ -123,7 +122,7 @@ Future<void> setupDependencies() async {
 
 
   // ViewModels
-  getIt.registerLazySingleton(() => ChatBotProvider(getIt(), getIt(), getIt()));
+  getIt.registerLazySingleton(() => ChatBotProvider(getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton(() => EmotionAnalysisProvider(getIt(), getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton(() => DreamAnalysisProvider(getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton(() => PersonalityAnalysisProvider(getIt(), getIt(), getIt(), getIt()));

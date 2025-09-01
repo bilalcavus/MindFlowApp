@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:mind_flow/core/constants/api_constants.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/presentation/view/chat/chat_screen.dart';

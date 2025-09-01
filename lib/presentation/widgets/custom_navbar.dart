@@ -83,13 +83,13 @@ class CustomBottomNavbar extends StatelessWidget {
           children: [
             Icon(
               icon,
-              // color: isSelected ? Colors.grey[200] : Colors.grey[600],
+              color: isSelected ? CustomColorTheme.navbarSelectedColor(context) : Colors.grey[600],
               size: context.dynamicWidth(0.06),
             ),
             Text(
               label,
               style: TextStyle(
-                // color:  isSelected ? Colors.grey[200] : Colors.grey[600],
+                color:  isSelected ? CustomColorTheme.navbarSelectedColor(context)  : Colors.grey[600],
                 fontSize: context.dynamicHeight(0.014),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),

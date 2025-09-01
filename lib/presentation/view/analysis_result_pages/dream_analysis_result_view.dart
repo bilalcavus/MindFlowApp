@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/presentation/view/analysis_result_pages/widgets/analysis_date_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
@@ -36,26 +37,24 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<DreamAnalysisProvider>();
     return Scaffold(
       appBar: AppBar(
         title:  Text('analysis_dream_title'.tr(), style: Theme.of(context).textTheme.bodyLarge,),
       ),
-      body: Builder(
-        builder: (_) {
-          if (provider.isLoading) {
-            return  Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  SizedBox(height: context.dynamicHeight(0.02)),
-                  Text('analyzing'.tr()),
-                ],
-              ),
-            );
-          }
-      
+      body: Consumer<DreamAnalysisProvider>(
+        builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                context.dynamicHeight(0.02).height,
+                Text('analyzing'.tr()),
+              ],
+            ),
+          );
+        }
           if (provider.error != null) {
             return Center(
               child: Column(
@@ -108,98 +107,30 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
               children: [
                 AnalysisDate(result: result),
                 SizedBox(height: context.dynamicHeight(0.02)),
-                if (result.symbols.isNotEmpty)
-                  _buildSectionCard('symbols_title'.tr(), result.symbols.join(', '), Colors.teal),
-                SizedBox(height: context.dynamicHeight(0.015)),
+                if (result.symbols.isNotEmpty) _buildSectionCard('symbols_title'.tr(), result.symbols.join(', '), Colors.teal),
+                context.dynamicHeight(0.015).height,
                 if (result.emotionScores.isNotEmpty)
-                  LiquidGlassCard(
-                    children: [
-                      Padding(
-                      padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.emoji_emotions, size: context.dynamicWidth(0.03), color: Colors.red),
-                              SizedBox(width: context.dynamicWidth(0.02)),
-                              Text(
-                                'emotion_scores_title'.tr(),
-                                style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: context.dynamicHeight(0.01)),
-                          ...result.emotionScores.entries.map((e) => Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(e.key),
-                                  Text('%${e.value}'),
-                                ],
-                              )),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: context.dynamicHeight(0.03)),
+                  EmotionScores(result: result),
+                  context.dynamicHeight(0.03).height,
                   if (result.emotionScores.isNotEmpty)
                   SizedBox(
                     height: context.dynamicHeight(0.3),
                     child: RadarChartWidget(result: result),
                   ),
-                  SizedBox(height: context.dynamicHeight(0.03)),
+                  context.dynamicHeight(0.03).height,
                 if (result.symbolMeanings.isNotEmpty)
-                  LiquidGlassCard(
-                    children: [
-                      Padding(
-                      padding: EdgeInsets.all(context.dynamicWidth(0.04)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.menu_book, size: context.dynamicWidth(0.03), color: Colors.brown),
-                              SizedBox(width: context.dynamicWidth(0.02)),
-                              Text(
-                                'symbol_meanings_title'.tr(),
-                                style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: context.dynamicHeight(0.01)),
-                          ...result.symbolMeanings.entries.map((e) => Padding(
-                                padding: EdgeInsets.only(bottom: context.dynamicHeight(0.005)),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('• ', style: TextStyle(color: Colors.grey[700])),
-                                    Expanded(
-                                      child: Text(
-                                        '${e.key}: ${e.value}',
-                                        style: TextStyle(fontSize: context.dynamicWidth(0.035)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                    ],
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  SymbolMeanings(result: result),
+                  context.dynamicHeight(0.015).height,
                   _buildSectionCard('main_themes_title'.tr(), result.themes.join(', '), Colors.green),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  context.dynamicHeight(0.015).height,
                   _buildSectionCard('subconscious_message_title'.tr(), result.subconsciousMessage, Colors.purple),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  context.dynamicHeight(0.015).height,
                   _buildSectionCard('summary_title'.tr(), result.summary, Colors.blue),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  context.dynamicHeight(0.015).height,
                   _buildSectionCard('advice_title'.tr(), result.advice, Colors.orange),
-                  SizedBox(height: context.dynamicHeight(0.015)),
+                  context.dynamicHeight(0.015).height,
                   _buildSectionCard('ai_reply_title'.tr(), result.aiReply, Colors.indigo),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  
+                  context.dynamicHeight(0.015).height,
                   _buildMindMapCard(result.mindMap),
                 
               ],
@@ -213,7 +144,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
   Text analysisDateText(DreamAnalysisModel result, BuildContext context) {
     return Text(
           '${'analysis_date'.tr()}${result.analysisDate.day.toString().padLeft(2, '0')}/ ${result.analysisDate.month.toString().padLeft(2, '0')}/ ${result.analysisDate.year}',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)));
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: context.dynamicWidth(0.035)));
   }
 
   Widget _buildSectionCard(String title, String content, Color color) {
@@ -227,14 +158,14 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
             Row(
               children: [
                 Icon(Icons.circle, size: context.dynamicWidth(0.03), color: color),
-                SizedBox(width: context.dynamicWidth(0.02)),
+                context.dynamicWidth(0.02).width,
                 Text(
                   title,
                   style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            SizedBox(height: context.dynamicHeight(0.01)),
+            context.dynamicHeight(0.01).height,
             Text(content),
           ],
         ),
@@ -292,6 +223,100 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
                 ),
               );
             }),
+          ],
+        ),
+      ),
+      ],
+    );
+  }
+}
+
+class EmotionScores extends StatelessWidget {
+  const EmotionScores({
+    super.key,
+    required this.result,
+  });
+
+  final DreamAnalysisModel result;
+
+  @override
+  Widget build(BuildContext context) {
+    return LiquidGlassCard(
+      children: [
+        Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.emoji_emotions, size: context.dynamicWidth(0.03), color: Colors.red),
+                SizedBox(width: context.dynamicWidth(0.02)),
+                Text(
+                  'emotion_scores_title'.tr(),
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: context.dynamicHeight(0.01)),
+            ...result.emotionScores.entries.map((e) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(e.key),
+                    Text('%${e.value}'),
+                  ],
+                )),
+              ],
+            ),
+          ),
+        ],
+      );
+  }
+}
+
+class SymbolMeanings extends StatelessWidget {
+  const SymbolMeanings({
+    super.key,
+    required this.result,
+  });
+
+  final DreamAnalysisModel result;
+
+  @override
+  Widget build(BuildContext context) {
+    return LiquidGlassCard(
+      children: [
+        Padding(
+        padding: EdgeInsets.all(context.dynamicWidth(0.04)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.menu_book, size: context.dynamicWidth(0.03), color: Colors.brown),
+                SizedBox(width: context.dynamicWidth(0.02)),
+                Text(
+                  'symbol_meanings_title'.tr(),
+                  style: TextStyle(fontSize: context.dynamicWidth(0.04), fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: context.dynamicHeight(0.01)),
+            ...result.symbolMeanings.entries.map((e) => Padding(
+                  padding: EdgeInsets.only(bottom: context.dynamicHeight(0.005)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('• ', style: TextStyle(color: Colors.grey[700])),
+                      Expanded(
+                        child: Text(
+                          '${e.key}: ${e.value}',
+                          style: TextStyle(fontSize: context.dynamicWidth(0.035)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
           ],
         ),
       ),

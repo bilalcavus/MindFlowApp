@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
@@ -67,7 +68,7 @@ class GenericAnalysisPage extends StatelessWidget {
                     label: textFieldLabel,
                     hint: textFieldHint,
                     maxLines: 10),
-                  SizedBox(height: context.dynamicHeight(0.02)),
+                  context.dynamicHeight(0.02).height,
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(

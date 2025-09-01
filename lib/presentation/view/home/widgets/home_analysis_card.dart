@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/asset_constants.dart';
+import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/emotion_analysis_page.dart';

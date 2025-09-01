@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/constants/asset_constants.dart';
+import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
