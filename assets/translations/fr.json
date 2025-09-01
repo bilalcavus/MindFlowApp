@@ -47,7 +47,6 @@
   "write_stress_first": "Écrivez une entrée d'état de stress pour faire votre première analyse !",
   "refresh": "Actualiser",
   "analysis_date": "Date de l'analyse : ",
-  "clear_history": "Effacer l'historique",
 
   "home_page": "Accueil",
   "analysis_page": "Analyse",
@@ -99,6 +98,10 @@
   "personality_scores_title": "📊 Scores de personnalité",
   "mental_challenges_title": "⚡ Défis mentaux",
   "themes_title": "🎯 Thèmes",
+  "lifestyle_category_title": "Mode de vie",
+  "habits_title": "Habitudes",
+  "positive_habits_title": "Habitudes positives",
+  "negative_habits_title": "Mauvaises habitudes",
 
   "delete_account": "Supprimer le compte",
   "delete_account_warning": "Cette action ne peut pas être annulée. Votre compte et toutes les données associées seront supprimés définitivement.",
@@ -169,7 +172,6 @@
   "new_chat_started": "Nouvelle discussion commencée",
   "clear_chat_content_logged_in": "Êtes-vous sûr de vouloir supprimer tout l'historique de discussion ? Cette action est irréversible et les messages seront supprimés de la base de données.",
   "clear_chat_content_offline": "Êtes-vous sûr de vouloir supprimer tout l'historique de discussion ?",
-  "clear": "Effacer",
   "chat_cleared_logged_in": "L'historique de discussion a été supprimé de la base de données",
   "chat_cleared_offline": "L'historique de discussion a été effacé",
   "login_required_chat_history": "Veuillez vous connecter pour voir l'historique des discussions",

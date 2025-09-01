@@ -22,7 +22,7 @@ class EmptyState extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: context.dynamicHeight(0.6),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

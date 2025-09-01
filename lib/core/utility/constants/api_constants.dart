@@ -40,6 +40,7 @@ class ApiConstants {
     'openrouter': {
       'gpt-oss-20b': 'openai/gpt-oss-20b:free',
       'gpt-4.1-nano': 'openai/gpt-4.1-nano', //not free
+      'gpt-5-nano': 'openai/gpt-5-nano', //not free
       'gemini-2.0-flash': 'google/gemini-2.0-flash-exp:free',
       'deepseek-v3': 'deepseek/deepseek-chat-v3-0324:free',
       'deepseek-r1-0528': 'deepseek/deepseek-r1-0528:free',

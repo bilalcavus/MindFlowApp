@@ -10,11 +10,9 @@ class AnalysisGrid extends StatelessWidget {
   const AnalysisGrid({
     super.key,
     required this.analysisList,
-    required this.isDark,
   });
 
   final List<AnalysisItem> analysisList;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,6 @@ class AnalysisGrid extends StatelessWidget {
             return ModernAnalysisCard(
               item: item,
               onTap: () => RouteHelper.push(context, item.page),
-              isDark: isDark
               );
             },
           ),

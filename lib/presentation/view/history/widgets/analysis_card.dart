@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 
 class AnalysisCard extends StatelessWidget {
@@ -37,12 +38,11 @@ class AnalysisCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: context.dynamicHeight(0.005)),
+            context.dynamicHeight(0.005).height,
             Row(
               children: [
-                Icon(HugeIcons.strokeRoundedTime04,
-                    size: context.dynamicHeight(0.02)),
-                SizedBox(width: context.dynamicWidth(0.01)),
+                Icon(HugeIcons.strokeRoundedTime04, size: context.dynamicHeight(0.02)),
+                context.dynamicWidth(0.01).width,
                 Text(
                   '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
                   style: TextStyle(
@@ -51,32 +51,6 @@ class AnalysisCard extends StatelessWidget {
                 ),
               ],
             ),
-            // if (themes!.isNotEmpty) ...[
-            //   SizedBox(height: context.dynamicHeight(0.01)),
-            //   Wrap(
-            //     spacing: context.dynamicWidth(0.01),
-            //     runSpacing: context.dynamicHeight(0.005),
-            //     children: themes!.take(3).map((theme) {
-            //       return Container(
-            //         padding: EdgeInsets.symmetric(
-            //           horizontal: context.dynamicWidth(0.02),
-            //           vertical: context.dynamicHeight(0.005),
-            //         ),
-            //         decoration: BoxDecoration(
-            //           color: Colors.blue.withOpacity(0.1),
-            //           borderRadius: BorderRadius.circular(context.dynamicHeight(0.01)),
-            //         ),
-            //         child: Text(
-            //           theme,
-            //           style: TextStyle(
-            //             fontSize: context.dynamicHeight(0.015),
-            //             color: Colors.blue,
-            //           ),
-            //         ),
-            //       );
-            //     }).toList(),
-            //   ),
-            // ],
           ],
         ),
         trailing: Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.02)),

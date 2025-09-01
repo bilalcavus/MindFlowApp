@@ -99,6 +99,10 @@
   "personality_scores_title": "📊 性格スコア",
   "mental_challenges_title": "⚡ メンタルチャレンジ",
   "themes_title": "🎯 テーマ",
+  "lifestyle_category_title": "ライフスタイル",
+  "habits_title": "習慣",
+  "positive_habits_title": "良い習慣",
+  "negative_habits_title": "悪い習慣",
   "home": "ホーム",
   "profile": "プロフィール",
   "history": "履歴",
@@ -358,11 +362,9 @@
 "too_many_requests": "リクエストが多すぎます。後でもう一度お試しください。",
 "password_reset_error": "パスワードリセットエラー",
 "password_reset_error_with_details": "パスワードリセットエラー: {error}",
-"clear_history": "履歴をクリア",
 "clear_history_confirmation": "このカテゴリのすべての分析履歴を削除してもよろしいですか？\n\nこの操作は取り消すことができません。",
 "history_cleared_success": "✅ 分析履歴がクリアされました",
 "history_clear_error": "❌ エラー: {error}",
-"clear": "クリア",
 "loading_credit_info": "クレジット情報を読み込み中..."
 
 

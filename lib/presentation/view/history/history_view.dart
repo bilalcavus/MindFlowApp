@@ -1,13 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/utility/constants/analysis_types.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/constants/analysis_types.dart';
 import 'package:mind_flow/presentation/view/history/tabs/dream_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/emotion_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/habits_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/mental_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/personality_history_tab.dart';
 import 'package:mind_flow/presentation/view/history/tabs/stress_history_tab.dart';
+import 'package:mind_flow/presentation/view/history/widgets/analysis_bottom_sheet.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/dream_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/emotion_analysis_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/analysis/habit_analysis_provider.dart';
@@ -28,7 +29,6 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   
-
   @override
   void initState() {
     super.initState();
@@ -40,108 +40,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       context.read<MentalAnalysisProvider>().refreshHistory();
       context.read<StressAnalysisProvider>().refreshHistory();
     });
-  }
-
-  void _showAnalysisTypeBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: CustomColorTheme.bottomSheet(context),
-      isScrollControlled: true,
-      builder: (context) => Container(
-        height: context.dynamicHeight(.5  ),
-        decoration:  BoxDecoration(
-          color: CustomColorTheme.bottomSheet(context),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(context.dynamicHeight(0.02)),
-            topRight: Radius.circular(context.dynamicHeight(0.02)),
-          ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              margin:  EdgeInsets.only(top: context.dynamicHeight(0.02)),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[600],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(context.dynamicHeight(0.02)),
-              child: Text(
-                "select_analysis_type".tr(),
-                style: TextStyle(
-                  fontSize: context.dynamicHeight(0.02),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                padding:  EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.02)),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 2,
-                ),
-                itemCount: AnalysisTypes.analysisTypes.length,
-                itemBuilder: (context, index) {
-                  final analysisType = AnalysisTypes.analysisTypes[index];
-                  final isSelected = AnalysisTypes.selectedAnalysisType == index;
-                  
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        AnalysisTypes.selectedAnalysisType = index;
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isSelected 
-                            ? analysisType['color'].withOpacity(0.3)
-                            : CustomColorTheme.bottomSheetAnalyzeColor(context),
-                        borderRadius: BorderRadius.circular(15),
-                        border: isSelected
-                            ? Border.all(
-                                color: analysisType['color'],
-                                width: 2,
-                              )
-                            : null,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            analysisType['icon'],
-                            color: analysisType['color'],
-                            size: context.dynamicHeight(0.04),
-                          ),
-                          SizedBox(height: context.dynamicHeight(0.01)),
-                          Text(
-                            analysisType['title'].toString().tr(),
-                            style: TextStyle(
-                              color: isSelected ? analysisType['color'] : null,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
 
@@ -214,6 +112,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
+
+  void _showAnalysisTypeBottomSheet() {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: CustomColorTheme.bottomSheet(context),
+    isScrollControlled: true,
+    builder: (context) {
+      return AnalysisTypeBottomSheet(
+        selectedIndex: AnalysisTypes.selectedAnalysisType,
+        analysisTypes: AnalysisTypes.analysisTypes,
+        onTypeSelected: (index) {
+          setState(() {
+            AnalysisTypes.selectedAnalysisType = index;
+          });
+          Navigator.pop(context);
+        },
+      );
+    },
+  );
+}
+
 }
 
   Widget _getCurrentHistoryTab() {

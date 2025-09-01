@@ -5,7 +5,6 @@ void showClearDialog(BuildContext context, Future<void> Function() onClear) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 25, 14, 45),
       title: Text('clear_history'.tr()),
       content: Text('clear_history_confirmation'.tr()),
       actions: [

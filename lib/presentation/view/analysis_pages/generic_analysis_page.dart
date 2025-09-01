@@ -36,6 +36,7 @@ class GenericAnalysisPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subscriptionProvider = context.watch<SubscriptionProvider>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -74,7 +75,7 @@ class GenericAnalysisPage extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: isLoading ? null : () => 
                       textController.text.isNotEmpty ?
-                      _analyzeWithCreditCheck(context) : null,
+                      _analyzeWithCreditCheck(context, subscriptionProvider) : null,
                       icon: isLoading
                           ? _loadingIcon(context)
                           : const Icon(HugeIcons.strokeRoundedSent),
@@ -118,28 +119,27 @@ class GenericAnalysisPage extends StatelessWidget {
     );
   }
 
-    Future<void> _analyzeWithCreditCheck(BuildContext context) async {
+    Future<void> _analyzeWithCreditCheck(BuildContext context, SubscriptionProvider provider) async {
       final authService = getIt<AuthService>();
-      
+      final userId = authService.currentUserId;
+
       if (!authService.isLoggedIn) {
         onAnalyze();
         return;
       }
 
-      final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
-      final userId = authService.currentUserId;
-      
       if (userId == null) {
         onAnalyze();
         return;
       }
-      final hasEnoughCredits = await subscriptionProvider.hasEnoughCredits(userId, 1);
+      
+      final hasEnoughCredits = await provider.hasEnoughCredits(userId, 1);
       if (!hasEnoughCredits) {
-        _showInsufficientCreditsDialog(context, subscriptionProvider, userId);
+        _showInsufficientCreditsDialog(context, provider, userId);
         return;
       }
       onAnalyze();
-      await subscriptionProvider.consumeCredits(userId, 1, 'analyze_op'.tr());
+      await provider.consumeCredits(userId, 1, 'analyze_op'.tr());
     }
 
     void _showInsufficientCreditsDialog(BuildContext context, SubscriptionProvider subscriptionProvider, String userId) {
@@ -149,9 +149,3 @@ class GenericAnalysisPage extends StatelessWidget {
     );
   }
 }
-
-
-
-// Color(0xFF1A1A2E), // Koyu mavi
-// Color.fromARGB(255, 25, 18, 51),
-// Color.fromARGB(255, 74, 26, 58),

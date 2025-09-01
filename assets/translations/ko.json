@@ -99,6 +99,10 @@
   "personality_scores_title": "📊 성격 점수",
   "mental_challenges_title": "⚡ 정신적 도전",
   "themes_title": "🎯 주제",
+  "lifestyle_category_title": "라이프스타일",
+  "habits_title": "습관",
+  "positive_habits_title": "긍정적인 습관",
+  "negative_habits_title": "부정적인 습관",
   "home": "홈",
   "profile": "프로필",
   "history": "기록",
@@ -357,11 +361,9 @@
 "too_many_requests": "요청이 너무 많습니다. 나중에 다시 시도해 주세요.",
 "password_reset_error": "비밀번호 재설정 오류",
 "password_reset_error_with_details": "비밀번호 재설정 오류: {error}",
-"clear_history": "기록 지우기",
 "clear_history_confirmation": "이 카테고리의 모든 분석 기록을 삭제하시겠습니까?\n\n이 작업은 취소할 수 없습니다.",
 "history_cleared_success": "✅ 분석 기록이 지워졌습니다",
 "history_clear_error": "❌ 오류: {error}",
-"clear": "지우기",
 "loading_credit_info": "크레딧 정보를 로딩 중..."
 
 

@@ -10,6 +10,7 @@ import 'package:mind_flow/presentation/view/chat/widgets/chat_message_list.dart'
 import 'package:mind_flow/presentation/view/chat/widgets/empty_chat_state.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_alert_dialog.dart';
+import 'package:mind_flow/presentation/widgets/sheet_divider.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
@@ -114,7 +115,7 @@ void _onNewChat() async {
         ),
         child: Column(
           children: [
-            _sheetDivider(context),
+            const SheetDivider(),
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.05)),
               child: Row(
@@ -206,18 +207,6 @@ void _onNewChat() async {
         ),
       ),
     );
-  }
-
-  Container _sheetDivider(BuildContext context) {
-    return Container(
-            width: context.dynamicWidth(.3),
-            height: context.dynamicHeight(.004),
-            margin: const EdgeInsets.only(top: 12, bottom: 20),
-            decoration: BoxDecoration(
-              color: Colors.grey[600],
-              borderRadius: BorderRadius.circular(2),
-            ),
-          );
   }
 
   String _formatDate(DateTime date) {

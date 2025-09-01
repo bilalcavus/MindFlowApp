@@ -98,6 +98,10 @@
     "personality_scores_title" : "📊 Kişilik Puanları",
     "mental_challenges_title": "⚡ Zihinsel Zorluklar",
     "themes_title": "🎯 Temalar",
+    "lifestyle_category_title": "Yaşam Tarzı",
+    "habits_title": "Alışkanlıklar",
+    "positive_habits_title": "Pozitif Alışkanlıklar",
+    "negative_habits_title": "Negatif Alışkanlıklar",
     "home": "Anasayfa",
     "profile": "Profil",
     "history": "Geçmiş",
@@ -364,11 +368,9 @@
     "too_many_requests": "Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin",
     "password_reset_error": "Şifre sıfırlama hatası",
  "password_reset_error_with_details": "Şifre sıfırlama hatası: {error}",
-"clear_history": "Geçmişi Temizle",
 "clear_history_confirmation": "Bu kategorideki tüm analiz geçmişini silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz.",
 "history_cleared_success": "✅ Analiz geçmişi temizlendi",
 "history_clear_error": "❌ Hata: {error}",
-"clear": "Temizle",
 "loading_credit_info": "Kredi bilgisi yükleniyor..."
 
 }

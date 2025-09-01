@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/dream_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/emotion_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/habit_analysis_page.dart';
@@ -12,8 +12,7 @@ import 'package:mind_flow/presentation/view/analysis_pages/stress_burnout_analys
 class ModernAnalysisCard extends StatelessWidget {
   final AnalysisItem item;
   final VoidCallback onTap;
-  final bool isDark;
-  const ModernAnalysisCard({super.key, required this.item, required this.onTap, required this.isDark});
+  const ModernAnalysisCard({super.key, required this.item, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,9 @@ class ModernAnalysisCard extends StatelessWidget {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: context.dynamicHeight(.016),
-                      shadows: isDark
-                          ? [const Shadow(color: Colors.black54, blurRadius: 2)]
-                          : null,
+                      shadows: const [
+                        Shadow(color: Colors.black54, blurRadius: 2)
+                      ]
                     ),
                     textAlign: TextAlign.center,
                   ),

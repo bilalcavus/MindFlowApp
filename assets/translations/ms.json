@@ -99,6 +99,10 @@
   "personality_scores_title": "📊 Skor Personaliti",
   "mental_challenges_title": "⚡ Cabaran Mental",
   "themes_title": "🎯 Tema",
+  "lifestyle_category_title": "Gaya Hidup",
+  "habits_title": "Tabiat",
+  "positive_habits_title": "Tabiat Positif",
+  "negative_habits_title": "Tabiat Negatif",
   "home": "Laman Utama",
   "profile": "Profil",
   "history": "Sejarah",
@@ -354,11 +358,9 @@
 "too_many_requests": "Terlalu banyak permintaan. Sila cuba lagi kemudian.",
 "password_reset_error": "Ralat tetapan semula kata laluan",
 "password_reset_error_with_details": "Ralat tetapan semula kata laluan: {error}",
-"clear_history": "Padam Sejarah",
 "clear_history_confirmation": "Adakah anda pasti mahu memadamkan semua sejarah analisis dalam kategori ini?\n\nTindakan ini tidak dapat dibatalkan.",
 "history_cleared_success": "✅ Sejarah analisis dipadamkan",
 "history_clear_error": "❌ Ralat: {error}",
-"clear": "Padam",
 "loading_credit_info": "Memuatkan maklumat kredit..."
 
 

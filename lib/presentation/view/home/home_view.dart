@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/home/widgets/chat_type_selection.dart';
 import 'package:mind_flow/presentation/view/home/widgets/home_analysis_card.dart';
@@ -21,7 +22,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-   final FirestoreService _firestoreService = getIt<FirestoreService>();
+  final FirestoreService _firestoreService = getIt<FirestoreService>();
+  final authService = AuthService();
   @override
   void initState() {
     super.initState();
@@ -43,10 +45,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final navigationController = context.read<NavigationProvider>();
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final analysisList = GetAnalysisList().getAnalysisList(context);
-    final authService = AuthService();
     return WillPopScope(
       onWillPop: () async {
         if (navigationController.currentIndex == 0) {
@@ -67,12 +66,12 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: context.dynamicHeight(0.01)),
+                context.dynamicHeight(0.01).height,
                 HomeHeader(authService: authService),
-                SizedBox(height: context.dynamicHeight(.024)),
+                context.dynamicHeight(.024).height,
                 const ChatTypeSelection(isDark: true),
-                SizedBox(height: context.dynamicHeight(.03)),
-                AnalysisGrid(analysisList: analysisList, isDark: isDark),
+                context.dynamicHeight(.03).height,
+                AnalysisGrid(analysisList: analysisList),
                 ],
               ),
             ),

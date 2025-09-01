@@ -99,6 +99,10 @@
   "personality_scores_title": "📊 Điểm tính cách",
   "mental_challenges_title": "⚡ Thách thức tâm lý",
   "themes_title": "🎯 Chủ đề",
+  "lifestyle_category_title": "Phong cách sống",
+  "habits_title": "Thói quen",
+  "positive_habits_title": "Thói quen tích cực",
+  "negative_habits_title": "Thói quen tiêu cực",
   "home": "Trang chủ",
   "profile": "Hồ sơ",
   "history": "Lịch sử",
@@ -356,11 +360,9 @@
 "too_many_requests": "Quá nhiều yêu cầu. Vui lòng thử lại sau.",
 "password_reset_error": "Lỗi đặt lại mật khẩu",
 "password_reset_error_with_details": "Lỗi đặt lại mật khẩu: {error}",
-"clear_history": "Xóa lịch sử",
 "clear_history_confirmation": "Bạn có chắc chắn muốn xóa tất cả lịch sử phân tích trong danh mục này?\n\nHành động này không thể hoàn tác.",
 "history_cleared_success": "✅ Đã xóa lịch sử phân tích",
 "history_clear_error": "❌ Lỗi: {error}",
-"clear": "Xóa",
 "loading_credit_info": "Đang tải thông tin tín dụng..."
 
 
