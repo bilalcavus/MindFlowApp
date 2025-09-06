@@ -8,6 +8,7 @@ import 'package:mind_flow/presentation/view/analysis_pages/habit_analysis_page.d
 import 'package:mind_flow/presentation/view/analysis_pages/mental_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/personality_analysis_page.dart';
 import 'package:mind_flow/presentation/view/analysis_pages/stress_burnout_analysis_page.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class ModernAnalysisCard extends StatelessWidget {
   final AnalysisItem item;
@@ -19,32 +20,26 @@ class ModernAnalysisCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
+        margin: const EdgeInsets.only(bottom: 6),
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          gradient: item.gradient,
-          borderRadius: BorderRadius.circular(24),
+          color: CustomColorTheme.containerColor(context),
+          borderRadius: BorderRadius.circular(context.dynamicHeight(0.03)),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.03), vertical: context.dynamicHeight(0.007)),
-          child: Column(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(item.icon, height: context.dynamicHeight(.06)),
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Text(item.title, style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: context.dynamicHeight(.016),
-                      shadows: const [
-                        Shadow(color: Colors.black54, blurRadius: 2)
-                      ]
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+              Image.asset(item.icon, height: context.dynamicHeight(.055)),
+              Text(item.title, style: TextStyle(
+                  fontSize: context.dynamicHeight(.016),
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: context.dynamicHeight(0.005)),
+              const Spacer(),
+              Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.015))
               // Flexible(
               //   child: SingleChildScrollView(
               //     child: Text(

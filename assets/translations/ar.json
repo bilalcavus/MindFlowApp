@@ -337,7 +337,12 @@
 "history_cleared_success": "✅ تم مسح سجل التحليل",
 "history_clear_error": "❌ خطأ: {error}",
 "clear": "مسح",
-"loading_credit_info": "جاري تحميل معلومات الرصيد..."
+"loading_credit_info": "جاري تحميل معلومات الرصيد...",
+"theme": "سمة",
+"time_now": "الآن",
+"time_minutes_ago": "منذ {minutes} دقيقة",
+"time_hours_ago": "منذ {hours} ساعة",
+"time_date_format": "{day}/{month}/{year}"
 
 
 }

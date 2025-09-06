@@ -1,10 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
 import 'package:mind_flow/injection/injection.dart';
-import 'package:mind_flow/presentation/view/profile/profile_pages/personal_information_view.dart';
 import 'package:mind_flow/presentation/widgets/liquid_glass_card.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -31,15 +30,15 @@ class ChatBubble extends StatelessWidget {
         mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!isUser) ...[
-             CircleAvatar(
-              radius: context.dynamicHeight(0.025),
-              backgroundColor: Colors.transparent,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(AssetConstants.ASSISTANT_ICON))
-            ),
-          ],
+          // if (!isUser) ...[
+          //    CircleAvatar(
+          //     radius: context.dynamicHeight(0.025),
+          //     backgroundColor: Colors.transparent,
+          //     child: ClipRRect(
+          //       borderRadius: BorderRadius.circular(16),
+          //       child: Image.asset(AssetConstants.ASSISTANT_ICON))
+          //   ),
+          // ],
           Flexible(
             child: Container(
               constraints: BoxConstraints(
@@ -76,9 +75,9 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
           SizedBox(height: context.dynamicHeight(0.01)),
-          if (isUser) ...[
-            UserAvatar(user: user, fontSize: context.dynamicHeight(0.02), radius: context.dynamicHeight(0.025),)
-          ],
+          // if (isUser) ...[
+          //   UserAvatar(user: user, fontSize: context.dynamicHeight(0.02), radius: context.dynamicHeight(0.025),)
+          // ],
         ],
       ),
     );
@@ -89,13 +88,17 @@ class ChatBubble extends StatelessWidget {
     final difference = now.difference(timestamp);
     
     if (difference.inMinutes < 1) {
-      return 'Şimdi';
+      return 'time_now'.tr();
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} dk önce';
+      return 'time_minutes_ago'.tr(namedArgs: {'minutes': difference.inMinutes.toString()});
     } else if (difference.inHours < 24) {
-      return '${difference.inHours} saat önce';
+      return 'time_hours_ago'.tr(namedArgs: {'hours': difference.inHours.toString()});
     } else {
-      return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
+      return 'time_date_format'.tr(namedArgs: {
+        'day': timestamp.day.toString(),
+        'month': timestamp.month.toString(),
+        'year': timestamp.year.toString()
+      });
     }
   }
 } 

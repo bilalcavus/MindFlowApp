@@ -365,6 +365,10 @@
 "history_cleared_success": "✅ Analysis history cleared",
 "history_clear_error": "❌ Error: {error}",
 "clear": "Clear",
-"loading_credit_info": "Loading credit information..."
+"loading_credit_info": "Loading credit information...",
+"time_now": "Now",
+"time_minutes_ago": "{minutes} min ago",
+"time_hours_ago": "{hours} hours ago",
+"time_date_format": "{day}/{month}/{year}"
 
 }

@@ -362,5 +362,10 @@
 "clear_history_confirmation": "คุณแน่ใจหรือไม่ที่ต้องการลบประวัติการวิเคราะห์ทั้งหมดในหมวดหมู่นี้?\n\nการกระทำนี้ไม่สามารถยกเลิกได้",
 "history_cleared_success": "✅ ลบประวัติการวิเคราะห์แล้ว",
 "history_clear_error": "❌ ข้อผิดพลาด: {error}",
-"loading_credit_info": "กำลังโหลดข้อมูลเครดิต..."
+"loading_credit_info": "กำลังโหลดข้อมูลเครดิต...",
+"theme": "ธีม",
+"time_now": "ตอนนี้",
+"time_minutes_ago": "{minutes} นาทีที่แล้ว",
+"time_hours_ago": "{hours} ชั่วโมงที่แล้ว",
+"time_date_format": "{day}/{month}/{year}"
 }

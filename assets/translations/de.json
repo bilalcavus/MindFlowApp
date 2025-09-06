@@ -366,7 +366,11 @@
 "history_cleared_success": "✅ Analyseverlauf gelöscht",
 "history_clear_error": "❌ Fehler: {error}",
 "clear": "Löschen",
-"loading_credit_info": "Kreditinformationen werden geladen..."
-
+"loading_credit_info": "Kreditinformationen werden geladen...",
+"theme": "Thema",
+"time_now": "Jetzt",
+"time_minutes_ago": "vor {minutes} Min",
+"time_hours_ago": "vor {hours} Std",
+"time_date_format": "{day}/{month}/{year}"
 
 }

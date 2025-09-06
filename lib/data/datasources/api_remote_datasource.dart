@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/core/helper/dio_helper.dart';
+import 'package:mind_flow/core/utility/constants/api_constants.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
 import 'package:mind_flow/data/models/dream_analysis_model.dart';
 import 'package:mind_flow/data/models/emotion_analysis_model.dart';
@@ -183,6 +183,8 @@ class ApiRemoteDataSource implements RemoteDataSource {
     throw lastException ?? Exception("Hiçbir API sağlayıcısından yanıt alınamadı");
   }
 
+
+
   @override
   Future<EmotionAnalysisModel> analyzeEmotion(String userText, {String? modelKey, bool isPremiumUser = false}) async {
     return await _makeRequestWithFallback<EmotionAnalysisModel>(
@@ -263,7 +265,7 @@ class ApiRemoteDataSource implements RemoteDataSource {
       return await _getChatResponseWithSpecificModelAndContext(messages, modelKey, chatType: chatType);
     }
     
-    final fallbackConfig = chatType != null 
+    final fallbackConfig = chatType != null
         ? (isPremiumUser
             ? ApiConstants.getChatTypeFallbackModels(chatType, paid: true)
             : ApiConstants.getChatTypeFallbackModels(chatType))
@@ -307,11 +309,11 @@ class ApiRemoteDataSource implements RemoteDataSource {
         };
 
         final result = await dioHelper.dioPost('/chat/completions', requestData);
-
+        
         if (result is Map && result.containsKey('choices')) {
           debugPrint('✅ Success with $provider/$modelKeyToUse');
           String content = result['choices'][0]['message']['content'].trim();
-          
+
           if (chatType == 'mental_health' || chatType == 'motivation' || chatType == 'career_guidance' || chatType == 'creative_writing' || chatType == 'technical_help' || chatType == 'general_chat') {
             debugPrint('🧹 Original content length: ${content.length}');
             final originalContent = content;
@@ -321,7 +323,6 @@ class ApiRemoteDataSource implements RemoteDataSource {
               debugPrint('✅ Thinking content was filtered out');
             }
           }
-          
           return content;
         } 
         else {

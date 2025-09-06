@@ -161,6 +161,10 @@
     "chat_motivation_desc": "Hedefleriniz için günlük motivasyon ve ilham",
     "chat_motivation_prompt": "Sen insanların hedeflerine ulaşmasına ve zorlukları aşmasına yardım etmeye odaklanan ilham verici bir yaşam koçu ve motivasyon mentorususn. Cesaret verme, kişisel büyüme için pratik stratejiler ve hesap verebilirlik desteği sağlıyorsun. Hedefler, zorluklar ve ilerlemeler hakkındaki konuşmalarımızı hatırlayarak kişiselleştirilmiş motivasyon sunuyor ve başarıları birlikte kutluyorsun. Cevapların oldukça kısa olsun, daha detaylı cevap öner ve eğer kullanıcı daha detaylı cevap isterse detaylı cevap ver. Thinking yaptığını cevabında belirtme cevabın sade ve yalın olsun.",
 
+    "chat_image_generator_title": "Resim Oluşturma",
+    "chat_image_generator_desc": "AI destekli resim oluşturma",
+    "chat_image_generator_prompt": "Sen resim oluşturma konusunda uzmanlığa sahip bir resim oluşturma asistanısın. Kullanıcının istediği resmi oluşturuyorsun. Oluşturduğun görsellerin kalitesini yüksek tut.",
+
     "select_model": "Model Seç",
     "model_changed": "Model değiştirildi: {model}",
     "clear_chat": "Sohbeti Temizle",
@@ -371,6 +375,10 @@
 "clear_history_confirmation": "Bu kategorideki tüm analiz geçmişini silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz.",
 "history_cleared_success": "✅ Analiz geçmişi temizlendi",
 "history_clear_error": "❌ Hata: {error}",
-"loading_credit_info": "Kredi bilgisi yükleniyor..."
+"loading_credit_info": "Kredi bilgisi yükleniyor...",
+"time_now": "Şimdi",
+"time_minutes_ago": "{minutes} dk önce",
+"time_hours_ago": "{hours} saat önce",
+"time_date_format": "{day}/{month}/{year}"
 
 }

@@ -32,16 +32,10 @@ class AnalysisGrid extends StatelessWidget {
           ],
         ),
         SizedBox(height: context.dynamicHeight(0.013)),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: analysisList.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 0.9,
-            crossAxisSpacing: context.dynamicWidth(0.03),
-            mainAxisSpacing: context.dynamicHeight(0.02),
-          ),
+        ListView.builder(
+           shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: analysisList.length,
           itemBuilder: (context, index) {
             final item = analysisList[index];
             return ModernAnalysisCard(

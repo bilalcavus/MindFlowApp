@@ -20,7 +20,7 @@ class ChatInputArea extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.02), vertical: context.dynamicHeight(0.005)),
         decoration: BoxDecoration(
           color: CustomColorTheme.chatScreenInput(context),
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Row(
           children: [
@@ -28,8 +28,13 @@ class ChatInputArea extends StatelessWidget {
               child: TextField(
                 controller: _controller,
                 focusNode: focusNode,
-                maxLines: 1,
-                decoration: InputDecoration(hintText: "write_message".tr(), border: InputBorder.none),
+                maxLines: 2,
+                
+                decoration: InputDecoration(
+                  hintText: "write_message".tr(),
+                  border: InputBorder.none,
+                  isCollapsed: true
+                ),
               ),
             ),
             IconButton(

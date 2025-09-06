@@ -5,9 +5,7 @@ class GetChatResponse {
 
   GetChatResponse(this._dataSource);
 
-  Future<String> call(String message, String selectedModel) async {
-    return await _dataSource.getChatResponse(message, modelKey: selectedModel);
-  }
+
 
   Future<String> callWithContext(List<Map<String, String>> messages, String selectedModel, {String? chatType, bool isPremiumUser = false}) async {
     return await _dataSource.getChatResponseWithContext(messages, modelKey: selectedModel, chatType: chatType, isPremiumUser: isPremiumUser);

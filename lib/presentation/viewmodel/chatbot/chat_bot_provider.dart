@@ -82,6 +82,9 @@ class ChatBotProvider extends ChangeNotifier {
 
   Future<String> _fetchAIResponse() async {
     final context = _buildConversationContext();
+    if (currentChatType == 'image_generator') {
+      
+    }
     return await getChatResponse.callWithContext(
       context,
       activeModel,

@@ -361,7 +361,12 @@
 "clear_history_confirmation": "Adakah anda pasti mahu memadamkan semua sejarah analisis dalam kategori ini?\n\nTindakan ini tidak dapat dibatalkan.",
 "history_cleared_success": "✅ Sejarah analisis dipadamkan",
 "history_clear_error": "❌ Ralat: {error}",
-"loading_credit_info": "Memuatkan maklumat kredit..."
+"loading_credit_info": "Memuatkan maklumat kredit...",
+"theme": "Tema",
+"time_now": "Sekarang",
+"time_minutes_ago": "{minutes} min yang lalu",
+"time_hours_ago": "{hours} jam yang lalu",
+"time_date_format": "{day}/{month}/{year}"
 
 
 }

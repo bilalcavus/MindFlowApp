@@ -363,7 +363,11 @@
 "clear_history_confirmation": "Bạn có chắc chắn muốn xóa tất cả lịch sử phân tích trong danh mục này?\n\nHành động này không thể hoàn tác.",
 "history_cleared_success": "✅ Đã xóa lịch sử phân tích",
 "history_clear_error": "❌ Lỗi: {error}",
-"loading_credit_info": "Đang tải thông tin tín dụng..."
-
+"loading_credit_info": "Đang tải thông tin tín dụng...",
+"theme": "Chủ đề",
+"time_now": "Bây giờ",
+"time_minutes_ago": "{minutes} phút trước",
+"time_hours_ago": "{hours} giờ trước",
+"time_date_format": "{day}/{month}/{year}"
 
 }

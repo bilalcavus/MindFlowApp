@@ -1,15 +1,16 @@
 import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:mind_flow/core/utility/constants/enum/locales.dart';
 import 'package:mind_flow/core/init/config/app_environment.dart';
 import 'package:mind_flow/core/init/config/env.dart';
 import 'package:mind_flow/core/init/init_billing_service.dart';
 import 'package:mind_flow/core/init/init_database.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/notification_service.dart';
+import 'package:mind_flow/core/utility/constants/enum/locales.dart';
 import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/firebase_options.dart';
@@ -33,13 +34,13 @@ import 'package:provider/provider.dart';
 final class AppInitializer {
   
   Future<void> make() async {
+    WidgetsFlutterBinding.ensureInitialized();
     //hata yönetimi icin
     await runZonedGuarded<Future<void>>(_initialize, (error, stack){
       Logger().e(error);
     });
   }
   Future<void> _initialize() async {
-    WidgetsFlutterBinding.ensureInitialized();
     await EasyLocalization.ensureInitialized();
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     AppEnvironment.setup(Env());

@@ -4,10 +4,10 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/injection/injection.dart';
-import 'package:mind_flow/presentation/view/home/widgets/chat_type_selection.dart';
 import 'package:mind_flow/presentation/view/home/widgets/home_analysis_card.dart';
 import 'package:mind_flow/presentation/view/home/widgets/home_analysis_grid.dart';
 import 'package:mind_flow/presentation/view/home/widgets/home_header.dart';
+import 'package:mind_flow/presentation/view/home/widgets/popular_topics_widget.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
@@ -66,12 +66,15 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                context.dynamicHeight(0.01).height,
-                HomeHeader(authService: authService),
-                context.dynamicHeight(.024).height,
-                const ChatTypeSelection(isDark: true),
-                context.dynamicHeight(.03).height,
-                AnalysisGrid(analysisList: analysisList),
+                  context.dynamicHeight(0.01).height,
+                  HomeHeader(authService: authService),
+                  context.dynamicHeight(.024).height,
+                  const PopularTopicsWidget(),
+                  context.dynamicHeight(.02).height,
+                  AnalysisGrid(analysisList: analysisList),
+                  
+                  
+
                 ],
               ),
             ),

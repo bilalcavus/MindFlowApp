@@ -367,7 +367,12 @@
 "history_cleared_success": "✅ Riwayat analisis dihapus",
 "history_clear_error": "❌ Error: {error}",
 "clear": "Hapus",
-"loading_credit_info": "Memuat informasi kredit..."
+"loading_credit_info": "Memuat informasi kredit...",
+"theme": "Tema",
+"time_now": "Sekarang",
+"time_minutes_ago": "{minutes} menit yang lalu",
+"time_hours_ago": "{hours} jam yang lalu",
+"time_date_format": "{day}/{month}/{year}"
 
 
 }
