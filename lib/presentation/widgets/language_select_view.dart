@@ -85,6 +85,36 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
       "flag": "🇻🇳",
       "description": "Ngôn ngữ tiếng Việt"
     },
+    {
+      "code": "zh",
+      "label": "繁體中文",
+      "flag": "🇹🇼",
+      "description": "Traditional Chinese"
+    },
+    {
+      "code": "no",
+      "label": "Norsk",
+      "flag": "🇳🇴",
+      "description": "Norwegian language"
+    },
+    {
+      "code": "sk",
+      "label": "Slovenčina",
+      "flag": "🇸🇰",
+      "description": "Slovak language"
+    },
+    {
+      "code": "es",
+      "label": "Español",
+      "flag": "🇪🇸",
+      "description": "Spanish language"
+    },
+    {
+      "code": "sv",
+      "label": "Svenska",
+      "flag": "🇸🇪",
+      "description": "Swedish language"
+    },
   ];
 
   @override
@@ -96,13 +126,29 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final currentLang = context.locale.languageCode;
-    final index = _languages.indexWhere((lang) => lang['code'] == currentLang);
+    final currentCountry = context.locale.countryCode;
+    
+    int index = -1;
+    
+    // Special handling for zh-TW (Traditional Chinese)
+    if (currentLang == 'zh' && currentCountry == 'TW') {
+      index = _languages.indexWhere((lang) => lang['code'] == 'zh');
+    } else {
+      index = _languages.indexWhere((lang) => lang['code'] == currentLang);
+    }
+    
     _selectedIndex = index != -1 ? index : 0;
   }
 
   void _saveLanguage() async {
     final provider = context.read<LanguageProvider>();
-    final selectedLang = _languages[_selectedIndex]['code']!;
+    String selectedLang = _languages[_selectedIndex]['code']!;
+    
+    // Special handling for Traditional Chinese
+    if (selectedLang == 'zh') {
+      selectedLang = 'zh-TW';
+    }
+    
     await provider.changeLanguage(context, selectedLang);
     Navigator.of(context).pop();
     RouteHelper.pushAndCloseOther(context, const AppNavigation());

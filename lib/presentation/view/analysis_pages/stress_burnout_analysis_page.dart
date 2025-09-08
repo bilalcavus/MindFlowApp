@@ -33,7 +33,6 @@ class StressBurnoutAnalysisPage extends StatelessWidget {
         }
       },
       textController: vm.textController,
-      // availableModels: vm.availableModels, // Uncomment if you have model selection
       resultPage: const StressAnalysisResultView(),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 enum Locales {
@@ -12,7 +13,13 @@ enum Locales {
   ja (Locale('ja')),
   ko (Locale('ko')),
   th (Locale('th')),
-  vi (Locale('vi'));
+  vi (Locale('vi')),
+  zhTw (Locale('zh', 'TW')),
+  no (Locale('no')),
+  sk (Locale('sk')),
+  es (Locale('es')),
+  sv (Locale('sv'));
+  
 
   final Locale locale;
   const Locales(this.locale);
@@ -29,6 +36,11 @@ enum Locales {
     Locales.ko.locale,
     Locales.th.locale,
     Locales.vi.locale,
+    Locales.zhTw.locale,
+    Locales.no.locale,
+    Locales.sk.locale,
+    Locales.es.locale,
+    Locales.sv.locale,
   ];
 
 }

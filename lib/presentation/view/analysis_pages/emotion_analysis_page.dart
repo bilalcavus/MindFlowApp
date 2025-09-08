@@ -35,6 +35,7 @@ class EmotionAnalysisPage extends StatelessWidget {
       textController: vm.textController,
       availableModels: vm.availableModels,
       resultPage: const JournalAnalysisScreen(),
+      
     );
   }
 }

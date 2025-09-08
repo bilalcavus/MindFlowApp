@@ -34,6 +34,7 @@ class DreamAnalysisPage extends StatelessWidget {
       },
       textController: provider.textController,
       resultPage: const DreamAnalysisResultView(),
+      
     );
   }
 }

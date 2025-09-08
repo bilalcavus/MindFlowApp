@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
-import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/data/models/chat_message.dart';
-import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -18,9 +16,7 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService authService = getIt<AuthService>();
     final isUser = message.type == MessageType.user;
-    final user = authService.firebaseUser;
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: context.dynamicHeight(0.005), 

@@ -17,15 +17,22 @@ class LanguageProvider extends ChangeNotifier {
   Future<void> loadSaveLanguage(BuildContext context) async {
     if (_currentUserId == null) return;
     final code = await _repository.getSavedLanguagePreference(_currentUserId!);
-    _currentLocale = code != null ? Locale(code) : const Locale('en');
+    _currentLocale = code != null ? _createLocaleFromCode(code) : const Locale('en');
     await context.setLocale(_currentLocale);
     notifyListeners();
   }
   
   Future<void> changeLanguage(BuildContext context, String code) async {
-    _currentLocale = Locale(code);
+    _currentLocale = _createLocaleFromCode(code);
     await _repository.saveLanguagePreference(code, _currentUserId!);
     await context.setLocale(_currentLocale);
     notifyListeners();
+  }
+  
+  Locale _createLocaleFromCode(String code) {
+    if (code == 'zh-TW') {
+      return const Locale('zh', 'TW');
+    }
+    return Locale(code);
   }
 }

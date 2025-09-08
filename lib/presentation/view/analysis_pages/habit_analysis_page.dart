@@ -33,7 +33,6 @@ class HabitAnalysisPage extends StatelessWidget {
         }
       },
       textController: vm.textController,
-      // availableModels: vm.availableModels, // Uncomment if you have model selection
       resultPage: const HabitAnalysisResultView(),
     );
   }
