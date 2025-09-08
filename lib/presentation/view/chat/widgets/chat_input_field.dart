@@ -32,6 +32,9 @@ class ChatInputArea extends StatelessWidget {
                 
                 decoration: InputDecoration(
                   hintText: "write_message".tr(),
+                  hintStyle:  TextStyle(
+                    color: Colors.grey.shade400
+                  ),
                   border: InputBorder.none,
                   isCollapsed: true
                 ),

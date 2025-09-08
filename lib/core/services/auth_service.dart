@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
@@ -18,6 +20,8 @@ class AuthService {
 
   User? _currentUser;
   User? get currentUser => _currentUser;
+
+
 
   Future<void> fetchAndSetCurrentUser() async {
     if (firebaseUser == null) return;
@@ -285,10 +289,13 @@ class AuthService {
     }
   }
 
+  
   Future<void> signOutGoogle() async {
     await _googleSignIn.signOut();
     await _firebaseAuth.signOut();
   }
+
+
 
   Future<void> resetPassword(String email) async {
     try {

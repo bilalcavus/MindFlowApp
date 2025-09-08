@@ -13,7 +13,7 @@ import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 class ModernAnalysisCard extends StatelessWidget {
   final AnalysisItem item;
   final VoidCallback onTap;
-  const ModernAnalysisCard({super.key, required this.item, required this.onTap});
+  const   ModernAnalysisCard({super.key, required this.item, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +31,16 @@ class ModernAnalysisCard extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(item.icon, height: context.dynamicHeight(.055)),
-              Text(item.title, style: TextStyle(
-                  fontSize: context.dynamicHeight(.016),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: context.dynamicHeight(0.005)),
-              const Spacer(),
-              Icon(Icons.arrow_forward_ios, size: context.dynamicHeight(0.015))
+              Image.asset(item.icon, height: context.dynamicHeight(.06)),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Text(item.title, style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: context.dynamicHeight(.016),
+                      
+                    ),
+                    textAlign: TextAlign.center,
+                  ))),
               // Flexible(
               //   child: SingleChildScrollView(
               //     child: Text(

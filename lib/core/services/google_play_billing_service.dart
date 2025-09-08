@@ -110,7 +110,10 @@ class GooglePlayBillingService {
                  purchaseDetails.status == PurchaseStatus.restored) {
         // Purchase completed
         debugPrint('Purchase completed: ${purchaseDetails.productID}');
-        await _handleSuccessfulPurchase(purchaseDetails);
+        final verified = await _verifyPurchase(purchaseDetails);
+        if(verified){
+          await _handleSuccessfulPurchase(purchaseDetails);
+        }
       }
 
       if (purchaseDetails.pendingCompletePurchase) {

@@ -30,7 +30,6 @@ class AuthenticationProvider extends ChangeNotifier {
   bool obsecureCurrentPassword = true;
   bool obsecureLoginPassword = true;
 
-  
 
 
   @override

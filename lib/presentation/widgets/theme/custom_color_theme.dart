@@ -13,13 +13,19 @@ class CustomColorTheme {
   static Color bottomNavBarColor(BuildContext context) {
     return isDarkMode(context)
         ? const Color.fromARGB(255, 20, 0, 29)
-        : const Color.fromARGB(255, 238, 233, 240);
+        : const Color.fromARGB(255, 239, 239, 239);
   }
 
    static Color bottomSheet(BuildContext context) {
     return isDarkMode(context)
         ? Colors.black
         : Colors.white;
+  }
+
+  static List<Color> background(BuildContext context) {
+    return isDarkMode(context)
+        ? [const Color(0xffd1f3ff), const Color(0xffffc8c8)]
+        : [const Color(0xFF1A0025), const Color.fromARGB(255, 18, 0, 56)];
   }
 
 
@@ -39,7 +45,7 @@ class CustomColorTheme {
   static Color chatScreenInput(BuildContext context){
     return isDarkMode(context)
         ? const Color.fromARGB(255, 47, 38, 54)
-        : const Color.fromARGB(255, 235, 229, 240);
+        : const Color.fromARGB(255, 241, 241, 242);
   }
 
   static Color bottomSheetColor(BuildContext context){
@@ -65,7 +71,7 @@ class CustomColorTheme {
   static Color? navbarSelectedColor(BuildContext context){
     return isDarkMode(context)
         ? Colors.grey[200]
-        : Colors.grey[800];
+        : Colors.deepPurple;
   }
 
   static Color? navbarUnselectedColor(BuildContext context){
@@ -90,6 +96,6 @@ class CustomColorTheme {
   static Color scaffoldColor(BuildContext context){
     return isDarkMode(context)
         ? const Color(0xFF1A0025)
-        : const Color.fromARGB(255, 222, 216, 225);
+        : const Color.fromARGB(255, 255, 255, 255);
   }
 }

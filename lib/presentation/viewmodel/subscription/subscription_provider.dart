@@ -316,8 +316,7 @@ class SubscriptionProvider extends ChangeNotifier {
     }
   }
 
-  void listenToSubscriptionChanges(String userId) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+  void listenToSubscriptionChanges(String? userId) {
     if(userId == null) return;
     _subscriptionRepository.getUserSubscriptionStream(userId).listen((subscription) {
       _userSubscription = subscription;
@@ -325,14 +324,15 @@ class SubscriptionProvider extends ChangeNotifier {
     });
   }
 
-  void listenToCreditsChanges(String userId) {
+  void listenToCreditsChanges(String? userId) {
+    if(userId == null) return;
     _subscriptionRepository.getUserCreditsStream(userId).listen((credits) {
       _userCredits = credits;
       notifyListeners();
     });
   }
 
-  void startListening(String userId) {
+  void startListening(String? userId) {
     listenToSubscriptionChanges(userId);
     listenToCreditsChanges(userId);
   }

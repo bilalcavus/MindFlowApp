@@ -9,7 +9,7 @@ class AppTheme {
   static const Color darkBackgroundTertiary = Color(0xFF3A0CA3);
   
   // Light Theme Colors
-  static const Color lightBackground =  Color.fromARGB(255, 222, 216, 225);
+  static const Color lightBackground =  Color.fromARGB(255, 255, 255, 255);
   static const Color lightSurface = Color(0xFFF8F9FA);
   static const Color lightPrimary = Color(0xFF8E2DE2);
   static const Color lightSecondary = Color(0xFF4A00E0);

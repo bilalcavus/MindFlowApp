@@ -27,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> with ChatScreenMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Selector<ChatBotProvider, String>(

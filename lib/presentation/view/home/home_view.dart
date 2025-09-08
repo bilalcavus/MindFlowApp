@@ -11,7 +11,6 @@ import 'package:mind_flow/presentation/view/home/widgets/popular_topics_widget.d
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
-import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -56,7 +55,6 @@ class _HomeViewState extends State<HomeView> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: CustomColorTheme.scaffoldColor(context),
         body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -74,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
                   AnalysisGrid(analysisList: analysisList),
                   
                   
-
+      
                 ],
               ),
             ),

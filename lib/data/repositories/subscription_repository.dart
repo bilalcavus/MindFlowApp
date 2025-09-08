@@ -26,7 +26,7 @@ class SubscriptionRepository {
     return await _firestoreService.updateUserSubscription(subscriptionId, updates);
   }
 
-  Stream<UserSubscription?> getUserSubscriptionStream(String userId) {
+  Stream<UserSubscription?> getUserSubscriptionStream(String? userId) {
     return _firestoreService.getUserSubscriptionStream(userId);
   }
 
@@ -87,7 +87,7 @@ class SubscriptionRepository {
     return await _firestoreService.resetUserCredits(userId, newTotalCredits);
   }
 
-  Stream<UserCredits?> getUserCreditsStream(String userId) {
+  Stream<UserCredits?> getUserCreditsStream(String? userId) {
     return _firestoreService.getUserCreditsStream(userId);
   }
 

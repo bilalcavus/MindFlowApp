@@ -111,7 +111,10 @@ class FirestoreService {
     }
   }
 
-  Stream<UserSubscription?> getUserSubscriptionStream(String userId) {
+  Stream<UserSubscription?> getUserSubscriptionStream(String? userId) {
+    if (userId == null) {
+      return const Stream.empty();
+    }
     return _userSubscriptionsCollection
         .where('userId', isEqualTo: userId)
         .orderBy('createdAt', descending: true)
@@ -273,7 +276,10 @@ class FirestoreService {
     }
   }
 
-  Stream<UserCredits?> getUserCreditsStream(String userId) {
+  Stream<UserCredits?> getUserCreditsStream(String? userId) {
+    if (userId == null) {
+      return const Stream.empty();
+    }
     return _userCreditsCollection
         .doc(userId)
         .snapshots()

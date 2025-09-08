@@ -195,13 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
       decoration: BoxDecoration(
         color: CustomColorTheme.containerColor(context),
         borderRadius: BorderRadius.circular(context.dynamicHeight(0.025)),
-        boxShadow: [
-          BoxShadow(
-            color: CustomColorTheme.containerShadow(context),
-            blurRadius: context.dynamicHeight(0.0125),
-            offset: Offset(0, context.dynamicHeight(0.005)),
-          ),
-        ],
+        
         border: Border.all(color: Colors.white.withOpacity(0.08)),
       ),
       child: Column(
