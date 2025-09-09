@@ -14,41 +14,73 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> initialize() async {
-
+    // Android initialization
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    // iOS initialization
+    const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      
+    );
+
+    // Combined initialization
     const InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
-      // iOS için ek ayarlar eklenebilir
+      iOS: initializationSettingsIOS,
     );
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        debugPrint('Bildirim tıklandı: ${details.payload}');
+      },
+    );
+
+    // İzinleri iste
     await requestPermission();
 
-    FirebaseMessaging.onMessage.listen(_onMessage);
-    FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenedApp);
+    // APNs token al (iOS)
+    if (Platform.isIOS) {
+      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      debugPrint('APNs token: $apnsToken');
+    }
 
+    // FCM token al ve kaydet
     await _saveFcmTokenToFirestore();
+
+    // Token yenilenmesini dinle
     listenTokenRefresh((newToken) async {
       await _saveFcmTokenToFirestore(token: newToken);
     });
+
+    // Mesajları dinle
+    FirebaseMessaging.onMessage.listen(_onMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenedApp);
   }
 
   Future<void> _onMessage(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
-    if (notification != null && android != null) {
+
+    if (notification != null && (android != null || Platform.isIOS)) {
       await flutterLocalNotificationsPlugin.show(
         notification.hashCode,
         notification.title,
         notification.body,
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'default_channel',
-            'Genel',
-            icon: '@mipmap/mindflow_icon',
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
+        NotificationDetails(
+          android: android != null
+              ? AndroidNotificationDetails(
+                  'default_channel',
+                  'Genel',
+                  icon: '@mipmap/mindflow_icon',
+                  importance: Importance.max,
+                  priority: Priority.high,
+                )
+              : null,
+          iOS: DarwinNotificationDetails(),
         ),
       );
     }
@@ -60,43 +92,75 @@ class NotificationService {
   }
 
   Future<void> requestPermission() async {
-    if(Platform.isIOS){
-      // NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
-      //   alert: true,
-      //   badge: true,
-      //   sound: true,
-      // );
-    } else if(Platform.isAndroid) {
+    if (Platform.isIOS) {
+      NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      debugPrint('iOS notification permission: ${settings.authorizationStatus}');
+    } else if (Platform.isAndroid) {
       if (await Permission.notification.isDenied) {
         final status = await Permission.notification.request();
-        if(status.isGranted){
-          debugPrint('Bildirim izni verildi');
-        } else {
-          debugPrint('Bildirim izni reddedildi');
-        }
+        debugPrint('Android notification permission: $status');
       }
     }
-    // await FirebaseMessaging.instance.requestPermission();
   }
 
-  Future<String?> getFcmToken() async {
-    return await FirebaseMessaging.instance.getToken();
+  Future<String?> getSafeFcmToken() async {
+  if (Platform.isIOS) {
+    // Kullanıcı izin verdiyse bekle ve APNs token hazır olana kadar loop
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional) {
+
+      String? apnsToken;
+      // APNs token 10 saniye boyunca kontrol edelim
+      for (int i = 0; i < 10; i++) {
+        apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        if (apnsToken != null) break;
+        await Future.delayed(Duration(seconds: 1));
+      }
+
+      if (apnsToken == null) {
+        debugPrint('APNs token alınamadı!');
+        return null;
+      }
+
+      debugPrint('APNs token hazır: $apnsToken');
+    } else {
+      debugPrint('iOS notification izni reddedildi.');
+      return null;
+    }
   }
+
+  // Artık FCM token alabiliriz
+  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  debugPrint('FCM token: $fcmToken');
+  return fcmToken;
+}
+
 
   void listenTokenRefresh(Function(String) onRefresh) {
     FirebaseMessaging.instance.onTokenRefresh.listen(onRefresh);
   }
 
-  Future<void> _saveFcmTokenToFirestore({String? token}) async {
-    final userId = FirestoreService().currentUserId;
-    final fcmToken = token ?? await getFcmToken();
-    if (userId != null && fcmToken != null) {
-      final user = await FirestoreService().getUser(userId);
-      if (user != null) {
-        final updatedUser = user.copyWith(fcmToken: fcmToken);
-        await FirestoreService().createOrUpdateUser(updatedUser);
-        debugPrint('FCM token Firestore kullanıcı dokümanına kaydedildi.');
-      }
+ Future<void> _saveFcmTokenToFirestore({String? token}) async {
+  final userId = FirestoreService().currentUserId;
+  final fcmToken = token ?? await getSafeFcmToken();
+  if (userId != null && fcmToken != null) {
+    final user = await FirestoreService().getUser(userId);
+    if (user != null) {
+      final updatedUser = user.copyWith(fcmToken: fcmToken);
+      await FirestoreService().createOrUpdateUser(updatedUser);
+      debugPrint('FCM token Firestore kullanıcı dokümanına kaydedildi.');
     }
   }
-} 
+}
+
+}
