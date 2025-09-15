@@ -95,7 +95,7 @@ Future<void> setupDependencies() async {
   
   // Core Services
   // getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
-  getIt.registerLazySingleton<GooglePlayBillingService>(() => GooglePlayBillingService(getIt()));
+  getIt.registerLazySingleton<BillingService>(() => BillingService(getIt()));
   
 
   // Repositories
@@ -132,7 +132,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => NavigationProvider());
   getIt.registerLazySingleton(() => AuthenticationProvider(getIt()));
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));
-  getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<GooglePlayBillingService>()));
+  getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<BillingService>()));
   getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
   getIt.registerLazySingleton(() => ThemeProvider());
 

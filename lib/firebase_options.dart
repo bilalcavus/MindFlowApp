@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '579921522050',
     projectId: 'mindflow-2a315',
     storageBucket: 'mindflow-2a315.firebasestorage.app',
-    iosBundleId: 'com.example.mindFlow',
+    iosBundleId: 'com.bilalcavus.mindflow',
   );
 }

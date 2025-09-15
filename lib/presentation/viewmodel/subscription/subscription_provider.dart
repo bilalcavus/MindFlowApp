@@ -6,7 +6,7 @@ import 'package:mind_flow/data/repositories/subscription_repository.dart';
 
 class SubscriptionProvider extends ChangeNotifier {
   final SubscriptionRepository _subscriptionRepository;
-  final GooglePlayBillingService _billingService;
+  final BillingService _billingService;
 
   SubscriptionProvider(this._subscriptionRepository, this._billingService);
 

@@ -4,7 +4,7 @@ class AppTheme {
   // Primary Colors
   static const Color primaryPurple = Color(0xFFB983FF);
   static const Color primaryPurpleDark = Color(0xFF8B5CF6);
-  static const Color darkBackground = Color(0xFF1A0025);
+  static const Color darkBackground = Color.fromARGB(255, 17, 0, 37);
   static const Color darkBackgroundSecondary = Color(0xFF2E0249);
   static const Color darkBackgroundTertiary = Color(0xFF3A0CA3);
   

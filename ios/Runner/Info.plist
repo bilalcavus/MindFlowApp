@@ -46,15 +46,13 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>REVERSED_CLIENT_ID</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.579921522050-all2s191kk6cf2oj77ege1im368u1q5o</string>
-			</array>
-		</dict>
-	</array>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.579921522050-cv9nmptvsrc4h7vfoh87mb2t83pscl6s</string>
+    </array>
+  </dict>
+</array>
 </dict>
 </plist>

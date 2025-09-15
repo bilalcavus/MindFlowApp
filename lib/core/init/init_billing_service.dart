@@ -6,7 +6,7 @@ import 'package:mind_flow/injection/injection.dart';
 
 Future<void> initalizeGoogleBilling() async {
    try {
-      await getIt<GooglePlayBillingService>().initialize();
+      await getIt<BillingService>().initialize();
     } catch (e) {
       debugPrint('Google Play Billing initialization failed: $e');
     }
