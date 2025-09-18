@@ -365,11 +365,14 @@
 "history_cleared_success": "✅ 분석 기록이 지워졌습니다",
 "history_clear_error": "❌ 오류: {error}",
 "loading_credit_info": "크레딧 정보를 로딩 중...",
-"theme": "주제"
-
+"theme": "주제",
 "time_now": "지금",
 "time_minutes_ago": "{minutes}분 전",
 "time_hours_ago": "{hours}시간 전",
-"time_date_format": "{year}/{month}/{day}"
-
+"time_date_format": "{year}/{month}/{day}",
+"essential_login": "로그인이 필요합니다",
+  "chatting_essential_login": "메시지를 보내려면 로그인해야 합니다",
+  "analyzing_essential_login": "분석을 수행하려면 로그인해야 합니다",
+  "late_for_now": "지금은 늦었습니다",
+  "login_warning_message": "로그인하지 않았습니다. 로그인해주세요"
 }

@@ -342,7 +342,11 @@
 "time_now": "الآن",
 "time_minutes_ago": "منذ {minutes} دقيقة",
 "time_hours_ago": "منذ {hours} ساعة",
-"time_date_format": "{day}/{month}/{year}"
-
-
+"time_date_format": "{day}/{month}/{year}",
+ "essential_login": "تسجيل الدخول مطلوب",
+  "chatting_essential_login": "لإرسال رسالة، يجب عليك تسجيل الدخول",
+  "analyzing_essential_login": "لإجراء التحليل، يجب عليك تسجيل الدخول",
+  "late_for_now": "الوقت متأخر الآن",
+  "login_warning_message": "لم تقم بتسجيل الدخول، يرجى تسجيل الدخول"
 }
+

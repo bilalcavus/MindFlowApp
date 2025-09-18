@@ -166,7 +166,7 @@ class _DreamAnalysisResultViewState extends State<DreamAnalysisResultView> {
               ],
             ),
             context.dynamicHeight(0.01).height,
-            Text(content),
+            Text(content, style: Theme.of(context).textTheme.bodyLarge,),
           ],
         ),
       ),

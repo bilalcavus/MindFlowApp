@@ -377,5 +377,10 @@
     "account_deletion_error": "Kontoraderings fel",
     "wrong_password_for_deletion": "Felaktigt lösenord",
     "requires_recent_login_for_deletion": "Du behöver logga in igen för denna operation",
-    "user_session_not_found": "Användarsession hittades inte"
+    "user_session_not_found": "Användarsession hittades inte",
+    "essential_login": "Inloggning krävs",
+  "chatting_essential_login": "Du måste logga in för att skicka ett meddelande",
+  "analyzing_essential_login": "Du måste logga in för att utföra en analys",
+  "late_for_now": "För sent för nu",
+  "login_warning_message": "Du har inte loggat in, vänligen logga in"
 }

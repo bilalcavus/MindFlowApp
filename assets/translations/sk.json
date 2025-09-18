@@ -369,5 +369,10 @@
     "time_now": "Teraz",
     "time_minutes_ago": "pred {minutes} min",
     "time_hours_ago": "pred {hours} hodinami",
-    "time_date_format": "{day}/{month}/{year}"
+    "time_date_format": "{day}/{month}/{year}",
+    "essential_login": "Prihlásenie je potrebné",
+  "chatting_essential_login": "Na odoslanie správy sa musíte prihlásiť",
+  "analyzing_essential_login": "Na vykonanie analýzy sa musíte prihlásiť",
+  "late_for_now": "Teraz je neskoro",
+  "login_warning_message": "Prihlásili ste sa, prosím, prihláste sa"
 }

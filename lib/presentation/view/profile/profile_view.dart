@@ -5,9 +5,11 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/account_deletion_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/account_password_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/personal_information_view.dart';
@@ -73,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         SizedBox(height: context.dynamicHeight(0.01)),
                         Text(
-                          _authService.firebaseUser?.displayName ?? '',
+                          _authService.firebaseUser?.displayName ?? 'Guest User',
                           style: TextStyle(
                             // color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -89,7 +91,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         ),
                         SizedBox(height: context.dynamicHeight(0.02)),
-                        _buildSettingsList(),
+                        _buildSettingsList(_authService),
                       ],
                     ),
                   ),
@@ -102,10 +104,19 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildSettingsList() {
+  Widget _buildSettingsList(AuthService authService) {
     return Column(
       children: [
+        if(!authService.isLoggedIn)
         _buildSettingsCard([
+          _settingsTile(Iconsax.user_add, 'login'.tr(), (){
+            RouteHelper.push(context, const LoginView());
+          }),
+        
+        ]),
+        context.dynamicHeight(0.02).height,
+        if(authService.isLoggedIn)... [
+           _buildSettingsCard([
           _settingsTile(Iconsax.user, 'personal_information'.tr(), () {
             RouteHelper.push(context, const PersonalInformationView());
           }),
@@ -117,6 +128,8 @@ class _ProfileViewState extends State<ProfileView> {
         SizedBox(height: context.dynamicHeight(0.02)),
         _buildSubscriptionCard(),
         SizedBox(height: context.dynamicHeight(0.02)),
+        ],
+       
         _buildSettingsCard([
           _settingsTile(HugeIcons.strokeRoundedLanguageSkill, 'language'.tr(), () {
             showModalBottomSheet(
@@ -136,6 +149,7 @@ class _ProfileViewState extends State<ProfileView> {
               },
             ),
           ),
+          if(authService.isLoggedIn)
           _settingsTile(HugeIcons.strokeRoundedCustomerSupport, 'support_ticket'.tr(), () {
             RouteHelper.push(context, const SupportTicketView());
           }),
@@ -148,15 +162,17 @@ class _ProfileViewState extends State<ProfileView> {
           _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), () {
             RouteHelper.push(context, const TermsAndConditionsView());
           }),
+          if(authService.isLoggedIn)
           _settingsTile(Iconsax.trash, 'delete_account'.tr(), () {
             RouteHelper.push(context, const AccountDeletionView());
           }),
+          authService.isLoggedIn ?
           _settingsTile(Iconsax.logout, 'log_out'.tr(), () async {
             await _provider.handleLogout(context);
             if (mounted) {
-              RouteHelper.pushAndCloseOther(context, const LoginView());
+              RouteHelper.pushAndCloseOther(context, const AppNavigation());
             }
-          }),
+          }) : const SizedBox.shrink(),
         ]),
         // // Debug modda cleanup butonu
         // if (kDebugMode) ...[

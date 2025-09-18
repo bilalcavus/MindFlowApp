@@ -368,6 +368,11 @@
 "time_now": "Bây giờ",
 "time_minutes_ago": "{minutes} phút trước",
 "time_hours_ago": "{hours} giờ trước",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "Cần đăng nhập",
+  "chatting_essential_login": "Bạn cần đăng nhập để gửi tin nhắn",
+  "analyzing_essential_login": "Bạn cần đăng nhập để thực hiện phân tích",
+  "late_for_now": "Quá muộn cho bây giờ",
+  "login_warning_message": "Bạn chưa đăng nhập, vui lòng đăng nhập"
 
 }

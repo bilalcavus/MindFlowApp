@@ -367,5 +367,10 @@
 "time_now": "ตอนนี้",
 "time_minutes_ago": "{minutes} นาทีที่แล้ว",
 "time_hours_ago": "{hours} ชั่วโมงที่แล้ว",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "ต้องเข้าสู่ระบบ",
+  "chatting_essential_login": "คุณต้องเข้าสู่ระบบเพื่อส่งข้อความ",
+  "analyzing_essential_login": "คุณต้องเข้าสู่ระบบเพื่อทำการวิเคราะห์",
+  "late_for_now": "ตอนนี้สายเกินไป",
+  "login_warning_message": "คุณยังไม่ได้เข้าสู่ระบบ โปรดเข้าสู่ระบบ"
 }

@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
+import 'package:mind_flow/presentation/widgets/%20login_bottom_sheet.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -10,11 +12,12 @@ class EmptyChatState extends StatelessWidget {
   const EmptyChatState({
     super.key,
     required this.context,
-    required this.refresh,
+    required this.refresh, required this.authService,
   });
 
   final BuildContext context;
   final RefreshCallback refresh;
+  final AuthService authService;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,9 @@ class EmptyChatState extends StatelessWidget {
                 SizedBox(height: context.dynamicHeight(0.03)),
                 ElevatedButton.icon(
                   onPressed: () {
+                    if (!authService.isLoggedIn) {
+                      _showLoginSheet();
+                    }
                     final provider = Provider.of<ChatBotProvider>(context, listen: false);
                     provider.chatController.text = 'sample_message'.tr();
                     provider.sendMessageWithCreditCheck(() =>  showDialog(
@@ -80,6 +86,12 @@ class EmptyChatState extends StatelessWidget {
         ),
       ),
     );
+  }
+  void _showLoginSheet(){
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => LoginBottomSheet(title: "essential_login".tr(), subTitle: "chatting_essential_login".tr()));
   }
 }
 

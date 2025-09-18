@@ -6,7 +6,6 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/data/repositories/langauge_repository.dart';
 import 'package:mind_flow/injection/injection.dart';
-import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
@@ -42,7 +41,7 @@ class _SplashViewState extends State<SplashView> {
         await subscriptionProvider.initializeUserWithFreemium(userId);
       }
       subscriptionProvider.startListening(userId);
-    }
+    } 
   }
 
   void _initializeAndNavigate() async {
@@ -59,11 +58,11 @@ class _SplashViewState extends State<SplashView> {
         RouteHelper.pushAndCloseOther(context, const AppNavigation());
       } else {
         debugPrint('❌ Kullanıcı giriş yapmamış, login sayfasına yönlendiriliyor');
-        RouteHelper.pushAndCloseOther(context, const LoginView());
+        RouteHelper.pushAndCloseOther(context, const AppNavigation());
       }
     } catch (e) {
       debugPrint('❌ Splash navigation hatası: $e');
-      RouteHelper.pushAndCloseOther(context, const LoginView());
+      RouteHelper.pushAndCloseOther(context, const AppNavigation());
     }
   }
 

@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> with ChatScreenMixin{
             Expanded(
               child: Consumer<ChatBotProvider>(
                 builder: (_, provider, __) => provider.chatMessages.isEmpty
-                  ? EmptyChatState(context: context, refresh: refreshChatHistory)
+                  ? EmptyChatState(context: context, refresh: refreshChatHistory, authService: authService)
                   : ChatMessageList(scrollController: scrollController)
                 )),
             Consumer<ChatBotProvider>(
@@ -55,6 +55,7 @@ class _ChatScreenState extends State<ChatScreen> with ChatScreenMixin{
             ),
             Consumer<ChatBotProvider>(
               builder: (_, provider, __) => ChatInputArea(
+                authService: authService,
                 focusNode: focusNode,
                 onSend: (msg) async {
                   await provider.sendMessageWithCreditCheck(() => showDialog(

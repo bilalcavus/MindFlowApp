@@ -24,7 +24,9 @@ class LanguageProvider extends ChangeNotifier {
   
   Future<void> changeLanguage(BuildContext context, String code) async {
     _currentLocale = _createLocaleFromCode(code);
-    await _repository.saveLanguagePreference(code, _currentUserId!);
+    if (_authService.isLoggedIn) {
+      await _repository.saveLanguagePreference(code, _currentUserId!);
+    }
     await context.setLocale(_currentLocale);
     notifyListeners();
   }

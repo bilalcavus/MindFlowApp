@@ -369,5 +369,10 @@
     "time_now": "現在",
     "time_minutes_ago": "{minutes} 分鐘前",
     "time_hours_ago": "{hours} 小時前",
-    "time_date_format": "{day}/{month}/{year}"
+    "time_date_format": "{day}/{month}/{year}",
+    "essential_login": "需要登入",
+  "chatting_essential_login": "您需要登入才能發送訊息",
+  "analyzing_essential_login": "您需要登入才能進行分析",
+  "late_for_now": "現在太晚",
+  "login_warning_message": "您尚未登入，請登入"
 }

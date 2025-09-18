@@ -2,13 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
+import 'package:mind_flow/core/services/auth_service.dart';
+import 'package:mind_flow/presentation/widgets/%20login_bottom_sheet.dart';
 import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class ChatInputArea extends StatelessWidget {
   final FocusNode focusNode;
   final Function(String) onSend;
+  final AuthService authService;
 
-  ChatInputArea({super.key, required this.focusNode, required this.onSend});
+  ChatInputArea({super.key, required this.focusNode, required this.onSend, required this.authService});
 
   final TextEditingController _controller = TextEditingController();
 
@@ -43,6 +46,9 @@ class ChatInputArea extends StatelessWidget {
             IconButton(
               icon: const Icon(Iconsax.send_1),
               onPressed: () {
+                if (!authService.isLoggedIn) {
+                  _showLoginSheet(context);
+                }
                 if (_controller.text.trim().isNotEmpty) {
                   onSend(_controller.text);
                   _controller.clear();
@@ -53,5 +59,11 @@ class ChatInputArea extends StatelessWidget {
         ),
       ),
     );
+  }
+  void _showLoginSheet(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => LoginBottomSheet(title: 'essential_login'.tr(), subTitle: 'chatting_essential_login'.tr()));
   }
 }

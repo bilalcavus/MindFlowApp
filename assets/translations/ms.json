@@ -366,7 +366,12 @@
 "time_now": "Sekarang",
 "time_minutes_ago": "{minutes} min yang lalu",
 "time_hours_ago": "{hours} jam yang lalu",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "Log masuk diperlukan",
+  "chatting_essential_login": "Anda perlu log masuk untuk menghantar mesej",
+  "analyzing_essential_login": "Anda perlu log masuk untuk melakukan analisis",
+  "late_for_now": "Terlambat untuk sekarang",
+  "login_warning_message": "Anda belum log masuk, sila log masuk"
 
 
 }

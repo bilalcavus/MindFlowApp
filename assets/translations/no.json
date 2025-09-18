@@ -369,5 +369,10 @@
     "time_now": "Nå",
     "time_minutes_ago": "{minutes} min siden",
     "time_hours_ago": "{hours} timer siden",
-    "time_date_format": "{day}/{month}/{year}"
+    "time_date_format": "{day}/{month}/{year}",
+    "essential_login": "Pålogging kreves",
+  "chatting_essential_login": "Du må logge inn for å sende en melding",
+  "analyzing_essential_login": "Du må logge inn for å utføre en analyse",
+  "late_for_now": "For sent for nå",
+  "login_warning_message": "Du har ikke logget inn, vennligst logg inn"
 }

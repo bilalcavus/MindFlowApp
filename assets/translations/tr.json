@@ -379,6 +379,11 @@
 "time_now": "Şimdi",
 "time_minutes_ago": "{minutes} dk önce",
 "time_hours_ago": "{hours} saat önce",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "Giriş gerekli",
+"chatting_essential_login": "Mesaj yazabilmek için giriş yapmanız gerekiyor",
+"analyzing_essential_login": "Analiz yapabilmek için giriş yapmanız gerekiyor",
+"late_for_now": "Şimdilik geç",
+"login_warning_message": "Kullanıcı girişi yapmadınız, lütfen giriş yapınız."
 
 }

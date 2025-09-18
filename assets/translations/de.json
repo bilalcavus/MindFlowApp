@@ -371,6 +371,11 @@
 "time_now": "Jetzt",
 "time_minutes_ago": "vor {minutes} Min",
 "time_hours_ago": "vor {hours} Std",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "Anmeldung erforderlich",
+  "chatting_essential_login": "Sie müssen sich anmelden, um eine Nachricht zu senden",
+  "analyzing_essential_login": "Sie müssen sich anmelden, um eine Analyse durchzuführen",
+  "late_for_now": "Jetzt zu spät",
+  "login_warning_message": "Sie haben sich nicht eingeloggt, bitte melden Sie sich an"
 
 }

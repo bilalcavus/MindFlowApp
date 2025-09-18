@@ -369,6 +369,11 @@
 "time_now": "Now",
 "time_minutes_ago": "{minutes} min ago",
 "time_hours_ago": "{hours} hours ago",
-"time_date_format": "{day}/{month}/{year}"
+"time_date_format": "{day}/{month}/{year}",
+"essential_login": "Login required",
+  "chatting_essential_login": "You need to log in to send a message",
+  "analyzing_essential_login": "You need to log in to perform analysis",
+  "late_for_now": "Late for now",
+  "login_warning_message": "You haven't logged in, please log in"
 
 }

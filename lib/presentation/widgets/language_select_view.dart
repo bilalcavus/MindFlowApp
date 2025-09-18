@@ -130,7 +130,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
     
     int index = -1;
     
-    // Special handling for zh-TW (Traditional Chinese)
     if (currentLang == 'zh' && currentCountry == 'TW') {
       index = _languages.indexWhere((lang) => lang['code'] == 'zh');
     } else {
@@ -144,7 +143,6 @@ class _LanguageSelectViewState extends State<LanguageSelectView> {
     final provider = context.read<LanguageProvider>();
     String selectedLang = _languages[_selectedIndex]['code']!;
     
-    // Special handling for Traditional Chinese
     if (selectedLang == 'zh') {
       selectedLang = 'zh-TW';
     }

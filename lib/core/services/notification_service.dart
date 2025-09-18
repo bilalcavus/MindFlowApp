@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -42,19 +41,34 @@ class NotificationService {
     // İzinleri iste
     await requestPermission();
 
-    // APNs token al (iOS)
-    if (Platform.isIOS) {
-      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      debugPrint('APNs token: $apnsToken');
+    Future<void> retrieveSaveFcmToken() async {
+      final token = await getSafeFcmToken();
+      try {
+        if (token != null) {
+          await _saveFcmTokenToFirestore(token: token);
+        }
+      } catch (e) {
+        debugPrint('FCM token alınamadı: $e');
+      }
     }
 
-    // FCM token al ve kaydet
-    await _saveFcmTokenToFirestore();
+    retrieveSaveFcmToken();
 
-    // Token yenilenmesini dinle
-    listenTokenRefresh((newToken) async {
-      await _saveFcmTokenToFirestore(token: newToken);
-    });
+    
+
+    // // APNs token al (iOS)
+    // if (Platform.isIOS) {
+    //   String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    //   debugPrint('APNs token: $apnsToken');
+    // }
+
+    // // FCM token al ve kaydet
+    // await _saveFcmTokenToFirestore();
+
+    // // Token yenilenmesini dinle
+    // listenTokenRefresh((newToken) async {
+    //   await _saveFcmTokenToFirestore(token: newToken);
+    // });
 
     // Mesajları dinle
     FirebaseMessaging.onMessage.listen(_onMessage);
@@ -72,7 +86,7 @@ class NotificationService {
         notification.body,
         NotificationDetails(
           android: android != null
-              ? AndroidNotificationDetails(
+              ? const AndroidNotificationDetails(
                   'default_channel',
                   'Genel',
                   icon: '@mipmap/mindflow_icon',
@@ -80,7 +94,7 @@ class NotificationService {
                   priority: Priority.high,
                 )
               : null,
-          iOS: DarwinNotificationDetails(),
+          iOS: const DarwinNotificationDetails(),
         ),
       );
     }

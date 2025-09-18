@@ -31,12 +31,13 @@ class HomeHeader extends StatelessWidget {
                 "what_you_want".tr(),
                 style: theme.textTheme.titleSmall
               ),
+              authService.isLoggedIn ? 
               Consumer<SubscriptionProvider>(
                 builder: (context, provider, child) {
                   final credits = provider.userCredits;
                   return Text('🪙 ${credits?.remainingCredits} ${'remaining_credit'.tr()}', style: theme.textTheme.bodySmall,);
                 },
-              ),
+              ) : const SizedBox.shrink()
             ],
           ),
         ),
