@@ -18,8 +18,13 @@ class CustomColorTheme {
 
    static Color bottomSheet(BuildContext context) {
     return isDarkMode(context)
-        ? Colors.black
+        ? const Color.fromARGB(255, 18, 19, 28)
         : Colors.white;
+  }
+  static Color elevatedButtonColor(BuildContext context) {
+    return isDarkMode(context)
+        ? const Color.fromARGB(255, 75, 64, 144)
+        : const Color.fromARGB(255, 75, 58, 170);
   }
 
   static List<Color> background(BuildContext context) {
@@ -44,7 +49,7 @@ class CustomColorTheme {
 
   static Color chatScreenInput(BuildContext context){
     return isDarkMode(context)
-        ? const Color.fromARGB(255, 47, 38, 54)
+        ? const Color.fromARGB(255, 23, 11, 34)
         : const Color.fromARGB(255, 241, 241, 242);
   }
 

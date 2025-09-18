@@ -374,5 +374,6 @@
   "chatting_essential_login": "Necesitas iniciar sesión para enviar un mensaje",
   "analyzing_essential_login": "Necesitas iniciar sesión para realizar un análisis",
   "late_for_now": "Demasiado tarde por ahora",
-  "login_warning_message": "No has iniciado sesión, por favor inicia sesión"
+  "login_warning_message": "No has iniciado sesión, por favor inicia sesión",
+  "guest_user": "Usuario Invitado"
 }

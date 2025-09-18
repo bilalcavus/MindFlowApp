@@ -6,6 +6,7 @@ import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/widgets/%20login_bottom_sheet.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class EmptyChatState extends StatelessWidget {
@@ -91,6 +92,7 @@ class EmptyChatState extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: CustomColorTheme.bottomSheet(context),
       builder: (context) => LoginBottomSheet(title: "essential_login".tr(), subTitle: "chatting_essential_login".tr()));
   }
 }

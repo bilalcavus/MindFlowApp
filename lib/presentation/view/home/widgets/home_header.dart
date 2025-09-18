@@ -20,9 +20,9 @@ class HomeHeader extends StatelessWidget {
             children: [
               Text(
                 "welcome".tr(namedArgs: {
-                  'display_name': authService.firebaseUser?.displayName ?? 'User'
+                  'display_name': authService.firebaseUser?.displayName ?? ''
                 }),
-                style: theme.textTheme.headlineSmall?.copyWith(
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),

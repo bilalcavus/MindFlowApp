@@ -384,6 +384,7 @@
 "chatting_essential_login": "Mesaj yazabilmek için giriş yapmanız gerekiyor",
 "analyzing_essential_login": "Analiz yapabilmek için giriş yapmanız gerekiyor",
 "late_for_now": "Şimdilik geç",
-"login_warning_message": "Kullanıcı girişi yapmadınız, lütfen giriş yapınız."
+"login_warning_message": "Kullanıcı girişi yapmadınız, lütfen giriş yapınız.",
+"guest_user": "Misafir Kullanıcı"
 
 }

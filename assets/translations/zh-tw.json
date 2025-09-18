@@ -374,5 +374,6 @@
   "chatting_essential_login": "您需要登入才能發送訊息",
   "analyzing_essential_login": "您需要登入才能進行分析",
   "late_for_now": "現在太晚",
-  "login_warning_message": "您尚未登入，請登入"
+  "login_warning_message": "您尚未登入，請登入",
+  "guest_user": "來賓用戶"
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:mind_flow/core/init/config/app_environment.dart';
 import 'package:mind_flow/core/init/config/env.dart';
@@ -41,6 +42,14 @@ final class AppInitializer {
     });
   }
   Future<void> _initialize() async {
+    SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Arka planı şeffaf yapar
+      statusBarIconBrightness: Brightness.dark, // Iconları koyu yapar (açık arkaplanda görünür)
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent
+    ),
+  );
     await EasyLocalization.ensureInitialized();
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     AppEnvironment.setup(Env());

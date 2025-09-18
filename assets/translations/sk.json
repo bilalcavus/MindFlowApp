@@ -374,5 +374,6 @@
   "chatting_essential_login": "Na odoslanie správy sa musíte prihlásiť",
   "analyzing_essential_login": "Na vykonanie analýzy sa musíte prihlásiť",
   "late_for_now": "Teraz je neskoro",
-  "login_warning_message": "Prihlásili ste sa, prosím, prihláste sa"
+  "login_warning_message": "Prihlásili ste sa, prosím, prihláste sa",
+  "guest_user": "Hosťujúci Používateľ"
 }

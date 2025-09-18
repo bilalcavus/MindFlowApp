@@ -377,7 +377,8 @@
   "chatting_essential_login": "Anda perlu masuk untuk mengirim pesan",
   "analyzing_essential_login": "Anda perlu masuk untuk melakukan analisis",
   "late_for_now": "Terlambat untuk sekarang",
-  "login_warning_message": "Anda belum masuk, silakan masuk"
+  "login_warning_message": "Anda belum masuk, silakan masuk",
+"guest_user": "Pengguna Tamu"
 
 
 }

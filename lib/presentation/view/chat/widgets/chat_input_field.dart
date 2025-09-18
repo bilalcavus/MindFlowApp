@@ -64,6 +64,7 @@ class ChatInputArea extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: CustomColorTheme.bottomSheet(context),
       builder: (context) => LoginBottomSheet(title: 'essential_login'.tr(), subTitle: 'chatting_essential_login'.tr()));
   }
 }

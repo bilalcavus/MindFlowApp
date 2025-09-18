@@ -4,6 +4,7 @@ import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 
 class LoginBottomSheet extends StatelessWidget {
   const LoginBottomSheet({
@@ -74,6 +75,7 @@ class LoginBottomSheet extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: context.dynamicHeight(0.018)),
+                  backgroundColor: CustomColorTheme.elevatedButtonColor(context),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(context.dynamicHeight(0.015)),
                   ),

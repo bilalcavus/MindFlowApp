@@ -75,12 +75,10 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         SizedBox(height: context.dynamicHeight(0.01)),
                         Text(
-                          _authService.firebaseUser?.displayName ?? 'Guest User',
-                          style: TextStyle(
-                            // color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: context.dynamicHeight(0.03),
-                          ),
+                          _authService.firebaseUser?.displayName ?? 'guest_user'.tr(),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold
+                          )
                         ),
                         SizedBox(height: context.dynamicHeight(0.01)),
                         Text(

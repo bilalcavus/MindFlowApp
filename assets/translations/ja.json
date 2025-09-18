@@ -375,7 +375,8 @@
   "chatting_essential_login": "メッセージを送信するにはログインが必要です",
   "analyzing_essential_login": "分析を行うにはログインが必要です",
   "late_for_now": "今は遅すぎます",
-  "login_warning_message": "ログインしていません。ログインしてください"
+  "login_warning_message": "ログインしていません。ログインしてください",
+"guest_user": "ゲストユーザー"
 
 
 }

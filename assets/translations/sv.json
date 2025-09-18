@@ -382,5 +382,6 @@
   "chatting_essential_login": "Du måste logga in för att skicka ett meddelande",
   "analyzing_essential_login": "Du måste logga in för att utföra en analys",
   "late_for_now": "För sent för nu",
-  "login_warning_message": "Du har inte loggat in, vänligen logga in"
+  "login_warning_message": "Du har inte loggat in, vänligen logga in",
+  "guest_user": "Gästanvändare"
 }

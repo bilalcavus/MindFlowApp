@@ -11,6 +11,7 @@ import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provi
 import 'package:mind_flow/presentation/widgets/%20login_bottom_sheet.dart';
 import 'package:mind_flow/presentation/widgets/custom_text_field.dart';
 import 'package:mind_flow/presentation/widgets/subscription/insufficient_credits_dialog.dart';
+import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:provider/provider.dart';
 
 class GenericAnalysisPage extends StatelessWidget {
@@ -101,7 +102,10 @@ class GenericAnalysisPage extends StatelessWidget {
 
 
   void _showLoginSheet(BuildContext context){
-    showModalBottomSheet(context: context, builder: (context) => LoginBottomSheet(
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: CustomColorTheme.bottomSheet(context),
+      builder: (context) => LoginBottomSheet(
       title: "essential_login".tr(),
       subTitle: "analyzing_essential_login".tr()));
   }
