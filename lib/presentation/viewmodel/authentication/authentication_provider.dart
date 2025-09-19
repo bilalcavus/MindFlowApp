@@ -7,6 +7,7 @@ import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
+import 'package:path/path.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final emailController = TextEditingController();
@@ -20,11 +21,13 @@ class AuthenticationProvider extends ChangeNotifier {
 
   bool _isEmailLoading = false;
   bool _isGoogleLoading = false;
+  bool _isAppleLoading = false;
   bool _isLoading = false;
   bool _isResetPasswordLoading = false;
   bool get isEmailLoading => _isEmailLoading;
   bool get isGoogleLoading => _isGoogleLoading;
   bool get isLoading => _isLoading;
+  bool get isAppleLoading => _isAppleLoading;
   bool get isResetPasswordLoading => _isResetPasswordLoading;
   bool obsecurePassword = true;
   bool obsecureCurrentPassword = true;
@@ -293,14 +296,29 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> handleAppleSignIn(BuildContext context) async {
+    _isAppleLoading = true;
+    notifyListeners();
+
+    try {
+      await authService.signInWithApple();
+      if (context.mounted) {
+        RouteHelper.push(context, const AppNavigation());
+      }
+    } catch (e) {
+      debugPrint('$e');
+    } finally{
+      _isAppleLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> handleGoogleSignIn(BuildContext context) async {
     _isGoogleLoading = true;
     notifyListeners();
     
     try {
       await authService.signInWithGoogle();
-      print('Premium mu? ${authService.currentUser?.isPremiumUser}');
-      
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const AppNavigation()),

@@ -7,6 +7,9 @@ class AssetConstants {
   //ANALYZE ICON
   static const TRANSLATION_PATH = 'assets/translations';
   static const GOOGLE_ICON_PATH = 'assets/logo/google-icon.png';
+  static const APPLE_ICON_PATH  = 'assets/logo/apple_icon.png';
+  static const APPLE_WHITE_ICON_PATH  = 'assets/logo/apple_white_icon.png';
+
   static const DREAM_ANALYSIS_ICON = 'assets/icon/dream_icon.png';
   static const EMOTION_ANALYSIS_ICON = 'assets/icon/emotion_icon.png';
   static const HABIT_ANALYSIS_ICON = 'assets/icon/habit_icon.png';

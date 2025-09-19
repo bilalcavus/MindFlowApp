@@ -5,7 +5,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.5
+version: 1.0.6+1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -48,6 +48,9 @@ dependencies:
 
   #Config
   envied: ^1.2.0
+
+  #Auth
+  sign_in_with_apple: ^7.0.1 
 
   #Utility
   logger: ^2.6.1
