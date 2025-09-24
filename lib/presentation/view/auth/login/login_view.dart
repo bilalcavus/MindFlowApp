@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:mind_flow/core/utility/constants/asset_constants.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/helper/route_helper.dart';
+import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/presentation/view/auth/forgot_password_view.dart';
 import 'package:mind_flow/presentation/view/auth/login/widgets/loading_icon.dart';
 import 'package:mind_flow/presentation/view/auth/login/widgets/login_button.dart';
 import 'package:mind_flow/presentation/view/auth/login/widgets/login_text_field.dart';
+import 'package:mind_flow/presentation/view/auth/login/widgets/login_with_apple.dart';
 import 'package:mind_flow/presentation/view/auth/register_view.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/widgets/custom_logo.dart';
@@ -83,6 +85,8 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     SizedBox(height: context.dynamicHeight(0.022)),
                     LoginWithGoogle(provider: provider),
+                    context.dynamicHeight(0.015).height,
+                    AppleLogin(provider: provider, themeProvider: themeProvider),
                     SizedBox(height: context.dynamicHeight(0.022)),
                     registerNowSection(context),
                   ],
@@ -171,6 +175,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-
 

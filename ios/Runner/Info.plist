@@ -24,6 +24,26 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- URL Schemes: Apple (Bundle ID) + Google -->
+	<key>CFBundleURLTypes</key>
+	<array>
+	  <dict>
+	    <key>CFBundleTypeRole</key>
+	    <string>Editor</string>
+	    <key>CFBundleURLSchemes</key>
+	    <array>
+	      <!-- Apple için: Bundle ID -->
+	      <string>com.bilalcavus.mindflow</string>
+	      <!-- Google için: Client ID -->
+	      <string>com.googleusercontent.apps.579921522050-cv9nmptvsrc4h7vfoh87mb2t83pscl6s</string>
+	    </array>
+	  </dict>
+	</array>
+
+	<!-- Sign in with Apple desteği -->
+	<key>SignInWithApple</key>
+	<true/>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -45,14 +65,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>com.googleusercontent.apps.579921522050-cv9nmptvsrc4h7vfoh87mb2t83pscl6s</string>
-    </array>
-  </dict>
-</array>
 </dict>
 </plist>

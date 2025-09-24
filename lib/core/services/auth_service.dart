@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mind_flow/data/models/user_model.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -195,6 +196,30 @@ class AuthService {
     throw Exception('Şifre değiştirme hatası: $e');
   }
 }
+
+
+
+Future<fb.UserCredential> signInWithApple() async {
+  final appleCredential = await SignInWithApple.getAppleIDCredential(
+    scopes: [
+      AppleIDAuthorizationScopes.email,
+      AppleIDAuthorizationScopes.fullName,
+    ],
+  );
+
+  if (appleCredential.identityToken == null) {
+      throw Exception("Apple ID Token alınamadı. Giriş yapılamıyor.");
+    }
+
+  final oauthCredential = fb.OAuthProvider("apple.com").credential(
+    idToken: appleCredential.identityToken,
+    accessToken: appleCredential.authorizationCode,
+  );
+
+  return await _firebaseAuth.signInWithCredential(oauthCredential);
+}
+
+
 
 
   Future<User> signInWithGoogle() async {

@@ -45,8 +45,8 @@ final class AppInitializer {
     SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Arka planı şeffaf yapar
-      statusBarIconBrightness: Brightness.dark, // Iconları koyu yapar (açık arkaplanda görünür)
-      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light, // Iconları koyu yapar (açık arkaplanda görünür)
+      statusBarBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.transparent
     ),
   );
