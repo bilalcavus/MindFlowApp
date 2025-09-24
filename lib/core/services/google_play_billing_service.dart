@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
 import 'package:mind_flow/data/models/subscription_model.dart';
 
 class BillingService {
-  static const String _premiumSubscriptionId = 'mind_flow_premium';
+  static const String _premiumSubscriptionId = 'mind_flow_premium_new';
   static const String _credit5Id = 'mind_flow_credits_5';
   static const String _credit10Id = 'mind_flow_credits_10';
   static const String _credit20Id = 'mind_flow_credits_20';
@@ -29,6 +30,9 @@ class BillingService {
       debugPrint('Initializing In-App Purchases...');
       
       if (Platform.isAndroid || Platform.isIOS) {
+        // Ensure previous stream subscription is cleaned up before re-initializing
+        await _subscription?.cancel();
+        _subscription = null;
         debugPrint('Checking store availability...');
         final bool available = await _inAppPurchase.isAvailable();
         _isAvailable = available;
@@ -62,6 +66,9 @@ class BillingService {
 
       final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(kIds);
       
+      if (response.error != null) {
+        debugPrint('Error from product query: ${response.error}');
+      }
       if (response.notFoundIDs.isNotEmpty) {
         debugPrint('Product IDs not found: ${response.notFoundIDs}');
       }
@@ -75,6 +82,8 @@ class BillingService {
   }
 
   void _setupPurchaseListener() {
+    // Cancel any existing subscription before assigning a new listener
+    _subscription?.cancel();
     _subscription = _inAppPurchase.purchaseStream.listen(
       _onPurchaseUpdate,
       onDone: () => _subscription?.cancel(),
@@ -84,6 +93,12 @@ class BillingService {
 
   Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) async {
     for (final purchaseDetails in purchaseDetailsList) {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        debugPrint('Purchase is pending for product: ${purchaseDetails.productID}');
+      }
+      if (purchaseDetails.status == PurchaseStatus.error) {
+        debugPrint('Purchase error for product ${purchaseDetails.productID}: ${purchaseDetails.error}');
+      }
       if (purchaseDetails.status == PurchaseStatus.purchased || 
           purchaseDetails.status == PurchaseStatus.restored) {
         
@@ -153,11 +168,23 @@ class BillingService {
   }
 
   Future<bool> purchaseSubscription() async {
-    final product = _products.firstWhere((p) => p.id == _premiumSubscriptionId, orElse: () => null as ProductDetails);
-    if (product == null) return false;
-
-    final purchaseParam = PurchaseParam(productDetails: product);
-    return _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+    try {
+      if (!_isAvailable) {
+        debugPrint('Store not available. Aborting subscription purchase.');
+        return false;
+      }
+      final product = _products.firstWhereOrNull((p) => p.id == _premiumSubscriptionId);
+      if (product == null) {
+        debugPrint('Subscription product not found: $_premiumSubscriptionId');
+        return false;
+      }
+      final purchaseParam = PurchaseParam(productDetails: product);
+      final result = await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+      return result;
+    } catch (e) {
+      debugPrint('Error purchasing subscription: $e');
+      return false;
+    }
   }
 
   Future<bool> purchaseCredits(int creditAmount) async {
@@ -169,14 +196,40 @@ class BillingService {
       default: return false;
     }
 
-    final product = _products.firstWhere((p) => p.id == productId, orElse: () => null as ProductDetails);
-    if (product == null) return false;
-
-    final purchaseParam = PurchaseParam(productDetails: product);
-    return _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+    try {
+      if (!_isAvailable) {
+        debugPrint('Store not available. Aborting credit purchase.');
+        return false;
+      }
+      final product = _products.firstWhereOrNull((p) => p.id == productId);
+      if (product == null) {
+        debugPrint('Credit product not found: $productId');
+        return false;
+      }
+      final purchaseParam = PurchaseParam(productDetails: product);
+      final result = await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      return result;
+    } catch (e) {
+      debugPrint('Error purchasing credits: $e');
+      return false;
+    }
   }
 
-  Future<void> restorePurchases() async => _inAppPurchase.restorePurchases();
+  Future<void> restorePurchases() async {
+    try {
+      if (!_isAvailable) {
+        debugPrint('Store not available. Skipping restorePurchases.');
+        return;
+      }
+      debugPrint('Restoring purchases...');
+      await _inAppPurchase.restorePurchases();
+    } catch (e) {
+      debugPrint('Error restoring purchases: $e');
+    }
+  }
 
-  void dispose() => _subscription?.cancel();
+  void dispose() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
 }

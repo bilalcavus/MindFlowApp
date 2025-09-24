@@ -7,7 +7,6 @@ import 'package:mind_flow/core/helper/route_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/presentation/view/auth/login/login_view.dart';
 import 'package:mind_flow/presentation/view/navigation/app_navigation.dart';
-import 'package:path/path.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final emailController = TextEditingController();
@@ -303,7 +302,7 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       await authService.signInWithApple();
       if (context.mounted) {
-        RouteHelper.push(context, const AppNavigation());
+        RouteHelper.pushAndCloseOther(context, const AppNavigation());
       }
     } catch (e) {
       debugPrint('$e');
