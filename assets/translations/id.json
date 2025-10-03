@@ -201,6 +201,7 @@
     "login": "Masuk",
     "or": "atau",
     "login-with-google": "Masuk dengan Google",
+    "login-with-apple": "Masuk dengan Apple",
     "registering": "Sedang mendaftar...",
     "logging_in": "Sedang masuk...",
     "reset_password": "Atur Ulang Kata Sandi",
@@ -237,6 +238,7 @@
     "user_preferences": "Preferensi Pengguna",
     "privacy_policy": "Kebijakan Privasi",
     "terms_and_conditions": "Syarat dan Ketentuan",
+    "terms_of_use_eula": "Syarat Penggunaan (EULA)",
 
     "insufficient_credit": "Kredit Tidak Cukup",
     "insufficient_credit_desc": "Analisis ini memerlukan 1 kredit. Kredit Anda tidak mencukupi.",
