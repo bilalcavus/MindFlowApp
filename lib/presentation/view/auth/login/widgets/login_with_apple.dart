@@ -46,7 +46,7 @@ class AppleLogin extends StatelessWidget {
             ),
             label: provider.isAppleLoading
                 ? const LoadingIcon()
-                : Text("Apple ile giriş yap ".tr(),
+                : Text("login-with-apple".tr(),
                     style: TextStyle(
                       fontSize: context.dynamicWidth(0.04),
                       fontWeight: FontWeight.w600,

@@ -218,6 +218,7 @@
     "login": "Anmelden",
     "or": "oder",
     "login-with-google": "Mit Google anmelden",
+    "login-with-apple": "Mit Apple anmelden",
     "registering": "Registrierung läuft...",
     "logging_in": "Anmeldung läuft...",
     "reset_password": "Passwort zurücksetzen",
@@ -253,6 +254,7 @@
     "user_preferences": "Benutzereinstellungen",
     "privacy_policy": "Datenschutzbestimmungen",
     "terms_and_conditions": "Nutzungsbedingungen",
+    "terms_of_use_eula": "Nutzungsbedingungen (EULA)",
 
     "insufficient_credit": "Unzureichendes Guthaben",
     "insufficient_credit_desc": "Für diese Analyse wird 1 Guthaben benötigt. Dein Guthaben ist unzureichend.",

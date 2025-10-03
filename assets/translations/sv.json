@@ -194,6 +194,7 @@
     "login": "Logga in",
     "or": "eller",
     "login-with-google": "Logga in med Google",
+    "login-with-apple": "Logga in med Apple",
     "registering": "Registrerar...",
     "logging_in": "Loggar in...",
     "reset_password": "Återställ lösenord",
@@ -251,6 +252,7 @@
     "user_preferences": "Användarpreferanser",
     "privacy_policy": "Integritetspolicy",
     "terms_and_conditions": "Villkor och bestämmelser",
+    "terms_of_use_eula": "Användarvillkor (EULA)",
     
     "insufficient_credit": "Otillräcklig kredit",
     "insufficient_credit_desc": "1 kredit krävs för denna analys. Ditt lån är otillräckligt.",

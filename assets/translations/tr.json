@@ -225,6 +225,7 @@
     "login": "Giriş Yap",
     "or": "veya",
     "login-with-google": "Google ile giriş yap",
+    "login-with-apple": "Apple ile giriş yap",
     "registering": "Kayıt Olunuyor...",
     "logging_in": "Giriş Yapılıyor...",
     "reset_password": "Şifre Sıfırla",
@@ -316,6 +317,7 @@
     "user_preferences": "Kullanıcı Tercihleri",
     "privacy_policy": "Gizlilik Politikası",
     "terms_and_conditions": "Kullanım Şartları",
+    "terms_of_use_eula": "Kullanım Şartları (EULA)",
 
     "insufficient_credit": "Yetersiz Kredi",
     "insufficient_credit_desc": "Bu analiz için 1 kredi gereklidir. Krediniz yetersiz.",
