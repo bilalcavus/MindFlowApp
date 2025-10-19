@@ -199,7 +199,7 @@ class AuthService {
 
 
 
-Future<fb.UserCredential> signInWithApple() async {
+Future<User> signInWithApple() async {
   final appleCredential = await SignInWithApple.getAppleIDCredential(
     scopes: [
       AppleIDAuthorizationScopes.email,
@@ -216,7 +216,39 @@ Future<fb.UserCredential> signInWithApple() async {
     accessToken: appleCredential.authorizationCode,
   );
 
-  return await _firebaseAuth.signInWithCredential(oauthCredential);
+  final userCredential = await _firebaseAuth.signInWithCredential(oauthCredential);
+  final user = userCredential.user;
+
+  if (user == null) {
+    throw Exception('Firebase authentication başarısız');
+  }
+
+  // Firestore'dan kullanıcı bilgilerini al veya oluştur
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      User userModel;
+      
+      if (doc.exists) {
+        userModel = User.fromFirestore(doc);
+        // Son giriş zamanını güncelle
+        userModel = userModel.copyWith(lastLoginAt: DateTime.now());
+        await createUserInFirestore(userModel);
+      } else {
+        userModel = User(
+          id: user.uid,
+          email: user.email ?? '',
+          displayName: user.displayName ?? '',
+          avatarUrl: user.photoURL,
+          createdAt: DateTime.now(),
+          lastLoginAt: DateTime.now(),
+          isActive: true,
+          userPreferences: null,
+          isPremiumUser: false,
+        );
+        await createUserInFirestore(userModel);
+      }
+      
+      _currentUser = userModel;
+      return userModel;
 }
 
 

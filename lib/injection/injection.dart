@@ -3,7 +3,7 @@ import 'package:mind_flow/core/helper/dio_helper.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
-import 'package:mind_flow/core/services/google_play_billing_service.dart';
+import 'package:mind_flow/core/services/adapty_billing_service.dart';
 import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
@@ -95,7 +95,7 @@ Future<void> setupDependencies() async {
   
   // Core Services
   // getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
-  getIt.registerLazySingleton<BillingService>(() => BillingService(getIt()));
+  getIt.registerLazySingleton<AdaptyBillingService>(() => AdaptyBillingService(getIt()));
   
 
   // Repositories
@@ -132,7 +132,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => NavigationProvider());
   getIt.registerLazySingleton(() => AuthenticationProvider(getIt()));
   getIt.registerLazySingleton(() => LanguageProvider(getIt(), getIt()));
-  getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<BillingService>()));
+  getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<AdaptyBillingService>()));
   getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
   getIt.registerLazySingleton(() => ThemeProvider());
 

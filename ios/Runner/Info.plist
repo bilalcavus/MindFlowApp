@@ -65,5 +65,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>AdaptyPublicSdkKey</key>
+    <string>YOUR_PUBLIC_SDK_KEY</string>
+    <key>AdaptyObserverMode</key>
+    <false/>
+    <key>AdaptyAppleIdfaCollectionDisabled</key>
+    <false/>
 </dict>
 </plist>

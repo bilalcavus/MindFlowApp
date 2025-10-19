@@ -9,59 +9,62 @@
       }
     ]
   },
-  "identifier" : "BE9BEE92",
+  "identifier" : "0B789556",
   "nonRenewingSubscriptions" : [
 
   ],
   "products" : [
     {
-      "displayPrice" : "0.0",
+      "displayPrice" : "0.99",
       "familyShareable" : false,
-      "internalID" : "74AE3C97",
+      "internalID" : "6752644962",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "mind_flow_credits_5",
-      "referenceName" : "mind flow 5 credits",
-      "type" : "Consumable"
-    },
-    {
-      "displayPrice" : "0.0",
-      "familyShareable" : false,
-      "internalID" : "DB1D6625",
-      "localizations" : [
-        {
-          "description" : "",
-          "displayName" : "",
+          "description" : "10 credits for the app",
+          "displayName" : "Mind Flow 10 Credits",
           "locale" : "en_US"
         }
       ],
       "productID" : "mind_flow_credits_10",
-      "referenceName" : "mind flow 10 credits",
+      "referenceName" : "Mind Flow 10 Credits",
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "0.0",
+      "displayPrice" : "1.99",
       "familyShareable" : false,
-      "internalID" : "4B3770DB",
+      "internalID" : "6752645042",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
+          "description" : "20 credits for the app",
+          "displayName" : "Mind Flow 20 Credits",
           "locale" : "en_US"
         }
       ],
       "productID" : "mind_flow_credits_20",
-      "referenceName" : "mind flow 20 credits",
+      "referenceName" : "Mind Flow 20 Credits",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6752644927",
+      "localizations" : [
+        {
+          "description" : "5 credits for the app",
+          "displayName" : "Mind Flow 5 Credits ",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "mind_flow_credits_5",
+      "referenceName" : "Mind Flow 5 Credits",
       "type" : "Consumable"
     }
   ],
   "settings" : {
+    "_applicationInternalID" : "6752565903",
+    "_developerTeamID" : "A3P722KJH9",
     "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 781608716.995857,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -114,11 +117,11 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "C81FFF50",
+      "id" : "21788564",
       "localizations" : [
 
       ],
-      "name" : "mind_flow_premium_new",
+      "name" : "Mind Flow Premium",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -127,22 +130,22 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "0.99",
+          "displayPrice" : "9.99",
           "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "26D27BED",
+          "internalID" : "6752938818",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "Premium plan for the app",
+              "displayName" : "Mind Flow Premium",
               "locale" : "en_US"
             }
           ],
           "productID" : "mind_flow_premium_new",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "mind flow premium",
-          "subscriptionGroupID" : "C81FFF50",
+          "referenceName" : "Mind Flow Premium",
+          "subscriptionGroupID" : "21788564",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
