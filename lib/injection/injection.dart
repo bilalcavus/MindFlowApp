@@ -1,9 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:mind_flow/core/helper/dio_helper.dart';
+import 'package:mind_flow/core/services/adapty_billing_service.dart';
 import 'package:mind_flow/core/services/auth_service.dart';
 import 'package:mind_flow/core/services/database_service.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
-import 'package:mind_flow/core/services/adapty_billing_service.dart';
+import 'package:mind_flow/core/services/product_service.dart';
 import 'package:mind_flow/core/utility/theme/theme_provider.dart';
 import 'package:mind_flow/data/datasources/api_remote_datasource.dart';
 import 'package:mind_flow/data/datasources/remote_datasource.dart';
@@ -60,6 +61,7 @@ import 'package:mind_flow/presentation/viewmodel/authentication/authentication_p
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/paywall_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 
@@ -96,6 +98,7 @@ Future<void> setupDependencies() async {
   // Core Services
   // getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
   getIt.registerLazySingleton<AdaptyBillingService>(() => AdaptyBillingService(getIt()));
+  getIt.registerLazySingleton<ProductService>(() => ProductService());
   
 
   // Repositories
@@ -135,5 +138,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => SubscriptionProvider(getIt<SubscriptionRepository>(), getIt<AdaptyBillingService>()));
   getIt.registerLazySingleton(() => SupportTicketProvider(getIt()));
   getIt.registerLazySingleton(() => ThemeProvider());
+  getIt.registerLazySingleton(() => PaywallProvider());
 
 }

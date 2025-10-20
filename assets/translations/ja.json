@@ -383,7 +383,8 @@
   "analyzing_essential_login": "分析を行うにはログインが必要です",
   "late_for_now": "今は遅すぎます",
   "login_warning_message": "ログインしていません。ログインしてください",
-"guest_user": "ゲストユーザー"
+"guest_user": "ゲストユーザー",
+"error_loading_prices": "価格の読み込みに失敗しました。もう一度お試しください。"
 
 
 }

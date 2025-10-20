@@ -27,6 +27,7 @@ import 'package:mind_flow/presentation/viewmodel/authentication/authentication_p
 import 'package:mind_flow/presentation/viewmodel/chatbot/chat_bot_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/language/language_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
+import 'package:mind_flow/presentation/viewmodel/subscription/paywall_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/support-ticket/support_ticket_provider.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,8 @@ final class AppInitializer {
         ChangeNotifierProvider(create: (_) => getIt<SupportTicketProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<ThemeProvider>()),
         ChangeNotifierProvider.value(value: getIt<SubscriptionProvider>()),
+        ChangeNotifierProvider(create: (_) => getIt<PaywallProvider>()),
+
       ],
       child: const MyApp(),
     );

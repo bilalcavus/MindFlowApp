@@ -389,5 +389,6 @@
   "analyzing_essential_login": "Du måste logga in för att utföra en analys",
   "late_for_now": "För sent för nu",
   "login_warning_message": "Du har inte loggat in, vänligen logga in",
-  "guest_user": "Gästanvändare"
+  "guest_user": "Gästanvändare",
+  "error_loading_prices": "Fel vid inläsning av priser. Vänligen försök igen."
 }

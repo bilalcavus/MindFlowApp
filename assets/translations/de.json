@@ -384,6 +384,7 @@
   "analyzing_essential_login": "Sie müssen sich anmelden, um eine Analyse durchzuführen",
   "late_for_now": "Jetzt zu spät",
   "login_warning_message": "Sie haben sich nicht eingeloggt, bitte melden Sie sich an",
-"guest_user": "Gastbenutzer"
+"guest_user": "Gastbenutzer",
+"error_loading_prices": "Fehler beim Laden der Preise. Bitte versuchen Sie es erneut."
 
 }

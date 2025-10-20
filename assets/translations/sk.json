@@ -382,5 +382,6 @@
   "analyzing_essential_login": "Na vykonanie analýzy sa musíte prihlásiť",
   "late_for_now": "Teraz je neskoro",
   "login_warning_message": "Prihlásili ste sa, prosím, prihláste sa",
-  "guest_user": "Hosťujúci Používateľ"
+  "guest_user": "Hosťujúci Používateľ",
+  "error_loading_prices": "Chyba pri načítaní cien. Prosím, skúste znova."
 }

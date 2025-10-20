@@ -382,5 +382,6 @@
   "analyzing_essential_login": "분석을 수행하려면 로그인해야 합니다",
   "late_for_now": "지금은 늦었습니다",
   "login_warning_message": "로그인하지 않았습니다. 로그인해주세요",
-"guest_user": "게스트 사용자"
+"guest_user": "게스트 사용자",
+"error_loading_prices": "가격 로딩 오류. 다시 시도해 주세요."
 }

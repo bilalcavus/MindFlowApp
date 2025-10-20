@@ -392,6 +392,7 @@
 "analyzing_essential_login": "Analiz yapabilmek için giriş yapmanız gerekiyor",
 "late_for_now": "Şimdilik geç",
 "login_warning_message": "Kullanıcı girişi yapmadınız, lütfen giriş yapınız.",
-"guest_user": "Misafir Kullanıcı"
+"guest_user": "Misafir Kullanıcı",
+"error_loading_prices": "Fiyat yüklenirken hata oluştu. Lütfen tekrar deneyiniz."
 
 }

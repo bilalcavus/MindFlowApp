@@ -382,6 +382,7 @@
   "analyzing_essential_login": "您需要登入才能進行分析",
   "late_for_now": "現在太晚",
   "login_warning_message": "您尚未登入，請登入",
-  "guest_user": "來賓用戶"
+  "guest_user": "來賓用戶",
+  "error_loading_prices": "載入價格時發生錯誤。請重試。"
 }
 

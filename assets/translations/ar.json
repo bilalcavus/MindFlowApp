@@ -354,6 +354,7 @@
   "analyzing_essential_login": "لإجراء التحليل، يجب عليك تسجيل الدخول",
   "late_for_now": "الوقت متأخر الآن",
   "login_warning_message": "لم تقم بتسجيل الدخول، يرجى تسجيل الدخول",
-  "guest_user": "مستخدم ضيف"
+  "guest_user": "مستخدم ضيف",
+  "error_loading_prices": "خطأ في تحميل الأسعار. يرجى المحاولة مرة أخرى."
 }
 

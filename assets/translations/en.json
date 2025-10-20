@@ -382,6 +382,8 @@
   "analyzing_essential_login": "You need to log in to perform analysis",
   "late_for_now": "Late for now",
   "login_warning_message": "You haven't logged in, please log in",
-"guest_user": "Guest User"
+"guest_user": "Guest User",
+"error_loading_prices": "Error loading prices. Please try again."
+
 
 }

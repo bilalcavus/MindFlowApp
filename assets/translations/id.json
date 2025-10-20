@@ -385,7 +385,8 @@
   "analyzing_essential_login": "Anda perlu masuk untuk melakukan analisis",
   "late_for_now": "Terlambat untuk sekarang",
   "login_warning_message": "Anda belum masuk, silakan masuk",
-"guest_user": "Pengguna Tamu"
+"guest_user": "Pengguna Tamu",
+"error_loading_prices": "Error saat memuat harga. Silakan coba lagi."
 
 
 }

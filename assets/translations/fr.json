@@ -382,7 +382,8 @@
   "analyzing_essential_login": "Vous devez vous connecter pour effectuer une analyse",
   "late_for_now": "Trop tard pour maintenant",
   "login_warning_message": "Vous ne vous êtes pas connecté, veuillez vous connecter",
-  "guest_user": "Utilisateur Invité"
+  "guest_user": "Utilisateur Invité",
+  "error_loading_prices": "Erreur lors du chargement des prix. Veuillez réessayer."
 
 
 

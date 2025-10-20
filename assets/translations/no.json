@@ -382,5 +382,6 @@
   "analyzing_essential_login": "Du må logge inn for å utføre en analyse",
   "late_for_now": "For sent for nå",
   "login_warning_message": "Du har ikke logget inn, vennligst logg inn",
-  "guest_user": "Gjestebruker"
+  "guest_user": "Gjestebruker",
+  "error_loading_prices": "Feil ved lasting av priser. Vennligst prøv igjen."
 }
