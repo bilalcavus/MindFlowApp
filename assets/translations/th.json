@@ -236,6 +236,7 @@
   "log_out": "ออกจากระบบ",
   "account_password": "เปลี่ยนรหัสผ่าน",
   "manage_subscription": "จัดการการสมัครสมาชิก",
+  "manage_subscription_desc": "คุณจะถูกนำทางไปยัง Store เพื่อจัดการการสมัครสมาชิกของคุณ.",
   "active": "ใช้งานอยู่",
   "language": "ภาษา",
   "user_preferences": "การตั้งค่าผู้ใช้",

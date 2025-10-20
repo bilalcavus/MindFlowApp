@@ -309,6 +309,7 @@
     "log_out": "Log Out",
     "account_password": "Change Password",
     "manage_subscription": "Manage Subscription", 
+    "manage_subscription_desc": "You will be redirected to Store to manage your subscription.",
     "active": "Active",
     "language": "Language",
     "theme": "Theme",

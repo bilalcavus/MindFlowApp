@@ -309,6 +309,7 @@
     "log_out": "Logg ut",
     "account_password": "Endre passord",
     "manage_subscription": "Administrer abonnement", 
+    "manage_subscription_desc": "Du vil bli omdirigert til Store for å administrere abonnementet ditt.",
     "active": "Aktiv",
     "language": "Språk",
     "theme": "Tema",

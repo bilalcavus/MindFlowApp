@@ -237,6 +237,7 @@
   "log_out": "로그아웃",
   "account_password": "비밀번호 변경",
   "manage_subscription": "구독 관리",
+  "manage_subscription_desc": "Store에서 구독을 관리할 수 있습니다.",
   "language": "언어",
   "user_preferences": "사용자 환경설정",
   "privacy_policy": "개인정보 처리방침",

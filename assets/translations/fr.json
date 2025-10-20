@@ -252,6 +252,7 @@
   "log_out": "Déconnexion",
   "account_password": "Changer le mot de passe",
   "manage_subscription": "Gérer l'abonnement",
+  "manage_subscription_desc": "Vous serez redirigé vers Store pour gérer votre abonnement.",
   "language": "Langue",
   "user_preferences": "Préférences utilisateur",
   "privacy_policy": "Politique de confidentialité",

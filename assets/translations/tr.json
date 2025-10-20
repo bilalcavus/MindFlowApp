@@ -317,6 +317,7 @@
     "log_out": "Çıkış Yap",
     "account_password": "Şifre Değiştir",
     "manage_subscription": "Aboneliği Yönet",
+    "manage_subscription_desc": "Aboneliğinizi yönetmek için Store'a yönlendirileceksiniz.",
     "language": "Dil",
     "theme": "Tema",
     "user_preferences": "Kullanıcı Tercihleri",

@@ -302,6 +302,7 @@
   "current_plan": "Gói hiện tại",
   "upgrade_plan": "Nâng cấp gói",
   "manage_subscription": "Quản lý đăng ký",
+  "manage_subscription_desc": "Bạn sẽ được chuyển hướng đến Store để quản lý đăng ký của bạn.",
   "subscription_details": "Chi tiết đăng ký",
   "billing_cycle": "Chu kỳ thanh toán",
   "next_billing": "Thanh toán tiếp theo",

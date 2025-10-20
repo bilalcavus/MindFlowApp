@@ -262,6 +262,7 @@
   "log_out": "تسجيل خروج",
   "account_password": "تغيير كلمة المرور",
   "manage_subscription": "إدارة الاشتراك",
+  "manage_subscription_desc": "سيتم توجيهك إلى متجر التطبيقات لإدارة الاشتراك.",
   "active": "نشط",
   "language": "اللغة",
   "user_preferences": "تفضيلات المستخدم",

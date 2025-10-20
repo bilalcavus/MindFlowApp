@@ -236,6 +236,7 @@
   "log_out": "ログアウト",
   "account_password": "パスワード変更",
   "manage_subscription": "サブスクリプション管理",
+  "manage_subscription_desc": "Storeにリダイレクトされて、サブスクリプションを管理します。",
   "active": "アクティブ",
   "language": "言語",
   "user_preferences": "ユーザー設定",

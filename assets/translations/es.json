@@ -309,6 +309,7 @@
     "log_out": "Cerrar Sesión",
     "account_password": "Cambiar Contraseña",
     "manage_subscription": "Gestionar Suscripción", 
+    "manage_subscription_desc": "Serás redirigido a Store para gestionar tu suscripción.",
     "active": "Activo",
     "language": "Idioma",
     "theme": "Tema",

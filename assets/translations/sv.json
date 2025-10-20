@@ -246,6 +246,7 @@
     "log_out": "Logga ut",
     "account_password": "Ändra lösenord",
     "manage_subscription": "Hantera prenumeration",
+    "manage_subscription_desc": "Du kommer att omdirigeras till Store för att hantera din prenumeration.",
     "active": "Aktiv",
     "language": "Språk",
     "theme": "Tema",

@@ -309,6 +309,7 @@
     "log_out": "登出",
     "account_password": "更改密碼",
     "manage_subscription": "管理訂閱",
+    "manage_subscription_desc": "您將被重定向到Store以管理您的訂閱。",
     "active": "活躍",
     "language": "語言",
     "theme": "主題",

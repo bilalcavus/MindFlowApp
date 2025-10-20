@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -188,14 +189,27 @@ class PremiumTab extends StatelessWidget {
   }
 
   Future<void> _cancelSubscription(BuildContext context, SubscriptionProvider provider) async {
+    // Determine platform-specific URLs and messages
+    String subscriptionUrl;
+    String dialogMessage;
+    
+    if (Platform.isIOS) {
+      subscriptionUrl = 'https://apps.apple.com/account/subscriptions';
+      dialogMessage = 'You will be redirected to App Store to manage your subscription.';
+    } else if (Platform.isAndroid) {
+      subscriptionUrl = 'https://play.google.com/store/account/subscriptions';
+      dialogMessage = 'You will be redirected to Google Play Store to manage your subscription.';
+    } else {
+      // Fallback for other platforms
+      subscriptionUrl = 'https://play.google.com/store/account/subscriptions';
+    }
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog.adaptive(
         backgroundColor: Colors.grey[900],
-        title: const Text('Manage Subscription'),
-        content: const Text(
-          'You will be redirected to App Store to manage your subscription.',
-        ),
+        title: Text('manage_subscription'.tr()),
+        content: Text('manage_subscription_desc'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -211,14 +225,26 @@ class PremiumTab extends StatelessWidget {
 
     if (confirmed == true) {
       try {
-        final url = Uri.parse('https://apps.apple.com/account/subscriptions');
+        final url = Uri.parse(subscriptionUrl);
         if (await canLaunchUrl(url)) {
           await launchUrl(url, mode: LaunchMode.externalApplication);
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Could not open subscription management page'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
         }
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
+            SnackBar(
+              content: Text('Error: $e'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }

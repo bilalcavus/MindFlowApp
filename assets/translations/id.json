@@ -233,6 +233,7 @@
     "log_out": "Keluar",
     "account_password": "Ubah Kata Sandi",
     "manage_subscription": "Kelola Langganan",
+    "manage_subscription_desc": "Anda akan diarahkan ke Store untuk mengelola langganan Anda.",
     "active": "Aktif",
     "language": "Bahasa",
     "user_preferences": "Preferensi Pengguna",
