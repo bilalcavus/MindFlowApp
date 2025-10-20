@@ -1,9 +1,9 @@
 import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mind_flow/core/helper/dynamic_size_helper.dart';
 import 'package:mind_flow/core/services/firestore_service.dart';
-import 'package:mind_flow/core/utility/extension/sized_box_extension.dart';
 import 'package:mind_flow/injection/injection.dart';
 import 'package:mind_flow/presentation/viewmodel/subscription/subscription_provider.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +54,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/career_assistant.png',
+              'assets/images/mental_health_support.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -101,9 +101,9 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                       fontSize: context.dynamicHeight(0.018),
                       fontWeight: FontWeight.w500,
                     ),
-                    tabs: const [
-                      Tab(text: 'Premium'),
-                      Tab(text: 'Credits'),
+                    tabs:  [
+                      Tab(text: 'premium'.tr()),
+                      Tab(text: 'credit'.tr()),
                     ],
                   ),
                 ),
@@ -171,9 +171,9 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
 
               SizedBox(height: context.dynamicHeight(0.025)),
               _buildModernFeature('monthly_hundred_analysis'.tr(), Icons.auto_awesome_rounded),
-              _buildModernFeature('advanced_ai_models'.tr(), Icons.psychology_rounded),
+              _buildModernFeature('advanced_ai_models'.tr(), HugeIcons.strokeRoundedAiBrain01),
               _buildModernFeature('priority_support'.tr(), Icons.support_agent_rounded),
-              _buildModernFeature('detailed_statistics'.tr(), Icons.block_rounded),
+              _buildModernFeature('customizable_analyses'.tr(), Icons.desktop_windows_rounded),
 
               SizedBox(height: context.dynamicHeight(0.04)),
 
@@ -239,24 +239,6 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
           padding: EdgeInsets.all(context.dynamicWidth(0.06)),
           child: Column(
             children: [
-             
-
-              // Modern Title
-              Text(
-                'Buy\nCredits',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: context.dynamicHeight(0.035),
-                  fontWeight: FontWeight.w700,
-                  height: 1.1,
-                  letterSpacing: -1,
-                ),
-              ),
-
-              SizedBox(height: context.dynamicHeight(0.025)),
-
-              // Modern Current Credits
               Container(
                 padding: EdgeInsets.all(context.dynamicWidth(0.05)),
                 decoration: BoxDecoration(
@@ -270,11 +252,11 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                 child: Column(
                   children: [
                     Text(
-                      'Current Balance',
+                      'credit_status'.tr(),
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white,
                         fontSize: context.dynamicHeight(0.016),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: context.dynamicHeight(0.01)),
@@ -283,16 +265,16 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: context.dynamicHeight(0.06),
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.bold,
                         letterSpacing: -2,
                       ),
                     ),
                     Text(
-                      'credits',
+                      'credit'.tr(),
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white,
                         fontSize: context.dynamicHeight(0.016),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -300,8 +282,6 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
               ),
 
               SizedBox(height: context.dynamicHeight(0.04)),
-
-              // Modern Credit Packages
               _buildModernCreditPackage(
                 context,
                 provider,
@@ -400,11 +380,6 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('9.99 \$', style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-                )),
-                context.dynamicWidth(0.02).width,
                 Text(
                   text,
                   style: TextStyle(
@@ -475,7 +450,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
         border: Border.all(
           color: popular 
-              ? Colors.orange.withOpacity(0.5) 
+              ? Colors.green.withOpacity(0.5) 
               : Colors.white.withOpacity(0.1),
           width: popular ? 2 : 1,
         ),
@@ -489,22 +464,12 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             padding: EdgeInsets.all(context.dynamicWidth(0.05)),
             child: Row(
               children: [
-                // Modern Icon
-                Container(
-                  width: context.dynamicWidth(0.12),
-                  height: context.dynamicWidth(0.12),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(context.dynamicWidth(0.03)),
-                  ),
-                  child: Icon(
-                    Icons.stars_rounded,
-                    color: Colors.orange,
-                    size: context.dynamicHeight(0.03),
-                  ),
+                Icon(
+                  Icons.star,
+                  color: Colors.orange,
+                  size: context.dynamicHeight(0.03),
                 ),
                 SizedBox(width: context.dynamicWidth(0.04)),
-                // Info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,7 +477,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                       Row(
                         children: [
                           Text(
-                            '$credits Credits',
+                            '$credits ${'credit'.tr()}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: context.dynamicHeight(0.022),
@@ -528,11 +493,11 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                                 vertical: context.dynamicHeight(0.003),
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.orange,
+                                color: Colors.green,
                                 borderRadius: BorderRadius.circular(context.dynamicWidth(0.01)),
                               ),
                               child: Text(
-                                'POPULAR',
+                                'popular'.tr(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: context.dynamicHeight(0.012),
@@ -545,7 +510,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                       ),
                       SizedBox(height: context.dynamicHeight(0.005)),
                       Text(
-                        'Never expires',
+                        'never_expires'.tr(),
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: context.dynamicHeight(0.014),
@@ -569,7 +534,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                       ),
                     ),
                     Text(
-                      'one-time',
+                      'one_time'.tr(),
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.6),
                         fontSize: context.dynamicHeight(0.012),
@@ -595,9 +560,9 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             Uri.parse('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'),
           ),
           child: Text(
-            'Terms',
+            'terms_of_use_eula'.tr(),
             style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.8),
               fontSize: context.dynamicHeight(0.014),
               fontWeight: FontWeight.w500,
             ),
@@ -606,7 +571,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         Text(
           '•',
           style: TextStyle(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withOpacity(0.5),
             fontSize: context.dynamicHeight(0.014),
           ),
         ),
@@ -615,42 +580,9 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             Uri.parse('https://bilalcavus.github.io/privacy-policy/privacy-policy.html'),
           ),
           child: Text(
-            'Privacy',
+            'privacy_policy'.tr(),
             style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
-              fontSize: context.dynamicHeight(0.014),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Text(
-          '•',
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.3),
-            fontSize: context.dynamicHeight(0.014),
-          ),
-        ),
-        TextButton(
-          onPressed: () async {
-            try {
-              await Adapty().restorePurchases();
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Purchases restored')),
-                );
-              }
-            } catch (e) {
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: $e')),
-                );
-              }
-            }
-          },
-          child: Text(
-            'Restore',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.8),
               fontSize: context.dynamicHeight(0.014),
               fontWeight: FontWeight.w500,
             ),
@@ -668,12 +600,12 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     await _showPaywallDialog(
       context: context,
       placementId: 'subscription',
-      title: 'Get Unlimited\nAccess',
+      title: 'premium_plan'.tr(),
       features: [
-        'Monthly 100 analysis rights',
-        'Advanced AI Models',
-        'Priority Support',
-        'Ad-free experience',
+        'monthly_hundred_analysis'.tr(),
+        'advanced_ai_models'.tr(),
+        'priority_support'.tr(),
+        'customizable_analyses'.tr(),
       ],
       onPurchase: () async {
         await provider.handleSuccessfulPurchase(userId, 'premium');
@@ -697,12 +629,12 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     await _showPaywallDialog(
       context: context,
       placementId: 'credits',
-      title: 'Buy Credits',
+      title: 'buy_credit'.tr(),
       features: [
-        '$creditAmount analysis credits',
-        'Never expires',
-        'Use anytime',
-        'Instant delivery',
+        '$creditAmount ${'credit'.tr()}',
+        'never_expires'.tr(),
+        'use_anytime'.tr(),
+        'instant_delivery'.tr(),
       ],
       creditAmount: creditAmount,
       onPurchase: () async {
@@ -754,11 +686,11 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr()),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Continue'),
+            child: Text('continue'.tr()),
           ),
         ],
       ),
@@ -1131,10 +1063,10 @@ class _PaywallDialogState extends State<_PaywallDialog> {
                         builder: (context) {
                           final product = _getProductForCreditAmount();
                           return Text(
-                            'All this for just ${product?.price.localizedString ?? ''}/year.',
+                            product?.price.localizedString ?? '',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: context.dynamicHeight(0.016),
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: context.dynamicHeight(0.018),
                               fontWeight: FontWeight.w500,
                             ),
                           );
@@ -1182,7 +1114,7 @@ class _PaywallDialogState extends State<_PaywallDialog> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Continue',
+                                        'continue'.tr(),
                                         style: TextStyle(
                                           fontSize: context.dynamicHeight(0.018),
                                           fontWeight: FontWeight.w700,
