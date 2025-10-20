@@ -1,0 +1,146 @@
+{
+  "identifier" : "Configuration",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6736912345",
+      "localizations" : [
+        {
+          "description" : "5 kredi paketi",
+          "displayName" : "5 Kredi",
+          "locale" : "tr"
+        },
+        {
+          "description" : "5 credits pack",
+          "displayName" : "5 Credits",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "mind_flow_credits_5",
+      "referenceName" : "5 Credits",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "6736912346",
+      "localizations" : [
+        {
+          "description" : "10 kredi paketi",
+          "displayName" : "10 Kredi",
+          "locale" : "tr"
+        },
+        {
+          "description" : "10 credits pack",
+          "displayName" : "10 Credits",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "mind_flow_credits_10",
+      "referenceName" : "10 Credits",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "internalID" : "6736912347",
+      "localizations" : [
+        {
+          "description" : "20 kredi paketi",
+          "displayName" : "20 Kredi",
+          "locale" : "tr"
+        },
+        {
+          "description" : "20 credits pack",
+          "displayName" : "20 Credits",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "mind_flow_credits_20",
+      "referenceName" : "20 Credits",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptions" : [
+    {
+      "adHocOffers" : [
+
+      ],
+      "codeOffers" : [
+
+      ],
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "groupNumber" : 1,
+      "internalID" : "6736912348",
+      "introductoryOffer" : null,
+      "localizations" : [
+        {
+          "description" : "Premium abonelik - Aylık 100 kredi ve gelişmiş özellikler",
+          "displayName" : "Premium Abonelik",
+          "locale" : "tr"
+        },
+        {
+          "description" : "Premium subscription - 100 monthly credits and advanced features",
+          "displayName" : "Premium Subscription",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "mind_flow_premium_new",
+      "recurringSubscriptionPeriod" : "P1M",
+      "referenceName" : "Premium Monthly",
+      "subscriptionGroupID" : "21512345",
+      "type" : "RecurringSubscription"
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

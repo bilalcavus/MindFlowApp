@@ -62,6 +62,7 @@ final class AppInitializer {
     await initializeDatabase();
     await initalizeGoogleBilling();
     await AuthService().fetchAndSetCurrentUser();
+
     
   }
 

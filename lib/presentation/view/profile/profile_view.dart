@@ -15,7 +15,6 @@ import 'package:mind_flow/presentation/view/profile/profile_pages/account_passwo
 import 'package:mind_flow/presentation/view/profile/profile_pages/personal_information_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/privacy_policy_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/support_ticket_view.dart';
-import 'package:mind_flow/presentation/view/profile/profile_pages/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
@@ -24,6 +23,7 @@ import 'package:mind_flow/presentation/widgets/show_exit_dialog.dart';
 import 'package:mind_flow/presentation/widgets/theme/custom_color_theme.dart';
 import 'package:mind_flow/presentation/widgets/theme_selection_button.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -157,8 +157,8 @@ class _ProfileViewState extends State<ProfileView> {
           _settingsTile(Iconsax.shield, 'privacy_policy'.tr(), () {
             RouteHelper.push(context, const PrivacyPolicyView());
           }),
-          _settingsTile(Iconsax.document, 'terms_and_conditions'.tr(), () {
-            RouteHelper.push(context, const TermsAndConditionsView());
+          _settingsTile(Iconsax.document, 'terms_of_use_eula'.tr(), () {
+            launchUrl(Uri.parse("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"));
           }),
           if(authService.isLoggedIn)
           _settingsTile(Iconsax.trash, 'delete_account'.tr(), () {

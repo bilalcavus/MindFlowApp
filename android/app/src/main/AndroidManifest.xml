@@ -8,6 +8,16 @@
         android:label="Mind Flow : AI Analyze - Chat"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+            <meta-data
+        android:name="AdaptyPublicSdkKey"
+        android:value="public_live_aHLMW1j7.5KtbUx0bKhDrbpVXljbd" />
+    <meta-data
+        android:name="AdaptyObserverMode"
+        android:value="false" />
+    <meta-data
+        android:name="AdaptyGoogleAdvertisingIdCollectionDisabled"
+        android:value="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
