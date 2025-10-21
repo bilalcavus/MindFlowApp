@@ -50,53 +50,51 @@ class _ProfileViewState extends State<ProfileView> {
         return shouldExit ?? false;
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.dynamicWidth(0.05), 
-                      vertical: context.dynamicHeight(0.0125)
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(context.dynamicWidth(0.01)),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
-                            ),
-                          ),
-                          child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06),)
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.01)),
-                        Text(
-                          _authService.firebaseUser?.displayName ?? 'guest_user'.tr(),
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        SizedBox(height: context.dynamicHeight(0.01)),
-                        Text(
-                          _authService.firebaseUser?.email ?? '',
-                          style: TextStyle(
-                            // color: Colors.white.withOpacity(0.7),
-                            fontSize: context.dynamicHeight(0.02),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.dynamicWidth(0.05), 
+                    vertical: context.dynamicHeight(0.0125)
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(context.dynamicWidth(0.01)),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFB983FF), Color(0xFF8B5CF6)],
                           ),
                         ),
-                        SizedBox(height: context.dynamicHeight(0.02)),
-                        _buildSettingsList(_authService),
-                      ],
-                    ),
+                        child: UserAvatar(user: user, fontSize: context.dynamicHeight(0.05), radius: context.dynamicHeight(0.06),)
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.01)),
+                      Text(
+                        _authService.firebaseUser?.displayName ?? 'guest_user'.tr(),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.01)),
+                      Text(
+                        _authService.firebaseUser?.email ?? '',
+                        style: TextStyle(
+                          // color: Colors.white.withOpacity(0.7),
+                          fontSize: context.dynamicHeight(0.02),
+                        ),
+                      ),
+                      SizedBox(height: context.dynamicHeight(0.02)),
+                      _buildSettingsList(_authService),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

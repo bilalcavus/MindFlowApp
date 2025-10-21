@@ -53,7 +53,7 @@ class ChatBubble extends StatelessWidget {
                   Text(
                     message.message,
                     style: TextStyle(
-                      fontSize: context.dynamicHeight(0.015),
+                      fontSize: context.dynamicHeight(0.017),
                       height: context.dynamicHeight(0.0016),
                       fontWeight: FontWeight.w500
                     ),

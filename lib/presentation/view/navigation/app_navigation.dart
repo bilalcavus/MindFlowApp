@@ -12,17 +12,20 @@ class AppNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
+      value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Şeffaf yap
-        statusBarIconBrightness: Brightness.dark, // Android için koyu ikonlar
-        statusBarBrightness: Brightness.dark, // iOS için açık ikonlar
+        statusBarIconBrightness: Brightness.light, // Android için koyu ikonlar
+        statusBarBrightness: isDark ? Brightness.dark : Brightness.light, // iOS için açık ikonlar
       ),
       child: ChangeNotifierProvider(
         create: (_) => NavigationProvider(),
         child: Consumer<NavigationProvider>(
           builder: (context, navProvider, _) {
             return SafeArea(
+              bottom: true,
+              top: false,
               child: Scaffold(
                 body: IndexedStack(
                   index: navProvider.currentIndex,

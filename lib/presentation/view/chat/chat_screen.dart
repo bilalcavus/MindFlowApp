@@ -40,6 +40,8 @@ class _ChatScreenState extends State<ChatScreen> with ChatScreenMixin{
         ),
       ),
       body: SafeArea(
+        bottom: true,
+        top: false,
         child: Column(
           children: [
             Expanded(

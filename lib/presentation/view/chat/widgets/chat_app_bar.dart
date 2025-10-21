@@ -20,7 +20,6 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title, style: TextStyle(fontSize: context.dynamicHeight(0.02))),
-      backgroundColor: Colors.transparent,
       centerTitle: false,
       elevation: 0,
       actions: [
