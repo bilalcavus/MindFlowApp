@@ -101,7 +101,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)),
                           child: Image.asset(
-                            'assets/icon/app_icon.png',
+                            'assets/icon/new_app_icon.png',
                             fit: BoxFit.cover,
                           ),
                         ),
