@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -15,6 +17,7 @@ import 'package:mind_flow/presentation/view/profile/profile_pages/account_passwo
 import 'package:mind_flow/presentation/view/profile/profile_pages/personal_information_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/privacy_policy_view.dart';
 import 'package:mind_flow/presentation/view/profile/profile_pages/support_ticket_view.dart';
+import 'package:mind_flow/presentation/view/profile/profile_pages/terms_and_conditions_view.dart';
 import 'package:mind_flow/presentation/view/subscription/subscription_management_page.dart';
 import 'package:mind_flow/presentation/viewmodel/authentication/authentication_provider.dart';
 import 'package:mind_flow/presentation/viewmodel/navigation/navigation_provider.dart';
@@ -156,7 +159,12 @@ class _ProfileViewState extends State<ProfileView> {
             RouteHelper.push(context, const PrivacyPolicyView());
           }),
           _settingsTile(Iconsax.document, 'terms_of_use_eula'.tr(), () {
-            launchUrl(Uri.parse("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"));
+            if(Platform.isAndroid) {
+              RouteHelper.push(context, const TermsAndConditionsView());
+            } else if(Platform.isIOS) {
+              launchUrl(Uri.parse("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"));
+              return;
+            }
           }),
           if(authService.isLoggedIn)
           _settingsTile(Iconsax.trash, 'delete_account'.tr(), () {
