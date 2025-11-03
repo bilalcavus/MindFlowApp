@@ -72,9 +72,9 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
     return Container(
       padding: EdgeInsets.all(context.dynamicWidth(0.04)),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.1),
+        color: Colors.red.withAlpha(25),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.red.withOpacity(0.3)),
+        border: Border.all(color: Colors.red.withAlpha(75)),
       ),
       child: Row(
         children: [
@@ -103,9 +103,9 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
     return Container(
       padding: EdgeInsets.all(context.dynamicWidth(0.04)),
       decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.1),
+        color: Colors.orange.withAlpha(25),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.orange.withOpacity(0.3)),
+        border: Border.all(color: Colors.orange.withAlpha(75)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +156,7 @@ class _AccountDeletionViewState extends State<AccountDeletionView> {
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.orange.withOpacity(0.8),
+                color: Colors.orange.withAlpha(200),
                 fontSize: context.dynamicHeight(0.016),
               ),
             ),

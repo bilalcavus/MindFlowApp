@@ -93,7 +93,7 @@ class _AnalysisTypeCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isSelected
-              ? color.withOpacity(0.3)
+              ? color.withAlpha(75)
               : CustomColorTheme.bottomSheetAnalyzeColor(context),
           borderRadius: BorderRadius.circular(15),
           border: isSelected

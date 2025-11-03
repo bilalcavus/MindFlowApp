@@ -51,8 +51,8 @@ class PopularTopicsWidget extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        color.withOpacity(0.8),
-                        color.withOpacity(0.6),
+                        color.withAlpha(200),
+                        color.withAlpha(150),
                       ],
                     ),
                   ),
@@ -62,7 +62,7 @@ class PopularTopicsWidget extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(context.dynamicHeight(0.02)),
-                          color: color.withOpacity(0.3),
+                          color: color.withAlpha(75),
                         ),
                       ),
                       // Text overlay at bottom
@@ -82,7 +82,7 @@ class PopularTopicsWidget extends StatelessWidget {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                Colors.black.withOpacity(0.7),
+                                Colors.black.withAlpha(180),
                               ],
                             ),
                           ),

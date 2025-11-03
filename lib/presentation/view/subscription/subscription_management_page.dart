@@ -71,8 +71,8 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.9),
-                    Colors.black.withOpacity(0.9),
+                    Colors.black.withAlpha(240),
+                    Colors.black.withAlpha(240),
                   ],
                 ),
               ),
@@ -92,7 +92,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
                           borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.purple.withOpacity(0.2),
+                              color: Colors.purple.withAlpha(50),
                               blurRadius: context.dynamicWidth(0.05),
                               spreadRadius: context.dynamicWidth(0.01),
                             ),
@@ -130,10 +130,10 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     return Container(
       padding: EdgeInsets.all(context.dynamicWidth(0.05)),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withAlpha(8),
         borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
         border: Border.all(
-          color: Colors.white.withOpacity(0.08),
+          color: Colors.white.withAlpha(16),
           width: 1,
         ),
       ),
@@ -186,10 +186,10 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     return Container(
       padding: EdgeInsets.all(context.dynamicWidth(0.05)),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withAlpha(8),
         borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
         border: Border.all(
-          color: Colors.white.withOpacity(0.08),
+          color: Colors.white.withAlpha(16),
           width: 1,
         ),
       ),
@@ -256,10 +256,10 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     return Container(
       padding: EdgeInsets.all(context.dynamicWidth(0.05)),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withAlpha(8),
         borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
         border: Border.all(
-          color: Colors.white.withOpacity(0.08),
+          color: Colors.white.withAlpha(16),
           width: 1,
         ),
       ),
@@ -293,10 +293,10 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             Container(
               padding: EdgeInsets.all(context.dynamicWidth(0.04)),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withAlpha(25),
                 borderRadius: BorderRadius.circular(context.dynamicWidth(0.03)),
                 border: Border.all(
-                  color: Colors.green.withOpacity(0.3),
+                  color: Colors.green.withAlpha(75),
                   width: 1,
                 ),
               ),
@@ -348,12 +348,12 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             width: context.dynamicWidth(0.08),
             height: context.dynamicWidth(0.08),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withAlpha(16),
               borderRadius: BorderRadius.circular(context.dynamicWidth(0.02)),
             ),
             child: Icon(
               icon,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withAlpha(240),
               size: context.dynamicHeight(0.02),
             ),
           ),
@@ -362,7 +362,7 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withAlpha(240),
                 fontSize: context.dynamicHeight(0.018),
                 fontWeight: FontWeight.w600,
               ),
@@ -383,13 +383,13 @@ class _SubscriptionManagementPageState extends State<SubscriptionManagementPage>
     return Container(
       decoration: BoxDecoration(
         color: popular 
-            ? Colors.white.withOpacity(0.08) 
-            : Colors.white.withOpacity(0.03),
+            ? Colors.white.withAlpha(16) 
+            : Colors.white.withAlpha(7),
         borderRadius: BorderRadius.circular(context.dynamicWidth(0.04)),
         border: Border.all(
           color: popular 
-              ? Colors.green.withOpacity(0.5) 
-              : Colors.white.withOpacity(0.1),
+              ? Colors.green.withAlpha(125) 
+              : Colors.white.withAlpha(25),
           width: popular ? 2 : 1,
         ),
       ),
