@@ -60,7 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: context.dynamicWidth(0.05), 
-                    vertical: context.dynamicHeight(0.0125)
+                    vertical: context.dynamicHeight(0.06)
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

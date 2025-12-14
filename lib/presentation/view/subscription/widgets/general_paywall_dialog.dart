@@ -7,7 +7,7 @@ class GeneralPaywallDialog {
     required BuildContext context,
     required String placementId,
     required String title,
-    required List<String> features,
+    required List<String> features, 
     required Future<void> Function() onPurchase,
     int? creditAmount,
   }) async {

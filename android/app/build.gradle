@@ -34,7 +34,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.bilalcavus.mindflow"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "26.2.11394342"
 
     compileOptions {
@@ -52,9 +52,9 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion = flutter.minSdkVersion
-        targetSdk = 35
-        versionCode = 28
-        versionName = "1.2.6"
+        targetSdk = 36
+        versionCode = 29
+        versionName = "1.2.7"
         multiDexEnabled true
     }
 
